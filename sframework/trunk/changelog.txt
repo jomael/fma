@@ -1,0 +1,204 @@
+Commit from streawkceur (2004-03-18 01:51 CET)
+-----------------------
+
+Some internal changes here and there. Extended Winamp plugin with a lot of features! Some corrections in the docs and in the Demo plugin.
+
+  fma  fma-scripting-framework.vbs  1.29
+  fma  test.vbs                     1.28
+  fma  core/EventManagerClass.vbs   1.16
+  fma  core/ManagedMenu.vbs         1.9
+  fma  doc/dev.html                 1.9
+  fma  doc/use.html                 1.2
+  fma  helper/config/config.vbw     1.3
+  fma  plugins/Demo.vbs             1.11
+  fma  plugins/Winamp.vbs           1.13
+  fma  changelog.txt                1.38
+  fma  plugins/BSPlayer.vbs         1.6
+  fma  plugins/MediaCenter9.vbs     1.15
+  fma  plugins/MediaPlayer9.vbs     1.13
+  fma  plugins/MoreTV.vbs           1.6
+  fma  plugins/MousePlus.vbs        1.2
+  fma  plugins/PowerDVD5.vbs        1.11
+  fma  plugins/Powerpoint.vbs       1.11
+  fma  plugins/WinDVD.vbs           1.11
+  fma  plugins/WinTV.vbs            1.6
+  fma  plugins/ZoomPlayer.vbs       1.4
+  fma  plugins/iTunes.vbs           1.4
+
+
+Commit from streawkceur (2004-03-18 01:53 CET)
+-----------------------
+
+Some internal changes here and there. Extended Winamp plugin with a lot of features! Some corrections in the docs and in the Demo plugin.
+
+  fma  changelog.txt  1.39
+
+
+Commit from streawkceur (2004-03-18 14:12 CET)
+-----------------------
+
+Introduced ActiveXManager, updated docs and plugins. MousePlus fix.
+
+  fma  fma-scripting-framework.vbs  1.30
+  fma  test.vbs                     1.29
+  fma  doc/dev.html                 1.10
+  fma  plugins/BramusICQ.vbs        1.2
+  fma  plugins/Camera.vbs           1.5
+  fma  plugins/Demo.vbs             1.12
+  fma  plugins/MasterVolume.vbs     1.9
+  fma  plugins/MediaCenter9.vbs     1.16
+  fma  plugins/Mouse.vbs            1.8
+  fma  plugins/MousePlus.vbs        1.3
+  fma  plugins/OnCallPauseWA.vbs    1.3
+  fma  plugins/Winamp.vbs           1.14
+  fma  changelog.txt                1.40
+
+
+Commit from streawkceur (2004-03-18 14:14 CET)
+-----------------------
+
+Introduced ActiveXManager, updated docs and plugins. MousePlus fix.
+
+  fma  fma-scripting-framework.vbs  1.31
+
+
+Commit from streawkceur (2004-03-18 14:29 CET)
+-----------------------
+
+Fixed some dialogues without empty menus.
+
+  fma  fma-scripting-framework.vbs  1.32
+  fma  plugins/BramusICQ.vbs        1.3
+  fma  plugins/MediaPlayer9.vbs     1.14
+  fma  plugins/Mouse.vbs            1.9
+  fma  plugins/MousePlus.vbs        1.4
+  fma  plugins/Winamp.vbs           1.15
+  fma  changelog.txt                1.41
+
+
+Commit from streawkceur (2004-03-18 16:21 CET)
+-----------------------
+
+Small changes
+
+  fma  fma-scripting-framework.vbs  1.33
+  fma  test.vbs                     1.30
+  fma  helper/floAtMediaCtrl.exe    1.2
+  fma  changelog.txt                1.42
+
+
+Commit from streawkceur (2004-03-18 16:25 CET)
+-----------------------
+
+Keyword test
+
+  fma  fma-scripting-framework.vbs  1.34
+
+
+Commit from streawkceur (2004-03-18 16:58 CET)
+-----------------------
+
+Checked all files for bad line ends. Now every file should work properly in Notepad.exe :)
+
+  fma  fma-scripting-framework.vbs       1.35
+  fma  core/LinkedList.vbs               1.6
+  fma  doc/LinkedList.html               1.3
+  fma  doc/fma-scripting-framework.html  1.2
+  fma  plugins/AutoMenu.vbs              1.4
+  fma  plugins/Camera.vbs                1.6
+  fma  plugins/MousePlus.vbs             1.5
+  fma  changelog.txt                     1.43
+
+
+Commit from streawkceur (2004-03-18 21:38 CET)
+-----------------------
+
+Enhanced AutoMenu plugin. It now directly show a specified plugin menu instead of going to the main menu. See configurator.
+
+  fma  fma-scripting-framework.vbs             1.36
+  fma  helper/config/fma.settings.description  1.5
+  fma  plugins/AutoMenu.vbs                    1.5
+  fma  plugins/Demo.vbs                        1.13
+  fma  changelog.txt                           1.44
+  fma  plugins/Winamp.vbs                      1.16
+
+
+Commit from streawkceur (2004-03-20 09:44 CET)
+-----------------------
+
+Now _really_ added ActiveXManager
+
+  fma  fma-scripting-framework.vbs   1.37
++ fma  core/ActiveXManagerClass.vbs  1.1
+  fma  changelog.txt                 1.45
+
+
+Commit from fma (2004-03-20 12:26 CET)
+---------------
+
+*** empty log message ***
+
+  fma  helper/register_all.bat   1.2
+  fma  plugins/Configurator.vbs  1.5
+
+
+Commit from streawkceur (2004-03-20 19:42 CET)
+-----------------------
+
+Using fma.Sleep now. Configurator forces script to reload settings after it saved th settings. Introduced Util.WaitForAppClose. Updated documentation. Updated Tools plugin, now it should work better. Updated Winamp plugin, now has a dialogue for setting winamp volume. Updated BramusICQ.
+
+  fma  fma-scripting-framework.vbs    1.38
+  fma  core/UtilClass.vbs             1.12
+  fma  doc/dev.html                   1.11
+  fma  helper/config/Global.bas       1.2
+  fma  helper/config/config.exe       1.3
+  fma  helper/config/frmSettings.frm  1.3
+  fma  plugins/Configurator.vbs       1.6
+  fma  plugins/Test.vbs               1.9
+  fma  plugins/Tools.vbs              1.10
+  fma  plugins/Winamp.vbs             1.17
+  fma  changelog.txt                  1.46
+
+
+Commit from streawkceur (2004-03-22 13:04 CET)
+-----------------------
+
+Modified Configurator a bit. Added configurator option to exclude some plugins from being loaded. Updated docs.
+
+  fma  fma-scripting-framework.vbs             1.39
+  fma  core/PluginManagerClass.vbs             1.15
+  fma  core/SettingsClass.vbs                  1.10
+  fma  doc/use.html                            1.3
+  fma  helper/config/Global.bas                1.3
+  fma  helper/config/config.exe                1.4
+  fma  helper/config/config.vbp                1.2
+  fma  helper/config/config.vbw                1.4
+  fma  helper/config/fma.settings.description  1.6
+  fma  helper/config/frmSettings.frm           1.4
+  fma  plugins/Configurator.vbs                1.7
+  fma  changelog.txt                           1.47
++ fma  helper/config/PluginComparator.cls      1.1
+
+
+Commit from Dako (2004-09-16)
+----------------
+
+Changed MediaPlayer9 and Powerpoint OnClose subs in order to update menu. Modified iTunes script alot. Main script install folder fixed.
+
+
+Commit from vo.x (2004-10-24)
+----------------
+
+Changed Tools plugin to support Disconnect Temporary feature
+
+
+Commit from vo.x (2004-11-06)
+----------------
+
+Changed KeyManager to properly enable and disable key monitoring.
+Removed dummy key from fma-scripting-framework.vbs.
+
+Commit from Dako (2005-11-24)
+----------------
+
+Various improvements by mhr, ExpertOne and others.

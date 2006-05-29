@@ -1,0 +1,53 @@
+:Base C:\Programmer\Borland\Delphi 3\Komponenter\PBFolderDialog\pbfolder.hlp
+:Title F1Help file
+1 PBFolderDialog
+2 PBFolderDialog unit=unit_PBFolderDialog
+2 USES
+3 Windows
+3 Messages
+3 Classes
+3 Forms
+3 Dialogs
+3 SysUtils
+3 ActiveX
+3 Shlobj
+3 FileCtrl
+3 Controls
+3 Graphics
+3 Registry
+2 CONST
+2 TYPES
+3 TBrowseInfoFlags=type_TBrowseInfoFlags
+3 TBrowseInfoFlagSet=type_TBrowseInfoFlagSet
+3 TSHFolders=type_TSHFolders
+3 TPBFolderDialog
+4 TPBFolderDialog class=class_TPBFolderDialog
+4 Create=cons_TPBFolderDialogCreate
+4 Destroy=dest_TPBFolderDialogDestroy
+4 Execute=func_TPBFolderDialogExecute
+4 SetSelectionPIDL=proc_TPBFolderDialogSetSelectionPIDL
+4 SetSelectionPath=proc_TPBFolderDialogSetSelectionPath
+4 EnableOK=proc_TPBFolderDialogEnableOK
+4 GetIDListFromPath=proc_TPBFolderDialogGetIDListFromPath
+4 DisplayName=prop_TPBFolderDialogDisplayName
+4 ImageIndex=prop_TPBFolderDialogImageIndex
+4 ParentHandle=prop_TPBFolderDialogParentHandle
+4 DialogHandle=prop_TPBFolderDialogDialogHandle
+4 NewFolderHandle=prop_TPBFolderDialogNewFolderHandle
+4 SelectedFolder=prop_TPBFolderDialogSelectedFolder
+4 Folder=prop_TPBFolderDialogFolder
+4 Flags=prop_TPBFolderDialogFlags
+4 RootFolder=prop_TPBFolderDialogRootFolder
+4 NewFolderVisible=prop_TPBFolderDialogNewFolderVisible
+4 NewFolderEnabled=prop_TPBFolderDialogNewFolderEnabled
+4 NewFolderWidth=prop_TPBFolderDialogNewFolderWidth
+4 OnInitialized=prop_TPBFolderDialogOnInitialized
+4 OnSelectionChanged=prop_TPBFolderDialogOnSelectionChanged
+4 LabelCaptions=prop_TPBFolderDialogLabelCaptions
+4 NewFolderCaptions=prop_TPBFolderDialogNewFolderCaptions
+4 Version=prop_TPBFolderDialogVersion
+3 TBrowserInitializedEvent=type_TBrowserInitializedEvent
+3 TSelectionChangedEvent=type_TSelectionChangedEvent
+2 VARS
+2 ROUTINES
+:Include DELPHI3.CFG

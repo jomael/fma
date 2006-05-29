@@ -1,0 +1,160 @@
+\\
+All framework settings
+PluginManager("AutoMenu")
+This will go into the accessories menu after connection
+PluginManager("AutoMenu")\\Menu
+The menu which shall be displayed on your phone after FMA has connected to your phone. The default is "FrameworkMainMenu", but you may put every plugin that you've installed here.
+PluginManager("BSPlayer")
+Lets you control BSPlayer
+PluginManager("BSPlayer")\\Title
+The window title of the BSPlayer application
+PluginManager("BSPlayer")\\Exe
+The path to the BSPlayer executable
+PluginManager("Camera")
+Control your phones camera from your computer
+PluginManager("Camera")\\OutputDirectory
+The directory on your computer where the pictures are stored that were captured with the phone's cam.
+PluginManager("Camera")\\InputFilename
+The path on your phone where the pictures are stored that were captured with the phone's cam. The default is "/Pictures/Image(1).jpg", but it may vary with different phone languages. Note that this path is case-sensitive!
+PluginManager("foobar2000")
+Lets you control foobar2000
+PluginManager("foobar2000")\\Title
+The window title of the foobar2000 application. You don't need to adjust this.
+PluginManager("foobar2000")\\Exe
+The path to the foobar2000 executable. To see the title currently playing and adjust the volume, you need the fb2k plugin foo_winamp_spam ( http://www.r1ch.net/stuff/foobar/ foo_winamp_spam-0.74.zip ) and install it into your /foobar2000/components/ directory.
+PluginManager("iTunes")
+Lets you control Apple iTunes	
+PluginManager("iTunes")\\Title
+The window title of the iTunes application
+PluginManager("iTunes")\\Exe
+The path to the iTunes executable
+PluginManager("MediaCenter9")
+Lets you control J. River's Media Center 9 and maybe other versions
+PluginManager("MediaCenter9")\\Title
+The window title of the MediaCenter application
+PluginManager("MediaCenter9")\\Exe
+The path to the MediaCenter 9 executable
+PluginManager("MediaCenter")
+Allows for controlling MS Media Center
+PluginManager("MediaCenter")\\Title
+The window title of the MediaCenter application
+PluginManager("MediaCenter")\\Exe
+The path to the MediaCenter executable
+PluginManager("MediaPlayer9")
+Allows for controlling MS Media Player 9
+PluginManager("MediaPlayer9")\\Exe
+The path to the Media Player 9 executable
+PluginManager("MediaPlayer9")\\Title
+The window title of the Windows Media Player 9 application
+PluginManager("MediaPlayer")
+Allows for controlling MS Media Player
+PluginManager("MediaPlayer")\\Exe
+The path to the Media Player executable
+PluginManager("MediaPlayer")\\Title
+The window title of the Windows Media Player application
+PluginManager("MediaPlayerClassic")
+Lets you control Media Player Classic
+PluginManager("MediaPlayerClassic")\\Exe
+The path to the Media Player Classic executable
+PluginManager("MediaPlayerClassic")\\Title
+The window title of the Media Player Classic application
+PluginManager("MoreTV")
+Lets you control MoreTV
+PluginManager("MoreTV")\\Title
+The window title of the MoreTV application
+PluginManager("MoreTV")\\Exe
+The path to the MoreTV executable
+PluginManager
+Global Plugin Manager settings
+PluginManager\\Don't load
+Here you can set up a comma separated list of plugin name substrings, whose matching plugins shouldn't be loaded. If you put a list of e.g. "dvd,player" all plugins that have the words "dvd" or "player" in it's filename wouldn't be loaded. Set it to an empty string to load all plugins.
+PluginManager("PowerDVD5")
+Lets you control PowerDVD5
+PluginManager("PowerDVD5")\\Title
+The window title of the PowerDVD application
+PluginManager("PowerDVD5")\\Exe
+The path to the PowerDVD executable
+PluginManager("Powerpoint")
+Lets you control Powerpoint
+PluginManager("Powerpoint")\\Title
+The window title of the Microsoft Powerpoint application
+PluginManager("Powerpoint")\\Exe
+The path to the Microsoft Powerpoint executable
+PluginManager("Powerpoint")\\SlideOverviewShortcut
+Slide overview shortcut
+PluginManager("Powerpoint")\\ResumePresentationShortcut
+Resume presentation shortcut
+PluginManager("SageTV")
+Lets you control SageTV 2.1
+PluginManager("SageTV")\\Title
+The window title of the SageTV application
+PluginManager("SageTV")\\Exe
+The path to the SageTV executable
+PluginManager("SmsDBLog")
+This will Append the new SMS to ADO DataBase
+PluginManager("SmsDBLog")\\ConnectionString
+ADO Connection string. May contain database driver name, file path, server address, user login, password, etc.
+PluginManager("SmsDBLog")\\InsertCommand
+SQL statement that will add new SMS to database. Use {0} for Sender, {1} for Message text.
+PluginManager("SmsReader")
+Read all new SMS with selected voice
+PluginManager("SmsReader")\\ReadingEnabled
+Is SMS Reader enabled. If this is 1 SMSReader will speak all new SMSes.
+PluginManager("SmsReader")\\NewSmsText
+New SMS template. When new SMS arrived script will speak this text. Use {0} for Sender, {1} for Message text, {2} for Recieving time.
+PluginManager("SmsReader")\\Voice
+Voice characteristics. Use {0} for locale code. For example "Gender=Male;Age!=Child" or "Name=MSMary" or "Language={0}" or "Language=409" etc. For more info see MS SAPI Help.
+PluginManager("SmsTextLog")
+This will Append the new SMS to File. With this plugin is possible to write new SMSes in XML, CSV, Tab-delimited file, etc. For more info see script file comments.
+PluginManager("SmsTextLog")\\FileName
+Where to write new SMS.
+PluginManager("SmsTextLog")\\Header
+When new file created this header is placed as it's first line. Leave empty for files without header.
+PluginManager("SmsTextLog")\\Footer
+Last line in file. Always append this text after last SMS in file. Leave empty for files without footer.
+PluginManager("SmsTextLog")\\DataFormat
+Format for SMS writing. Use {0} for Sender, {1} for Message text, {2} for Recieving time, {3} for TAB char.
+PluginManager("StreetAtlas8")
+Lets you control Delorme Street Atlas 8.0
+PluginManager("StreetAtlas8")\\Title
+The window title of the Delorme Street Atlas 8.0 application
+PluginManager("StreetAtlas8")\\Exe
+The path to the Delorme Street Atlas 8.0 executable
+PluginManager("Tools")
+Miscellaneous stuff to interact with the PC
+PluginManager("Tools")\\FMATitle
+The window title of floAt's Mobile Agent
+PluginManager("VLCPlayer")
+Lets you control VLC Player
+PluginManager("VLCPlayer")\\Title
+The window title of the VLC Player application
+PluginManager("VLCPlayer")\\Exe
+The path to the VLC Player executable
+PluginManager("Winamp")
+This plugin controls Winamp. You may use the menu and the phones volume keys.
+PluginManager("Winamp")\\Exe
+The path to the Winamp executable
+PluginManager("Winamp")\\Title
+The window title of the Winamp application
+PluginManager("Winamp")\\PlaylistFolder
+Select Play List folder
+PluginManager("WinDVD")
+Lets you control Intervideo WinDVD
+PluginManager("WinDVD")\\Exe
+The path to the WinDVD executable
+PluginManager("WinDVD")\\Title
+The window title of the WinDVD application
+PluginManager("WinTV")
+Lets you control Hauppauge WinTV
+PluginManager("WinTV")\\Exe
+The path to the WinTV executable
+PluginManager("WinTV")\\Title
+The window title of the WinTV application
+PluginManager("ZoomPlayer")
+Lets you control Zoomplayer
+PluginManager("ZoomPlayer")\\Exe
+The path to the Zoom Player executable
+PluginManager("ZoomPlayer")\\Title
+The window title of the Zoom Player application
+PluginManager("FileExplorer")\\Root
+The Root folder of the FileExplorer plugin. "/" will show your drives as root. Setting this to any existing folder will start within this folder. You may abuse the file explorer as an application launcher when setting this path to a directory containing *.lnk files.

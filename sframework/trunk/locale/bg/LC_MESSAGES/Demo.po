@@ -1,0 +1,100 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-03 10:18+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: ExpertOne <expertone@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: FMA Dev Team\n"
+"X-Poedit-Language: Bulgarian\n"
+"X-Poedit-Basepath: .\n"
+
+msgid "Demo Plugin"
+msgstr "Демо Модул"
+
+msgid "This plugin has the purpose of plugin developer information."
+msgstr "Този модул демонстрира какво и как могат да използват разработчиците на модули."
+
+msgid "Submenu"
+msgstr "Подменю"
+
+msgid "Dialogues"
+msgstr "Диалози"
+
+msgid "Debug Message 1"
+msgstr "Дебъг Съобщение 1"
+
+msgid "Debug Message 2"
+msgstr "Дебъг Съобщение 2"
+
+msgid "Sub Menu"
+msgstr "Под меню"
+
+msgid "DlgMsgBox"
+msgstr "Диалог Съобщение"
+
+msgid "DlgYesNo"
+msgstr "Диалог Да/Не"
+
+msgid "DlgOnOff"
+msgstr "Диалог Вкл/Изкл"
+
+msgid "DlgPercent"
+msgstr "Диалог Процент"
+
+msgid "DlgInputStr"
+msgstr "Диалог Вход на низ"
+
+msgid "DlgInputInt"
+msgstr "Диалог Вход на число"
+
+msgid "DlgInformation"
+msgstr "Диалог Информация"
+
+msgid "DlgFeedback"
+msgstr "Диалог Отговор"
+
+msgid "Accessrs. Menu"
+msgstr "Аксесо. Меню"
+
+msgid "Demo text"
+msgstr "Демо Тескт"
+
+msgid "Do you like this demo?"
+msgstr "Харесва ли Ви това Демо?"
+
+msgid "Light on?"
+msgstr "Включена светлина?"
+
+msgid "Percent demo"
+msgstr "Въведете Процент"
+
+msgid "InputStr demo"
+msgstr "Въведете Низ"
+
+msgid "InputInt demo"
+msgstr "Въведете Число"
+
+msgid "Prompt:"
+msgstr "Въведи:"
+
+msgid "Default"
+msgstr "Текст по подразбиране"
+
+msgid "DlgInfo demo"
+msgstr "Демо Информация"
+
+msgid "Information dialogue demo"
+msgstr "Демо Информационен Диалог"
+
+msgid "DlgFeedbck demo"
+msgstr "Демо Отговор"
+

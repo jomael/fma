@@ -1,0 +1,57 @@
+# FMA Localization Project
+# Copyright (C) 2004 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: 2004-10-22 14:58\n"
+"PO-Revision-Date: 2005-10-23 11:27+0100\n"
+"Last-Translator: Stanley Sandriman <stansan@chello.nl>\n"
+"X-Translators: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: FMA Dev Team\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "BSPlayer"
+msgstr "BSPlayer"
+
+msgid "Lets you control BSPlayer"
+msgstr "Bediend uw BSplayer"
+
+msgid "Play"
+msgstr "Afspelen"
+
+msgid "Pause"
+msgstr "Pauze"
+
+msgid "Stop"
+msgstr "Stop"
+
+msgid "Prev Chapter"
+msgstr "Vorig hoofdstuk"
+
+msgid "Next Chapter"
+msgstr "Volgend hoofdstuk"
+
+msgid "Subtitles"
+msgstr "Ondertitels"
+
+msgid "Fullscreen"
+msgstr "Volledig scherm"
+
+msgid "Zoom"
+msgstr "Zoom"
+
+msgid "Close"
+msgstr "Sluiten"
+
+msgid "Launch"
+msgstr "Starten"
+

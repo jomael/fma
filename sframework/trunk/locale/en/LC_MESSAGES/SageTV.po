@@ -1,0 +1,134 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-09-01 13:50+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: \n"
+"Language-Team: FMA Dev Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+
+msgid "SageTV"
+msgstr ""
+
+msgid "Lets you control SageTV 2.1"
+msgstr ""
+
+msgid "Navigate Mode"
+msgstr ""
+
+msgid "Switch Programs"
+msgstr ""
+
+msgid "Fullscreen"
+msgstr ""
+
+msgid "Record"
+msgstr ""
+
+msgid "Live TV"
+msgstr ""
+
+msgid "Watched"
+msgstr ""
+
+msgid "Favorite"
+msgstr ""
+
+msgid "Don't Like"
+msgstr ""
+
+msgid "Forward"
+msgstr ""
+
+msgid "Home"
+msgstr ""
+
+msgid "Pause"
+msgstr ""
+
+msgid "Play"
+msgstr ""
+
+msgid "Play Faster"
+msgstr ""
+
+msgid "Play Slower"
+msgstr ""
+
+msgid "Setup"
+msgstr ""
+
+msgid "Aspect Ratio Fill"
+msgstr ""
+
+msgid "Aspect Ratio 16x9"
+msgstr ""
+
+msgid "Aspect Ratio Source"
+msgstr ""
+
+msgid "DVD Reverse Play"
+msgstr ""
+
+msgid "DVD Next Chapter"
+msgstr ""
+
+msgid "DVD Previous Chapter"
+msgstr ""
+
+msgid "DVD Menu"
+msgstr ""
+
+msgid "DVD Title Menu"
+msgstr ""
+
+msgid "DVD Return"
+msgstr ""
+
+msgid "DVD Subtitle Change"
+msgstr ""
+
+msgid "DVD Subtitle Toggle"
+msgstr ""
+
+msgid "DVD"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Recording Schedule"
+msgstr ""
+
+msgid "Library"
+msgstr ""
+
+msgid "Music Jukebox"
+msgstr ""
+
+msgid "Picture Library"
+msgstr ""
+
+msgid "Video Library"
+msgstr ""
+
+msgid "Time Scroll"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Launch"
+msgstr ""
+
+msgid "1:video 2:jumpFd 3:info 4:skipBk 5:Pause 6:skipFd 7:Menu 8:jumpBk 9:Guide 0:Stop *:Back #:Rcrdngs"
+msgstr ""

@@ -1,0 +1,117 @@
+PluginManager("Powerpoint")\\Exe
+C:\\Program Files\\Microsoft Office\\Office10\\Powerpnt.exe
+PluginManager("StreetAtlas8")\\MapFile1Title
+
+PluginManager("StreetAtlas8")\\MapFile2Title
+
+PluginManager("Camera")\\InputFilename
+/Pictures/Image(1).jpg
+PluginManager("StreetAtlas8")\\MapFile3Title
+
+PluginManager("StreetAtlas8")\\MapFile4Title
+
+PluginManager("PowerDVD5")\\Exe
+C:\\Program Files\\Cyberlink\\PowerDVD\\PowerDVD.exe
+PluginManager("StreetAtlas8")\\BackOnTrack
+
+PluginManager("ZoomPlayer")\\Title
+Zoom Player
+PluginManager("MediaPlayerClassic")\\Exe
+C:\\Program Files\\Media Player Classic\\mplayerc.exe
+PluginManager("StreetAtlas8")\\MapFile2
+
+PluginManager("StreetAtlas8")\\MapFile3
+
+PluginManager("StreetAtlas8")\\MapFile4
+
+PluginManager("Powerpoint")\\Title
+Microsoft PowerPoint
+PluginManager("WinTV")\\Exe
+C:\\Program Files\\WinTV\\WinTV2K.exe
+PluginManager("StreetAtlas8")\\MapFile1
+
+PluginManager("PowerDVD5")\\Title
+PowerDVD
+PluginManager("MediaCenter")\\Exe
+C:\\Windows\\eHome\\ehShell.exe
+PluginManager("Powerpoint")\\ResumePresentationShortcut
+{F3}
+PluginManager("MediaPlayer")\\Exe
+C:\\Program Files\\Windows Media Player\\wmplayer.exe
+PluginManager("VLCPLayer")\\Exe
+C:\\Program Files\\VideoLAN\\VLC\\vlc.exe
+PluginManager("VLCPlayer")\\Exe
+C:\\Program Files\\VideoLAN\\VLC\\vlc.exe
+PluginManager("MediaPlayerClassic")\\Title
+Media Player Classic
+PluginManager("WinTV")\\Title
+WinTV32
+PluginManager("AutoMenu")\\Menu
+FrameworkMainMenu
+PluginManager("MediaCenter")\\Title
+Media Center
+PluginManager("Powerpoint")\\SlideOverviewShortcut
+{ESC}%ai
+PluginManager("MediaPlayer")\\Title
+Windows Media Player
+PluginManager("Camera")\\OutputDirectory
+C:\\
+PluginManager("VLCPlayer")\\Title
+VLC Media Player
+PluginManager("VLCPLayer")\\Title
+VLC Media Player
+PluginManager("foobar2000")\\Exe
+C:\\Program Files\\foobar2000\\foobar2000.exe
+PluginManager("MediaCenter9")\\Exe
+C:\\Program Files\\Media Center 9\\Media Jukebox.exe
+PluginManager\\Don't load
+BramusICQ.vbs,BSPlayer.vbs,Camera.vbs,foobar2000.vbs,MediaCenter.vbs,MediaCenter9.vbs,MediaPlayer.vbs,MediaPlayer9.vbs,MediaPlayerClassic.vbs,MoreTV.vbs,Mouse.vbs,OnCallDisconnect.vbs,PowerDVD5.vbs,SageTV.vbs,StreetAtlas8.vbs,VLCPLayer.vbs,WinDVD.vbs,WinTV.vbs,ZoomPlayer.vbs,FileExplorer.vbs,MoosePlusPlus.vbs
+PluginManager("MediaPlayer9")\\Exe
+C:\\Program Files\\Windows Media Player\\wmplayer.exe
+PluginManager("SageTV")\\Exe
+C:\\Program Files\\Frey Technologies\\SageTV\\SageTV.exe
+PluginManager("Winamp")\\Exe
+C:\\Program Files\\Winamp\\winamp.exe
+PluginManager("WinDVD")\\Exe
+C:\\Program Files\\InterVideo\\DVD5\\WinDVD.exe
+PluginManager("iTunes")\\Exe
+C:\\Program Files\\iTunes\\iTunes.exe
+PluginManager("foobar2000")\\Title
+foobar2000
+PluginManager("MediaCenter9")\\Title
+MEDIA CENTER
+PluginManager("MoreTV")\\Exe
+C:\\Program Files\\MoreTV\\MoreTV.exe
+PluginManager("BSPlayer")\\Exe
+C:\\Program Files\\Cyberlink\\BSPlayer\\BSPlayer.exe
+PluginManager("StreetAtlas8")\\Directions
+
+PluginManager("StreetAtlas8")\\Exe
+C:\\Progra~1\\STREET~1.0\\sa8.exe
+PluginManager("MediaPlayer9")\\Title
+Windows Media Player
+PluginManager("SageTV")\\Title
+SageTV
+PluginManager("Winamp")\\Title
+Winamp
+PluginManager("WinDVD")\\Title
+Intervideo WinDVD
+PluginManager("StreetAtlas8")\\Heading
+
+PluginManager("iTunes")\\Title
+iTunes
+PluginManager("Winamp")\\PlaylistFolder
+C:\\Program Files\\Winamp
+PluginManager("MoreTV")\\Title
+MoreTV
+PluginManager("BSPlayer")\\Title
+BSPlayer
+PluginManager("Tools")\\FMATitle
+floAt's Mobile Agent
+PluginManager("StreetAtlas8")\\Title
+Delorme Street Atlas USA
+PluginManager("StreetAtlas8")\\MapHome
+
+PluginManager("ZoomPlayer")\\Exe
+C:\\Program Files\\Zoomplayer\\ZPlayer.exe
+

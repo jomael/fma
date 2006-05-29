@@ -1,0 +1,65 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-23 11:28+0100\n"
+"Last-Translator: Stanley Sandriman <stansan@chello.nl>\n"
+"X-Translators: \n"
+"Language-Team: FMA Dev Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "foobar2000"
+msgstr "foobar2000"
+
+msgid "Lets you control foobar2000"
+msgstr "Bedien foobar2000"
+
+msgid "Restart"
+msgstr "Restart"
+
+msgid "Resume"
+msgstr "Resume"
+
+msgid "Play / Start fb2k"
+msgstr "Play / Start fb2k"
+
+msgid "Pause"
+msgstr "Pauze"
+
+msgid "Stop"
+msgstr "Stop"
+
+msgid "Next Track"
+msgstr "VolgendeTrack"
+
+msgid "Previous Track"
+msgstr "Vorige Track"
+
+msgid "Random Track"
+msgstr "Random Track"
+
+msgid "Volume"
+msgstr "Volume"
+
+msgid "Order"
+msgstr "Volgorde"
+
+msgid "Close"
+msgstr "Sluiten"
+
+msgid "Joy-Up: Default; Joy-Down: Random; Joy-Left: Repeat; Joy-Right: Repeat One"
+msgstr "Joy-Up: Standaard; Joy-Down: Random; Joy-Left: Repeat; Joy-Right: Repeat One"
+
+msgid "Joy-Up, -Right: Increase volume; Joy-Down, -Left: Decrease volume"
+msgstr "Joy-Up, -Right: Verhoog volume; Joy-Down, -Left: Verlaag volume"
+

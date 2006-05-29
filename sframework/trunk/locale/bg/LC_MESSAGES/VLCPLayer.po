@@ -1,0 +1,47 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-03 10:08+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: ExpertOne <expertone@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: FMA Dev Team\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Bulgarian\n"
+"X-Poedit-Basepath: .\n"
+
+msgid "VLCPlayer"
+msgstr "VLCPlayer"
+
+msgid "Lets you control VLC Player"
+msgstr "Вие можете да конпролирате VLC Player"
+
+msgid "Play/Pause"
+msgstr "Старт/Пауза"
+
+msgid "Stop"
+msgstr "Стоп"
+
+msgid "Fullscreen"
+msgstr "На Цял Екран"
+
+msgid "(Un)Mute"
+msgstr "Вкл./Изкл. Звука"
+
+msgid "Close"
+msgstr "Затвори"
+
+msgid "Launch"
+msgstr "Стартирай"
+
+msgid "Use the phone volume keys to change volume and joystick(left/right) to skip forward/backward"
+msgstr "Използвайте телефонните кл. за звука за да променяте силата му и джойстика за да превъртате напред и назад"
+

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html>
+	
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<meta http-equiv="Expires"      content="Now" />
+		<meta http-equiv="Pragma"       content="No cache" />
+		<meta name="Description"        content="FMA Scripting Framework" />
+		<meta name="Keywords"           content="fma, float, mobile, agent, scripting, vbs, vbscript, framework, development, plugins, sony, ericsson, sonyericsson, t68i, t610" />
+		<meta name="Author"             content="Thomas Wittek <twittek@smail.uni-koeln.de>" />
+		<meta name="Robots"             content="nofollow" />
+		<!-- <link rel="StyleSheet" href="#fmadok.css" type="text/css" /> -->
+		<title>FMA Scripting Framework - Easy creation of FMA scripts</title>
+	</head>
+	
+	<body>
+		<h1>Using the FMA Scripting Framework</h1>
+		<h2>Table of contents</h2>
+		<ul>
+			<li><a href="#about"  >About</a></li>
+			<li><a href="#install">Installation</a></li>
+			<li><a href="#config" >Configuration</a></li>
+			<li><a href="#updates">Updates</a></li>
+		</ul>
+		
+		<hr />
+		
+		<a name="#about" />
+		<h2>About</h2>
+		<p>The <emph>FMA Scripting Framework</emph> was initially developed by <a href="mailto:twittek@smail.uni-koeln.de">streawkceur</a> and dVrVm. We both had fun using FMA and wanted to develop FMA scripts or extend existing scripts (CarpeDi3m/Ultimatex). But we noticed very quickly, that a monolithic script architecture (in one big file) is very hard to extend and to maintain. It was not very much fun to add support for a new application to the existing scripts, since you had to jump through and understand 2500 lines of code (CarpeDi3m) to add new functionality to the script.</p>
+		<p>So we decided to create a script with a modularized concept consisting of several files, classes and plugins. The script is sperarated into plugins, which offers the functionality for each specific application, and a core part, which offers the needed functionality for developers to create plugins.</p>
+		<p>This way it is easy to create plugins for new script functionalities. A plugin developer just creates a new plugin file, which contains a plugin class, and may use the core functionality to easily handle the plugins tasks. A plugin-developer doesn't have to deal around with FMA scripting internals (Menu management, Events, Keys, Settings, ...) anymore, since he can easily use the core classes that will do that job.</p>
+		<p>The end user doesn't have to create specific script by collection script fragments and patching them together (which is a timeexpensive and risky job) anymore. He just has to copy the favorite plugins into the plugin folder and the plugin will be automagically integrated into the script.</p>
+		<p>As a handy addition we've created a small utility which will help the user to manage the settings, that the script uses. You don't have to configure you script through your phone's keyboard or even within the source files themselves. You just have to specify some values using the contributed FMA Scriptong Framework Configurator application.</p>
+		<p>We hope this piece of code may be helpful both in using and developing FMA!</p>
+		<p>Have fun!</p>
+		<p>Note: This Framework has just reached the beta-status after our internal testing. So you may still expect some changes, although they shouldn't be very serious.</p>
+		
+		<a name="#install" />
+		<h2>Installation</h2>
+		<p>The installation is fairly simple. The easiest way would be to copy all the files and directories directly to your FMA application folder, so that the main script file "fma-scripting-framework.vbs" resides beside your "MobileAgent.exe". Then you have to set the appropiate path to the script within the FMA configuration dialogue (Tools -> Options -> Script) and relaunch FMA. After the next launch FMA will put a message "[Script] Info: FMA Scripting Framework loaded!" in your Phone Explorer log and a small window will also indicate the successful load of the framework.</p>
+		<p>You may also put the files in an other folder apart from the the "MobileAgent.exe". Then you have to modify the main script file "fma-scripting-framework.vbs" and set the correct path to this file itself. You will find a line which will look like this:</p>
+		<p><code>ScriptFolder = ".\"</code></p>
+		<p>You have to set this path to the folder, where the "fma-scripting-framework.vbs" file resides. If you've copied the script files to let's say "C:\Program Files\FMA\ScriptingFramework" you have to set the line to</p>
+		<p><code>ScriptFolder = "C:\Program Files\FMA\ScriptingFramework"</code></p>
+		<p>That's it!</p>
+		<p>If you have downloaded extra plugins, you just have to copy them to the "plugins" folder. If you don't want to use some plugins you may just delete them from the "plugins" folder. You may also create a subfolder "not-loaded" (or a different name) and move the plugins, which shall not be loaded, to this folder. You can also set up a comma seperated list of plugins, you don't want to load. See "PluginManager->Don't load" in the Configurator app for more details.</p>
+		<p>Restart FMA and you're done!</p>
+		<p>If your plugins use extra ActiveX objects/.dlls (for Winamp, Volume, ICQ, ...) you have to (download and) register them in Windows. This can be done by running <code>regsvr32 &lt;some dll&gt;</code>. We've put the most usual ActiveX components into the helper folder, where you can just run the <code>register_all.bat</code> file, to register all this components at once.</p>
+		<p>Note: You will need at least FMA version 0.31f! The latest version is recommended.</p>
+		
+		<a name="#config" />
+		<h2>Configuration</h2>
+		<p>The selection of loaded plugins is also <a href="#install">described above</a>.</p>
+		<p>You may easily configure the script and it's plugins with the contributed "FMA Scripting Framework Configurator", which is located in the helper\config subfolder. You can also access it through the FMA menu "Tools -&gt; Script Configurator" or through the "Configurator" menu item in your phone's main menu.</p>
+		<p>In this program you may select each setting and view or modify it's value. Just click on the appropriate leaf in the tree, modify the value and click on the "Update" button. There will be a small description for each entry but they should be mostly self-explaining.</p>
+		<p>When you quit the configurator, it will ask you to save the settings in it's file and you're done!</p>
+		<p><img src="configurator.png" width="441" height="414" alt="FMA Scripting Framework Configurator" /></p>
+		<p>The Scripting Framework will load it's settings when FMA has connected to your phone and it will save it, when FMA disconnects. The Configurator will force the script to reload its settings when you save the settings in the Configurator and FMA is connected to your phone.</p>
+		
+		<a name="#updates" />
+		<h2>Updates</h2>
+		<p>It is recommended to regulary update your copy of FMA. This can be done through a built-in update functionality of FMA.</p>
+		<p>You may also look for an updated Scripting Framework or updated plugins. If you found a newer version, it should be enough to just overwrite the old files with the new ones. You may also delete your old files prior the copy of the new ones. But make sure, that you don't loose your downloaded plugins when deleting the old files!</p>
+		<p>The central place to look for updated would be the sites <a href="http://fma.xinium.com/">fma.xinium.com</a> and <a href="http://sourceforge.net/projects/fma/">the development page</a> at <a href="http://www.sourceforge.net/">sourceforge.net</a>.
+		
+		<hr />
+		by <a href="http://www.zentrifuge.biz/">streawkceur</a>. <a href="http://fma.xinium.com/">http://fma.xinium.com/</a>		
+	</body>
+	
+</html>

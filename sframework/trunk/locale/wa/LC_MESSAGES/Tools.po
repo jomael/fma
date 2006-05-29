@@ -1,0 +1,68 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-23 21:48+0100\n"
+"Last-Translator: Stanley Sandriman <stansan@chello.nl>\n"
+"X-Translators: \n"
+"Language-Team: FMA Dev Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Walloon\n"
+"X-Poedit-Country: BELGIUM\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "General tools"
+msgstr "Algemeen gereedschap"
+
+msgid "Miscellaneous stuff to interact with the PC"
+msgstr "Divers materiaal om met PC in wisselwerking te staan"
+
+msgid "Monitor off"
+msgstr "Monitor uit"
+
+msgid "Monitor on"
+msgstr "Monitor aan"
+
+msgid "Lock WS"
+msgstr "Lock WS"
+
+msgid "Log off"
+msgstr "Log off"
+
+msgid "Hibernate"
+msgstr "Hibernate"
+
+msgid "Shutdown"
+msgstr "Afsluiten"
+
+msgid "Reboot"
+msgstr "Herstart"
+
+msgid "Cancel Shutdown"
+msgstr "Annuleer Afsluiten"
+
+msgid "Disconnect FMA"
+msgstr "Verbreek Fma "
+
+msgid "Disconnect Temporary"
+msgstr "Tijdelijk Verbreken"
+
+msgid "Close FMA"
+msgstr "Sluit FMA"
+
+msgid "Shutdown.."
+msgstr "Afsluiten..."
+
+msgid "Reboot.."
+msgstr "Herstart..."
+
+msgid "Canceled"
+msgstr "Geannuleerd"
+

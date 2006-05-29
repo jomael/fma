@@ -1,0 +1,53 @@
+FMA SANITY CHECKLIST
+
+To be performed before releasing new FMA build. All of the listed checks 
+should be applied. 
+
+If any of then fails, the releasing should be canceled and all bugs fixed. 
+Then sanity check should be performed from the very begining.
+
+If all checks succeeded, then release could be compiled to a setup file.
+
+Zdravko Stoychev 
+aka Dako
+(please feel free to add any new check if applicable)
+
+CHECKLIST (the order doesn't matter)
+
+- update entire module from CVS tree.
+- build a release with JCL debug data.
+- connect to phone via BT, IR and cable (check all of them).
+- connect failure error (no phone) via BT, IR and cable.
+- refreshing text message folders.
+- sending long sms (recipient's sms text should match).
+- uploading sms to phone.
+- sync phone book contacts (check both directions).
+- refresh sim book contacts.
+- sync fma contacts with outlook.
+- sync phone calendar.
+- sync phone clock.
+- refresh phone files (root and subfolder).
+- download and upload a file.
+- assign image to a contact (personalize).
+- open, change, close fma options.
+- edit phone book contact (irmc sync on).
+- edit phone book contact (irmc sync off).
+- proximity away and near are detected.
+- refresh calls.
+- refresh bookmarks.
+- refresh groups.
+- add then delete a group.
+- add then remove a group member.
+- make a call to a contact.
+- receive/cancel an incomming call.
+- chat with a contact (send and receive).
+- switch phone database.
+- post new note to phone.
+- copy/move message to archive.
+- manage favorites list.
+- manage outlook categories.
+- change phone profile.
+- edit current phone profile.
+- fma today page looks fine.
+
+<eol>

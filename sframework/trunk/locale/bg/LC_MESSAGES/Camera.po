@@ -1,0 +1,44 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-03 10:19+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: ExpertOne <expertone@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: FMA Dev Team\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Bulgarian\n"
+"X-Poedit-Basepath: .\n"
+
+msgid "Camera"
+msgstr "Камера"
+
+msgid "Control your phones camera from your computer"
+msgstr "Контролира вашата телефонна камера от компютъра"
+
+msgid "Help"
+msgstr "Помощ"
+
+msgid "Shot & Return"
+msgstr "Снимай и Върни"
+
+msgid "Shot"
+msgstr "Снимай"
+
+msgid "Take a picture"
+msgstr "Направи снимка"
+
+msgid "blub"
+msgstr "blub"
+
+msgid "To use the camera feature use the entries in the FMA Tools menu."
+msgstr "За да използвате камерата използвайте опциите в FMA менщюто Инструменти"
+

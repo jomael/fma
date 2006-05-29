@@ -1,0 +1,10 @@
+Hash = 88, 96, 825, 702, C
+HashItem = 110, 120, 847, 726, C
+Global = 145, 123, 882, 729, C
+UtilClass = 176, 192, 913, 798, C
+QuickSort = 110, 126, 847, 732, C
+DefaultComparator = 141, 192, 878, 798, C
+ArrayData = 149, 231, 886, 837, C
+frmSettings = 190, 155, 814, 773, , 239, 71, 766, 587, C
+frmSplash = 110, 120, 734, 726, C, 66, 61, 416, 245, C
+PluginComparator = 132, 144, 756, 750, 

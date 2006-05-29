@@ -1,0 +1,101 @@
+Translator HOWTO
+----------------
+
+Folders and files:
+
+fma-root
+|
++---locale                          // Available Translations (in separate subfolders)
+|   |   languagecodes.po            // (do not modify) Language code (ISO 639 language codes) to English language name
+|   |   languagecodes.mo            // (do not modify) Binary/compiled version of languagecodes.po
+|   |
+|   +---ar                          // ar = Arabic Language Folder (see ISO 639 language codes in languagecodes.po)
+|   |   |   flag.bmp                // Country/Language flag (23x14, 24 bit color)
+|   |   |
+|   |   \---LC_MESSAGES             // Arabic Messages subfolder (Test only, not real translation for now !!!)
+|   |           default.po          // FMA translated messages (ar)
+|   |           delphi6.po          // Delphi6 translated messages (ar)
+|   |           languages.po        // Translation of Language names (ar)
+|   |           *.mo                // Binary/compiled version of some translated messages (ar)
+|   |           *.ini               // Config for PoEdit
+|   |
+|   +---bg                          // bg = Bulgarian Language Folder
+|   |   |   flag.bmp                // Country/Language flag (23x14, 24 bit color)
+|   |   |
+|   |   \---LC_MESSAGES             // Bulgarian Messages subfolder
+|   |           default.po          // FMA translated messages (bg)
+|   |           delphi6.po          // Delphi6 translated messages (bg)
+|   |           languages.po        // Translation of Language names (bg)
+|   |           *.mo                // Binary/compiled version of some translated messages (bg)
+|   |           *.ini               // Config for PoEdit
+|   .
+|   .
+|   .
+|   \---en                          // en = English Language Folder (do not modify, use as template)
+|   .   |   flag.bmp                // Country/Language flag (23x14, 24 bit color)
+|   .   |
+|   .   \---LC_MESSAGES             // English Language Folder (templates)
+|               default.po          // FMA translation template (POT-file)
+|               delphi6.po          // Delphi6 translation template (POT-file)
+|               languages.po        // Language names translation template (POT-file)
+|               *.ini               // Config for PoEdit
+|
+.
+.
+.
+|
++---sframework                          // Script folder (may not be in fma-root folder)
+.   |
+.   +---locale                          // Available Translations for script/plugins (languages are in separate subfolders)
+.   .   |
+    .   +---ar                          // ar = Arabic Language Folder (see ISO 639 language codes in languagecodes.po)
+    .   |   |
+        |   \---LC_MESSAGES             // Arabic Messages subfolder (Test only, not real translation for now !!!)
+        |           default.po          // Global script translated messages (ar)
+        |           PluginClassName.po  // Plugin translated messages (ar)
+        |           ...                  
+        |           *.mo                // Binary/compiled version of some translated messages (ar)
+        |           *.ini               // Config for PoEdit
+        |
+        +---bg                          // bg = Bulgarian Language Folder
+        |   |
+        |   \---LC_MESSAGES             // Bulgarian Messages subfolder
+        |           default.po          // Global script translated messages (bg)
+        |           PluginClassName.po  // Plugin translated messages (bg)
+        |           ...
+        |           *.mo                // Binary/compiled version of some translated messages (bg)
+        |           *.ini               // Config for PoEdit
+        .
+        .
+        .
+        \---en                          // en = English Language Folder (do not modify, use as template)
+            |
+            \---LC_MESSAGES             // English Language Folder (Templates)
+                    default.po          // Global script template (POT-file)
+                    PluginClassName.po  // Plugin template (POT-file)
+                    ...
+                    *.ini               // Config for PoEdit
+
+
+To translate FMA in new language (or to update translation):
+
+1. Download and install PoEdit (v1.3.1 or later) for Windows. (http://poedit.sourceforge.net)
+2. Create new (if do not exist) subfolder in folder "locale" with name language code (see languagecodes.po). Or simply copy some existing language subfolder. Create/Edit flag.bmp,
+3. Download latest POT (template) files from CVS. CVS-paths:
+	/fma/fma/locale/en/LC_MESSAGES; files: default.po, delphi6.po, landuages.po
+	/fma/fma/sframework/locale/en/LC_MESSAGES; files: *.po, *.ini
+4. See this sites/programs:
+	http://dybdahl.dk/dxgettext/translations/
+	http://world.altavista.com/tr
+	http://www.google.com/language_tools
+	http://www.translate.ru/text.asp?lang=en
+	http://www.humanitas-international.org/newstran/comparisons.htm
+	http://www.uiowa.edu/~flare/tools/DONE/alphab_all%20_trans..htm
+	http://www.i18ngurus.com/docs/995054490.html
+	http://www.word2word.com/mtad.html
+5. Update previous translations with new template (use "Catalog|Update from POT file" in PoEdit main menu).
+6. If create new translation, update template language form English to your new language (use Catalog|Settings /Language combobox/ in PoEdit main menu).
+7. Translate untranslated messages (use PoEdit).
+8. Test translation (Compile all po-files to mo-files with PoEdit or dxgettext. Start FMA with param -Lang=<language code> or select new language from Option menu and restart program).
+9. Send translations to your language coordinator (send all files).
+10. (Language coordinators/developers ONLY) Upload translation to CVS (Do not upload *.po in binary mode, skip cvs warnings; Do not upload *.mo files).

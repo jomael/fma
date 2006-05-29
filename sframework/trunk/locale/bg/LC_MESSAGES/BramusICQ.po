@@ -1,0 +1,104 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-03 10:20+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: ExpertOne <expertone@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: FMA Dev Team\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Bulgarian\n"
+"X-Poedit-Basepath: .\n"
+
+msgid "BramusICQ"
+msgstr "BramusICQ"
+
+msgid "Control your ICQ running at your pc from your phone"
+msgstr "Контролирайте вашето ICQ стартирано на вашия комютър от телефона"
+
+msgid "Error : ICQ Not Running"
+msgstr "Грешка: ICQ Не е Статрирано"
+
+msgid "Error : Wrong ICQ API version"
+msgstr "Грешка: Неправилна ICQ API версия"
+
+msgid "Error : API Not installed"
+msgstr "Грешка: API Не е инсталиран"
+
+msgid "Change Status"
+msgstr "Промени Състоянието"
+
+msgid "ContactList"
+msgstr "Списък Контакти"
+
+msgid "Main menu"
+msgstr "Главно меню"
+
+msgid "Online"
+msgstr "Онлайн"
+
+msgid "Invisible"
+msgstr "Невидим"
+
+msgid "Away"
+msgstr "Далече"
+
+msgid "N/A"
+msgstr "---"
+
+msgid "DND"
+msgstr "НМБ (DND)"
+
+msgid "Occupied"
+msgstr "Зает"
+
+msgid "Free For Chat"
+msgstr "Свободен за Чат"
+
+msgid "Disconnect/Offline"
+msgstr "Несвързан/Офлайн"
+
+msgid "Send Message"
+msgstr "Изпрати Съобщение"
+
+msgid "Send URL"
+msgstr "Изпрати URL"
+
+msgid "Contact Options"
+msgstr "Контакт Опции"
+
+msgid "Error : Unknown error"
+msgstr "Грешка: Неизвестна"
+
+msgid "No contacts online"
+msgstr "Няма онлайн контакти"
+
+msgid "Contact List"
+msgstr "Списък Контакти"
+
+msgid "Enter message"
+msgstr "Въведете съобщението"
+
+msgid "Message:"
+msgstr "Съобщение:"
+
+msgid "Message Sent to "
+msgstr "Съобщение беше изпратено на "
+
+msgid "Enter URL"
+msgstr "Въведете URL"
+
+msgid "URL:"
+msgstr "URL:"
+
+msgid "URL Sent to "
+msgstr "URL беше изпратен на "
+

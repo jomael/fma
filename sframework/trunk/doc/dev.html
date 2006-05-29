@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html>
+	
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<meta http-equiv="Expires"      content="Now" />
+		<meta http-equiv="Pragma"       content="No cache" />
+		<meta name="Description"        content="FMA Scripting Framework" />
+		<meta name="Keywords"           content="fma, float, mobile, agent, scripting, vbs, vbscript, framework, development, plugins, sony, ericsson, sonyericsson, t68i, t610" />
+		<meta name="Author"             content="Thomas Wittek <twittek@smail.uni-koeln.de>" />
+		<meta name="Robots"             content="nofollow" />
+		<!-- <link rel="StyleSheet" href="#fmadok.css" type="text/css" /> -->
+		<title>Developing own plugins</title>
+	</head>
+	
+	<body>
+		<h1>Developing own plugins</h1>
+		<h2>Table of contents</h2>
+		
+		<ul>
+			<li><a href="#simple"   >A simple plugin</a></li>
+			<li><a href="#menus"    >Menus</a></li>
+			<li><a href="#dialogues">Dialogues</a></li>
+			<li><a href="#control"  >Controlling applications</a></li>
+			<li><a href="#events"   >Events</a></li>
+			<li><a href="#keys"     >Key Events</a></li>
+			<li><a href="#settings" >Persistent Settings</a></li>
+			<li><a href="#adt"      >Abstract Data Types</a></li>
+			<li><a href="#util"     >Helpful utilities and Objects (Util, QuickSort, Debug, ...)</a></li>
+		</ul>
+		
+		<hr />
+		
+		<p>The FMA Scripting Framework was built do make the development of additional script functionality very easy. This is done by the offer of ready-to-use core classes, which will do all the "hard work" for you, and by a plugin-architecture with the goal, that a developer doesn't has to deal with all the other script files and may concentrate on the functionality itself instead of reinventing the wheel a thousand times.</p>
+		<p>It may be a good idea to set the debug log level to "DEBUG_LEVEL_DEBUG". This will log all debug messages to the Phone Explorer log. You can set the debug level by modifying the appropriate line in the "fma-scripting-framework.vbs" file:</p>
+		<p><code>Debug.SetDebugLevel DEBUG_LEVEL_DEBUG</code></p>
+		<p>All messages that are on a lever equal or greater then the current debug level will be logged in the Phone Explorer log. As DEBUG_LEVEL_DEBUG is the lowest level, every message will be logged.</p>
+		<p>Theses are the available debug levels (in ascending order):
+		<ul>
+			<li>DEBUG_LEVEL_DEBUG</li>
+			<li>DEBUG_LEVEL_INFO</li>
+			<li>DEBUG_LEVEL_WARN</li>
+			<li>DEBUG_LEVEL_ERROR</li>
+		</ul></p>
+		<p>There are also two "special" debug levels: <code>DEBUG_LEVEL_OFF</code> and <code>DEBUG_LEVEL_NOFMA</code>.</p>
+		<p>DEBUG_LEVEL_OFF will put no debug messages at all and DEBUG_LEVEL_NOFMA will use MsgBox'es instead of Phone Explorer logs. This may be useful, when checking the script for correctness outside of FMA e.g. when just double clicking the main script file and executing it in the Windows Scripting Host.</p>
+		<p>Additionally it is a good idea to keep a VBScript language referent by your hands. You can download a more or less comfortable verision from Microsoft: <a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=01592c48-207d-4be1-8a76-1c4099d7bbb9&displaylang=en" target="_blank">Windows Script Documentation</a>.</p>
+		
+		<a name="#simple" />
+		<h2>A simple plugin</h2>
+		<p>Each script extension should be done through plugins. To add new functionality to the script you just have to create a new plugin file in the "plugins" folder. This file must be named "YourPlugin.vbs" and it must contain a class "YourPlugin".</p>
+		<p>Lets assume you want to create a plugin called "Simple". Then you have to create a file with the name "Simple.vbs" within the plugins folder. A minimum example could look like this:</p>
+		<p><code><pre>'FMA Script Framework Plugin
+'Simple plugin
+
+Class Simple
+	
+	Private m_Self 'Here your own name will be stored. We'll cover that later... See also Property Let/Get Self
+	
+	'Some info about the plugin
+	Public Property Get SHOWABLE 'Do I have a menu?
+		SHOWABLE    = True
+	End Property
+	Public Property Get TITLE 'What's my name? This will be the title of your menu entry in the main menu
+		TITLE       = "Simple plugin"
+	End Property
+	Public Property Get DESCRIPTION 'What's my purpose?
+		DESCRIPTION = "A minimum example for a plugin"
+	End Property
+	Public Property Get AUTHOR 'Who created me?
+		AUTHOR      = "streawkceur"
+	End Property
+	Public Property Get URL 'Were can I be found? Where can you get more information?
+		URL         = "http://fma.xinium.com/"
+	End Property
+	
+	'Who am I?
+	Public Property Let Self (s)
+		m_Self = s
+	End Property
+	Public Property Get Self
+		Self = m_Self
+	End Property
+	
+	'Show will be called every time the user selects your plugin from the main menu
+	Sub Show()
+		'Just put a log message to FMA
+		Debug.InfoMsg "Developing plugins is simple!"
+		'put an am.Update to prevent the menu from getting stuck
+		am.Update
+	End Sub
+
+End Class</pre></code></p>
+		<p>Everytime you select your plugin from the main menu, there will appear a log message: <code>"[Script] Info: Developing plugins is simple!"</code></p>
+		<p>The next step would be to add <a href="#menus">menus</a> to your plugin.</p>
+		<p>You can also develop plugins, which aren't displayed at all in the phones menu. You just have to set <code>SHOWABLE = False</code> and you don't need the <code>Sub Show</code> anymore. Doing so, your plugin may only react on <a href="#events">Events</a> or <a href="#keys">Key Events</a>.</p>
+		
+		<a name="#menus" />
+		<h2>Menus</h2>
+		<p>You may easily add menus and submenus to your plugin. The framework will help you a lot with this. You don't have to care about the maximum count of menu items, seperating the menu into several pages and submenus. This will all be managed by the framework. You'll just have to define a list of menu items and the associated command.</p>
+		<p>So let's go! The creation of menus is done in by creating an object of the class ManagedMenu, setting up a menu list, the menu's title and showing it.</p>
+		<p>We can easily extend our Simple plugin with a menu: (don't get scared of the length of this code! 80% are comments)</p>
+		<p><code><pre>'FMA Script Framework Plugin
+'Simple plugin
+
+Class Simple
+	
+	Private m_Self '...
+	Private simpleMenu 'this variable will hold the ManagedMenu object
+	
+	'Some info about the plugin
+	'...
+	
+	'Who am I?
+	Public Property Let Self (s)
+		m_Self = s
+		'The Property Let Self is a good place to do some init work of the plugin
+		'since this one is called only once after object creation.
+		'Here you should initialize your menu, if it is a static one.
+		'If your menu has a dynamic nature, you should initialize it in Sub Show.
+		'Init the menu object:
+		Set simpleMenu = New ManagedMenu
+		'Create a menu list:
+		Dim tempList, backIns
+		Set tempList = New LinkedList 'The ManagedMenu accepts LinkedLists as menu lists
+		backIns = tempList.BackInserter 'backIns is the BackInserter of our created LList
+		'backIns.Item = &lt;item&gt; will append the item at the end of the LList.
+		'Each menu list entry must be an 2-element array with the entry's title and
+		'a command to execute on selection.
+		backIns.Item = Array( "first entry",  m_Self & ".First"  )
+		backIns.Item = Array( "second entry", m_Self & ".Second" )
+		'We used m_Self & ".First" as menu command, because m_Self is pointing to the
+		'variable name under which this plugin will be reached. ".First" is our object
+		'method. If you're creating a list outside the Property Let you may use
+		'"Self" instead of "m_Self". This may look better although the result would be
+		'the same
+		'...
+		'Now we push the list into out ManagedMenu object:
+		simpleMenu.SetList tempList
+		'And we set up the menus title:
+		simpleMenu.Title = TITLE 'TITLE is defined above
+	End Property
+	Public Property Get Self
+		'...
+	End Property
+	
+	'...
+	Sub Show()
+		'Here we should show our menu. It's fairly simple to do that:
+		simpleMenu.ShowMenu
+	End Sub
+	
+	Sub First()
+		Debug.DebugMsg "first item"
+		am.Update
+	End Sub
+	
+	Sub Second()
+		Debug.DebugMsg "second item"
+		am.Update
+	End Sub
+
+End Class</pre></code></p>
+		<p>We're holding our menu in the variable <code>Private mainMenu</code>. You can hold it in every other variable, but it is a good idea to manage your menus in Class Members/Attributes. Especially if your plugin has more than one menu/submenus.</p>
+		<p>You should hold each menu of your plugin in one persistent variable. So a Class member/attribute would do best for this. Let's say your plugin has 3 menus: A Main menu and 2 submenus. The best would be to declare a Class member for each variable:</p>
+		<p><code><pre>	Private mainMenu
+	Private subMenu1
+	Private subMenu2</pre></code></p>
+		You should create each menu object only once:
+		<p><code><pre>	Public Property Let Self (s)
+		m_Self = s
+		
+		Set mainMenu = New ManagedMenu
+		Set subMenu1 = New ManagedMenu
+		Set subMenu2 = New ManagedMenu
+		'You might set the menu lists and the titles here. You might also do
+		'this e.g. in the Sub Show(), if your menu changes every time it is shown.
+		'Let's init them here:
+		Dim tempList, backIns
+		
+		'mainMenu
+		Set tempList = New LinkedList
+		backIns = tempList.BackInserter
+		backIns.Item = Array( "sub menu 1", "subMenu1.ShowMenu" )
+		backIns.Item = Array( "sub menu 2", "subMenu2.ShowMenu" )
+		mainMenu.SetList tempList
+		mainMenu.Title = "Main menu"
+		
+		'subMenu1
+		Set tempList = New LinkedList
+		backIns = tempList.BackInserter
+		backIns.Item = Array( "sm1 item 1", "Debug.DebugMsg ""sm1i1""" & vbCrLf & "am.Update" )
+		backIns.Item = Array( "sm1 item 2", "Debug.DebugMsg ""sm1i2""" & vbCrLf & "am.Update" )
+		subMenu1.SetList tempList
+		subMenu1.Title = "Submenu 1"
+		
+		'subMenu2
+		Set tempList = New LinkedList
+		backIns = tempList.BackInserter
+		backIns.Item = Array( "sm2 item 1", "Debug.DebugMsg ""sm2i1""" & vbCrLf & "am.Update" )
+		backIns.Item = Array( "sm2 item 2", "Debug.DebugMsg ""sm2i2""" & vbCrLf & "am.Update" )
+		subMenu2.SetList tempList
+		subMenu2.Title = "Submenu 2"
+	End Property
+	
+	Sub Show()
+		'Show the main menu
+		mainMenu.ShowMenu
+	End Sub</pre></code></p>
+		<p>This will allow for navigation through the menus by selecting them. You can go back to the last menu by pressing the back-button.</p>
+		<p>Another very useful feature of the ManagedMenu class is that is decides by itself how many items can be displayed at once. If you have more items, the ManagedMenu will automagically divide the menu into several pages between which you can navigate. It also checks that your titles are not longer than allowed and it escapes not allows characters in your entries and titles.</p>
+		<p>Since your menu is split into several pages, you might want to select a specific page in some cases. We've got <code>yourMenu.ShowPage &lt;number&gt;</code> forthis purpose. You might also want to get a page number where a specific item resides. This can be done through <code>yourMenu.GetPageByTitleSubstr(&lt;title substring&gt;)</code>. If you also want to get the position of this item on the page you might want to use<code>&lt;an array&gt; = yourMenu.GetPageAndIndexByTitleSubstr(&lt;title substring&gt;)</code>. You can also get the page from an absolute item number: <code>yourMenu.GetPageByItemIndex</code>. And we also have <code>yourMenu.GetPageAndIndexByItemIndex</code>. All this is only used in the Winamp plugin, but it might be handy for other cases.</p>
+		<p>Warning: If you're generating menus on the fly from some data you've got, make sure that you don't display "empty" menus (without any item). This one's won't be displayed at all, which may not be what you want. So check if you've generated an empty list and in this case put a dummy item into the list. For example:<code>If tempList.Count < 1 Then tempList.AddBack Array( "(empty)", "am.Update" )</code>.</p>
+		
+		<a name="#dialogues">
+		<h2>Dialogues</h2>
+		<p>Using dialogues isn't much different than in "non-framework" scripts.</p>
+		<p>But there's one thing you should care about. When you put a dialogue the user may quit it with the back-button or the dialogue may time out. In this case FMA executes what is stored in <code>am.Back</code>. As the am.Back content is generally managed by the <code>ManagedMenu</code>-class, you should "show" an empty "dummy" menu before displaying a dialogue.</p>
+		<p>Example:</p>
+		<p><code><pre>	EmptyMenu.ShowMenu
+	am.DlgMsgBox "Demo text", 5</pre></code></p>
+		<p>So when the user quits the dialogue with the back-button or the dialogue times out (5 seconds), the empty "dummy" menu will be quit and the previously displayed menu will be shown.</p>
+		<p>You could also manage the back-button yourself like this:</p>
+		<p><code><pre>	am.Back = "am.Update"
+	am.DlgMsgBox "Demo text", 5</pre></code></p>
+		<p>This will look like the same on the first look. If the user quits ot the dialogue times out, the previous menu will be shown. But the problem with this would be, that the back-button management will be messed up and <code>am.Back</code> will alway be <code>"am.Update"</code> and you cannot quit to previous menus.</p>
+		<p>So if you want to control by yourself what happens, when the user quits the dialogue or the dialogue times out, then you should do it like this:</p>
+		<p><code><pre>	am.Back = Self & ".DlgQuit" 'Mangage the menu quit by ourselves
+	am.DlgMsgBox "Demo text", 5 'Put the dialogue
+	Sub DlgQuit
+		Debug.DebugMsg "Dialogue quitted or timed out" 'Here you can do some stuff...
+		MenuStack.Top.Show 'Show the last menu that was displayed before the dialoge. This will also set am.Back correctly
+	End Sub</pre></code></p>
+		<p>By doing so, you'll have an other problem: The joy-left and joy-right keys are registered for swapping the pages of the top most menu. So when your dialogue will be quitted, when the user pushes the joy-left/-right keys as this will display the prev/next page of the top most menu (, which is the menu you showed before the dialogue). So you might want to use a combination of controlling am.Back and an EmptyMenu:</p>
+		<p><code><pre>	EmptyMenu.ShowMenu 'Push empty menu to prevent page swapping of the last menu
+	am.Back = Self & ".DlgQuit" 'Mangage the menu quit by ourselves
+	am.DlgMsgBox "Demo text", 5 'Put the dialogue
+	Sub DlgQuit
+		Debug.DebugMsg "Dialogue quitted or timed out" 'Here you can do some stuff...
+		MenuStack.Top.Quit 'Remove emtpy menu
+	End Sub</pre></code></p>
+		<p>A good point to get an idea of how to work with dialogues would be the Demo plugin (Demo.vbs). Almost everything you can do with dialoges is shown here and well documented.</p>
+		
+		<a name="#control" />
+		<h2>Controlling applications</h2>
+		<p>One of the main purposes of the FMA scipts is to allow the control of windows applications (Like media players etc.) from your phone.</p>
+		<p>There are two easy ways to control applications: The first one sends key strokes to the specific application that will cause an action in the application. The other one controls the application directly via an API/COM objects.</p>
+		<p>The procedure will be fairly similar: First you have to activate your application (put it to the foreground). If this fails, in most cases the reason would be that the application is not running yet, so you eventually have to launch the application. If your application is launched, you can start controlling it by sending key strokes or API commands.</p>
+		<p>Just look at this simple example, which will explain the detailed steps:</p>
+<p><code><pre>Class Simple
+	
+	Private m_Self
+	Private simpleMenu
+	Private appTitle, appPath
+	
+	'Some info about the plugin
+	'...
+	
+	'Who am I?
+	Public Property Let Self (s)
+		m_Self = s
+		
+		'We'll init the menu object herem but the list will be generated everytime 
+		'Sub Show() is called as we want to have a dynamic list.
+		Set simpleMenu = New ManagedMenu
+		simpleMenu.Title = "App Control"
+		'We need the window title and the path of the application we want to control
+		appTitle = "Calculator"
+		appPath  = "calc.exe"
+	End Property
+	Public Property Get Self
+		Self = m_Self
+	End Property
+	
+	'When our plugin shall show its menu, we will dynamically generate the list
+	'and display it
+	Sub Show()
+		Dim tempList, backIns
+		Set tempList = New LinkedList
+		backIns = tempList.BackInserter
+		If AppOpen Then 'We could activate our app. Display the menu:
+			backIns.Item = Array( "Calulate stuff", m_Self & ".CalcStuff" )
+			backIns.Item = Array( "Close",          m_Self & ".Close" )
+		Else 'Our app seems not to be loaded yet. Allow for launching it:
+			backIns.Item = Array( "Launch",         m_Self & ".Launch" )
+		End If
+		simpleMenu.SetList tempList
+		simpleMenu.ShowMenu
+	End Sub
+	
+	Function AppOpen
+		AppOpen = Shell.AppActivate(appTitle)
+	End Function
+	
+	Sub Launch
+		Shell.Run appPath
+		'Give our app max. 5 secs to load. If we wouldn't wait here, the menu would
+		'show "Launch" again, since the app had no time to load until the menu is shown again
+		Util.WaitForAppLoad appTitle, 6000
+		Show
+	End Sub
+	
+	Sub CalcStuff
+		If AppOpen Then
+			'We can use the Shell.SendKeys Method to send some key strokes to the application:
+			Shell.SendKeys "1{+}2~"
+			'Should be 3
+		End If
+		am.Update
+	End Sub
+	
+	Sub Close
+		If AppOpen Then
+			Shell.SendKeys "%{F4}"
+			'Give our app max. 5 secs to close itself. If we wouldn't wait here, the menu wouldn't
+			'show "Launch" again, since the app had no time to load until the menu is shown again
+			Util.Sleep 3000
+		End If
+		Show
+	End Sub
+	
+End Class</pre></code></p>
+		<p>If you'd like to control your application through ActiveX/COM objects (like FMA's Winamp COM control, or floAt's Media Control, ...) you have to create this object an call it's methods instead of sending keys to that application. The script wouldn't look much different. It's most likely that only there will be COM control object method calls instead of the Shell.SendKeys lines.</p>
+		<p>If you plan to use such external objects you should use the ActiveXManager instead of creating the objects yourself. This will ensure that the objects are only created once and not 10 times when 10 plugins use this object:</p>
+		<p><code><pre>	'Mute your speakers:
+	ActiveXManager("floAtMediaCtrl.VolumeCtrl").mute = 1</code></pre></p>
+		<p>This will internally return the object and create it if not done already. So there will only be one instance of this object that can be shared with all plugins.</p>
+		
+		<a name="#events" />
+		<h2>Events</h2>
+		<p>All event handling is done via the EventManger object. You can register commands for a specific event, and also deregister your registered commands. You can even fire own events in a simple fashion.</p>
+		<p>Plugins may register for events by doing:</p>
+		<p><code><pre>	Set item = EventManager.RegisterEvent( "&lt;event&gt;", "&lt;command to execute&gt;", &lt;plugin-object&gt; )</pre></code></p>
+		<p>Example:</p>
+		<p><code><pre>	Dim item
+	Set item = EventManager.RegisterEvent( "Connected", "Debug.DebugMsg ""just connected""", Me )</pre></code></p>
+		<p>This will register the command <code>Debug.DebugMsg "just connected"</code> for the event "Connected" and from the plugin "Me" (which is the object from which you are calling) and save a reference to the event in the variable "item".</p>
+		<p>This way you can easily deregister this event by doing:</p>
+		<p><code><pre>	item.Delete</pre></code></p>
+		<p>You may even collect event groups in LinkedLists and deregister them all at once:</p>
+		<p><code><pre>	Dim item, ll, bi
+	Set ll = New LinkedList
+	bi = ll.BackInserter
+	Register:
+	Set bi.Item = EventManager.RegisterEvent( "Connected",      "Debug.DebugMsg ""just connected""",    Me )
+	Set bi.Item = EventManager.RegisterEvent( "Disconnected",   "Debug.DebugMsg ""just disconnected""", Me )
+	Set bi.Item = EventManager.RegisterEvent( "ConnectionLost", "Debug.DebugMsg ""connection lost!""",  Me )
+	Deregister:
+	EventManager.DeregisterAllFromLL ll</code></pre></p>
+		<p>If you don't want to deregister like this, you can just call:</p>
+		<p><code><pre>	EventManager.RegisterEvent "Connected", "Debug.DebugMsg ""just connected""", Me</pre></code></p>
+		<p>without saving the reference. Then you can only deregister with DeregisterAll.</p>
+		<p>Plugins may deregister ALL their registered events at once by passing an object reference to themselves:</p>
+		<p><code><pre>	EventManager.DeregisterAll Me</pre></code></p>
+		<p>Plugins may even throw own events by simply doing:</p>
+		<p><code><pre>	EventManager.OnEvent &lt;event&gt;, Array([&lt;argument1&gt;, [&lt;argument2&gt;, [...]]])</pre></code></p>
+		<p>The following Script Events are triggered by FMA and handled by the EventManager under this names: (copied from <a href="http://www.fma.xinium.com/resources/docs/scripts_sdk.htm">http://www.fma.xinium.com/resources/docs/scripts_sdk.htm</a>)</p>
+		<ul>
+			<li>AMRoot</li>
+			<li>Init</li>
+			<li>Connected</li>
+			<li>ConnectionLost</li>
+			<li>Disconnected</li>
+			<li>NewSMS</li>
+			<li>Call</li>
+			<li>Proximity</li>
+			<li>MusicMute</li>
+			<li>KeyPress</li>
+		</ul>
+		
+		<a name="#keys" />
+		<h2>Key Events</h2>
+		<p>Key events are quite similar to the "normal" events instead of some small differences. First you have to pass the key state (press/release) to the KeyManager and second the KeyManager will automagically enable and disable KeyMonitoring in the case there are registered key events or not.</p>
+		<p>Plugins may register for keys by doing:</p>
+		<p><code><pre>	Set item = KeyManager.RegisterKey( "&lt;key&gt;", "&ltcommand to execute&gt;", &lt;state&gt;, &lt;plugin-object&gt; )</pre></code></p>
+		<p>Example:</p>
+		<p><code><pre>	Dim item
+	Set item = KeyManager.RegisterKey( KEY_JOYPRESS, "Debug.DebugMsg ""joystick pressed""", STATE_PRESS, Me )</pre></code></p>
+		<p>This will register the command <code>Debug.DebugMsg "joystick pressed"</code> for key down ":J" and from the plugin "Me" (which is the object from which you are calling) and save a reference to the event in the variable "item".</p>
+		<p>This way you can easily deregister this key-event by doing:</p>
+		<p><code><pre>	item.Delete</pre></code></p>
+		<p>You may even collect key groups in LinkedList's and deregister them all at once:</p>
+		<p><code><pre>	Dim item, ll, bi
+	Set ll = New LinkedList
+	bi = ll.BackInserter
+	'Register:
+	Set bi.Item = KeyManager.RegisterKey( KEY_JOYPRESS,  "Debug.DebugMsg ""joystick pressed""",      STATE_PRESS, Me )
+	Set bi.Item = KeyManager.RegisterKey( KEY_SOFTLEFT,  "Debug.DebugMsg ""left softkey pressed""",  STATE_PRESS, Me )
+	Set bi.Item = KeyManager.RegisterKey( KEY_SOFTRIGHT, "Debug.DebugMsg ""right softkey pressed""", STATE_PRESS, Me )
+	'Deregister:
+	KeyManager.DeregisterAllFromLL ll</pre></code></p>
+		<p>If you don't want to deregister like this, you can just call:</p>
+		<p><code><pre>	KeyManager.RegisterKey KEY_JOYPRESS, "Debug.DebugMsg ""joystick pressed""", STATE_PRESS, Me</pre></code></p>
+		<p>without saving the reference. Then you can only deregister with DeregisterAll.</p>
+		<p>Plugins may deregister ALL their registered keys at once by passing an object reference to themselves:</p>
+		<p><code><pre>	KeyManager.DeregisterAll Me</pre></code></p>
+		<p>Plugins may even throw own key events by simply doing:</p>
+		<p><code><pre>	KeyManager.OnKey &lt;key&gt;</pre></code></p>
+		<p>You can use the following constants within you code:</p>
+		<p><code><pre>	KEY_JOYUP     = "^"
+	KEY_JOYDOWN   = "v"
+	KEY_JOYLEFT   = "&lt;"
+	KEY_JOYRIGHT  = "&gt;"
+	KEY_JOYPRESS  = ":J"
+	KEY_BACK      = ":R"
+	KEY_C         = "c"
+	KEY_SOFTLEFT  = "["
+	KEY_SOFTRIGHT = "]"
+	KEY_HOME      = ":O"
+	KEY_CAMERA    = ":C"
+	KEY_VOLUP     = "u"
+	KEY_VOLDOWN   = "d"
+	KEY_0         = "0"
+	KEY_1         = "1"
+	KEY_2         = "2"
+	KEY_3         = "3"
+	KEY_4         = "4"
+	KEY_5         = "5"
+	KEY_6         = "6"
+	KEY_7         = "7"
+	KEY_8         = "8"
+	KEY_9         = "9"
+	KEY_ASTERIX   = "*"
+	KEY_SHARP     = "#"
+	KEY_YES       = "s" 'T68i
+	KEY_NO        = "e" 'T68i
+	KEY_OPT       = "f" 'T68i
+	
+	STATE_PRESS   = 1
+	STATE_RELEASE = 0</pre></code></p>
+		
+		<a name="#settings" />
+		<h2>Persistent Settings</h2>
+		<p>It's not a good idea to use hard-coded settings like application paths and so on. It also wouldn't be a very good idea letting each plugin manage an own settings file. This would be hard to maintain both for developers and users. So we introduced the <code>Settings</code>-object.</p>
+		<p>Its use is fairly simple.</p>
+		<p>If you want to save a setting you may just call:</p>
+		<p><code><pre>	Settings( Me, "&lt;your setting&gt;") = &lt;your value&gt;</pre></code></p>
+		<p>To retrieve your saved setting, you simply call:</p>
+		<p><code><pre>	variable = Settings( Me, "&lt;your setting&gt;")</pre></code></p>
+		<p>This will assign the value <code>Empty</code> to your variable, when there is no setting with that key yet.</p>
+		<!-- <p>Note that it is a good idea to structure your settings into "folders". Lets say your plugin is called "YourPlugin". You should use the following structure:</p>
+		<p><code><pre>	Settings("YourPlugin\Key1") = &lt;your value&gt;
+	Settings("YourPlugin\Key2\Subkey") = &lt;your value&gt;
+	...</pre></code></p>
+		<p>This will prevent that you modify settings from other plugins and it will also help our configuration application to build a beautiful tree structure of the settings.</p> -->
+		<p>Using <code>Me</code> as first argument prevents from reading or writing settings of other plugins.</p>
+		<p>But you may also access settings without passing an object reference to yourself:</p>
+		<p><code><pre>	Settings.Setting("&lt;your setting&gt;") = &lt;your value&gt;
+	variable = Settings.Setting("&lt;your setting&gt;")</pre></code></p>
+		<p>The settings will be loaded when OnInit and OnConnected is called. They will be saved when OnDisconnected and OnConnectionLost is called.</p>
+		
+		<a name="#adt" />
+		<h2>Abstract Data Types</h2>
+		<p>To enable a more easy way of handling data in VBScript we introduced some abstract data types (ADT).</p>
+		<p>In detail we've got the following ones:</p>
+		<ul>
+			<li>Hash</li>
+			<li>LinkedList</li>
+			<li>Stack</li>
+		</ul>
+		<p>The Hash is used similar to the settings object:</p>
+		<p><code><pre>	Dim h, v, o
+	Set h = New Hash 'Create object
+	h("&lt;key&gt;") = &lt;value&gt; 'assign value
+	v = h("&lt;key&gt;") 'retrieve value
+	'You may also assign and retrieve objects:
+	Set h("&lt;key&gt;") = &lt;object&gt; 'assign object
+	Set o = h("&lt;key&gt;") 'retrieve object</pre></code></p>
+		<p>The Hash has also some useful methods:</p>
+		<p><code><pre>	hash.DeleteItem( &lt;key&gt; )              'delete an entry
+	&lt;array&gt;      = hash.GetKeysArray      'retrieve an unsorted list of all keys to the items stored in the hash
+	&lt;LinkedList&gt; = hash.GetKeysLinkedList 'retrieve an unsorted LinkedList of all keys to the items stored in the hash
+	hash.LoadFromFile( fileName )         'load the hash'es content from a file
+	hash.SaveToFile( fileName )           'save the content to a file</pre></code></p>
+		<p>The LinkedList has a rather big interface, so I will just demonstrate a subset of its features. If you want to know more, you might take a look into the well documented source code of the LinkedList class.</p>
+		<p><code><pre>	Dim ll, bi, it
+	Set ll = New LinkedList 'create LinkedList
+	bi = ll.BackInserter 'the BackInserter will append each assigned item at the end of the LinkedList
+	bi.Item = 1
+	bi.Item = 2
+	bi.Item = 3
+	bi.Item = 4
+	it = ll.Begin 'we will start at the first item
+	Do Until it.Object Is ll.Last.Object 'and iterate until the last one is reached
+		MsgBox it.Item 'retrieve and put out the value
+		it.iterate() 'go to the next item
+	Loop</pre></code></p>
+		<p>The Stack has a rather small interface and is used exactly as you would expect it:</p>
+		<p><code><pre>	Dim s
+	Set s = New Stack 'create the stack
+	s.Push &lt;value&gt; 'push a value on the top of the stack
+	s.Push &lt;object&gt; 'push an object on the top of the stack
+	MsgBox IsObject(s.Top) 'the top method will return the item on the top of the stack
+	MsgBox IsObject(s.Pop) 'the pop method will return the item on the top of the stack and remove it
+	s.Pop
+	MsgBox s.IsEmpty 'will return a boolean value. True if there are no items on the stack, False otherwise</pre></code></p>
+		
+		<a name="#util" />
+		<h2>Helpful utilities (Util, QuickSort, Debug)</h2>
+		<p>We've also developed some useful utility classes that you may access through global variables.</p>
+		<p>First of all I would like to mention the <code>Util</code> object. It offers the following methods and functions:</p>
+		<p><code><pre>	'let the script sleep for the passed amount of milliseconds:
+	Util.Sleep &ltmilliseconds&gt;
+	
+	'will put his text on the standby screen of your phone
+	Util.SetStandbyScreenText "&lt;some text&gt;"
+	
+	'let the script sleep until an application with a specified title is
+	'loaded (i.e. activated) or until a time limit is reached.
+	'Timeout of 0 ms will wait forever:
+	Util.WaitForAppLoad &lt;title&gt;, &lt;milliseconds&gt;
+	
+	'let the script sleep until an application with a specified title is
+	'closed (i.e. cannot be activated) or until a time limit is reached
+	'Timeout of 0 ms will wait forever:
+	Util.WaitForAppClose &lt;title&gt;, &lt;milliseconds&gt;
+	
+	'currently this ones are only used internally in our hash class for loading and saving.
+	'this functions will (un)escape line breaks within a given string:
+	Dim text, escaped, unescaped
+	text      = &lt;some text&gt;
+	escaped   = EscapeLinebreaks text
+	unescaped = UnescapeLinebreaks escaped
+	MsgBox text = unescaped 'should be True</pre></code></p>
+		<p>As there was no built-in function in VBScript so comfortably sort data, we've developed a flexible QuickSort class. You may pass a Comparator (which decides <emph>how</emph> to sort) and a Data object (which decides <emph>what</emph> to sort). You may also just use the built-in default Comparator- and Data-Objects and don't have to care about these classes/objects.</p>
+		<p>Within the framework you may use the global object <code>QuickSorter</code>:</p>
+		<p><code><pre>
+	QuickSorter.Sort( array )                                      'will sort the array with the default comparator
+	QuickSorter.SortLL( LList )                                    'will sort the LList with the default comparator
+	QuickSorter.ComparatorSort( array, ComparatorObject )          'will sort the array with a given comparator
+	QuickSorter.ComparatorSortLL( LList, ComparatorObject )        'will sort the LList with a given comparator
+	QuickSorter.DataSort( DataObject )                             'will sort by using the given DataObject with the default comparator
+	QuickSorter.DataComparatorSort( DataObject, ComparatorObject ) 'will sort by using the given DataObject with a given comparator</pre></code></p>
+		<p>Most likely you will only use Sort and SortLL with default comparator and data objects, but if you want a special order or if you want to sort an array/lis of objects you might want to develop modified comparator and data classes.</p>
+		<p>We've also got a global <code>Debug</code>-object, which we already introduced at the beginning of this chapter. It offers the possibility to log messages with several log levels. This has the advantage, that you might want to see all log messages when developing the script, but you don't want to confuse the user with all your debug messages when using the script.</p>
+		<p>It may be a good idea to set the debug log level to "DEBUG_LEVEL_DEBUG". This will log all debug messages to the Phone Explorer log. You can set the debug level by modifying the appropriate line in the "fma-scripting-framework.vbs" file:</p>
+		<p><code>Debug.SetDebugLevel DEBUG_LEVEL_DEBUG</code></p>
+		<p>All messages that are on a lever equal or greater then the current debug level will be logged in the Phone Explorer log. As DEBUG_LEVEL_DEBUG is the lowest level, every message will be logged.</p>
+		<p>Theses are the available debug levels (in ascending order):
+		<ul>
+			<li>DEBUG_LEVEL_DEBUG</li>
+			<li>DEBUG_LEVEL_INFO</li>
+			<li>DEBUG_LEVEL_WARN</li>
+			<li>DEBUG_LEVEL_ERROR</li>
+		</ul></p>
+		<p>There are also two "special" debug levels: <code>DEBUG_LEVEL_OFF</code> and <code>DEBUG_LEVEL_NOFMA</code>.</p>
+		<p>DEBUG_LEVEL_OFF will put no debug messages at all and DEBUG_LEVEL_NOFMA will use MsgBox'es instead of Phone Explorer logs. This may be useful, when checking the script for correctness outside of FMA e.g. when just double clicking the main script file and executing it in the Windows Scripting Host.</p>
+		<p>To put a log message for a specific log level on the Phone Explorer log you may call this methods:</p>
+		<p><code><pre>	ErrorMsg "&lt;text&gt;"
+	WarningMsg "&lt;text&gt;"
+	InfoMsg "&lt;text&gt;"
+	DebugMsg "&lt;text&gt;"</pre></code></p>
+		<p>You may also access the global <code>PluginManager</code>-object, but I won't describe it here, since it shouldn't be of any use as a plugin developer. It's rather used in the frameworks internals.</p>
+		<p>Additionally we've got the two global objects <code>Fso</code>, which is a Scripting.FileSystemObject object and can be used to do all kinds of filehandling, and <code>Shell</code>, which is a WScript.Shell object and can be used to launch applicationd, activate them and sending key codes to them.</p>
+		<p>Notice that you can use two different methods to launch an application:</p>
+		<p><code><pre>	Shell.Run "&lt;app&gt;"
+	'will execute any application within the PATH environment variable, but it only
+	'accepts MSDOS 8.3 filenames if you want to run an application where you have a full path
+	
+	Shell.Exec "&lt;app&gt;"
+	'this one should be used when you have full paths. Shell.Exec accepts long filenames,
+	'but it cannot run applications in the PATH environment variable</pre></code></p>
+		<p>To control your applications you may use the following methods, which we already introduced <a href="#control">above</a>:</p>
+		<p><code><pre>	success = Shell.AppActivate("&lt;app-title&gt;")
+	Shell.SendKeys "&lt;key sequence&gt;"</pre></code></p>
+		<p>A full reference of the key sequences can be found in the <a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=01592c48-207d-4be1-8a76-1c4099d7bbb9&displaylang=en" target="_blank">Windows Script Documentation</a>.</p>
+		
+		<hr />
+		by <a href="http://www.zentrifuge.biz/">streawkceur</a>. <a href="http://fma.xinium.com/">http://fma.xinium.com/</a>
+	</body>
+	
+</html>

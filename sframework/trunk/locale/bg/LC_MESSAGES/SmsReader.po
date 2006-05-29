@@ -1,0 +1,38 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-03 10:12+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: ExpertOne <expertone@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: FMA Dev Team\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Bulgarian\n"
+"X-Poedit-Basepath: .\n"
+
+msgid "SMS Reader"
+msgstr "SMS Четец"
+
+msgid "Read all new SMS with selected voice"
+msgstr "Прочита всеки нов SMS с избран глас"
+
+msgid "Gender=Female;Age!=Child;Language={0}"
+msgstr "Gender=Female;Age!=Child;Language={0}"
+
+msgid "You have new SMS from {0}. SMS says: {1}."
+msgstr "Вие имате нов SMS от {0}. SMS гласи: {1}."
+
+msgid "[*] Enabled"
+msgstr "[*] Разрешено"
+
+msgid "[  ] Enabled"
+msgstr "[  ] Разрешено"
+

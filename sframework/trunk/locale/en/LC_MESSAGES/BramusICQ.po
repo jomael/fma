@@ -1,0 +1,101 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-09-01 13:50+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: \n"
+"Language-Team: FMA Dev Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+
+msgid "BramusICQ"
+msgstr ""
+
+msgid "Control your ICQ running at your pc from your phone"
+msgstr ""
+
+msgid "Error : ICQ Not Running"
+msgstr ""
+
+msgid "Error : Wrong ICQ API version"
+msgstr ""
+
+msgid "Error : API Not installed"
+msgstr ""
+
+msgid "Change Status"
+msgstr ""
+
+msgid "ContactList"
+msgstr ""
+
+msgid "Main menu"
+msgstr ""
+
+msgid "Online"
+msgstr ""
+
+msgid "Invisible"
+msgstr ""
+
+msgid "Away"
+msgstr ""
+
+msgid "N/A"
+msgstr ""
+
+msgid "DND"
+msgstr ""
+
+msgid "Occupied"
+msgstr ""
+
+msgid "Free For Chat"
+msgstr ""
+
+msgid "Disconnect/Offline"
+msgstr ""
+
+msgid "Send Message"
+msgstr ""
+
+msgid "Send URL"
+msgstr ""
+
+msgid "Contact Options"
+msgstr ""
+
+msgid "Error : Unknown error"
+msgstr ""
+
+msgid "No contacts online"
+msgstr ""
+
+msgid "Contact List"
+msgstr ""
+
+msgid "Enter message"
+msgstr ""
+
+msgid "Message:"
+msgstr ""
+
+msgid "Message Sent to "
+msgstr ""
+
+msgid "Enter URL"
+msgstr ""
+
+msgid "URL:"
+msgstr ""
+
+msgid "URL Sent to "
+msgstr ""

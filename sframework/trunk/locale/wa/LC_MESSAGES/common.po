@@ -1,0 +1,750 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Belgium Dutch FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-23 21:34+0100\n"
+"Last-Translator: Stanley Sandriman <stansan@chello.nl>\n"
+"X-Translators: \n"
+"Language-Team: Stanley Sandriman <stansan@chello.nl>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Walloon\n"
+"X-Poedit-Country: BELGIUM\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "(Un)Lock"
+msgstr "(Un)Lock"
+
+msgid "(Un)Mute"
+msgstr "(Un)Mute"
+
+msgid "(Un)lock"
+msgstr "(Un)lock"
+
+msgid "(Un)mute"
+msgstr "(Un)mute"
+
+msgid "(default)"
+msgstr "(standaard)"
+
+msgid "(empty)"
+msgstr "(leeg)"
+
+msgid "(error)"
+msgstr "(error)"
+
+msgid "(no matches)"
+msgstr "(geen gelijken)"
+
+msgid "(none)"
+msgstr "(geen)"
+
+msgid "16x9"
+msgstr "16x9"
+
+msgid "<default>"
+msgstr "<standaard>"
+
+msgid "<empty>"
+msgstr "<leeg>"
+
+msgid "<error>"
+msgstr "<error>"
+
+msgid "<no matches>"
+msgstr "<geen gelijken>"
+
+msgid "<none>"
+msgstr "<geen>"
+
+msgid "About"
+msgstr "Over"
+
+msgid "Address"
+msgstr "Adres"
+
+msgid "Append"
+msgstr "Voeg toe"
+
+msgid "Audio"
+msgstr "Audio"
+
+msgid "Author"
+msgstr "Auteur"
+
+msgid "Away"
+msgstr "Weg"
+
+msgid "Back"
+msgstr "Terug"
+
+msgid "Backward"
+msgstr "Achteruit"
+
+msgid "Begin"
+msgstr "Begin"
+
+msgid "Bottom"
+msgstr "Bodem"
+
+msgid "Browse"
+msgstr "Doorbladeren"
+
+msgid "Browse..."
+msgstr "Doorbladeren..."
+
+msgid "Call"
+msgstr "Oproep"
+
+msgid "Cancel"
+msgstr "Annuleren"
+
+msgid "Canceled"
+msgstr "Geannuleerd"
+
+msgid "Caption"
+msgstr "Titel"
+
+msgid "Change Status"
+msgstr "Verander Status"
+
+msgid "Choose"
+msgstr "Kies"
+
+msgid "Choose..."
+msgstr "Kies..."
+
+msgid "Close"
+msgstr "Sluiten"
+
+msgid "Configurator"
+msgstr "Configurator"
+
+msgid "Configure"
+msgstr "Configureren"
+
+msgid "DVD"
+msgstr "DVD"
+
+msgid "Debug"
+msgstr "Debug"
+
+msgid "Decrease"
+msgstr "Verlaag"
+
+msgid "Default"
+msgstr "Standaard"
+
+msgid "Description"
+msgstr "Beschrijving"
+
+msgid "Dialog"
+msgstr "Dialoog"
+
+msgid "Disable"
+msgstr "Uitschakelen"
+
+msgid "Disconnect"
+msgstr "Verbreken"
+
+msgid "Down"
+msgstr "Onderaan"
+
+msgid "Drive"
+msgstr "Drive"
+
+msgid "Drives"
+msgstr "Drives"
+
+msgid "Empty"
+msgstr "Leeg"
+
+msgid "Enable"
+msgstr "Inschakelen"
+
+msgid "End"
+msgstr "Einde"
+
+msgid "Enter Text"
+msgstr "Voer tekst in"
+
+msgid "Enter URL"
+msgstr "Voer URL in"
+
+msgid "Enter message"
+msgstr "Voer bericht in"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Error:"
+msgstr "Error:"
+
+msgid "Exit"
+msgstr "Verlaten"
+
+msgid "Explore"
+msgstr "Explore"
+
+msgid "Explorer"
+msgstr "Explorer"
+
+msgid "Faster"
+msgstr "Sneller"
+
+msgid "Favorite"
+msgstr "Favoriet"
+
+msgid "Favorites"
+msgstr "Favorieten"
+
+msgid "Feedback"
+msgstr "Feedback"
+
+msgid "File"
+msgstr "Bestand"
+
+msgid "Folder"
+msgstr "Map"
+
+msgid "Forward"
+msgstr "Doorsturen"
+
+msgid "Framework"
+msgstr "Framework"
+
+msgid "Freeze"
+msgstr "Bevriezen"
+
+msgid "Full screen"
+msgstr "Volledig scherm"
+
+msgid "FullScreen"
+msgstr "Volledig scherm"
+
+msgid "Fullscreen"
+msgstr "Volledig scherm"
+
+msgid "General"
+msgstr "Algemeen"
+
+msgid "Guide"
+msgstr "Gids"
+
+msgid "Help"
+msgstr "Help"
+
+msgid "Hide"
+msgstr "Verberg"
+
+msgid "Increase"
+msgstr "Verhoog"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "Information"
+msgstr "Informatie"
+
+msgid "Input"
+msgstr "Input"
+
+msgid "Input:"
+msgstr "Input:"
+
+msgid "Insert"
+msgstr "Tussenvoegen"
+
+msgid "Integer"
+msgstr "Integer"
+
+msgid "Integer:"
+msgstr "Integer:"
+
+msgid "Key"
+msgstr "Sleutel"
+
+msgid "Launch"
+msgstr "Opstarten"
+
+msgid "Left"
+msgstr "Links"
+
+msgid "Level"
+msgstr "Level"
+
+msgid "Library"
+msgstr "Bibliotheek"
+
+msgid "Live"
+msgstr "Live"
+
+msgid "Load"
+msgstr "Laden"
+
+msgid "Lock"
+msgstr "Slot"
+
+msgid "Logoff"
+msgstr "Uitloggen"
+
+msgid "Master Volume"
+msgstr "Master Volume"
+
+msgid "Maximize"
+msgstr "Maximaliseren"
+
+msgid "Menu"
+msgstr "Menu"
+
+msgid "Message"
+msgstr "Bericht"
+
+msgid "Message:"
+msgstr "Bericht:"
+
+msgid "Minimize"
+msgstr "Minimaliseren"
+
+msgid "Miscellaneous"
+msgstr "Diversen"
+
+msgid "Mode"
+msgstr "Modus"
+
+msgid "More..."
+msgstr "Meer..."
+
+msgid "Mouse"
+msgstr "Muis"
+
+msgid "Music"
+msgstr "Muziek"
+
+msgid "Mute"
+msgstr "Mute"
+
+msgid "Mute/UnMute"
+msgstr "Mute/UnMute"
+
+msgid "Mute/Unmute"
+msgstr "Mute/Unmute"
+
+msgid "N/A"
+msgstr "N/A"
+
+msgid "Navigate"
+msgstr "Navigeer"
+
+msgid "Navigate..."
+msgstr "Navigeer..."
+
+msgid "New"
+msgstr "Nieuw"
+
+msgid "Next"
+msgstr "Volgende"
+
+msgid "Next Chapter"
+msgstr "Volgende Hoofdstuk"
+
+msgid "Next Track"
+msgstr "Volgende Spoor"
+
+msgid "No"
+msgstr "Nee"
+
+msgid "No Matches"
+msgstr "Geen Gelijken"
+
+msgid "None"
+msgstr "Geen"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Off"
+msgstr "Uit"
+
+msgid "Offline"
+msgstr "Offline"
+
+msgid "Ok"
+msgstr "Ok"
+
+msgid "On"
+msgstr "Aan"
+
+msgid "Open"
+msgstr "Open"
+
+msgid "Options"
+msgstr "Opties"
+
+msgid "Order"
+msgstr "Orde"
+
+msgid "Pause"
+msgstr "Pause"
+
+msgid "Pause/Resume"
+msgstr "Pause/Resume"
+
+msgid "Paused"
+msgstr "Paused"
+
+msgid "Percent"
+msgstr "Procent"
+
+msgid "Percent:"
+msgstr "Procent:"
+
+msgid "Photo"
+msgstr "Foto"
+
+msgid "Picture"
+msgstr "Afbeelding"
+
+msgid "Play"
+msgstr "Afspelen"
+
+msgid "Player"
+msgstr "Player"
+
+msgid "Playing"
+msgstr "Afspelen"
+
+msgid "Plugin"
+msgstr "Plugin"
+
+msgid "Prev"
+msgstr "Vorige"
+
+msgid "Prev."
+msgstr "Vorige."
+
+msgid "Previous"
+msgstr "Vorige"
+
+msgid "Previous Chapter"
+msgstr "Vorig Hoofdstuk"
+
+msgid "Previous Track"
+msgstr "Vorig Spoor"
+
+msgid "Quit"
+msgstr "Verlaten"
+
+msgid "Random"
+msgstr "Willekeurig"
+
+msgid "Read"
+msgstr "Lezen"
+
+msgid "Recieve"
+msgstr "Ontvangen"
+
+msgid "Recieved"
+msgstr "Ontvangen"
+
+msgid "Record"
+msgstr "Opnemen"
+
+msgid "Recording"
+msgstr "Opname"
+
+msgid "Refresh"
+msgstr "Verversen"
+
+msgid "Remote"
+msgstr "Ver"
+
+msgid "Repeat"
+msgstr "Herhalen"
+
+msgid "Restore"
+msgstr "Herstel"
+
+msgid "Resume/Pause"
+msgstr "Resume/Pause"
+
+msgid "Return"
+msgstr "Terugkeren"
+
+msgid "Reverse"
+msgstr "Achteruit"
+
+msgid "Revert"
+msgstr "Keer terug"
+
+msgid "Rewind"
+msgstr "Terugspoelen"
+
+msgid "Right"
+msgstr "Rechts"
+
+msgid "Run"
+msgstr "Run"
+
+msgid "Save"
+msgstr "Opslaan"
+
+msgid "Schedule"
+msgstr "Programma"
+
+msgid "Script"
+msgstr "Script"
+
+msgid "Search"
+msgstr "Zoek"
+
+msgid "Search For:"
+msgstr "Zoek naar:"
+
+msgid "Search Results"
+msgstr "Zoek Resultaten"
+
+msgid "Search..."
+msgstr "Zoek..."
+
+msgid "Search/Browse"
+msgstr "Zoek/Verken"
+
+msgid "Searching..."
+msgstr "Zoeken..."
+
+msgid "Seek"
+msgstr "Zoek"
+
+msgid "Select"
+msgstr "Selecteer"
+
+msgid "Send"
+msgstr "Verzend"
+
+msgid "Send Message"
+msgstr "Verzend Bericht"
+
+msgid "Set Volume"
+msgstr "Stel Volume in"
+
+msgid "Setup"
+msgstr "Setup"
+
+msgid "Setup Volume"
+msgstr "Setup Volume"
+
+msgid "Shot"
+msgstr "Shot"
+
+msgid "Show"
+msgstr "Toon"
+
+msgid "Shuffle"
+msgstr "Shuffle"
+
+msgid "Shutdown"
+msgstr "Sluiten"
+
+msgid "Skip"
+msgstr "Skip"
+
+msgid "Slower"
+msgstr "Langzamer"
+
+msgid "Snapshot"
+msgstr "Snapshot"
+
+msgid "Sound"
+msgstr "Geluid"
+
+msgid "Speed (+)"
+msgstr "Snelheid (+)"
+
+msgid "Speed (-)"
+msgstr "Snelheid (-)"
+
+msgid "Speed +"
+msgstr "Snelheid +"
+
+msgid "Speed -"
+msgstr "Snelheid -"
+
+msgid "Start"
+msgstr "Start"
+
+msgid "Stopped"
+msgstr "Gestopt"
+
+msgid "String"
+msgstr "String"
+
+msgid "String:"
+msgstr "String:"
+
+msgid "Sub Menu"
+msgstr "Sub Menu"
+
+msgid "SubMenu"
+msgstr "SubMenu"
+
+msgid "Submenu"
+msgstr "Submenu"
+
+msgid "Subtitle"
+msgstr "Ondertitel"
+
+msgid "Subtitles"
+msgstr "Ondertitels"
+
+msgid "Switch"
+msgstr "Schakel"
+
+msgid "Text"
+msgstr "Tekst"
+
+msgid "Text:"
+msgstr "Tekst:"
+
+msgid "Time"
+msgstr "Tijd"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Toggle"
+msgstr "Schakel"
+
+msgid "Tools"
+msgstr "Tools"
+
+msgid "Top"
+msgstr "Altijd Bovenop"
+
+msgid "Track"
+msgstr "Spoor"
+
+msgid "Tracks"
+msgstr "Sporen"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "URL:"
+msgstr "URL:"
+
+msgid "UnLock"
+msgstr "UnLock"
+
+msgid "Unmute"
+msgstr "Unmute"
+
+msgid "Up"
+msgstr "Omhoog"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Volume"
+msgstr "Volume"
+
+msgid "Volume (+)"
+msgstr "Volume (+)"
+
+msgid "Volume (-)"
+msgstr "Volume (-)"
+
+# Volume (Muted)
+msgid "Volume (M)"
+msgstr "Volume (M)"
+
+msgid "Volume +"
+msgstr "Volume +"
+
+msgid "Volume -"
+msgstr "Volume -"
+
+msgid "Volume Down"
+msgstr "Volume Lager"
+
+msgid "Volume Up"
+msgstr "Volume Hoger"
+
+msgid "Volume is muted"
+msgstr "Volume is gemute"
+
+msgid "Volume: "
+msgstr "Volume: "
+
+msgid "Wait"
+msgstr "Wacht"
+
+msgid "Wait..."
+msgstr "Wacht..."
+
+msgid "Waiting..."
+msgstr "Wachten..."
+
+msgid "Working"
+msgstr "Werken"
+
+msgid "Working..."
+msgstr "Werken..."
+
+msgid "Write"
+msgstr "Schrijven"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "Zoom"
+msgstr "Zoom"
+
+msgid "[  ] "
+msgstr "[  ] "
+
+msgid "[*] "
+msgstr "[*] "
+
+msgid "[default]"
+msgstr "[Standaard]"
+
+msgid "[empty]"
+msgstr "[leeg]"
+
+msgid "[error]"
+msgstr "[error]"
+
+msgid "[no matches]"
+msgstr "[geen gelijken]"
+
+msgid "[none]"
+msgstr "[geen]"
+
+msgid "default"
+msgstr "standaard"
+
+msgid "empty"
+msgstr "leeg"
+
+msgid "no matches"
+msgstr "geen gelijken"
+
+msgid "none"
+msgstr "gGeen"
+
+msgid "paused"
+msgstr "gepauzeerd"
+
+msgid "playing"
+msgstr "spelen"
+
+msgid "stopped"
+msgstr "gestopt"
+

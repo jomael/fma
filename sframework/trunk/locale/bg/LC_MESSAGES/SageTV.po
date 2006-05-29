@@ -1,0 +1,137 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-03 10:09+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: ExpertOne <expertone@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: FMA Dev Team\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Bulgarian\n"
+"X-Poedit-Basepath: .\n"
+
+msgid "SageTV"
+msgstr "SageTV"
+
+msgid "Lets you control SageTV 2.1"
+msgstr "Вие можете да контролирате SageTV 2.1"
+
+msgid "Navigate Mode"
+msgstr "Режим на Навигация"
+
+msgid "Switch Programs"
+msgstr "Превкл. Програмите"
+
+msgid "Fullscreen"
+msgstr "На Цял Екран"
+
+msgid "Record"
+msgstr "Запис"
+
+msgid "Live TV"
+msgstr "Живо TV"
+
+msgid "Watched"
+msgstr "Гледано"
+
+msgid "Favorite"
+msgstr "Избрани"
+
+msgid "Don't Like"
+msgstr "Не го Харесвам"
+
+msgid "Forward"
+msgstr "Напред"
+
+msgid "Home"
+msgstr "Начало"
+
+msgid "Pause"
+msgstr "Пауза"
+
+msgid "Play"
+msgstr "Старт"
+
+msgid "Play Faster"
+msgstr "По-Бързо"
+
+msgid "Play Slower"
+msgstr "По-Бавно"
+
+msgid "Setup"
+msgstr "Настройка"
+
+msgid "Aspect Ratio Fill"
+msgstr "Размери: Екран"
+
+msgid "Aspect Ratio 16x9"
+msgstr "Размери: 16x9"
+
+msgid "Aspect Ratio Source"
+msgstr "Размери: Оригинала"
+
+msgid "DVD Reverse Play"
+msgstr "DVD Обратен Преглед"
+
+msgid "DVD Next Chapter"
+msgstr "DVD Следваща Част"
+
+msgid "DVD Previous Chapter"
+msgstr "DVD Предишна Част"
+
+msgid "DVD Menu"
+msgstr "DVD Меню"
+
+msgid "DVD Title Menu"
+msgstr "DVD Заглавно Меню"
+
+msgid "DVD Return"
+msgstr "DVD Връщане"
+
+msgid "DVD Subtitle Change"
+msgstr "DVD Смяна Субтитри"
+
+msgid "DVD Subtitle Toggle"
+msgstr "DVD Субтитри"
+
+msgid "DVD"
+msgstr "DVD"
+
+msgid "Search"
+msgstr "Търсене"
+
+msgid "Recording Schedule"
+msgstr "Настройка за Запис"
+
+msgid "Library"
+msgstr "Библиотека"
+
+msgid "Music Jukebox"
+msgstr "Музикална Кутия"
+
+msgid "Picture Library"
+msgstr "Картинна Библиотека"
+
+msgid "Video Library"
+msgstr "Видео Библиотека"
+
+msgid "Time Scroll"
+msgstr "Позициониране"
+
+msgid "Close"
+msgstr "Затвори"
+
+msgid "Launch"
+msgstr "Стартирай"
+
+msgid "1:video 2:jumpFd 3:info 4:skipBk 5:Pause 6:skipFd 7:Menu 8:jumpBk 9:Guide 0:Stop *:Back #:Rcrdngs"
+msgstr "1:видео 2:скокНапр 3:инфо 4:назад 5:Пауза 6:напред 7:Menu 8:скокНаз 9:Направл 0:Стоп *:Върни #:Зап"
+

@@ -1,0 +1,98 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-03 10:21+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: ExpertOne <expertone@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: FMA Dev Team\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Bulgarian\n"
+"X-Poedit-Basepath: .\n"
+
+msgid "WinDVD"
+msgstr "WinDVD"
+
+msgid "Lets you control Intervideo WinDVD"
+msgstr "Вие можете да контролирате WinDVD"
+
+msgid "Play"
+msgstr "Старт"
+
+msgid "Pause/Resume"
+msgstr "Пауза/Възст."
+
+msgid "Stop"
+msgstr "Стоп"
+
+msgid "Prev Chapter"
+msgstr "Пред. Част"
+
+msgid "Next Chapter"
+msgstr "След. Част"
+
+msgid "Audio Stream"
+msgstr "Аудио Пътечка"
+
+msgid "Volume +"
+msgstr "Сила +"
+
+msgid "Volume -"
+msgstr "Сила -"
+
+msgid "(Un)Mute"
+msgstr "Вкл./Изкл. Звука"
+
+msgid "?SubTitles"
+msgstr "Субтитри"
+
+msgid "Fullscreen"
+msgstr "На Цял Екран"
+
+msgid "Step Backward"
+msgstr "Стъпка Назад"
+
+msgid "Step Forward"
+msgstr "Стъпка Напред"
+
+msgid "Speed +"
+msgstr "Скорост +"
+
+msgid "Speed -"
+msgstr "Скорост -"
+
+msgid "Capture Frame"
+msgstr "Запиши Кадъра"
+
+msgid "DVD Menu"
+msgstr "DVD Меню"
+
+msgid "Select"
+msgstr "Избор"
+
+msgid "Up"
+msgstr "Нагоре"
+
+msgid "Down"
+msgstr "Надолу"
+
+msgid "Left"
+msgstr "Ляво"
+
+msgid "Right"
+msgstr "Дясно"
+
+msgid "Close"
+msgstr "Затвори"
+
+msgid "Launch"
+msgstr "Стартирай"
+

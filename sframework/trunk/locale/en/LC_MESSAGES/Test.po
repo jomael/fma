@@ -1,0 +1,32 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-09-01 13:50+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: \n"
+"Language-Team: FMA Dev Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+
+msgid "Test Plugin"
+msgstr ""
+
+msgid "Experimental Plugin"
+msgstr ""
+
+msgid "reg"
+msgstr ""
+
+msgid "dereg"
+msgstr ""
+
+msgid "jup"
+msgstr ""

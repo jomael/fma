@@ -1,0 +1,101 @@
+# FMA Localization Project
+# Copyright (C) 2004 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-23 21:36+0100\n"
+"Last-Translator: Stanley Sandriman <stansan@chello.nl>\n"
+"X-Translators: \n"
+"Language-Team: FMA Dev Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Walloon\n"
+"X-Poedit-Country: BELGIUM\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "Demo Plugin"
+msgstr "Demo Plugin"
+
+msgid "This plugin has the purpose of plugin developer information."
+msgstr "This plugin has the purpose of plugin developer information."
+
+msgid "Submenu"
+msgstr "Submenu"
+
+msgid "Dialogues"
+msgstr "Dialogues"
+
+msgid "Debug Message 1"
+msgstr "Debug Message 1"
+
+msgid "Debug Message 2"
+msgstr "Debug Message 2"
+
+msgid "Sub Menu"
+msgstr "Sub Menu"
+
+msgid "DlgMsgBox"
+msgstr "DlgMsgBox"
+
+msgid "DlgYesNo"
+msgstr "DlgYesNo"
+
+msgid "DlgOnOff"
+msgstr "DlgOnOff"
+
+msgid "DlgPercent"
+msgstr "DlgPercent"
+
+msgid "DlgInputStr"
+msgstr "DlgInputStr"
+
+msgid "DlgInputInt"
+msgstr "DlgInputInt"
+
+msgid "DlgInformation"
+msgstr "DlgInformation"
+
+msgid "DlgFeedback"
+msgstr "DlgFeedback"
+
+msgid "Accessrs. Menu"
+msgstr "Accessrs. Menu"
+
+msgid "Demo text"
+msgstr "Demo tekst"
+
+msgid "Do you like this demo?"
+msgstr "Do you like this demo?"
+
+msgid "Light on?"
+msgstr "Light on?"
+
+msgid "Percent demo"
+msgstr "Percent demo"
+
+msgid "InputStr demo"
+msgstr "InputStr demo"
+
+msgid "InputInt demo"
+msgstr "InputInt demo"
+
+msgid "Prompt:"
+msgstr "Prompt:"
+
+msgid "Default"
+msgstr "Standaard"
+
+msgid "DlgInfo demo"
+msgstr "DlgInfo demo"
+
+msgid "Information dialogue demo"
+msgstr "Information dialogue demo"
+
+msgid "DlgFeedbck demo"
+msgstr "DlgFeedbck demo"
+

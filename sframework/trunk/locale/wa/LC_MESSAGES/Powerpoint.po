@@ -1,0 +1,62 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-23 21:46+0100\n"
+"Last-Translator: Stanley Sandriman <stansan@chello.nl>\n"
+"X-Translators: \n"
+"Language-Team: FMA Dev Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Walloon\n"
+"X-Poedit-Country: BELGIUM\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "PowerPoint"
+msgstr "PowerPoint"
+
+msgid "Lets you control Powerpoint"
+msgstr "Bediend uw Powerpoint"
+
+msgid "Start Show"
+msgstr "Start Show"
+
+msgid "Resume"
+msgstr "Resume"
+
+msgid "End Show"
+msgstr "Beëindig Show"
+
+msgid "Prev Slide"
+msgstr "Vorig stuk"
+
+msgid "Navigate..."
+msgstr "Navigeer..."
+
+msgid "Next Slide"
+msgstr "Volgend stuk"
+
+msgid "Choose..."
+msgstr "Kies..."
+
+msgid "Toggle Screen"
+msgstr "Wissel scherm"
+
+msgid "Close"
+msgstr "Sluiten"
+
+msgid "Launch"
+msgstr "Opstarten"
+
+msgid "Use Joystick or keys for next/prev slide, 5 to choose, 0 to quit"
+msgstr "Gebruik Joystick of toetsen voor volgende/vorige slide, 5 voor kiezen, 0 om af te sluiten"
+
+msgid "Use Joystick or keys to select slide, 5 to continue, 0 to quit"
+msgstr "Gebruik Joystick of toetsen om te selecteren, 5 om door te gaan, 0 om af te sluiten"
+

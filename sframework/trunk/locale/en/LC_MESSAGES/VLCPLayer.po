@@ -1,0 +1,44 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-09-01 13:50+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: \n"
+"Language-Team: FMA Dev Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+
+msgid "VLCPlayer"
+msgstr ""
+
+msgid "Lets you control VLC Player"
+msgstr ""
+
+msgid "Play/Pause"
+msgstr ""
+
+msgid "Stop"
+msgstr ""
+
+msgid "Fullscreen"
+msgstr ""
+
+msgid "(Un)Mute"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Launch"
+msgstr ""
+
+msgid "Use the phone volume keys to change volume and joystick(left/right) to skip forward/backward"
+msgstr ""

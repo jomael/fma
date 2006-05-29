@@ -1,0 +1,143 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-23 11:29+0100\n"
+"Last-Translator: Stanley Sandriman <stansan@chello.nl>\n"
+"X-Translators: \n"
+"Language-Team: FMA Dev Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "WinAmp"
+msgstr "WinAmp"
+
+msgid "This plugin controls winamp. You may use the menu and the phones volume keys."
+msgstr "Deze plugin bediend WinAmp. U kunt het menu en de telefoons volume knoppen gebruiken."
+
+msgid "Browse Artists"
+msgstr "Verken Artiesten"
+
+msgid "Search Artists"
+msgstr "Zoek Artiesten"
+
+msgid "Search Titles"
+msgstr "Zoek Titels"
+
+msgid "Search Both"
+msgstr "Zoek Beide"
+
+msgid "Search/Browse"
+msgstr "Zoek/Verken"
+
+msgid "Restart"
+msgstr "Herstart"
+
+msgid "Play"
+msgstr "Afspelen"
+
+msgid "Resume"
+msgstr "Resume"
+
+msgid "Pause"
+msgstr "Pauze"
+
+msgid "Stop"
+msgstr "Stop"
+
+msgid "<< Prev Track "
+msgstr "<< Vorige Track "
+
+msgid ">> Next Track "
+msgstr ">> Volgende Track "
+
+msgid "Volume"
+msgstr "Volume"
+
+msgid "Show Playlist"
+msgstr "Toon Playlist"
+
+msgid "Load Playlist"
+msgstr "Laad Playlist"
+
+msgid "Seek"
+msgstr "Zoek"
+
+msgid "Shuffle Off"
+msgstr "Shuffle Off"
+
+msgid "Shuffle On"
+msgstr "Shuffle Aan"
+
+msgid "Repeat Off"
+msgstr "Repeat Off"
+
+msgid "Repeat On"
+msgstr "Repeat Aan"
+
+msgid "Help"
+msgstr "Help"
+
+msgid "Close"
+msgstr "Sluiten"
+
+msgid "Launch"
+msgstr "Opstarten"
+
+msgid "Increase Volume: Joy-up,-right,Vol-up - Decrease volume: Joy-down,-left,Vol-down"
+msgstr "Increase Volume: Joy-up,-right,Vol-up - Decrease volume: Joy-down,-left,Vol-down"
+
+msgid "The menu should be mostly self-explaining."
+msgstr "Het menu wijst zichzelf."
+
+msgid "(empty)"
+msgstr "(leeg)"
+
+msgid "Playlist"
+msgstr "Playlist"
+
+# artist - song
+msgid " - "
+msgstr " - "
+
+#mark: selected
+msgid ">"
+msgstr ">"
+
+#mark: not selected
+msgid "  "
+msgstr "  "
+
+msgid "Artists"
+msgstr "Artiesten"
+
+msgid "Search artists"
+msgstr "Zoek artiesten"
+
+msgid "Artists:"
+msgstr "Artiesten:"
+
+msgid "Search titles"
+msgstr "Zoek titels"
+
+msgid "Titles:"
+msgstr "Titels:"
+
+msgid "Search both"
+msgstr "Zoek beide"
+
+msgid "Artists/Titles:"
+msgstr "Artiesten/Titels:"
+
+msgid "(no matches!)"
+msgstr "(geen gelijken)"
+

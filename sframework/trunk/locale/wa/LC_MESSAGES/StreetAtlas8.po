@@ -1,0 +1,246 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-23 21:47+0100\n"
+"Last-Translator: Stanley Sandriman <stansan@chello.nl>\n"
+"X-Translators: \n"
+"Language-Team: FMA Dev Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Walloon\n"
+"X-Poedit-Country: BELGIUM\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "Street Atlas"
+msgstr "Street Atlas"
+
+msgid "Lets you control Delorme Street Atlas 8.0"
+msgstr "Bedien uw  Delorme Street Atlas 8.0"
+
+msgid "Calculate Route"
+msgstr "Bereken Route"
+
+msgid "Get Directions"
+msgstr "Krijg Richtingen"
+
+msgid "Back on Track"
+msgstr "Terug op Spoor"
+
+msgid "Time/Distance"
+msgstr "Tijd/Afstand"
+
+msgid "Guide"
+msgstr "Gids"
+
+msgid "Heading"
+msgstr "Ga naar"
+
+msgid "Miles Remaining"
+msgstr "Mijlem te gaan "
+
+msgid "Reverse Route"
+msgstr "Omgekeerde Route"
+
+msgid "Set Current Location"
+msgstr "Stel huidige plaats in"
+
+msgid "Set Destination"
+msgstr "Stel Bestemming in"
+
+msgid "Get Map"
+msgstr "Krijg Kaart"
+
+msgid "Home"
+msgstr "Thuis"
+
+msgid "Address"
+msgstr "Adres"
+
+msgid "Full address:"
+msgstr "Volledig Adres:"
+
+msgid "Directions"
+msgstr "Richtingen"
+
+msgid "Street Atlas has been closed"
+msgstr "Street Atlas is afgesloten"
+
+# say phrase
+msgid "North"
+msgstr "Noord"
+
+# say phrase
+msgid "South"
+msgstr "Zuid"
+
+# say phrase
+msgid "East"
+msgstr "Oost"
+
+# say phrase
+msgid "West"
+msgstr "West"
+
+# say phrase
+msgid "Southwest"
+msgstr "Zuidwest"
+
+# say phrase
+msgid "Southeast"
+msgstr "Zuidoost"
+
+# say phrase
+msgid "Northeast"
+msgstr "Noordoost"
+
+# say phrase
+msgid "Northwest"
+msgstr "Noordwest"
+
+# say phrase
+msgid "There is poor GPS coverage.  Please try again later."
+msgstr "Er is slechte GPS dekking. Gelieve later opnieuw te proberen."
+
+# say phrase
+msgid "Back on track is on"
+msgstr "Terug op spoor is aan"
+
+# say phrase
+msgid "Back on track is off"
+msgstr "Terug op spoor is uit"
+
+# say phrase
+msgid "You are currently on "
+msgstr "U bent momenteel."
+
+# say phrase
+msgid "north"
+msgstr "noord"
+
+# say phrase
+msgid "north north east"
+msgstr "noord noord oost"
+
+# say phrase
+msgid "north east"
+msgstr "noord oost"
+
+# say phrase
+msgid "east north east"
+msgstr "oost noord oost"
+
+# say phrase
+msgid "east"
+msgstr "oost"
+
+# say phrase
+msgid "east south east"
+msgstr "oost zuid oost"
+
+# say phrase
+msgid "south east"
+msgstr "zuid oost"
+
+# say phrase
+msgid "south south east"
+msgstr "zuid zuid oost"
+
+# say phrase
+msgid "south"
+msgstr "zuid"
+
+# say phrase
+msgid "south south west"
+msgstr "zuid zuid west"
+
+# say phrase
+msgid "south west"
+msgstr "zuid west"
+
+# say phrase
+msgid "west south west"
+msgstr "west zuid west"
+
+# say phrase
+msgid "west"
+msgstr "west"
+
+# say phrase
+msgid "west north west"
+msgstr "west noord west"
+
+# say phrase
+msgid "north west"
+msgstr "noord west"
+
+# say phrase
+msgid "north north west"
+msgstr "noord noord west"
+
+# say phrase
+msgid "You are headed "
+msgstr "U wordt geleid"
+
+# say phrase
+msgid " going "
+msgstr "gaan"
+
+# say phrase
+msgid " miles per hour at "
+msgstr "Mijl per uur"
+
+# say phrase
+msgid " feet above sea level."
+msgstr "voet boven zeeniveau."
+
+# say phrase
+msgid "The route has been reversed."
+msgstr "De route is omgekeerd."
+
+# say phrase
+msgid "The destination is home"
+msgstr "De bestemming is thuis"
+
+# say phrase
+msgid "The destination is "
+msgstr "De bestemming is"
+
+# display
+msgid "Go "
+msgstr "Ga "
+
+# display
+msgid " on"
+msgstr "aan"
+
+# display
+msgid "Near "
+msgstr "Dichtbij"
+
+# display
+msgid "for "
+msgstr "voor "
+
+# display
+msgid " mi"
+msgstr " mi"
+
+# display
+msgid "So Far: "
+msgstr "Zo ver:"
+
+# display
+msgid "Elapsed: "
+msgstr "Verstreken: "
+
+# display
+msgid "Exit: "
+msgstr "Verlaten:"
+

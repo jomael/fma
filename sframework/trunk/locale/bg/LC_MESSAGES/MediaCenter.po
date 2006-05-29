@@ -1,0 +1,35 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-03 10:16+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: ExpertOne <expertone@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: FMA Dev Team\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Bulgarian\n"
+"X-Poedit-Basepath: .\n"
+
+msgid "Media Center"
+msgstr "Media Center"
+
+msgid "Allows for controlling MS Media Center"
+msgstr "Вие можете да контролирате MS Media Center"
+
+msgid "Launch Media Center?"
+msgstr "Стартиране на Media Center?"
+
+msgid "joy:nav, c:back vol+- 1,2,3: pl/paus,prv,nxt 4,5,6: rec,rwnd,ffwd 7,8,9: stop,subt,ch+ *,0,#: close,input,ch-"
+msgstr "joy:нав, c:назад, звук+- 1,2,3: старт/п-за,пред,слд 4,5,6: зап,назад,напред 7,8,9: стоп,субт,ка+ *,0,#: затв,вход,ка-"
+
+msgid "Input:"
+msgstr "Вход:"
+

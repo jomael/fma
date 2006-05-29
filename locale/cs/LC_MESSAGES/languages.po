@@ -1,0 +1,308 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA Localization Project\n"
+"POT-Creation-Date: 2003-05-05 12:39\n"
+"PO-Revision-Date: 2005-05-22 13:19+0100\n"
+"Last-Translator: PRIM <prichystal@ok-shop.cz>\n"
+"X-Translators: PRIM <prichystal@ok-shop.cz>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: FMA Dev Team\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-Country: Czech Republic\n"
+
+msgid "Abkhazian"
+msgstr "Abcházsky"
+
+msgid "Afrikaans"
+msgstr "Afrikásnky"
+
+msgid "Albanian"
+msgstr "Albánsky"
+
+msgid "American English"
+msgstr "Anglicky (USA)"
+
+msgid "Arabic"
+msgstr "Arabsky"
+
+msgid "Armenian"
+msgstr "Arménsky"
+
+msgid "Australian English"
+msgstr "Anglicky (Austrálie)"
+
+msgid "Austrian German"
+msgstr "Německy (Rakousko)"
+
+msgid "Azerbaijani"
+msgstr "Azerbajdžánsky"
+
+msgid "Basque"
+msgstr "Baskitsky"
+
+msgid "Belarusian"
+msgstr "Bělorusky"
+
+msgid "Bengali"
+msgstr "Bangladéš"
+
+msgid "Bosnian"
+msgstr "Bosna"
+
+msgid "Brazilian Portuguese"
+msgstr "Portugaslky (Brazílie)"
+
+msgid "Breton"
+msgstr "Bretonsky"
+
+msgid "British English"
+msgstr "Anglicky (Británie)"
+
+msgid "Bulgarian"
+msgstr "Bulharsky"
+
+msgid "Burmese"
+msgstr "Barmsky"
+
+msgid "Canadian English"
+msgstr "Anglicky (Kanada)"
+
+msgid "Catalan"
+msgstr "Katalánsky"
+
+msgid "Chechen"
+msgstr "Čečensky"
+
+msgid "Chinese"
+msgstr "Čínsky"
+
+msgid "Corsican"
+msgstr "Korsika"
+
+msgid "Croatian"
+msgstr "Chorvatsky"
+
+msgid "Czech"
+msgstr "Česky"
+
+msgid "Danish"
+msgstr "Dánsky"
+
+msgid "Dutch"
+msgstr "Holandsky"
+
+msgid "English"
+msgstr "Anglicky"
+
+msgid "Esperanto"
+msgstr "Esperanto"
+
+msgid "Estonian"
+msgstr "Estonsky"
+
+msgid "Faroese"
+msgstr "Faroa"
+
+msgid "Finnish"
+msgstr "Finsky"
+
+msgid "Flemish"
+msgstr "Vlámsky"
+
+msgid "French"
+msgstr "Francouzsky"
+
+msgid "Frisian"
+msgstr "Frisian"
+
+msgid "Gaelic"
+msgstr "Keltsky"
+
+msgid "Georgian"
+msgstr "Georgiánsky"
+
+msgid "German"
+msgstr "Německy"
+
+msgid "Greek"
+msgstr "Řecky"
+
+msgid "Greenlandic"
+msgstr "Grónsky"
+
+msgid "Gujarati"
+msgstr "Gujarati"
+
+msgid "Haitian"
+msgstr "Haitsky"
+
+msgid "Hebrew"
+msgstr "Hebrejsky"
+
+msgid "Hindi"
+msgstr "Hindsky"
+
+msgid "Hungarian"
+msgstr "Maďarsky"
+
+msgid "Icelandic"
+msgstr "Islandsky"
+
+msgid "Indonesian"
+msgstr "Indonésky"
+
+msgid "Irish"
+msgstr "Irsky"
+
+msgid "Italian"
+msgstr "Italsky"
+
+msgid "Japanese"
+msgstr "Japonsky"
+
+msgid "Javanese"
+msgstr "Javánsky"
+
+msgid "Kashmiri"
+msgstr "Kašmírsky"
+
+msgid "Kazakh"
+msgstr "Kazašsky"
+
+msgid "Khmer"
+msgstr "Kmérsky"
+
+msgid "Kirghiz"
+msgstr "Kirgizstánsky"
+
+msgid "Korean"
+msgstr "Korejsky"
+
+msgid "Kurdish"
+msgstr "Kurdsky"
+
+msgid "Latin"
+msgstr "Latinsky"
+
+msgid "Latvian"
+msgstr "Lotyšsky"
+
+msgid "Lingala"
+msgstr "Lingala"
+
+msgid "Lithuanian"
+msgstr "Litevsky"
+
+msgid "Luxembourgish"
+msgstr "Luxemburgsky"
+
+msgid "Macedonian"
+msgstr "Makedonsky"
+
+msgid "Maltese"
+msgstr "Maltsky"
+
+msgid "Maori"
+msgstr "Maorsky"
+
+msgid "Moldavian"
+msgstr "Moldavsky"
+
+msgid "Mongolian"
+msgstr "Mongolsky"
+
+msgid "Nepali"
+msgstr "Nepálsky"
+
+msgid "Norwegian"
+msgstr "Norsky"
+
+msgid "Norwegian Bokmaal"
+msgstr "Norsky (Bokmaal)"
+
+msgid "Norwegian Nynorsk"
+msgstr "Norsky (Nynorsk)"
+
+msgid "Persian"
+msgstr "Persky"
+
+msgid "Polish"
+msgstr "Polsky"
+
+msgid "Portuguese"
+msgstr "Portugalsky"
+
+msgid "Raeto-Romance"
+msgstr "Staro-románsky"
+
+msgid "Romanian"
+msgstr "Rumunsky"
+
+msgid "Russian"
+msgstr "Rusky"
+
+msgid "Serbian"
+msgstr "Srbsky"
+
+msgid "Slovak"
+msgstr "Slovensky"
+
+msgid "Slovenian"
+msgstr "Slovinsky"
+
+msgid "Somali"
+msgstr "Somálsky"
+
+msgid "Spanish"
+msgstr "Španělsky"
+
+msgid "Swahili"
+msgstr "Svahilsky"
+
+msgid "Swedish"
+msgstr "Švédsky"
+
+msgid "Swiss German"
+msgstr "Německy (Švýcarsko)"
+
+msgid "Tajik"
+msgstr "Tadžikistánsky"
+
+msgid "Tamil"
+msgstr "Tamilsky"
+
+msgid "Thai"
+msgstr "Thaisky"
+
+msgid "Tibetan"
+msgstr "Tibetsky"
+
+msgid "Turkish"
+msgstr "Turecky"
+
+msgid "Turkmen"
+msgstr "Turkménsky"
+
+msgid "Ukrainian"
+msgstr "Ukrajinsky"
+
+msgid "Urdu"
+msgstr "Urdu"
+
+msgid "Uzbek"
+msgstr "Uzbekistánsky"
+
+msgid "Vietnamese"
+msgstr "Vietnamsky"
+
+msgid "Walloon"
+msgstr "Valónsky"
+
+msgid "Welsh"
+msgstr "Velšsky"
+
+msgid "Zulu"
+msgstr "Zulu"

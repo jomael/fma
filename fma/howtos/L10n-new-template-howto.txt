@@ -1,0 +1,99 @@
+This document describes HOTWO create/update new template file when a new
+FMA release is out. Do this on regular basis and commit new template to CVS
+in order to help Fma Translators and keep them with up-to-date inforation.
+
+0. If you are using CVS checkout module, make sure files are in Edit state:
+   * default.po
+   * ignore.po
+   * dxgettext.ini
+   * languages.po  (optional)
+   because they will be overwritted by dxGetText in next step, and later you
+   should commit changed files into CVS branch. File "default.po" fill be 
+   updated automatically by dxGetText application, while the file "ignore.po"
+   should be edited manually by you in step 2 (see the hint there)!
+
+1. Create new default.po file:
+
+   New template is created by windows explorer (if we have installed dxGetText):
+   click with right mouse button over FMA folder (in Explorer's tree view!) and 
+   select from local menu option "Extract translations to template". Check all 
+   checkboxes in dialog and click OK. This will produce file ...\fma\default.po
+   which is the new template file.
+
+2. VERY IMPORTANT STEP, DO NOT PASS IT BY, since it has to be done by hand and 
+   takes some time to complete, but it is strongly recommended task:
+
+   When new default.po file is created open it with UniRed Text Editor (or some 
+   other utf8 enabled editor), open also ignore.po file. For example, this is 
+   fragment from default.po file:
+
+   QUOTE (fragmet from default.po) 
+   -------------------------------
+   #. frmEditContact..PageControl1..TabSheet2..GroupBox1..btnPicDel..Caption
+   #: uEditContact.dfm:454
+   #. frmEditContact..PageControl1..TabSheet2..GroupBox2..btnSndDel..Caption
+   #: uEditContact.dfm:542
+   #. frmOptions..PageControl1..TabSheet10..grOutlookCategories..btDelCat..Caption
+   #: uOptions.dfm:633
+   #. frmOptions..pmOutlookCats..CatRemove1..Caption
+   #: uOptions.dfm:2478
+   msgid "Remove"
+   msgstr ""
+
+   #. frmEditContact..PageControl1..TabSheet2..GroupBox2..Caption
+   #: uEditContact.dfm:464
+   #. do not localize
+   #: uExploreView.pas:196
+   msgid "This text must be ignored AND NOT TRANSLATED!"
+   msgstr ""
+
+   #. frmEditContact..PageControl1..TabSheet2..GroupBox2..Label17..Caption
+   #: uEditContact.dfm:485
+   msgid "Sound information:"
+   msgstr ""
+   -------------------------------
+
+   Simply select second paragraph (comments(#), msgid and msgstr rows) which must 
+   not be translated, cut and paste at end of ignore.po file.
+
+   Our goal is to move all Properties values which should not be translated, into
+   ignore.po file. And since you're the developer you will know which ones should
+   be moved and which ones not. Also some special text as Registry keys etc should
+   be ignored too, etc. I think you got the point.
+
+   Wraning! Comment "#. do not localize" is imported from source code in string 
+   extraction time. This is text of first after // comment after string in source 
+   code. Maybe this is bug (or feature?) in dxgettext string extractor, but this  
+   may generate wrong "#. do not localize" comment in .po file.
+
+   HINT: You should use CVS Diff on file "default.po" to see only changes, then it
+   is really easy to expect only these changes and move appropriate parts into
+   file "ignore.po" :) I am using Araxis Merge tool for that part...
+
+   One more time - You have to look at file "default.po" and check out EVERY line:
+
+   msgid "Xxxx"
+
+   and see if it should be moved to file "ignore.po" or not. It is up to you to do
+   this part right! Do it carefuly!
+
+3. Name the newly generated template:
+
+   I think that latest.po and updated.po is not good names for this files. May 
+   be default-20050101.po (or .pot) is better. Update files are not necessary because 
+   new POT file is updated by PoEdit with old translation and translator must translate 
+   only new texts.
+
+4. Publish template to CVS and FMA Files page.
+
+   Copy this file to ...\fma\locale\en\LC_MESSAGES and upload it to CVS. Also if you
+   are Release Technician you could ZIP the LC_MESSAGES folder and publish it to FMA
+   Files section at sf.net web site (optional but recommended).
+   
+That's all! :)
+
+For more information see also: dxGetText Manual which could be found at this
+address: http://dybdahl.dk/dxgettext/docs/beta/manual.pdf
+
+All the best!
+ExpertOne, Dako

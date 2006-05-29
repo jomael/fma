@@ -1,0 +1,106 @@
+HOWTO: Delphi 6 & 7 EE IDE Setup
+
+Development tool is Borland Delphi 6 and 7 Enterprise edition. I'm not sure about 
+Professional Edition but Personal edition definatelly can't be used.
+
+FMA is current based on the following 3rd party components/libraries, all of 
+them are freeware:
+
+
+I. Those component have custom FMA patches included in Fma CVS. Apply those patches
+   before installing the components, please:
+
+  - ComPort Library, available from  
+    http://sourceforge.net/projects/comport/
+
+  - ToolBar/ToolButton, by Gabriel Corneanu, available from 
+    http://download.tntware.com/delphi_unicode_controls/contrib/unitntctrls.zip
+
+II. Those components packages have an Installer which should be used instead, thus
+    they are not included in our SDK packages:
+
+  - LMD Tools SE, available from 
+    http://www.lmdinnovative.com/
+
+  - JCL 1.94 Exception Dialog, available from 
+    http://sourceforge.net/projects/jcl/
+
+III. Those components are available on Internet and in our SDK packages:
+
+  - awScript, available from 
+    http://www.btinternet.com/~a.wingrove/scripting/
+
+  - RxLib, available from 
+    http://sourceforge.net/projects/rxlib/
+
+  - Tnt Unicode Controls, available from 
+    http://www.tntware.com/delphicontrols/unicode/
+
+  - Virtual Tree, available from 
+    http://www.delphi-gems.com/VirtualTreeview/VT.php
+
+  - CoolTrayIcon by Troels Jakobsen, available from 
+    http://subsimple.com/delphi.asp
+
+  - Graphics32 1.7.1, available from 
+    http://sourceforge.net/projects/graphics32
+
+  - Abbrevia components for Theme support, available from 
+    http://heanet.dl.sourceforge.net/sourceforge/tpabbrevia/tpabbrevia_3_04.zip
+
+  - ICS (Internet Conpoment Suite), available from 
+    http://www.overbyte.be
+
+  - SynEdit component, available from 
+    http://sourceforge.net/projects/synedit/
+
+  - dxGetText 1.2, available from 
+    http://dxgettext.sourceforge.net
+
+  - Delphi Fundamentals 3.28, available from  
+    http://fundementals.sourceforge.net/index.html
+
+IV. Those components are included in Fma CVS and our SDK packages:
+    (note: First install PRE and FMA and then DT packages)
+
+  - WBluetoothSocket, by floAt, included in the CVS
+
+  - WIrCOMMSocket, by Gabrijelcic (http://17slon.com/gp/gp), included in CVS
+
+  - SEProgress component, by Zdravko, included in the CVS
+
+  - WebUtil by Danny Heijl (danny.heijl@pandora.be), included in the CVS
+
+  - FmaWebUpdate component, by Zdravko, included in the CVS
+
+  - OKTThemeEngine, by Oktay Kocaturk, included in the CVS
+
+  - PBFolderDialog, older free version, included in the CVS
+
+  - ImageListXP, by Zdravko, included in the CVS
+    For full design-time support copy 'delphi32.exe.manifest' file in yours 
+    Delphi BIN folder and restart the Delphi IDE.
+
+  - Various Delphi units located in CVS components subfolder
+
+V. This component is for Delphi 6 only, and is obsolete for Delphi 7:
+
+  - XP ThemeManager, available from 
+    http://www.delphi-gems.com/ThemeManager.php
+
+VI. This component requires special intervention, please read notes below:
+
+  - Project JEDI API Library 1.1, available from 
+    http://sourceforge.net/projects/jedi-apilib/
+
+    Please enable {$DEFINE UNICODE} in jediapilib.inc to get unicode support !
+    Use version never then 2005/02/24 - do a CVS checkout if nessesery !
+
+  - TurboPower Visual PlanIt 1.03, available from 
+    http://sourceforge.net/projects/tpvplanit/
+
+    Use version never then 2005/12/20 - do a CVS checkout if nessesery !
+
+It should be all, let us know if you've anything to add. Good luck!!
+
+/fMA team

@@ -1,0 +1,246 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-03 11:04+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: ExpertOne <expertone@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: FMA Dev Team\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Bulgarian\n"
+"X-Poedit-Basepath: .\n"
+
+msgid "Street Atlas"
+msgstr "Пътна Карта"
+
+msgid "Lets you control Delorme Street Atlas 8.0"
+msgstr "Вие можете да контролирате Delorme Street Atlas 8.0"
+
+msgid "Calculate Route"
+msgstr "Намери Път"
+
+msgid "Get Directions"
+msgstr "Вземи Направления"
+
+msgid "Back on Track"
+msgstr "Върни на Пътя"
+
+msgid "Time/Distance"
+msgstr "Време/Разст"
+
+msgid "Guide"
+msgstr "Ръководство"
+
+msgid "Heading"
+msgstr "Посока"
+
+msgid "Miles Remaining"
+msgstr "Оставащи Мили"
+
+msgid "Reverse Route"
+msgstr "Обратен Път"
+
+msgid "Set Current Location"
+msgstr "Текущо положение"
+
+msgid "Set Destination"
+msgstr "Назначение"
+
+msgid "Get Map"
+msgstr "Покажи Карта"
+
+msgid "Home"
+msgstr "База"
+
+msgid "Address"
+msgstr "Адрес"
+
+msgid "Full address:"
+msgstr "Пълен адрес:"
+
+msgid "Directions"
+msgstr "Посоки"
+
+msgid "Street Atlas has been closed"
+msgstr "Street Atlas беше затворен"
+
+# say phrase
+msgid "North"
+msgstr "Север"
+
+# say phrase
+msgid "South"
+msgstr "Юг"
+
+# say phrase
+msgid "East"
+msgstr "Изток"
+
+# say phrase
+msgid "West"
+msgstr "Запад"
+
+# say phrase
+msgid "Southwest"
+msgstr "Югозапад"
+
+# say phrase
+msgid "Southeast"
+msgstr "Югоизток"
+
+# say phrase
+msgid "Northeast"
+msgstr "Североизток"
+
+# say phrase
+msgid "Northwest"
+msgstr "Сверозапад"
+
+# say phrase
+msgid "There is poor GPS coverage.  Please try again later."
+msgstr "Тук GPS обхватът не е добър. Моля опитайте отново по-късно."
+
+# say phrase
+msgid "Back on track is on"
+msgstr "Връщането на пътя е Вкл."
+
+# say phrase
+msgid "Back on track is off"
+msgstr "Връщането на пътя е Изк."
+
+# say phrase
+msgid "You are currently on "
+msgstr "Сега вие сте на "
+
+# say phrase
+msgid "north"
+msgstr "север"
+
+# say phrase
+msgid "north north east"
+msgstr "сереро североизток"
+
+# say phrase
+msgid "north east"
+msgstr "североизток"
+
+# say phrase
+msgid "east north east"
+msgstr "изток североизток"
+
+# say phrase
+msgid "east"
+msgstr "изток"
+
+# say phrase
+msgid "east south east"
+msgstr "изток югоизток"
+
+# say phrase
+msgid "south east"
+msgstr "югоизток"
+
+# say phrase
+msgid "south south east"
+msgstr "юг югоизток"
+
+# say phrase
+msgid "south"
+msgstr "юг"
+
+# say phrase
+msgid "south south west"
+msgstr "юг югозапад"
+
+# say phrase
+msgid "south west"
+msgstr "югозапад"
+
+# say phrase
+msgid "west south west"
+msgstr "запад югозапад"
+
+# say phrase
+msgid "west"
+msgstr "запад"
+
+# say phrase
+msgid "west north west"
+msgstr "запад северозапад"
+
+# say phrase
+msgid "north west"
+msgstr "северозапад"
+
+# say phrase
+msgid "north north west"
+msgstr "север северозапад"
+
+# say phrase
+msgid "You are headed "
+msgstr "Вие сте ?headed "
+
+# say phrase
+msgid " going "
+msgstr " изминавайки "
+
+# say phrase
+msgid " miles per hour at "
+msgstr " мили на час на "
+
+# say phrase
+msgid " feet above sea level."
+msgstr " фута над морското равнище."
+
+# say phrase
+msgid "The route has been reversed."
+msgstr "Пътя беше обърнат."
+
+# say phrase
+msgid "The destination is home"
+msgstr "Назначението е база"
+
+# say phrase
+msgid "The destination is "
+msgstr "Назначението е "
+
+# display
+msgid "Go "
+msgstr "Отидете "
+
+# display
+msgid " on"
+msgstr "вкл."
+
+# display
+msgid "Near "
+msgstr "Близо до "
+
+# display
+msgid "for "
+msgstr "за "
+
+# display
+msgid " mi"
+msgstr " мили"
+
+# display
+msgid "So Far: "
+msgstr "Дотук:"
+
+# display
+msgid "Elapsed: "
+msgstr "Изминато:"
+
+# display
+msgid "Exit: "
+msgstr "Изход:"
+

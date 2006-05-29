@@ -1,0 +1,5349 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.1\n"
+"POT-Creation-Date: 2005-03-14 13:33\n"
+"PO-Revision-Date: 2005-05-22 14:22+0100\n"
+"Last-Translator: PRIM <prichystal@ok-shop.cz>\n"
+"X-Translators: PRIM <prichystal@ok-shop.cz>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: dxgettext 1.2 RC 1\n"
+"Language-Team:  <prichystal@ok-shop.cz>\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-Country: Czech Republic\n"
+
+msgid "  Overwrite"
+msgstr "  Přepsat"
+
+msgid " %d bytes written"
+msgstr " %d bajtů uloženo"
+
+msgid " (Auto-answered)"
+msgstr "(automatická odpověď)"
+
+msgid " (patched)"
+msgstr " (opraveno)"
+
+msgid " (win error code: %d)"
+msgstr " (chyba číslo: %d)"
+
+msgid " - COUNT:"
+msgstr " - POČ.:"
+
+msgid " - chars "
+msgstr " - znaků "
+
+msgid " Answer mode  "
+msgstr " Odpovídání "
+
+msgid " Audio "
+msgstr "Zvuk "
+
+msgid " Backlight mode "
+msgstr " Podsvícení "
+
+msgid " Click on Details to view the update log notes."
+msgstr " Klikněte na 'Detaily' a dozvíte se více o aktualizacích"
+
+msgid " DATA "
+msgstr " DATA "
+
+msgid " Do you wish to continue?"
+msgstr " Přejete si pokračovat?"
+
+msgid " FAX "
+msgstr " FAX "
+
+msgid " Font size "
+msgstr " Velikost písma "
+
+msgid " Key sound "
+msgstr " Zvuk kláves "
+
+msgid " Line 1 "
+msgstr " Linka 1 "
+
+msgid " Line 2 "
+msgstr " Linka 2 "
+
+msgid " Message alert "
+msgstr " Upozornění na zprávu "
+
+msgid " Please specify the script file to be used in Options."
+msgstr " Prosím zadejte skript soubor pro použití ve Volbách."
+
+msgid " Signal %s "
+msgstr "Signál %s"
+
+msgid " Starting..."
+msgstr " Startuji..."
+
+msgid " Vibration"
+msgstr " Vibrace"
+
+msgid " added to FMA by Import (as dublicate)."
+msgstr " přidáno do databáze FMA (zdvojeno)."
+
+msgid " added to FMA by Import."
+msgstr " přidáno do databáze FMA."
+
+msgid " added to FMA by phone."
+msgstr "přidán do FMA z telefonu."
+
+msgid " added to phone by FMA."
+msgstr " přidán do telefonu z FMA."
+
+msgid " and changed in %s"
+msgstr " a změněno na %s"
+
+msgid " and deleted from %s"
+msgstr " a smazáno z %s"
+
+msgid " and new in %s"
+msgstr " a nově uloženo v %s"
+
+msgid " and unchanged in %s"
+msgstr " a nezměněno v %s"
+
+msgid " bytes)"
+msgstr " bajtů)"
+
+msgid " contact"
+msgstr " kontakt"
+
+msgid " deleted in FMA by phone."
+msgstr " smazán ve FMA z telefonu."
+
+msgid " deleted in phone by FMA."
+msgstr " smazán v telefonu z FMA."
+
+msgid " is obsolete in FMA."
+msgstr "je zastaralé ve FMA databázi."
+
+msgid " modified in FMA by Import."
+msgstr " upraveno v databázi FMA."
+
+msgid " modified in FMA by phone."
+msgstr "změněn ve FMA z telefonu."
+
+msgid " modified in phone by FMA."
+msgstr " změněn v telefonu z FMA."
+
+msgid "%.1n KB (%d bytes)"
+msgstr "%.1n KB (%d bytů)"
+
+msgid "%.1n Kb"
+msgstr "%.1n Kb"
+
+msgid ""
+"%0:s [%1:s] already exists. Do you want to replace it with newly imported "
+"one?\n"
+"\n"
+"Click Yes to replace it, or click No to add it as a New contact"
+msgstr ""
+"%0:s [%1:s] již existuje. Přejete si jej nahradit nově importovaným?\n"
+"\n"
+"Kliněte na 'Ano' pro nahrazení nebo 'Ne' pro přidání jako nový kontakt"
+
+msgid ""
+"%0:s message storage is %1:s%% or more full. Please delete some messages."
+msgstr ""
+"%0:s místo pro uložení zpráv je %1:s%% nebo více zaplněno. Smažte některé "
+"zprávy."
+
+msgid "%d %s, %.2d h %.2d m"
+msgstr "%d %s, %.2d h %.2d m"
+
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] "%d den"
+msgstr[1] "%d dnů"
+
+msgid "%dx%d (%dx%d pixels)"
+msgstr "%dx%d (%dx%d pixelů)"
+
+msgid "%s char left"
+msgid_plural "%s chars left"
+msgstr[0] "%s znak zůstává"
+msgstr[1] "%s znaků zůstává"
+
+msgid "%s deleted contact."
+msgid_plural "%s deleted contacts."
+msgstr[0] "%s smazaný kontakt."
+msgstr[1] "%s smazaných kontaktů."
+
+msgid "%s deleted in %s by FMA."
+msgstr "%s vymazáno z  %s programem FMA."
+
+msgid "%s has a conflict"
+msgstr "%s není v pořádku"
+
+msgid "%s is added to %s"
+msgstr "%s je přidáno do %s"
+
+msgid "%s is calling..."
+msgstr "%s volá..."
+
+msgid "%s is changed in %s"
+msgstr "%s je změněno na %s"
+
+msgid "%s is deleted from %s"
+msgstr "%s je smazáno z %s"
+
+msgid "%s is linked to %s"
+msgstr "%s je spojeno s %s"
+
+msgid "%s is new in %s"
+msgstr "%s je nově zapsáno jako %s"
+
+msgid "%s is unchanged in %s"
+msgstr "%s je nezměneno na %s"
+
+msgid "%s is updated into %s"
+msgstr "%s je vloženo do %s"
+
+msgid "%s item"
+msgid_plural "%s items"
+msgstr[0] "%s položka"
+msgstr[1] "%s položky"
+
+msgid "%s modified contact."
+msgid_plural "%s modified contacts."
+msgstr[0] "%s upravený kontakt."
+msgstr[1] "%s upravených kontaktů."
+
+msgid "%s stored in %s by FMA."
+msgstr "%s uloženo do %s programem FMA."
+
+msgid "%s will be added to %s"
+msgstr "%s bude přidáno do %s"
+
+msgid "%s will be deleted from %s"
+msgstr "%s bude smazáno z %s"
+
+msgid "%s will be updated into %s"
+msgstr "%s bude vloženo do %s"
+
+msgid ""
+"%s.\n"
+"\n"
+"Is this ok?"
+msgstr ""
+"%s.\n"
+"\n"
+"Je to OK?"
+
+msgid "&About..."
+msgstr "O programu..."
+
+msgid "&Activate Profile"
+msgstr "&Aktivovat profil"
+
+msgid "&Add"
+msgstr "&Přidat"
+
+msgid "&Add To Phonebook..."
+msgstr "&Přidat do adresáře..."
+
+msgid "&Add..."
+msgstr "Přidat"
+
+msgid "&Apply"
+msgstr "&Použít"
+
+msgid "&Auto Reconnect (use Proximity)"
+msgstr "Automatické obnovení spojení (po nečinnosti)"
+
+msgid "&Call Contact..."
+msgstr "Volat kontakt..."
+
+msgid "&Cancel"
+msgstr "Storno"
+
+msgid "&Check for Update..."
+msgstr "Aktualizace programu..."
+
+msgid "&Compile"
+msgstr "&Kompilovat"
+
+msgid "&Connect"
+msgstr "Připojit"
+
+msgid "&Copy"
+msgstr "&Kopírovat"
+
+msgid "&Copy to Archive"
+msgstr "Kopírovat do archívu"
+
+msgid "&Delete"
+msgstr "O&dstranit"
+
+msgid "&Delete..."
+msgstr "Smazat..."
+
+msgid "&Details"
+msgstr "Podrobnosti"
+
+msgid "&Dial..."
+msgstr "Volat.."
+
+msgid "&Disconnect"
+msgstr "Odpojit"
+
+msgid "&Download"
+msgstr "Stahování"
+
+msgid "&Download..."
+msgstr "Stáhnout..."
+
+msgid "&Edit"
+msgstr "Úpr&avy"
+
+msgid "&Explore"
+msgstr "Procházet"
+
+msgid "&Export..."
+msgstr "&Exportovat..."
+
+msgid "&Filter"
+msgstr "&Filtr"
+
+msgid "&Finish"
+msgstr "Dokončit"
+
+msgid "&Forward"
+msgstr "&Přesměrovat"
+
+msgid "&Help"
+msgstr "&Nápověda"
+
+msgid "&Images"
+msgstr "Obrázky"
+
+msgid "&Install"
+msgstr "Instalace"
+
+msgid "&Link"
+msgstr "Propojit"
+
+msgid "&Log"
+msgstr "Výpisy"
+
+msgid "&Lookup Device"
+msgstr "Najdi zařízení"
+
+msgid "&Message Contact..."
+msgstr "Poslat zprávu..."
+
+msgid "&Minimize"
+msgstr "&Minimalizuj"
+
+msgid "&Move Right"
+msgstr "Přesun vpravo"
+
+msgid "&Move to Archive"
+msgstr "Přesunout do archívu"
+
+msgid "&New Message..."
+msgstr "Nová zpráva..."
+
+msgid "&New Person..."
+msgstr "&Nový kontakt..."
+
+msgid "&Next >"
+msgstr "Další >"
+
+msgid "&Options..."
+msgstr "Nastavení..."
+
+msgid "&Own Business Card..."
+msgstr "Vlastní vizitka"
+
+msgid "&Paste"
+msgstr "Vložit"
+
+msgid "&Phone"
+msgstr "&Telefon"
+
+msgid "&Program"
+msgstr "&Programovat"
+
+msgid "&Properties"
+msgstr "Nastavení"
+
+msgid "&Properties..."
+msgstr "Vlastnosti..."
+
+msgid "&Refresh"
+msgstr "Obnovit"
+
+msgid "&Refresh Contacts"
+msgstr "Obnovit kontakty"
+
+msgid "&Refresh Folders"
+msgstr "&Obnovit složky"
+
+msgid "&Remove"
+msgstr "Odstranit"
+
+msgid "&Replace..."
+msgstr "Nahradit..."
+
+msgid "&Reply"
+msgstr "Odpovědět"
+
+msgid "&Restore"
+msgstr "Obnovit"
+
+msgid "&Save Changes"
+msgstr "Uložit změny"
+
+msgid "&Save..."
+msgstr "Uložit..."
+
+msgid "&Screenshot..."
+msgstr "&Screenshot..."
+
+msgid "&Search"
+msgstr "Hledat"
+
+msgid "&Select a contact to call:"
+msgstr "Vyberte kontakt pro volání:"
+
+msgid "&Selected Image"
+msgstr "Označený obrázek"
+
+msgid "&Send"
+msgstr "O&deslat"
+
+msgid "&Send Message..."
+msgstr "Ode&slat zprávu..."
+
+msgid "&Test Proximity"
+msgstr "O&testuj"
+
+msgid "&Toggle Connect"
+msgstr "Přepnout spojení"
+
+msgid "&Tools"
+msgstr "&Nástroje"
+
+msgid "&Undo"
+msgstr "&Zpět"
+
+msgid "&Undo Edit Last Contact..."
+msgstr "Zpět úpravu posledního kontaktu..."
+
+msgid "&Upload..."
+msgstr "&Ulož do telefonu"
+
+msgid "&View"
+msgstr "Zobrazení"
+
+msgid "(Decoding Error)"
+msgstr "(Chyba dekódování)"
+
+msgid "(Loading %s...)"
+msgstr "(Nahrávání %s...)"
+
+msgid "(No Information)"
+msgstr "(Žádné informace)"
+
+msgid "(Sending canceled, message removed from Outbox)"
+msgstr "(Posílání přerušeno nebo byla zpráva odstraněna z Outlooku)"
+
+msgid "(Sending delayed, will try to send it later)"
+msgstr "(Posílání se zpozdí, zkus později)"
+
+msgid "(This implementation is Ericsson specific)"
+msgstr "(Tato specifikace je charakteristická pro Ericsson)"
+
+msgid "(Title) Firstname Lastname "
+msgstr "(titul) jméno příjmení"
+
+msgid "(Title) Firstname Lastname (Organization)"
+msgstr "(titul) jméno příjmení (organizace)"
+
+msgid "(Title) Lastname, Firstname"
+msgstr "(titul) příjmení, jméno"
+
+msgid "(Title) Lastname, Firstname (Organization)"
+msgstr "(titul) příjmení, jméno (organizace)"
+
+msgid "(Unknown)"
+msgstr "(Neznámý)"
+
+msgid "(Unsupported: Unknown coding scheme)"
+msgstr "(Nepodporováno)"
+
+msgid ""
+"(do not send any confidential information as passwords via your phone using "
+"text messages)"
+msgstr "(neposílejte žádné tajné informace přes telefon jako textovou zprávu)"
+
+msgid "(polyphonic stereo sound, supported by phone)"
+msgstr "(polyfonní stereo zvuk podporovaný telefonem)"
+
+msgid ""
+"(still in the progress of adding, let us know if your name should be here)"
+msgstr "(dejte nám vědět, pokud jsme na někoho zapomněli)"
+
+msgid "(will be loaded from phone when connected)"
+msgstr "(bude nahráno z telefonu po připojení)"
+
+msgid "*** MARKER ***"
+msgstr "*** ZNAČKA ***"
+
+msgid "*** Update finished"
+msgstr "*** Aktualizace ukončena"
+
+msgid "*** Update started"
+msgstr "*** Aktualizace zahájena"
+
+msgid "*** User abort detected"
+msgstr "*** Akce ukončena uživatelem"
+
+msgid "- Application NOT updated (move failed)."
+msgstr "- Aplikace nebyla aktualizována (kopírování selhalo)"
+
+msgid "- Application updated successfuly."
+msgstr "- Aplikace úspěšně aktualizována."
+
+msgid ". Do you wish to continue?"
+msgstr "Přejete si pokračovat?"
+
+msgid "0 min before"
+msgstr "v čase"
+
+msgid "0,0 KB (0 bytes)"
+msgstr "0,0 KB (0 bytů)"
+
+msgid "1 hour"
+msgstr "1 hodina"
+
+msgid "1 hour before"
+msgstr "1 hodinu předem"
+
+msgid "10 min before"
+msgstr "10 min předem"
+
+msgid "128x127 (0x0 pixels)"
+msgstr "128x127 (0x0 pixelů)"
+
+msgid "15 min before"
+msgstr "15 min předem"
+
+msgid "2 hours"
+msgstr "2 hodiny"
+
+msgid "30 min before"
+msgstr "30 min předem"
+
+msgid "30 minutes"
+msgstr "30 minut"
+
+msgid "4 hours"
+msgstr "4 hodiny"
+
+msgid "5 min before"
+msgstr "5 min předem"
+
+msgid ":: CREDITS ::"
+msgstr ":: PODĚKOVÁNÍ ::"
+
+msgid ":: DESIGN ::"
+msgstr ":: GRAFIKA ::"
+
+msgid ":: FORUMS ::"
+msgstr ":: FÓRUM ::"
+
+msgid ":: LEAD DEVS ::"
+msgstr ":: PROGRAMOVÁNÍ ::"
+
+msgid ":: LOCALIZATIONS ::"
+msgstr ":: PŘEKLAD ::"
+
+msgid ":: SCRIPTS ::"
+msgstr ":: SKRIPTY ::"
+
+msgid "< &Previous"
+msgstr "< &Předchozí"
+
+msgid "<no photo>"
+msgstr "<bez fotografie>"
+
+msgid "A"
+msgstr "A"
+
+msgid "A component is linked to OnRxBuf event"
+msgstr "Komponenta je propojena s událostí OnRxBuf"
+
+msgid ""
+"A lower value means more transparency, while a higher value will make a "
+"window more solid (less transparency)."
+msgstr "Nižší hodnota znamená více transparentnosti."
+
+msgid ""
+"A new contact has been found. Select an existing contact to link to or click "
+"Add As New button to add it as a new contact."
+msgstr ""
+"Nalezen nový kontakt. Zvolte stávající kontakt pro připojení nebo zvolte "
+"Přidat jako nový pro vytvoření nového kontaktu."
+
+msgid "A&bort"
+msgstr "Zrušit"
+
+msgid "AC Powered"
+msgstr "Zapojen v síti"
+
+msgid "Aborts current operation"
+msgstr "Zruš probíhající operaci"
+
+msgid "About"
+msgstr "O programu"
+
+msgid "Access Manager..."
+msgstr "Přístup..."
+
+msgid "Actio&n"
+msgstr "&Akce"
+
+msgid "Action +ALs"
+msgstr "Akce +ALs"
+
+msgid "Action »"
+msgstr "Akce »"
+
+msgid "Activate Profile"
+msgstr "Aktivovat profil"
+
+msgid "Active"
+msgstr "Aktivní"
+
+msgid "Activity Log"
+msgstr "Výpis aktivit"
+
+msgid "Activity Log..."
+msgstr "Výpis aktivit..."
+
+msgid "Add Category..."
+msgstr "Přidat kategorii"
+
+msgid "Add New Calendar Here"
+msgstr "Zde přidej záznam do kalendáře"
+
+msgid "Add New Contacts Here"
+msgstr "Zde přidej nový kontakt"
+
+msgid "Add New Tasks Here"
+msgstr "Zde přidej novou úlohu"
+
+msgid "Add To Group Wizard"
+msgstr "Přdat do průvodce skupiny"
+
+msgid "Add To Phonebook Wizard"
+msgstr "Přidat do průvodce"
+
+msgid "Add as &New"
+msgstr "Přidat jako &nový"
+
+msgid "Add new Bookmark"
+msgstr "Přidat novou záložku"
+
+msgid "Add new Group"
+msgstr "Přidá novou skupinu"
+
+msgid "Add new Note"
+msgstr "Přidat novou poznámku"
+
+msgid "Add new Person"
+msgstr "Přidat nový kontakt"
+
+msgid "Add sender to Phonebook"
+msgstr "Přidat odesílatele do seznamu"
+
+msgid "Add to &Group"
+msgstr "Přidat do skupiny"
+
+msgid "Add to Favorites"
+msgstr "Přidat k oblíbeným"
+
+msgid "Add to group"
+msgstr "Přidat do skupiny"
+
+msgid "Add to phonebook"
+msgstr "Přidat do adresáře"
+
+msgid "Add..."
+msgstr "Přidat..."
+
+msgid "Adding to Group..."
+msgstr "Přidávání do skupiny..."
+
+msgid "Adding to group..."
+msgstr "Přidávám do skupiny..."
+
+msgid "Address"
+msgstr "Adresa"
+
+msgid "Advanced"
+msgstr "Rozšířené"
+
+msgid "Alerting"
+msgstr "Výstraha"
+
+msgid "All Categories"
+msgstr "Všechny kategorie"
+
+msgid "All Contacts..."
+msgstr "Všechny kontakty..."
+
+msgid "Allow this contact to call me even if call restrictions are applied."
+msgstr ""
+"Umožnit tomuto číslu, aby mi volalo, i když mají být jeho hovory blokovány."
+
+msgid "Always Add as New"
+msgstr "Vždy vložit jako nový"
+
+msgid "Always hide my number when calling this contact"
+msgstr "Vždy skryj moje číslo, když volám toto číslo"
+
+msgid "Always start Fma Minimized"
+msgstr "Spouštět FMA minimalizovaný"
+
+msgid "Anniversary"
+msgstr "Výročí"
+
+msgid "Answer"
+msgstr "Odpovědět"
+
+msgid "Any key"
+msgstr "Jakákoliv klávesa"
+
+msgid "Appearance"
+msgstr "Rozhraní"
+
+msgid "Application"
+msgstr "Aplikace"
+
+msgid "Application \"%s\" is still running. Please, close it manualy."
+msgstr "Aplikace \"%s\" je dosud spuštěna, ukončete ji prosím manuálně."
+
+msgid "Application must be restarted in order to apply this setting."
+msgstr "Program musí být restartován aby se projevily změny."
+
+msgid "Apply"
+msgstr "Použít"
+
+msgid "Applying changes..."
+msgstr "Aplikuji změny..."
+
+msgid "Applying patch \"%s\"..."
+msgstr "Aktualizuji soubor \"%s\"..."
+
+msgid "Appointment"
+msgstr "Schůzka"
+
+msgid "Archive"
+msgstr "Archív"
+
+msgid "Archive (SIM)"
+msgstr "Archív (SIM)"
+
+msgid "Archiving %s item(s)..."
+msgstr "Archivace %s položky..."
+
+msgid "Are you sure you want to delete %0:s from \"%1:s\"?"
+msgstr "Opravdu chcete odstranit %0:s z \"%1:s\"?"
+
+msgid "Are you sure you want to delete the bookmark \"%s\"?"
+msgstr "Opravdu si přejete smazat záložku \"%s\"?"
+
+msgid "Are you sure you want to delete the group \"%s\"?"
+msgstr "Opravdu chcete smazat skupinu \"%s\"?"
+
+msgid "Are you sure you want to disconnect and power your phone off?"
+msgstr "Opravdu chcete odpojit a vypnout telefon?"
+
+msgid "Are you sure you want to remove this category?"
+msgstr "Opravdu chcete smazat tuto kategorii?"
+
+msgid "As Details"
+msgstr "Jako detaily"
+
+msgid "As Icons"
+msgstr "Jako ikony"
+
+msgid "As a New Contact"
+msgstr "Jako nový kontakt"
+
+msgid "Auto"
+msgstr "Auto"
+
+msgid "Auto Connect on Fma &Startup"
+msgstr "Automatické spojení po startu FMA"
+
+msgid "Auto detect"
+msgstr "Automaticky"
+
+msgid "Automatic Updates"
+msgstr "Automatické aktualizace"
+
+msgid "Automaticaly"
+msgstr "Automaticky"
+
+msgid "Autonumbering:"
+msgstr "Automatické číslování:"
+
+msgid "B&rowse..."
+msgstr "&Procházet..."
+
+msgid "Bad Gateway"
+msgstr "špatná brána"
+
+msgid "Bad request"
+msgstr "špatná odezva"
+
+msgid "Battery "
+msgstr "Bateríe"
+
+msgid "Battery Err"
+msgstr "Chyba baterie"
+
+msgid "Battery N/A"
+msgstr "Baterie neznámá"
+
+msgid "Battery Status:"
+msgstr "Stav baterie:"
+
+msgid "Battery Voltage:"
+msgstr "Napětí baterie:"
+
+msgid "Battery and Phone State Monitoring"
+msgstr "Monitoring stavu telefonu a baterie"
+
+msgid "Battery temperature:"
+msgstr "Teplota baterie:"
+
+msgid "Battery type:"
+msgstr "Typ baterie:"
+
+msgid "Battery:"
+msgstr "Baterie:"
+
+msgid "Baudrate"
+msgstr "Rychlost"
+
+msgid "Behavior"
+msgstr "Chování"
+
+msgid "Behaviour"
+msgstr "Chování"
+
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+msgid "Bluetooth Setup"
+msgstr "Nastavení bluetooth"
+
+msgid "Bookmark"
+msgstr "Záložka"
+
+msgid "Bookmark at position 1 is reserved and can not be deleted"
+msgstr "Záložka na pozici 1 je rezervována a nemůže být vymazána"
+
+msgid "Bookmark at position 1 is reserved and can not be edited"
+msgstr "Záložka na pozici 1 je rezervována a nemůže být upravována"
+
+msgid "Bookmark changed"
+msgstr "Záložka změněna"
+
+msgid "Bookmark created"
+msgstr "Záložky vytvořeny"
+
+msgid "Bookmark deleted"
+msgstr "Záložka smazána"
+
+msgid "Bookmarks"
+msgstr "Záložky"
+
+msgid "Bookmarks Folder"
+msgstr "Ukládání záložek"
+
+msgid "Bookmarks Sync"
+msgstr "Synchronizace záložek"
+
+msgid "Bookmarks are synchronized one-way only for now - from phone to PC"
+msgstr "Záložky jsou nyní synchronizování pouze z telefonu do PC"
+
+msgid "Bro&wse"
+msgstr "Procházet"
+
+msgid "Browse for an update..."
+msgstr "Hledej aktualizace..."
+
+msgid "Build Unknown"
+msgstr "Neznámé sestavení"
+
+msgid "Build contact structure"
+msgstr "Vytvářím strukturu kontaktů"
+
+msgid "Build phone folders"
+msgstr "Vytvářím adresáře"
+
+msgid "Building Contact Lists..."
+msgstr "Vytvářím seznam kontaktů..."
+
+msgid "Busy"
+msgstr "Obsazeno"
+
+msgid "C"
+msgstr "C"
+
+msgid "Calendar"
+msgstr "Kalendář"
+
+msgid "Calendar Folders"
+msgstr "Složky kalendáře"
+
+msgid "Calendar Month"
+msgstr "Měsíční kalendář"
+
+msgid "Calendar Week"
+msgstr "Týdenní kalendář"
+
+msgid "Calibrate my connection speed on Finish."
+msgstr "Kalibrace rychlosti spojení po dokončení."
+
+msgid "Calibrating Port Speed..."
+msgstr "Kalibruji rychlost portu..."
+
+msgid "Call"
+msgstr "Hovor"
+
+msgid "Call %s and arrange a date."
+msgstr "Zavolat %s a zařadit datum."
+
+msgid "Call Actions"
+msgstr "Volání"
+
+msgid "Call Contact"
+msgstr "Volat kontakt"
+
+msgid "Call Contact..."
+msgstr "Zavolat..."
+
+msgid "Call Information Popup"
+msgstr "Informace o hovoru"
+
+msgid "Call Monitor"
+msgstr "Monitor hovorů"
+
+msgid "Call Notes"
+msgstr "Seznam hovorů"
+
+msgid "Call Notes:"
+msgstr "Seznam hovorů:"
+
+msgid "Call Popup"
+msgstr "Oznámení hovoru"
+
+msgid "Call Preferences"
+msgstr "Předvolby volání"
+
+msgid "Call Recipients"
+msgstr "Příjemci hovorů"
+
+msgid "Call ended (%s)"
+msgstr "Hovor ukončen (%s)"
+
+msgid "Caller"
+msgstr "Volající"
+
+msgid "Calling"
+msgstr "Volání"
+
+msgid "Calling..."
+msgstr "Volám..."
+
+msgid "Calls"
+msgstr "Hovory"
+
+msgid "Calls List"
+msgstr "Seznam hovorů"
+
+msgid "Camera button"
+msgstr "Spoušť fotoaparátu"
+
+msgid "Cancel"
+msgstr "Zrušit"
+
+msgid "Cancel current Call"
+msgstr "Zrušit probíhající hovor"
+
+msgid "Cannot change led state if ComPort is selected"
+msgstr "Nelze měnit stav LED, jestliže je zvolen COM port"
+
+msgid "Cannot set property while connected"
+msgstr "Během připojení nelze měnit vlastnosti"
+
+msgid "Cannot wait for event if event thread is created"
+msgstr "Nelze čekat na událost, dokud není vytvořeno vlákno"
+
+msgid "Categories:"
+msgstr "Kategorie:"
+
+msgid "Category Properties"
+msgstr "Vlastnosti kategorie"
+
+msgid "Category name:"
+msgstr "Jméno kategorie:"
+
+msgid "Category:"
+msgstr "Kategorie:"
+
+msgid "Cell"
+msgstr "Číslo"
+
+msgid "Cell Phone"
+msgstr "Mobilní telefon"
+
+msgid "Cell [%s]"
+msgstr "Mobil [%s]"
+
+msgid "Cell phone: "
+msgstr "Telefonní číslo:"
+
+msgid "Change Profile"
+msgstr "Změnit profil"
+
+msgid "Change current Phone offline"
+msgstr "Změnit telefon na offline"
+
+msgid "Changes have been made into current folder."
+msgstr "V aktuální složce byly provedeny změny."
+
+msgid "Changing bookmark..."
+msgstr "Změna záložky..."
+
+msgid "Charge"
+msgstr "nabíjení"
+
+msgid "Charge Counter:"
+msgstr "Počet nabíjení:"
+
+msgid "Chars"
+msgstr "znaky"
+
+msgid "Chat Contact..."
+msgstr "Chatovat..."
+
+msgid "Chat Message"
+msgstr "Zpráva"
+
+msgid "Chat with Contact"
+msgstr "Chatovat s kontaktem"
+
+msgid "Chatting with"
+msgstr "Chatovat s"
+
+msgid "Check For Update"
+msgstr "Kontroluji aktuální verzi"
+
+msgid "Check out Outbox folder for unsent messages on Fma start and exit"
+msgstr ""
+"Zkontrolovat složku odeslaných zpráv při startu a ukončení FMA pro "
+"neodeslané zprávy"
+
+msgid "Check your phone for instructions..."
+msgstr "Zkontrolujte prosím nastavení telefonu..."
+
+msgid "Checking Obex support"
+msgstr "Kontroluji podporu OBEX"
+
+msgid "Checking SIM status"
+msgstr "Zjišťuji stav SIM"
+
+msgid "Checking battery support"
+msgstr "Zjišťuji informace o baterii"
+
+msgid "Checking keypad support"
+msgstr "Kontroluji klávesnici"
+
+msgid "Checking phone clock"
+msgstr "Kontroluje hodiny v telefonu"
+
+msgid "Checking signal support"
+msgstr "Kontroluji signál"
+
+msgid "Checking voice support"
+msgstr "Zjišťuji podporu hlasu"
+
+msgid "Choose Link"
+msgstr "Vybrat odkaz"
+
+msgid ""
+"Choose the DisplayName to be used as default when importing new contacts "
+"info FMA."
+msgstr ""
+"Zvolte způsob, jakým bude zobrazované jméno při importu nových kontaktů do "
+"FMA."
+
+msgid "City"
+msgstr "Město"
+
+msgid "City:"
+msgstr "Město:"
+
+msgid "City: "
+msgstr "Město: "
+
+msgid "Cl&ear"
+msgstr "&Smazat"
+
+msgid "Clear"
+msgstr "Smazat"
+
+msgid "Clear All"
+msgstr "Smazat vše"
+
+msgid "Clear Message Counter"
+msgstr "Vynulovat počítadlo zpráv"
+
+msgid "Clear this Message"
+msgstr "Odstranit tuto zprávu"
+
+msgid "Clear..."
+msgstr "Vymazat..."
+
+msgid "ClearCommError function failed"
+msgstr "Funkce ClearCommError selhala"
+
+msgid "Click"
+msgstr "Kliknutí"
+
+msgid "Click Cancel to abort current operation."
+msgstr "Klikni na Zrušit pro přerušení procesu."
+
+msgid "Click Download to retrieve updates from Internet, or Cancel to exit."
+msgstr ""
+"Klikni na Stažení pro získání aktualizace z Internetu, Zrušit přeruší proces."
+
+msgid ""
+"Click Install to apply downloaded updates immediately, or Cancel to exit."
+msgstr ""
+"Klikni na Install pro instalaci stažené aktualizace, Zrušit přeruší proces."
+
+msgid "Click Next to continue."
+msgstr "Kliknete na Další pro pokračování."
+
+msgid "Close"
+msgstr "Zavřít"
+
+msgid "Closing this box will Hang Up current outgoing call. Continue?"
+msgstr "Zavření tohoto boxu způsobí přerušení hovoru. Pokračovat?"
+
+msgid "Col"
+msgstr "sloupec"
+
+msgid "Communication"
+msgstr "Komunikace"
+
+msgid "Company: "
+msgstr "Organizace: "
+
+msgid "Completed"
+msgstr "Provedeno"
+
+msgid "Completed on:"
+msgstr "Provést na:"
+
+msgid "Compose Message Window"
+msgstr "Okno se zprávou"
+
+msgid "Con not access temporary file %s for writing"
+msgstr "Nemohu otevřít dočasné soubory pro zápis"
+
+msgid "Confirm"
+msgstr "Potvrzení"
+
+msgid "Confirm Adding"
+msgstr "Potvrdit přidání"
+
+msgid "Confirm Deleting"
+msgstr "Potvrdit smazání"
+
+msgid "Confirm Updating"
+msgstr "Potvrdit doplnění"
+
+msgid "Confirm sending to phone?"
+msgstr "Potvrzujete odeslání do telefonu?"
+
+msgid "Confirmation is asked for %s"
+msgstr "Dotaz na potvrzení pro %s"
+
+msgid "Confirmation is granted"
+msgstr "Potvrzení je uděleno"
+
+msgid "Confirmation is not granted"
+msgstr "Potvrzení není uděleno"
+
+msgid "Conflict"
+msgstr "Konflikt"
+
+msgid "Conflict has been solved in favor of %s"
+msgstr "Chyba byla opravena díky %s"
+
+msgid "Conflict has not been solved"
+msgstr "Chyba nebyla opravena"
+
+msgid "Connect on Fma startup"
+msgstr "Spojení po startu FMA"
+
+msgid "Connect to Phone via"
+msgstr "Připojit k telefonu pomocí"
+
+msgid "Connected"
+msgstr "Připojeno"
+
+msgid "Connected successfully to %s phone."
+msgstr "Úspěšně připojeno k telefonu %s"
+
+msgid "Connecting"
+msgstr "Připojuji"
+
+msgid "Connecting to phone... %d%%"
+msgstr "Připojování telefonu... %d%%"
+
+msgid "Connecting..."
+msgstr "Připojuji..."
+
+msgid "Connection"
+msgstr "Spojení"
+
+msgid "Connection Error (0x%s)"
+msgstr "Chyba spojení (0x%s)"
+
+msgid "Connection Type:"
+msgstr "Typ spojení:"
+
+msgid "Connection aborted by user"
+msgstr "Připojení přerušeno uživatelem"
+
+msgid "Connection aborted by user or phone battery is too low"
+msgstr "Připojení přerušeno uživatelem nebo baterie není dostatečně nabitá"
+
+msgid "Connection aborted by user!"
+msgstr "Spojení ukončeno uživatelem!"
+
+msgid "Connection aborted!"
+msgstr "Spojení přerušeno!"
+
+msgid "Connection failed"
+msgstr "Připojení se nezdařilo."
+
+msgid "Connection failed!"
+msgstr "Chyba spojení!"
+
+msgid "Connection: Lost!"
+msgstr "Spojení ztraceno!"
+
+msgid "Connectivity"
+msgstr "Připojení"
+
+msgid "Consumption:"
+msgstr "Odběr:"
+
+msgid "Contact"
+msgstr "Kontakt"
+
+msgid "Contact #"
+msgstr "Kontakt #"
+
+msgid ""
+"Contact %s already exists.\n"
+"\n"
+msgstr ""
+"Kontakt %s již existuje.\n"
+"\n"
+
+msgid ""
+"Contact %s already exists. Do you want to replace its current number [%s] "
+"with imported number [%s] ?\n"
+"\n"
+"Click Yes to replace number, or click No to add it as a New contact"
+msgstr ""
+"kontakt %s již existuje. Přejete si nahradit jeho číslo [%s] importovaným "
+"čísem [%s] ?\n"
+"\n"
+"Klikněte na 'Ano' pro přepsání, nebo na 'Ne' pro přidání nového kontaktu."
+
+msgid "Contact - %s"
+msgstr "Kontakt - %s"
+
+msgid "Contact Actions"
+msgstr "Kontakty"
+
+msgid "Contact Calls..."
+msgstr "Hovory..."
+
+msgid "Contact Folders"
+msgstr "Složky kontaktů"
+
+msgid "Contact Home"
+msgstr "domů"
+
+msgid "Contact Mail"
+msgstr "mail"
+
+msgid "Contact Mobile"
+msgstr "mobil"
+
+msgid "Contact Name"
+msgstr "Jméno"
+
+msgid "Contact Phone book settings"
+msgstr "Nastavení adresáře"
+
+msgid "Contact Work"
+msgstr "do práce"
+
+msgid "Contact name"
+msgstr "Jméno"
+
+msgid "Contact:"
+msgstr "Kontakt:"
+
+msgid "Contacts"
+msgstr "Kontakty"
+
+msgid "Contacts linking aborted by user"
+msgstr "Propojování kontaktů přerušeno uživatelem"
+
+msgid "Contents:"
+msgstr "Obsah:"
+
+msgid "Copy"
+msgstr "Kopírovat"
+
+msgid "Copy All from Phonebook to SIM..."
+msgstr "Překopírovat vše z telefonu na SIM..."
+
+msgid "Copy All from SIM to Phonebook..."
+msgstr "Překopírovat vše ze SIM do telefonu..."
+
+msgid ""
+"Copy all contacts from Phonebook. Current SIM entries will be deleted. Are "
+"you sure?"
+msgstr ""
+"Zkopíruje všechny kontakty ze seznamu. Aktuální obsah SIM karty bude "
+"vymazán. Přejete si pokračovat?"
+
+msgid "Copy from Phonebook: %s new items"
+msgstr "Kopírování ze seznamu: %s nových položek"
+
+msgid "Copy to Archive"
+msgstr "Kopírovat do archívu"
+
+msgid "Copy to Phonebook: %s new, %s modified and %s items skipped"
+msgstr "Kopírování do seznamu: %s nové, %s změněné a %s položky přeskočené"
+
+msgid "Copy|Copies the selection and puts it on the Clipboard"
+msgstr "Kopíruje označené do schránky"
+
+msgid ""
+"Could not change WAP home page!\n"
+"\n"
+"In certain terminals a number of WAP profiles may be locked at manufacturing "
+"to prevent the users from altering the predefined WAP settings. When such a "
+"profile is active some of the commands in this ensemble will not function "
+"according to specification. The read and test commands should always "
+"function as expected but the set command will return ERROR even though the "
+"command is given using the correct syntax and all parameters are within "
+"range."
+msgstr ""
+"Nelze změnit domovskou stránku WAP!\n"
+"\n"
+"Něktrá nastavení WAPu mohou být z výroby pevně nastavené a nelze je změnit. "
+"Pokud je některý profil aktivní, nemusí některé příkazy správně fungovat. "
+"Příkazy pro čtení a testo budou pravděpodobně fungovat bez problémů, ale "
+"příkazy pro nastavení parametrů skončí chybou, ačkoliv byly zadány správně a "
+"se všemi parametry."
+
+msgid "Could not create file %s"
+msgstr "Nelze vytovřit soubor %s"
+
+msgid ""
+"Could not find Scripting Framework installation files. Please locate them "
+"manualy!"
+msgstr ""
+"Nelze nalézt instalační soubory Scripting Framework. Prosím najděte je ručně!"
+
+msgid "Could not perform Web Update with unknown App build."
+msgstr "Nemohu provés aktualizaci z Internetu - neznámý typ aplikace"
+
+msgid "Could not perform Web Update without Updates URL."
+msgstr ""
+"Nemohu provés aktualizaci z Internetu, upravte prosím URL s aktualizacemi"
+
+msgid "Could not start event log Troubleshooter!"
+msgstr "Nelze spustit výpis problémů událostí!"
+
+msgid "Country"
+msgstr "Země"
+
+msgid "Country:"
+msgstr "Stát:"
+
+msgid "Country: "
+msgstr "Země: "
+
+msgid "Create New Group"
+msgstr "Vytvoř novou skupinu"
+
+msgid "Credits should go to (in order of appearance):"
+msgstr "Poděkování patří:"
+
+msgid "Cu&t"
+msgstr "Vyjmout"
+
+msgid "Current Charge:"
+msgstr "Stav nabíjení:"
+
+msgid "Current View Columns"
+msgstr "Aktuální sloupce"
+
+msgid ""
+"Current favorite item will be removed from list. Do you wish to continue?"
+msgstr ""
+"Aktuální oblíbené položky budou odstraněny ze seznamu, přejete si pokračovat?"
+
+msgid "Current version:"
+msgstr "Aktuální verze:"
+
+msgid "Custom selection:"
+msgstr "Vlastní umístění:"
+
+msgid "Cut|Cuts the selection and puts it on the Clipboard"
+msgstr "Vyjme označené a uloží do schránky"
+
+msgid "Database"
+msgstr "Databáze"
+
+msgid "Database Files:"
+msgstr "Soubory databáze:"
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "Date:"
+msgstr "Datum:"
+
+msgid "Debug"
+msgstr "Debugovat"
+
+msgid "Debug Log..."
+msgstr "Debug Log..."
+
+msgid "Debug mode enabled (AT commands)."
+msgstr "Debug režim aktivován (AT příkazy)."
+
+msgid "Debug mode enabled (OBEX hex)."
+msgstr "Debug režim aktivován (OBEX hex)."
+
+msgid "Decrease 80%"
+msgstr "ztlumit o 80%"
+
+msgid "Default"
+msgstr "Výchozí"
+
+msgid "Default Number"
+msgstr "Předdefinované číslo"
+
+msgid "Default phone: "
+msgstr "Výchozí číslo: "
+
+msgid ""
+"Define the maximum size per packet, this is the value to negotiate with the "
+"Mobile Equipment and will use whichever lower."
+msgstr ""
+"Definuje maximální velikost na paket, tato hodnota je důležitá pro "
+"komunikace s telefonem a bude použita kterákoliv nižší."
+
+msgid "Defines the time in seconds to wait for respond before giving up."
+msgstr "Definuje čas v sekundách na čekání před ukončením."
+
+msgid "Del"
+msgstr "Smaž"
+
+msgid "Delete"
+msgstr "Odstranit"
+
+msgid "Delete completed"
+msgstr "Mazání dokončeno"
+
+msgid "Delete downloaded updates on Finish."
+msgstr "Smazat stažené aktualizace po dokončení."
+
+msgid "Delete failed"
+msgstr "Mazání selhalo"
+
+msgid "Deleted"
+msgstr "Vymazáno"
+
+msgid "Deleted "
+msgstr "Vymazáno "
+
+msgid "Deleted bookmark"
+msgstr "Smazaná záložka"
+
+msgid "Deleted contact"
+msgstr "Smazaný kontakt"
+
+msgid "Deleting "
+msgstr "Odstraňuji"
+
+msgid "Deleting %s item(s)"
+msgstr "Mazání %s položek(y)"
+
+msgid "Deleting %s item(s)."
+msgstr "Mazání %s položky"
+
+msgid "Deleting bookmark..."
+msgstr "Mazání záložky..."
+
+msgid "Deleting files"
+msgstr "Odstraňuji soubory"
+
+msgid "Desktop"
+msgstr "Plocha"
+
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgid "Details are not available."
+msgstr "Žádné detaily."
+
+msgid "Developer &Tools..."
+msgstr "Vývojové nástroje..."
+
+msgid "Device Description"
+msgstr "Popis zařízení"
+
+msgid "Device Name"
+msgstr "Název zařízení"
+
+msgid "Device was not found!"
+msgstr "Zařízení nenalezeno!"
+
+msgid "Dial or answer Voice Call"
+msgstr "Vytočit nebo odpovědět na volání"
+
+msgid "Dialing..."
+msgstr "Vytáčím..."
+
+msgid "Disable"
+msgstr "Vypnuto"
+
+msgid "Disable &Keyboard"
+msgstr "Zablokovat &klávesnici"
+
+msgid "Disable &Silent Mode"
+msgstr "Zrušit tichý režim"
+
+msgid "Disable IRMC Sync"
+msgstr "Vypnout IRMC synchronizaci"
+
+msgid "Disable OBEX"
+msgstr "Vypnout OBEX"
+
+msgid "Disable SyncML"
+msgstr "Vypnout SyncML"
+
+msgid "Disabled"
+msgstr "Vypnuto"
+
+msgid "Disconnect from Phone"
+msgstr "Odpojit telefon"
+
+msgid "Disconnected"
+msgstr "Odpojen"
+
+msgid "Disconnected due to low battery"
+msgstr "Odpojuji, protože je slabá baterie"
+
+msgid "Disconnecting due to low battery or power fault..."
+msgstr "Odpojuji, protože je slabá baterie nebo selhalo napájení..."
+
+msgid "Disconnecting..."
+msgstr "Odpojuji..."
+
+msgid "Disconnection Error"
+msgstr "Chyba při odpojení"
+
+msgid "Display contacts stored in:"
+msgstr "Zobrazit kontakty uložené v:"
+
+msgid "Display name: "
+msgstr "Zobrazené jméno: "
+
+msgid "DisplayName"
+msgstr "Zobrazované jméno"
+
+msgid "DisplayName default preference:"
+msgstr "Způsob zobrazení jména:"
+
+msgid "Do Strict UCS-2"
+msgstr "Vždy použít UCS-2"
+
+msgid "Do not retrieve Bookmarks"
+msgstr "Nenačítat záložky"
+
+msgid "Do not retrieve Calls"
+msgstr "Nenačítat hovory"
+
+msgid "Do not retrieve Files / Folders"
+msgstr "Nenačítat soubory (složky)"
+
+msgid "Do not retrieve Groups"
+msgstr "Nenačítat skupiny"
+
+msgid "Do not retrieve Profiles"
+msgstr "Nenačítat profily"
+
+msgid "Do not show Progress Dialog at all"
+msgstr "Nikdy nezobrazovat průběh"
+
+msgid "Do not use scripts"
+msgstr "Nepoužívat skripty"
+
+msgid "Do nothing"
+msgstr "Nedělej nic"
+
+msgid "Do strict UCS-2 check"
+msgstr "Vynutit UCS-2 enkódování"
+
+msgid ""
+"Do you want to replace its Phonebook number [%s] with current SIM number [%"
+"s] ?"
+msgstr ""
+"Přejete si přepsat telefonní číslo [%s] aktuálním číslem ze SIM karty [%s] ?"
+
+msgid "Do you want to replace this text?"
+msgstr "Přejete si přepsat tento text?"
+
+msgid "Do you want to save \"Log\" before clearing it?"
+msgstr "Přejete si uložit \"Log\" před vymazáním?"
+
+msgid "Do you want to save your current message as a Draft?"
+msgstr "Uložit zprávu jako koncept?"
+
+msgid "Do you wish to connect and process your Outbox now?"
+msgstr "Přejete se připojit a zpracovat zprávy k odeslání?"
+
+msgid ""
+"Do you wish to relocate this %s database profile from installation \"FMA"
+"\\data\" folder to yours \"Application Data\\FMA\" folder? (Recommended)\n"
+"\n"
+"If you are not sure or if you do not have administrative account, click Yes."
+msgstr ""
+"Přejete si převést tuto %s databázi profilů ze složky \"FMA\\data\" do Vaši "
+"složky \"Application Data\\FMA\" ? (doporučeno)\n"
+"\n"
+"Jestliže si nejste jisti nebo nemáte dostatečná práva ke složce, klikněte "
+"na  'Ano'."
+
+msgid "Do you wish to update it now?"
+msgstr "Přejete si provést synchronizaci času?"
+
+msgid "Donate..."
+msgstr "Podpořit..."
+
+msgid "Downgrade to a previous version:"
+msgstr "Vrátit starší verzi:"
+
+msgid "Download Entire Phonebook..."
+msgstr "Stáhni celý adresář z telefonu"
+
+msgid "Download completed"
+msgstr "Nahrávání dokončeno"
+
+msgid "Download from Phone"
+msgstr "Stáhnout z telefonu"
+
+msgid "Downloading Messages..."
+msgstr "Stahuji zprávy..."
+
+msgid "Downloading files"
+msgstr "Nahrávám soubory"
+
+msgid "Downloading phonebook"
+msgstr "Nahrávám adresář"
+
+msgid "Downloading phonebook (%s)..."
+msgstr "Nahrávám adresář (%s)..."
+
+msgid "Downloading read messages"
+msgstr "Stahuji přečtené zprávy"
+
+msgid "Downloading sent messages"
+msgstr "Descargando mensajes enviados"
+
+msgid "Downloading unread messages"
+msgstr "Stahuji nepřečtené zprávy"
+
+msgid "Duration:"
+msgstr "Trvání"
+
+msgid "Dynamic Data"
+msgstr "Dynamická data"
+
+msgid "E&xit"
+msgstr "&Konec"
+
+msgid "E-mail:"
+msgstr "E-mail:"
+
+msgid "E-mail: "
+msgstr "E-mail:"
+
+msgid "ERROR: Can not load script or create automation objects failed"
+msgstr "Chyba: Nelze nahrát skript"
+
+msgid "ERROR: Could not initialize phone database (load failed)"
+msgstr "Chyba: Nelze inicializovat databázi v telefonu (nahrávání selhalo)"
+
+msgid ""
+"Each contact's phone number has an unique position in phone's phonebook "
+"memory. When you're adding a contact to group or so, this position (index) "
+"is used. Ir order to speed up these operations Fma is maintaining a cache "
+"with positions."
+msgstr ""
+"Každé číslo má svoji unikátní pozici v paměti telefonu. Jestliže přidáte "
+"nový kontakt, bude použita první volná pozice. Pro zrychlení této operace, "
+"provádí FMA údržbu seznamu pozic."
+
+msgid "Edit"
+msgstr "Upravit"
+
+msgid "Edit %s"
+msgstr "Upravit %s"
+
+msgid "Edit Pascal Script"
+msgstr "Upravit Pascal skript"
+
+msgid "Edit Profile"
+msgstr "Upravit profil"
+
+msgid "Edit Wap Home Page"
+msgstr "Uprav domovskou stránku pro WAP"
+
+msgid "Edit..."
+msgstr "Upravit..."
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Empty"
+msgstr "Prázdné"
+
+msgid "Enable"
+msgstr "Zapnuto"
+
+msgid "Enable &Keyboard"
+msgstr "Aktivovat klávesnici"
+
+msgid "Enable &Silent Mode"
+msgstr "Nastavit tichý režim"
+
+msgid "Enable Battery Status Monitor"
+msgstr "Povolní zobrazení stavu baterie"
+
+msgid "Enable Channel Signal Monitor"
+msgstr "Povolí zobrazení stavu signálu"
+
+msgid "Enable Detailed Phone Information Monitor"
+msgstr "Povolí zobrazení detailních informací o telefonu"
+
+msgid "Enable Keyboard Lock Monitor"
+msgstr "Povolí monitor zámku klávesnice"
+
+msgid "Enable Minute Minder"
+msgstr "Zapnout minutové upozornění"
+
+msgid "Enable Phone Temp/Use/Charge Status Diagram"
+msgstr "Povolí stavový diagram teploty, použití a energie telefonu"
+
+msgid "Enable Silent Mode"
+msgstr "Nastavit tichý režim"
+
+msgid "Enable Silent Mode Monitor"
+msgstr "Povolí monitor tichého režimu"
+
+msgid "Enable SyncML server"
+msgstr "Povolit SyncML server"
+
+msgid "Enabled"
+msgstr "Zapnuto"
+
+msgid "Enabled (ask me first)"
+msgstr "Ručně potvrdit"
+
+msgid "End date:"
+msgstr "Konečné datum:"
+
+msgid "End time:"
+msgstr "Konečný čas:"
+
+msgid "Enter URL:"
+msgstr "Vlož URL:"
+
+msgid "Enter category name:"
+msgstr "Jméno kategorie:"
+
+msgid "Enter friendly name for your phone device."
+msgstr "Zadejte jméno telefonu."
+
+msgid "Enter group name:"
+msgstr "Vložte název skupiny:"
+
+msgid "Enter text below:"
+msgstr "Vložte text:"
+
+msgid "Entering new data:"
+msgstr "Vložit nová data:"
+
+msgid "EnumPorts function failed"
+msgstr "Funkce EnumPorts selhala"
+
+msgid "Error"
+msgstr "Chyba"
+
+msgid "Error Downloading SMS"
+msgstr "Chyba při nahrávání zpráv"
+
+msgid ""
+"Error at line %d, col %d:\n"
+"Reason: %s"
+msgstr ""
+"Chyba na řádku %d, sloupec %d:\n"
+"Důvod: %s"
+
+msgid "Error daling number"
+msgstr "Chyba při vytáčení čísla"
+
+msgid "Error downloading SMS"
+msgstr "Chyba při nahrávání SMS"
+
+msgid "Error downloading calendar"
+msgstr "Chyba při nahrávání kalendáře"
+
+msgid "Error downloading new message"
+msgstr "Chyba při nahrávání nových zpráv"
+
+msgid "Error downloading phonebook"
+msgstr "Chyba při nahrávání adresáře"
+
+msgid "Error encoding PDU"
+msgstr "Chyba při dekódování PDU: %s"
+
+msgid "Error listing folder: "
+msgstr "Seznam chyb složky:"
+
+msgid "Error retrieving "
+msgstr "Chyba obnovení "
+
+msgid "Error sending "
+msgstr "Chyba při posílání"
+
+msgid "Error switching profile"
+msgstr "Chyba přepínání profilu"
+
+msgid "Error updating memory"
+msgstr "Chyba aktualizace paměti"
+
+msgid "Error: Incorrect data ignored (Index: %s, PDU: %s)"
+msgstr "Chyba: Neplatná data ignorována (Index: %s, PDU: %s)"
+
+msgid "Error: Outlook Synchronize aborted (%0:s: %1:s)"
+msgstr "Chyba: Synchronizace přerušena (%0:s: %1:s)"
+
+msgid "Error: Outlook Synchronize aborted (%s)"
+msgstr "Chyba: Synchronizace přerušena (%s)"
+
+msgid "Error: Synchronize aborted (%s)"
+msgstr "Chyba: Synchronizace přerušena (%s)"
+
+msgid "Error: Synchronize aborted (%s: %s)"
+msgstr "Chyba: Synchronizace přerušena (%s: %s)"
+
+msgid "Error: Unlink aborted (%s)"
+msgstr "Chyba: Rozpojení přerušeno (%s)"
+
+msgid "Error: Unlink aborted (%s: %s)"
+msgstr "Chyba: Rozpojení přerušeno (%s: %s)"
+
+msgid "Error: synchronize aborted"
+msgstr "Chyba: Synchronizace záložek přerušena"
+
+msgid "Error: synchronize aborted - %s"
+msgstr "CHYBA: synchronizace přerušena - %s"
+
+msgid "EscapeCommFunction function failed"
+msgstr "Funkce EscapeCommFunction selhala"
+
+msgid "Est. Charge Left:"
+msgstr "Zbývá do vybití:"
+
+msgid "Est. Time Left:"
+msgstr "Zbývá do vybití:"
+
+msgid "Est.Time Left:"
+msgstr "Zbývá do vybití:"
+
+msgid "Event"
+msgstr "Událost"
+
+msgid "Event Properties"
+msgstr "Událost - podrobnosti"
+
+msgid "Event Properties..."
+msgstr "Vlastnosti událostí..."
+
+msgid "Event Viewer - [Log]"
+msgstr "Prohlížeč událostí"
+
+msgid "Event Viewer..."
+msgstr "Prohlížeč událostí..."
+
+msgid "ExceptionDialog"
+msgstr "Chyba"
+
+msgid "Exit"
+msgstr "Konec"
+
+msgid "Exit Fma"
+msgstr "Ukončit Fma"
+
+msgid "Explorer"
+msgstr "Průzumník"
+
+msgid "Exploring current data:"
+msgstr "Prohlížet:"
+
+msgid "Export &Contacts..."
+msgstr "Export &kontaktů..."
+
+msgid "Export &Messages..."
+msgstr "Exportovat &zprávy..."
+
+msgid "Export contacts"
+msgstr "Exportovat kontakty"
+
+msgid "Export messages"
+msgstr "Exportovat zprávy"
+
+msgid "Export to file"
+msgstr "Exportovat do souboru"
+
+msgid "Export..."
+msgstr "Export..."
+
+msgid "FMA Today Page"
+msgstr "Stránka FMA dnes"
+
+msgid ""
+"FMA could Import only CSV message exports. Do you still want to continue "
+"exporting?"
+msgstr ""
+"FMA umí importovat pouze CSV soubory, přejete si přesto pokračovat v exportu?"
+
+msgid ""
+"FMA could Import only vCard contact exports. Do you still want to continue "
+"exporting?"
+msgstr ""
+"FMA může importovat jen kontatky exportované jako vCard. Přejete si "
+"pokračovat?"
+
+msgid "Factory Defaults"
+msgstr "Tovární nastavení"
+
+msgid "Failed to load settings"
+msgstr "Nelze načíst nastavení"
+
+msgid "Failed to store settings"
+msgstr "Chyba při ukládání nastavení"
+
+msgid "Favorites"
+msgstr "Oblíbení"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Fax Number"
+msgstr "Fax"
+
+msgid "Fax number:"
+msgstr "Fax:"
+
+msgid "Fax number: "
+msgstr "FAX:"
+
+msgid "File"
+msgstr "Soubor"
+
+msgid "File \"%s\" deleted."
+msgstr "Soubor \"%s\" smazán."
+
+msgid "File \"%s\" received from phone."
+msgstr "Soubor \"%s\" byl přijat z telefonu."
+
+msgid "File \"%s\" sent to phone."
+msgstr "Soubor \"%s\" odeslán do telefonu."
+
+msgid "File Actions"
+msgstr "Soubory"
+
+msgid "File As:"
+msgstr "Uložit jako:"
+
+msgid "File Browseing is not supported by your phone."
+msgstr "Procházení v souborech není podporováno telefonem."
+
+msgid "File Browseing is not supported over Infrared."
+msgstr "Procházení v souborech není možné přes IR."
+
+msgid "File Preview"
+msgstr "Náhled souboru"
+
+msgid "File type:"
+msgstr "Typ:"
+
+msgid "Files"
+msgstr "Soubory"
+
+msgid "Find Contact"
+msgstr "Hledat kontakt"
+
+msgid "Find Next"
+msgstr "Najdi další"
+
+msgid "Find Next &Error"
+msgstr "najdi dalši chybu"
+
+msgid "Find..."
+msgstr "Najdi..."
+
+msgid "Finished"
+msgstr "Hotovo"
+
+msgid "Finished!"
+msgstr "Hotovo!"
+
+msgid "Finishing Installation..."
+msgstr "Dokončení instalace..."
+
+msgid "First Last"
+msgstr "jméno příjmení"
+
+msgid "Firstname Lastname"
+msgstr "jméno příjmení"
+
+msgid "Firstname Lastname (Organization)"
+msgstr "jméno příjmení (organizace)"
+
+msgid "Flash"
+msgstr "Flash"
+
+msgid "Flow Control change failed"
+msgstr "Řízení toku selhalo"
+
+msgid "Fma - Connected to %s"
+msgstr "FMA - připojen k %s"
+
+msgid "Fma - Connected to %s phone"
+msgstr "FMA - připojen k %s"
+
+msgid "Fma - Connecting..."
+msgstr "FMA - připojuji..."
+
+msgid "Fma - Not Connected"
+msgstr "FMA - nepřipojen"
+
+msgid "Fma Community Forums..."
+msgstr "Diskuze o FMA..."
+
+msgid "Fma Developers Page..."
+msgstr "Vývojová stránka FMA..."
+
+msgid "Fma Home Page..."
+msgstr "Domácí stránka FMA..."
+
+msgid "Fma On The Web"
+msgstr "FMA na Internetu"
+
+msgid "Fma Today"
+msgstr "Fma dnes"
+
+msgid "Folder"
+msgstr "Adresář"
+
+msgid "Forbidden"
+msgstr "nepřístupné"
+
+msgid "Force UCS-2"
+msgstr "Vnutit UCS-2"
+
+msgid "Force UCS-2 encoding"
+msgstr "Označit kódování UCS-2"
+
+msgid "Force as Modified"
+msgstr "Označit jako ZMĚNĚNO"
+
+msgid "Force as Modified..."
+msgstr "Označ jako upravovaný..."
+
+msgid "Force as New Contact (No Undo)..."
+msgstr "Označ jako nový kontakt (nelze vzít zpět)..."
+
+msgid "Force as New Event"
+msgstr "Označit jako NOVÁ UDÁLOST"
+
+msgid "Force as Not Modified"
+msgstr "Oznažit jako NEZMĚNĚNO"
+
+msgid "Force as Not Modified..."
+msgstr "Označ jako neupravovaný..."
+
+msgid "Force update all"
+msgstr "Aktualizuj vše"
+
+msgid "Forward Message"
+msgstr "Přesměrovat zprávu"
+
+msgid "Forward SMS"
+msgstr "Přesměrovat SMS"
+
+msgid "Found device: "
+msgstr "Nalezeno zařízení: "
+
+msgid "Friendly Name:"
+msgstr "Jméno telefonu:"
+
+msgid "From / To"
+msgstr "Od / Komu"
+
+msgid "From / To:"
+msgstr "Od / Komu:"
+
+msgid "From Address:"
+msgstr "Z telefonního čísla:"
+
+msgid "From Charge:"
+msgstr "Napětí nabíječky:"
+
+msgid ""
+"From this button you can clear the cached information about this contact. Do "
+"it only if you know what are you doing or if you receive an inccorect name "
+"for this contact in the phone groups."
+msgstr ""
+"Tímto tlačítkem zmažete veškeré informace o kontaktech. Tuto akci provádějte "
+"pouze v případě, že dostáváte nesprávná jména k číslům ve skupinách."
+
+msgid "Full Contents:"
+msgstr "Celý obsah:"
+
+msgid "Full Name"
+msgstr "Celé jméno"
+
+msgid "Full Name Appearance"
+msgstr "Zobrazení plného jména"
+
+msgid "Full name:"
+msgstr "Celé jméno:"
+
+msgid "Full name: "
+msgstr "Celé jméno: "
+
+msgid "GUID:"
+msgstr "GUID:"
+
+msgid "Gateway Timeout"
+msgstr "brána se nehlásí"
+
+msgid "General"
+msgstr "Hlavní"
+
+msgid "General Public License (GPL)"
+msgstr "General Public License (GPL)"
+
+msgid "Get Messages"
+msgstr "Získat zprávy"
+
+msgid "GetCommModemStatus function failed"
+msgstr "Funkce GetCommModemStatus selhala"
+
+msgid "Getting Started Wizard"
+msgstr "Průvodce prvotním nastavením"
+
+msgid "Getting Started..."
+msgstr "Průvodce nastavením..."
+
+msgid "Getting setting profile..."
+msgstr "Zjišťuji nastavení profilu..."
+
+msgid "Go Up"
+msgstr "Zpět"
+
+msgid "Gone"
+msgstr "již neexistuje"
+
+msgid "Group"
+msgstr "Skupina"
+
+msgid "Group created"
+msgstr "Skupina vytvořena"
+
+msgid "Group:"
+msgstr "Skupina:"
+
+msgid "HTTP version not supported"
+msgstr "verze HTTP není podporována"
+
+msgid "Handset button"
+msgstr "Tlačítko na handsfree"
+
+msgid "Handshake"
+msgstr "Komunikace"
+
+msgid "Hang Up"
+msgstr "Zvednout"
+
+msgid "Hangup Call"
+msgstr "Ukončí hovor"
+
+msgid "Headset"
+msgstr "Sluchátka"
+
+msgid "Help"
+msgstr "Pomoc"
+
+msgid ""
+"Here you could provide a friendly name for your phone which will be used by "
+"FMA in various cases. You could use your name as part of its name, for "
+"example: \"Zdravko's T610 phone\"."
+msgstr ""
+"Zde můžete pojmenovat Váš telefon pro použití v programu FMA, například "
+"\"Můj telefon T630\"."
+
+msgid ""
+"Here you could put some Call Drafts about this contact. These notes could be "
+"edited while you are in call."
+msgstr ""
+"Sem pište poznámky ke kontaktu, tyto poznámky můžete měnit během hovoru."
+
+msgid "Hi-Color (65535 colors)"
+msgstr "Hi-Color (65535 barev)"
+
+msgid "Hold"
+msgstr "Pauza"
+
+msgid "Home"
+msgstr "Domů"
+
+msgid "Home Phone"
+msgstr "Telefon domů"
+
+msgid "Home [%s]"
+msgstr "Domů [%s]"
+
+msgid "Home page changed"
+msgstr "Domovská stránka změněna"
+
+msgid "Home phone:"
+msgstr "Telefon domů:"
+
+msgid "Home phone: "
+msgstr "Domů: "
+
+msgid "I've checked this out, clear the notification"
+msgstr "Zkontrolováno, smaž poznámky"
+
+msgid "IRDA"
+msgstr "infraport"
+
+msgid "Identifier:"
+msgstr "Identifikátor:"
+
+msgid "Identifying phone"
+msgstr "Rozpoznávám zařízení"
+
+msgid "Idle"
+msgstr "Nečinný"
+
+msgid ""
+"If None is selected, the default phone number for a contact will be selected "
+"automaticaly in following order, depending of what phone number is present "
+"first:"
+msgstr ""
+"Jestliže zvolíte ŽÁDNÉ, bude pro kontakt automaticky zvoleno předdefinované "
+"číslo, a to v tom pořadí, v jakém bylo dříve zadáno:"
+
+msgid "If silent"
+msgstr "Jestliže potichu"
+
+msgid ""
+"If the picture differs from the original phone one go to picture properties "
+"and click Refresh."
+msgstr ""
+"Jestliže je obrázek odlišný od uloženého v telefonu, zvolte Podrobnosti u "
+"obrázku a Obnovit."
+
+msgid ""
+"If you are using Buetooth make sure it is turned on in both PC and phone. "
+"Your PC Bluetooth software have to be installed and working properly. "
+"Microsoft Windows XP SP1 or later is required."
+msgstr ""
+"Bluetooth - musíte mít korektně nainstalovaný obslužný software a jsou "
+"vyžadovány minimálně Windows XP SP1."
+
+msgid ""
+"If you are using Data Cable make sure it connects both PC and phone. Some "
+"cables require additional software drivers to be installed. Check your cable "
+"manual for more information."
+msgstr ""
+"Datový kabel - kabel musí být zapojen v PC i telefonu. K některým kabelům "
+"musí být také nainstalovaný příslušný software."
+
+msgid ""
+"If you are using Infra-Red make sure it is turned on in both PC and phone "
+"and phone is in range. Microsoft Windows 2000 or later is required."
+msgstr ""
+"IrDa - telefon musí být nasměrován na infra port počítače. Jsou vyžadována "
+"minimálně Windows 2000."
+
+msgid ""
+"If you don't see the phone device you want to add, make sure that is is "
+"turned on. Follow the setup instructions that came with the device, and then "
+"click Search Again."
+msgstr ""
+"Jestliže nevidíte telefon, který chcete přidat, ujistěte se prosím, je-li "
+"telefon zapnut a správně připojen. Pokud ne, připojte jej prosím dle návodu "
+"k použití a stiskněte Hledat znovu."
+
+msgid ""
+"If you wish to use special characters (like +AMQ, +AOQ, +ANw, +APw, +ANY, "
+"+APY, +AN8 mostly used in german, scandinavian and other languages) in "
+"standard encoding, uncheck this option. Otherwise these special characters "
+"will force UCS-2 message encoding, thus reduceing maximum message length to "
+"about 1/2 (70 chars) of it's original value."
+msgstr ""
+"Pokud chcete psát zprávy se speciálními znaky, použijte toto nastavení."
+
+msgid ""
+"If you wish to use special characters (like Ä, ä, Ü, ü, Ö, ö, ß mostly used "
+"in german, scandinavian and other languages) in standard encoding, uncheck "
+"this option. Otherwise these special characters will force UCS-2 message "
+"encoding, thus reduceing maximum message length to about 1/2 (70 chars) of "
+"it's original value."
+msgstr "Pokud chcete psát zprávy stále s diakritikou, použijte toto nastavení."
+
+msgid "Ignore Low Battery Warnings"
+msgstr "Ignorovat varování před vybitím baterie"
+
+msgid "Image Editor with XP Alpha Blending support"
+msgstr "Obrázkový editor"
+
+msgid "Imp&ort Contacts..."
+msgstr "Imp&ort kontaktů..."
+
+msgid "Imp&ort Messages..."
+msgstr "Imp&ortovat zprávy..."
+
+msgid "Imp&ort..."
+msgstr "Imp&ortovat..."
+
+msgid "Import &Contacts..."
+msgstr "Import &kontaktů..."
+
+msgid "Import &Messages..."
+msgstr "Importovat &zprávy..."
+
+msgid "Import / Export Selected"
+msgstr "Výběr importu a exportu"
+
+msgid "Import Contacts..."
+msgstr "Import kontaktů..."
+
+msgid "Import Images..."
+msgstr "Import obrázků..."
+
+msgid "Import Messages..."
+msgstr "Importovat zprávy..."
+
+msgid "Import complete."
+msgstr "Import dokončen"
+
+msgid "Import finished"
+msgstr "Import dokončen"
+
+msgid "Import from file"
+msgstr "Import ze souboru"
+
+msgid "Import started"
+msgstr "Import zahájen"
+
+msgid "Importing SIM contacts"
+msgstr "Importuji kontakty ze SIM karty"
+
+msgid "Importing contacts..."
+msgstr "Importuji kontakty..."
+
+msgid "Importing messages..."
+msgstr "Importuji zprávy..."
+
+msgid "Importing phonebook contacts"
+msgstr "Importuji telefonní seznam"
+
+msgid ""
+"In most cases the program (Fma) will need to be restarted to fully activate "
+"the selected script."
+msgstr "Program FMA bude nutno restartovat, aby byl skript aktivní."
+
+msgid ""
+"In order to use Update feature, you have to download a small library "
+"UOLPATCH.DLL from %s web site\n"
+"\n"
+"%s\n"
+"\n"
+"Place it in %0:s folder and restart application."
+msgstr ""
+"Jestliže chcete použít aktualizaci z Internetu, stáhněte si prosím knihovnu "
+"UOLPATCH.DLL ze stránek %s \n"
+"\n"
+"%s\n"
+"\n"
+"Nahrejte ji do složky %0:s a restartujte aplikaci."
+
+msgid ""
+"In order to use Update feature, you have to download a small patch tool "
+"named DOSPATCH.EXE from %s web site (%s) and place it in your application "
+"folder."
+msgstr ""
+"Jestliže chcete použít aktualizaci z Internetu, stáhněte si prosím knihovnu "
+"DOSPATCH.EXE ze stránek %s a nahrejte si do složky, kde je uloženo FMA."
+
+msgid ""
+"In order to use Web Update feature, you have to download a small library "
+"ISXDL.DLL from %s web site \n"
+"\n"
+"%s\n"
+"\n"
+"Place it in your %0:s folder and restart application.\n"
+"\n"
+"If you do not want to restart right now you could proceed using local update "
+"files only (Web updates are disabled)."
+msgstr ""
+"Jestliže chcete použít aktualizaci z Internetu, stáhněte si prosím knihovnu "
+"IŜDL.DLL ze stránek %s \n"
+"\n"
+"%s\n"
+"\n"
+"Nahrejte ji do složky %0:s a restartujte aplikaci.\n"
+"\n"
+"Jestliže nechcete nyní restartovat aplikaci, použijte aktualizaci ze souboru."
+
+msgid "Inbox"
+msgstr "Příchozí"
+
+msgid "Incoming Call..."
+msgstr "Příchozí hovor..."
+
+msgid "Incoming Calls"
+msgstr "Příchozí hovory"
+
+msgid "Incoming call..."
+msgstr "Příchozí hovor..."
+
+msgid "Increase 80%"
+msgstr "zesílit o 80%"
+
+msgid "Information"
+msgstr "Informace"
+
+msgid "Initializing"
+msgstr "Inicializuji"
+
+msgid "Initializing Script Engine..."
+msgstr "Inicializuji Script Engine..."
+
+msgid "Initializing..."
+msgstr "Inicializace..."
+
+msgid "Initiate new Connection"
+msgstr "Vytvořit nové spojení"
+
+msgid "Insert Log Marker"
+msgstr "Vytvářet výpisy"
+
+msgid "Install"
+msgstr "Instalovat"
+
+msgid "Installing Updates"
+msgstr "Instaluji aktualizace"
+
+msgid "Internal Server Error"
+msgstr "vnitřní chyba serveru"
+
+msgid "Internet Explorer"
+msgstr "Internet Explorer"
+
+msgid "Internet/Wap button"
+msgstr "Internet/Wap"
+
+msgid "Invalid Async parameter"
+msgstr "Nepovoleny Async parametr"
+
+msgid "Invalid Respond "
+msgstr "Nesprávná odezva "
+
+msgid "Invalid Respond: "
+msgstr "Nesprávná odezva: "
+
+msgid "Invalid address specified."
+msgstr "Špatná adresa."
+
+msgid "Invalid group address."
+msgstr "Špatná adresa skupiny."
+
+msgid "Invalid number specified."
+msgstr "Špatné číslo."
+
+msgid ""
+"It seams that all your phone numbers are stored into Home positions. Do you "
+"wish to exchange them with Cell ones?"
+msgstr ""
+"Zdá se, že všechny Vaše kontakty jsou ve výchozí pozici. Přejete si je "
+"zaměnit s pozicemi v telefonu?"
+
+msgid ""
+"It will search for any devices in range using various methods and will help "
+"you configure most of the required settings."
+msgstr ""
+"Pokud ještě nemáte zařízení, které Vám umožní propojit Váš telefon s "
+"počítačem, navštivte Internetový obchod na adrese WWW.OK-SHOP.CZ"
+
+msgid "Kb"
+msgstr "Kb"
+
+msgid "Key 'YES'"
+msgstr "Klávesa 'ANO'"
+
+msgid "Key Sent."
+msgstr "Klíč odeslán."
+
+msgid "Language"
+msgstr "Jazyk"
+
+msgid "Large"
+msgstr "Velké"
+
+msgid "Last, First"
+msgstr "příjmení, jméno"
+
+msgid "Lastname, Firstname "
+msgstr "příjmení, jméno"
+
+msgid "Lastname, Firstname (Organization)"
+msgstr "příjmení, jméno (organizace)"
+
+msgid "Length Required"
+msgstr "je třeba znát délku"
+
+msgid "Let me choose"
+msgstr "Dle výběru"
+
+msgid "Lines"
+msgstr "řádek"
+
+msgid "Link %s found and Unlinked"
+msgstr "Spojení %s nalezeno a rozpojeno"
+
+msgid "Link &All"
+msgstr "Propojit všechny"
+
+msgid "Link (un)registration failed"
+msgstr "Připojení (od)registrace selhalo"
+
+msgid "Link found. About to unlinking"
+msgstr "Spojení nalezeno, rozpojuji"
+
+msgid "Linked contact not found"
+msgstr "Kontakt nebyl nalezen"
+
+msgid "Listening port"
+msgstr "Port"
+
+msgid "Lithium Ion"
+msgstr "Li-ION"
+
+msgid "Lithium Polymer"
+msgstr "Li-POL"
+
+msgid "Litium ion/Polymer Battery"
+msgstr "Li-ION / Li-POL baterie"
+
+msgid "Loaded %d contacts (%d new, %d filtered out) from %s"
+msgstr "Nahráno %d kontaktů (%d nových, %d odfiltrovaných) z %s"
+
+msgid "Loaded %d contacts (%d new, %d filtered out) from %s[%s]"
+msgstr "Nahráno %d kontaktů (%d nových, %d filtrovaných) z %s[%s]"
+
+msgid "Loaded %d contacts from XML"
+msgstr "Nahráno %d kontaktů z XML"
+
+msgid "Loading Calls..."
+msgstr "Nahrávám hovory..."
+
+msgid "Loading Profile Database..."
+msgstr "Nahrávám databázi profilů..."
+
+msgid "Loading completed"
+msgstr "Nahrávání dokončeno"
+
+msgid "Loading contacts"
+msgstr "Nahrávám kontakty"
+
+msgid "Loading error: %s"
+msgstr "Chyba při nahrávání: %s"
+
+msgid "Loading folders..."
+msgstr "Nahrávání složek..."
+
+msgid "Loading groups..."
+msgstr "Nahrávám skupiny..."
+
+msgid "Loading own card..."
+msgstr "Nahrávání vlastní vizitky..."
+
+msgid "Loading phone profile database..."
+msgstr "Nahrávám dalabázi profilů..."
+
+msgid "Loading profiles..."
+msgstr "Nahrávám profily..."
+
+msgid "Loading started"
+msgstr "Nahrávání začalo"
+
+msgid "Loading..."
+msgstr "Nahrávání..."
+
+msgid ""
+"Local Phonebook will be replaced with a fresh copy from the phone.\n"
+"\n"
+"Any local changes will be lost. Do you wish to continue?"
+msgstr ""
+"Lokální telefonní seznam bude nahrazen aktuální kopií z telefonu.\n"
+"\n"
+"Jakékoliv lokální změny budou ztraceny. Přejete si pokračovat??"
+
+msgid "Location"
+msgstr "Umístění"
+
+msgid "Location name"
+msgstr "Uložení"
+
+msgid "Location:"
+msgstr "Umístění:"
+
+msgid "Lock Workstation"
+msgstr "zamknout stanici"
+
+msgid "Log"
+msgstr "Výpis"
+
+msgid "Log Window"
+msgstr "Okno s výpisy"
+
+msgid "Log..."
+msgstr "Výpis..."
+
+msgid "LogWindow"
+msgstr "Výpisy"
+
+msgid "Long"
+msgstr "Dlouhá"
+
+msgid "Long Message"
+msgstr "Dlouhá zpráva"
+
+msgid "Long SMS Mode"
+msgstr "Dlouhá SMSka"
+
+msgid "Low-Color (256 colors)"
+msgstr "Low-Color (256 barev)"
+
+msgid "Low-Color (<256 colors)"
+msgstr "Low-Color (<256 barev)"
+
+msgid "Magnifying Glass"
+msgstr "Zvětšovací sklo"
+
+msgid "Main script file name:"
+msgstr "Název souboru hlavního skriptu:"
+
+msgid "Manufacturer"
+msgstr "Výrobce"
+
+msgid "Manufacturer:"
+msgstr "Výrobce:"
+
+msgid "Mark as &Read"
+msgstr "Označit jako přečtenou"
+
+msgid "Mark as &Unread"
+msgstr "Označit jako nepřečtenou"
+
+msgid "Max Packet Size (bytes) "
+msgstr "Maximální velikost paketu (bytů)"
+
+msgid "Me"
+msgstr "Já"
+
+msgid "Medium"
+msgstr "Střední"
+
+msgid "Menu Disable Selected"
+msgstr "Menu zrušené"
+
+msgid "Menu Selected"
+msgstr "Menu zvolené"
+
+msgid "Message"
+msgstr "Zpráva"
+
+msgid "Message &Preview"
+msgstr "&Náhled zprávy"
+
+msgid "Message Actions"
+msgstr "Zprávy"
+
+msgid "Message Arrived Popup"
+msgstr "Překrývací okno"
+
+msgid "Message Contact..."
+msgstr "Poslat zprávu..."
+
+msgid "Message Details"
+msgstr "Detail zprávy"
+
+msgid "Message Monitor"
+msgstr "monitor zpráv"
+
+msgid "Message Popup"
+msgstr "Oznámení zpráv"
+
+msgid "Message Recipients"
+msgstr "Příjemci zpráv"
+
+msgid "Message Recipients..."
+msgstr "Příjemce zpráv..."
+
+msgid "Message saved in Drafts"
+msgstr "Zpráva uložena mezi koncepty"
+
+msgid "Message stored in Outbox"
+msgstr "Zpráva uložena mezi odeslané"
+
+msgid "Message to Contact"
+msgstr "Odeslat zprávu"
+
+msgid "Message:"
+msgstr "Zpráva:"
+
+msgid "Messages"
+msgstr "Zprávy"
+
+msgid "Messages Archive Folder"
+msgstr "Složka archivních zpráv"
+
+msgid "Messages Inbox Folder"
+msgstr "Složka příchozích zpráv"
+
+msgid "Messages downloaded"
+msgstr "Zprávy staženy"
+
+msgid "Messages sent and moved to Archive."
+msgstr "Zprávy byly odeslány a uloženy do archivu."
+
+msgid "Messages sent so far: "
+msgstr "Zprávy odesláné vzdáleně: "
+
+msgid "Messages sent so far:  "
+msgstr "Zprávy odesláné vzdáleně: "
+
+msgid "Messages stored in Archive"
+msgstr "Zpráva uložena do archivu"
+
+msgid "Method not allowed"
+msgstr "metoda není podporována"
+
+msgid "Microsoft Outlook"
+msgstr "Microsoft Outlook"
+
+msgid "Microsoft Outlook Folders"
+msgstr "Složky MS Outlooku"
+
+msgid "Mirrors"
+msgstr "Stínové servery"
+
+msgid "Miscellaneous"
+msgstr "Různé"
+
+msgid "Missed Calls"
+msgstr "Zmeškané hovory"
+
+msgid "Missed Calls List:"
+msgstr "Seznam posledných hovorů:"
+
+msgid "Missed calls"
+msgstr "Poslední hovory"
+
+msgid "Mo&ve Left"
+msgstr "Přesun vlevo"
+
+msgid "Mobile -> Work -> Home -> Other."
+msgstr "Mobil -> Práce -> Domů -> Ostatní"
+
+msgid "Mobile [%s]"
+msgstr "Mobil [%s]"
+
+msgid "Mobile phone numbers only"
+msgstr "Pouze čísla mobilních telefonů"
+
+msgid "Mobile phone:"
+msgstr "Mobilní telefon:"
+
+msgid "Mod"
+msgstr "Změna"
+
+msgid "Model:"
+msgstr "Model:"
+
+msgid "Modified"
+msgstr "Změněno"
+
+msgid "Modified Contacts..."
+msgstr "Změněné kontakty..."
+
+msgid "Modified bookmark"
+msgstr "Upravená záložka"
+
+msgid "Modified contact"
+msgstr "Změněný kontakt"
+
+msgid "Modify an Existing Contact:"
+msgstr "Upravit existující kontakt:"
+
+msgid "More on Web..."
+msgstr "Další na webu..."
+
+msgid "Move &Down"
+msgstr "Posunout &dolu"
+
+msgid "Move &Up"
+msgstr "Posunout nahor&u"
+
+msgid "Move message to Archive"
+msgstr "Přesunout zprávu do archivu"
+
+msgid "Move to Archive"
+msgstr "Přesunout do archívu"
+
+msgid "Move to Phone (Upload)"
+msgstr "Nahrát do telefonu (Upload)"
+
+msgid "Mute"
+msgstr "vypnuto"
+
+msgid "My %0:s Phone (%1:s)"
+msgstr "Můj %0:s telefon (%1:s)"
+
+msgid "My %s Phone"
+msgstr "Můj %s telefon"
+
+msgid "My %s phone"
+msgstr "Můj %s telefon"
+
+msgid "My Phone"
+msgstr "Můj telefon"
+
+msgid "My Sounds"
+msgstr "Moje zvuky"
+
+msgid "My device is set up and ready to be found."
+msgstr "Telefon je připraven k připojení."
+
+msgid "N/A"
+msgstr "není"
+
+msgid "Name"
+msgstr "Jméno"
+
+msgid "Name Your Phone"
+msgstr "Název Vašeho telefonu"
+
+msgid "Name:"
+msgstr "Název:"
+
+msgid "Native Bluetooth (Requires Windows XP SP1 or later)"
+msgstr "Nativní bluetooth (vyžaduje Windows XP SP1 nebo vyšší)"
+
+msgid "Native Bluetooth is not supported under your system"
+msgstr "Bluetooth není podporován ve Vašem operačním systému"
+
+msgid "Native Bluetooth is not supported!"
+msgstr "Bluetooth není podporován!"
+
+msgid "Native Infrared is not supported!"
+msgstr "Infraport není podporován!"
+
+msgid "Native IrDA Port (Requires Windows 2000 or later)"
+msgstr "Nativní IrDA Port (vyžaduje Windows 2000 nebo vyšší)"
+
+msgid "Ne&xt"
+msgstr "Následující"
+
+msgid "Negotiate"
+msgstr "Spojuji"
+
+msgid "Never hide my number when calling this contact"
+msgstr "Nikdy neskrývej moje číslo, když volám toto číslo"
+
+msgid "New"
+msgstr "Nový"
+
+msgid "New &Bookmark..."
+msgstr "Nová &záložka..."
+
+msgid "New &Group..."
+msgstr "Nová skupina"
+
+msgid "New &Note..."
+msgstr "Nová &poznámka..."
+
+msgid "New &Upload..."
+msgstr "Nové uložení do telefonu"
+
+msgid "New Event"
+msgstr "Nová událost"
+
+msgid "New Group"
+msgstr "Nová skupina"
+
+msgid "New Message"
+msgstr "Nová zpráva"
+
+msgid "New Note"
+msgstr "Nová poznámka"
+
+msgid "New Person"
+msgstr "Nový kontakt"
+
+msgid "New SMS"
+msgstr "Nová SMS"
+
+msgid "New Task"
+msgstr "Nová úloha"
+
+msgid "New Text Messages:"
+msgstr "Nová textová zpráva:"
+
+msgid "New bookmark"
+msgstr "Nová záložka"
+
+msgid "New contact"
+msgstr "Nový kontakt"
+
+msgid "New message from %s"
+msgstr "Nová zpráva od %s"
+
+msgid "New message received"
+msgstr "Přijata nová zpráva"
+
+msgid "New message received."
+msgstr "Přijata nová zpráva."
+
+msgid "New..."
+msgstr "Nový..."
+
+msgid "Next"
+msgstr "Další"
+
+msgid "Next Folder"
+msgstr "Následující složka"
+
+msgid "NiMH"
+msgstr "NiMH"
+
+msgid "NiMH Battery"
+msgstr "NiMH baterie"
+
+msgid "No"
+msgstr "Ne"
+
+msgid "No Baloon"
+msgstr "žádný balonek"
+
+msgid "No Popup"
+msgstr "žádné okno"
+
+msgid "No more space in memory! New contact can not be created."
+msgstr "Již není volné místo v paměti! Nový kontakt nebude vytvořen."
+
+msgid ""
+"No more space in pb memory!\n"
+"I'm sorry."
+msgstr ""
+"Paměť na čísla je plná!\n"
+"Nedá se nic dělat."
+
+msgid "No more space in phonebook memory! %d is the maximum"
+msgstr "Paměť na čísla je plná! %d je maximum"
+
+msgid ""
+"No new updates are available over Internet right now.\n"
+"\n"
+"You could try again later or you could proceed if you have local update "
+"files."
+msgstr ""
+"V tuto chvíli nejsou k dispozici žádné nové aktualizace.\n"
+"\n"
+"Zkuste se prosím připojit později nebo použijte aktualizaci ze souboru."
+
+msgid "None"
+msgstr "Není"
+
+msgid "None (do not synchronize)"
+msgstr "Žádné (nesychronizovat)"
+
+msgid "Not Acceptable"
+msgstr "nepřípustné"
+
+msgid "Not Implemented"
+msgstr "není implementováno"
+
+msgid "Not all of the features might work as expected."
+msgstr "Ne vše bude fungovat dle očekávání."
+
+msgid "Not found"
+msgstr "nenalezeno"
+
+msgid "Not supported by phone"
+msgstr "Není podporováno telefonem"
+
+msgid ""
+"Note that script file extension must be the scipting engine used, for "
+"example for \"MyScript.VBScript\" the system will interprate it using "
+"VBScript Engine."
+msgstr ""
+"Mějte na paměti, že typ souboru se skriptem musí odpovídat použitému "
+"skriptu, například \"MyScript.vbs\" bude interpretován jako VBS skript."
+
+msgid "Note: Click on Refresh to download/update the file from phone."
+msgstr "Klikněte na 'Obnovit' pro znovunačtení souboru."
+
+msgid "Notes"
+msgstr "Poznámky"
+
+msgid "Nothing to import"
+msgstr "Není co importovat"
+
+msgid "Nothing to post"
+msgstr "Nic tu není"
+
+msgid "Number"
+msgstr "Číslo"
+
+msgid "Number of contacts stored in Phone book:"
+msgstr "Počet kontaktů v telefonním seznamu:"
+
+msgid "Number of messages stored in Archive:"
+msgstr "Počet zpráv uložených v archívu:"
+
+msgid "OBEX"
+msgstr "OBEX"
+
+msgid ""
+"OBEX session can not be established at this time, because the service is "
+"busy!\n"
+"\n"
+"Close any other Obex applications (maybe running in background), or turn off "
+"and then back on your phone connection (disable then enable Bluetooth, "
+"unplug then plug cable etc). Or check if you have to answer on some "
+"connection question (contirmation) in your phone. If nothing above helps "
+"restart your phone and try again.\n"
+"\n"
+"Do you wish to try again or Cancel current operation?"
+msgstr ""
+"OBEX relace nemůže být v tuto chvíli spuštěna, protože je služba "
+"zaneprázdněna!\n"
+"\n"
+"Ukončete ostaní OBEX aplikace (možná běžící na pozadí), vypněte a zapněte "
+"telefon, aby se znovu obnovilo spojení (vypněte a zapněte bluetooth, "
+"vytáhněte a znovu zasuňte kabel a podobně). Zkontrolujte také, jestli "
+"telefon nepožaduje nějaká potvrzení.\n"
+"\n"
+"Další pokus nebo zrušit operaci?"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "OPT"
+msgstr "VOLBY"
+
+msgid "Obex Connect: Already in use or Connect failed"
+msgstr "OBEX je již používán nebo se spojení nezdařilo"
+
+msgid "Obex Folder Browsing not supported: "
+msgstr "Procházení složek OBEX není podporováno: "
+
+msgid "Obex Folder Browsing not supported: %s"
+msgstr "OBEX procházení složkami není podporováno: %s"
+
+msgid "Obex Get Failed: "
+msgstr "OBEX ohlásil chybu:"
+
+msgid "Obex List Failed: "
+msgstr "Seznam chyb OBEX:"
+
+msgid "Obex Put Failed: "
+msgstr "OBEX ukládání přerušeno:"
+
+msgid "Obex already in use"
+msgstr "OBEX je již používán"
+
+msgid "Obex already in use, Aborting..."
+msgstr "OBEX je již používán, ukončuji..."
+
+msgid "Obex: Access to this target is denied"
+msgstr "OBEX: přístup zamítnut"
+
+msgid "Object is in use"
+msgstr "objekt je již používán"
+
+msgid "Offline Profiles:"
+msgstr "Offline profily:"
+
+msgid "Old data format, please refresh the folder."
+msgstr "Starý formát dat, prosím proveďte obnovení."
+
+msgid "On AC power:"
+msgstr "Nabíjení:"
+
+msgid "Only Sony Ericsson phones are officialy supported."
+msgstr "Podporovány jsou pouze telefony SonyEricsson."
+
+msgid ""
+"Only bookmarks stored in this folder will be synchronized with your phone's "
+"bookmarks. Any subfolders will be ignored."
+msgstr ""
+"Pouze záložky uložené v této složce budou synchronizovány s telefonem. "
+"Podsložky budou ignorovány."
+
+msgid "Open Target Location"
+msgstr "Otevři"
+
+msgid "Opening phone database"
+msgstr "Otevírám databázi"
+
+msgid "Opens a Web browser to Fma developers page."
+msgstr "Otevře vývojovou stránka FMA."
+
+msgid "Opens a Web browser to Fma forums page."
+msgstr "Otevře stránku diskuze o FMA"
+
+msgid "Opens a Web browser to Fma home page."
+msgstr "Otevře domácí stránku FMA"
+
+msgid "Operation aborted by user"
+msgstr "Operace přerušena uživatelem"
+
+msgid ""
+"Operation not applicable at present time, no such updates are released yet"
+msgstr ""
+"Operaci nyní nelze provést, žádná aktualizace není tuto chvíli k dispozici"
+
+msgid "Operator"
+msgstr "Operátor"
+
+msgid "Organization"
+msgstr "Organizace"
+
+msgid "Organization:"
+msgstr "Organizace:"
+
+msgid "Organize Favorites"
+msgstr "Uspořádání oblíbených položek"
+
+msgid "Organize Favorites..."
+msgstr "Správa oblíbených..."
+
+msgid "Organizer"
+msgstr "Organizer"
+
+msgid "Organizer Phone Page"
+msgstr "Stránka organizeru"
+
+msgid "Other"
+msgstr "Ostatní"
+
+msgid "Other [%s]"
+msgstr "Jiné [%s]"
+
+msgid "Other phone: "
+msgstr "Další čísla: "
+
+msgid "Other reminder"
+msgstr "Jiná doba"
+
+msgid "Other:"
+msgstr "Ostatní:"
+
+msgid "Outbox"
+msgstr "K odeslání"
+
+msgid "Outbox send complete"
+msgstr "Odesílání úspěšně dokončeno"
+
+msgid "Outbox send failed!"
+msgstr "Odesílání se nezdařilo!"
+
+msgid "Outbox send failed! Will try later..."
+msgstr "Odesílání se nezdařilo, další pokus později..."
+
+msgid "Outgoing Calls"
+msgstr "Odchozí hovory"
+
+msgid "Outlook"
+msgstr "Outlook"
+
+msgid "Outlook Categories"
+msgstr "Kategorie"
+
+msgid "Outlook Confirmation"
+msgstr "Potvrzování v Outlooku"
+
+msgid "Outlook Contacts..."
+msgstr "Kontakty Outlooku..."
+
+msgid "Outlook New Contacts Action"
+msgstr "Akce při přidání nového kontaktu"
+
+msgid "Outlook Priority"
+msgstr "Priorita Outlooku"
+
+msgid "Outlook Synchronization"
+msgstr "Synchronizace s Outlookem"
+
+msgid "Outlook Synchronize completed"
+msgstr "Synchonizace s Outlookem dokončena"
+
+msgid "Outlook Synchronize started"
+msgstr "Synchronizace s Outlookem spuštěna"
+
+msgid "Own Business Card - %s"
+msgstr "Vlastní vizitka - %s"
+
+msgid "P&roperties"
+msgstr "Vlastnosti"
+
+msgid "PC"
+msgstr "PC"
+
+msgid "PDU data:"
+msgstr "PDU data:"
+
+msgid "PRIVATE"
+msgstr "Osobní"
+
+msgid "PUBLIC"
+msgstr "Veřejná"
+
+msgid "Palette:"
+msgstr "Paleta:"
+
+msgid "Parent Folder"
+msgstr "Nadřazená složka"
+
+msgid "Paste|Inserts Clipboard contents"
+msgstr "Vloží obsah schránky"
+
+msgid "Payment required"
+msgstr "je nutné zaplatit"
+
+msgid "Pc"
+msgstr "PC"
+
+msgid "Performing cleanup"
+msgstr "Probíhá čištění"
+
+msgid "Performing cleanup..."
+msgstr "Probíhá čištění..."
+
+msgid "Personal Data"
+msgstr "Osobní data"
+
+msgid "Personalize"
+msgstr "Personalizar"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Phone & Battery"
+msgstr "Telefon & Baterie"
+
+msgid "Phone &Explorer"
+msgstr "Průzkumník telefonu"
+
+msgid "Phone &KeyPad..."
+msgstr "&Klávesnice telefonu..."
+
+msgid "Phone Bookmarks..."
+msgstr "Záložky..."
+
+msgid "Phone Calendar..."
+msgstr "Kalendář..."
+
+msgid "Phone Clock"
+msgstr "Hodiny v telefonu"
+
+msgid "Phone Clock..."
+msgstr "Čas v telefonu..."
+
+msgid "Phone Contacts..."
+msgstr "Kontakty..."
+
+msgid "Phone Device:"
+msgstr "Telefon:"
+
+msgid "Phone Explorer"
+msgstr "Průzkumník telefonu"
+
+msgid "Phone Explorer Startup folder:"
+msgstr "Složka průzkumníku telefonu:"
+
+msgid ""
+"Phone Folder Browseing requires OBEX protocol, so this feature will be "
+"disabled as well!"
+msgstr "Procházení složek v telefonu vyžaduje OBEX protokol."
+
+msgid ""
+"Phone IRMC Sync feature requires OBEX protocol, so this feature will be "
+"disabled as well!"
+msgstr "Synchronizace IRMC vyžaduje OBEX protokol."
+
+msgid "Phone KeyPad"
+msgstr "Klávesnice telefonu"
+
+msgid "Phone SMS storage is full. Please delete some messages."
+msgstr "Kapacita pro sms zprávy je vyčerpána. Smažte nějaké sms zprávy."
+
+msgid "Phone Status Diagram"
+msgstr "Stav telefonu"
+
+msgid "Phone book"
+msgstr "Seznam v telefonu"
+
+msgid "Phone clock is not synchronized with PC clock. "
+msgstr "Čas v telefonu se neshoduje s časem v PC. "
+
+msgid "Phone clock synchronization failed!"
+msgstr "Synchrnonizace času selhala!"
+
+msgid "Phone clock synchronized successfully."
+msgstr "Sychronizace úspěšně dokončena."
+
+msgid "Phone disconnected or out of range."
+msgstr "Telefon byl odpojen nebo je mimo dosah."
+
+msgid "Phone is temporary disconnected..."
+msgstr "Telefon je dočasně odpojen..."
+
+msgid "Phone number"
+msgstr "Telefonní číslo"
+
+msgid "Phone number:"
+msgstr "Čislo telefonu:"
+
+msgid "Phone temperature:"
+msgstr "Teplota telefonu:"
+
+msgid "Phone:"
+msgstr "Telefon:"
+
+msgid "Phonebook"
+msgstr "Telefonní seznam"
+
+msgid "Phonebook (Phone memory)"
+msgstr "Adresář (paměť telefonu)"
+
+msgid "Phonebook (SIM memory)"
+msgstr "Adresář (na SIM kartě)"
+
+msgid "Phonebook Priority"
+msgstr "Priorita tel.seznamu"
+
+msgid ""
+"Phonebook is empty. All current SIM entries will be deleted. Continue anyway?"
+msgstr ""
+"Telefonní seznam je prázdný. Všechny záznamy na SIM kartě budou vymazány. "
+"Přejete si pokračovat?"
+
+msgid ""
+"Phonebook, Organizer and Outlook synchronizations require IRMC Sync, so "
+"these features will be disabled as well!"
+msgstr ""
+"Telefonní seznam, organizer a synchronizace s Outlookem vyžaduje IRMC "
+"synchronizaci."
+
+msgid "Picture"
+msgstr "Obrázek"
+
+msgid "Picture File: "
+msgstr "Obrázek: "
+
+msgid "Picture information:"
+msgstr "Informace o obrázku:"
+
+msgid "Please enter a contact name at position %s"
+msgstr "Prosím vložte jméno kontaktu na pozici %s"
+
+msgid "Please enter a phone number at position %s"
+msgstr "Prosím vložte telefonní číslo na pozici %s"
+
+msgid ""
+"Please note that settings for Personalize, Call Prefferences and Outlook "
+"Synchronization are Fma specific and will not be synchronized with phone "
+"data."
+msgstr ""
+"Mějte prosím na paměti, že nastavení Přizpůsobit, Nastavení volání a "
+"Synchronizace s Outlookem nezpůsobí změnu v datech uložených v telefonu."
+
+msgid ""
+"Please read the prepare instructions bellow before proceeding with next step."
+msgstr "Přečtěte si následující instrukce před pokračováním."
+
+msgid ""
+"Please select which Outlook folders containing calendar to be synchronized "
+"with FMA. Right-click to choose New Calendar target folder (shown in bold)."
+msgstr ""
+"Prosím zvolte složky obsahující kalendář, které si přejete synchronizovat. "
+"Pravým tlačítkem myši zvolte cílovou složku (tučně)."
+
+msgid ""
+"Please select which Outlook folders containing contacts to be synchronized "
+"with FMA. Right-click to choose New Contacts target folder (shown in bold)."
+msgstr ""
+"Prosím zvolte složky obsahující kontakty, které si přejete synchronizovat. "
+"Pravým tlačítkem myši zvolte cílovou složku (tučně)."
+
+msgid ""
+"Please select which Outlook folders containing tasks to be synchronized with "
+"FMA. Right-click to choose New Tasks target folder (shown in bold)."
+msgstr ""
+"Prosím zvolte složky obsahující úlohy, které si přejete synchronizovat. "
+"Pravým tlačítkem myši zvolte cílovou složku (tučně)."
+
+msgid ""
+"Please use the fma website mentioned below for any bug reports or feature "
+"requests. Do not contact the developers personally. You can also visit us on "
+"IRC (irc.chatspike.net #fma)."
+msgstr ""
+"Prosím, pokud najdete chyby nebo máte jakékoliv připomínky k programu, "
+"kontaktujte tvůrce. Kontakty jsou uvedené níže. Také nás můžete kontaktova "
+"na IRC (irc.chatspike.net #fma)."
+
+msgid "Please wait while %s downloads a list of available updates..."
+msgstr "Prosím čekejte, stahuji seznam aktualizací..."
+
+msgid ""
+"Please wait while Fma downloads all appropriate update files from Fma web "
+"site..."
+msgstr "Chvíli strpení, FMA stahuje všechny potřebné soubory z Internetu..."
+
+msgid "Please wait while Wizard searches for any phones available."
+msgstr "Počkejte prosím, než průvodce vyhledá dostupné telefony."
+
+msgid "Please, wait until Web Update Wizard finishes all update tasks."
+msgstr "Prosím počkejte na dokončení všech procesů."
+
+msgid "Polling Interval (seconds)"
+msgstr "Intervalo de chequeo (segundos)"
+
+msgid ""
+"Polling Interval specify the interval for Signal & Battery Power polling."
+msgstr "Interval na dotazování určuje dobu před dotazem na baterii a signál."
+
+msgid "Popup Disable Selected"
+msgstr "Zvolen zákaz překrývání"
+
+msgid "Popup Selected"
+msgstr "Funkční klávesy zakázány"
+
+msgid "Port"
+msgstr "Port"
+
+msgid "Pos"
+msgstr "Pos"
+
+msgid "Possible Link to:"
+msgstr "Možnost spojit s:"
+
+msgid "Post a bookmark"
+msgstr "Záložka"
+
+msgid "Post a note"
+msgstr "Poznámka"
+
+msgid "Postal Address"
+msgstr "Adresa"
+
+msgid "Postal code: "
+msgstr "PSČ: "
+
+msgid "PostalCode"
+msgstr "PSČ"
+
+msgid "PostalCode:"
+msgstr "PSČ:"
+
+msgid "Power"
+msgstr "Napětí"
+
+msgid "Power Off Phone..."
+msgstr "Vypnout telefon..."
+
+msgid "Powers phone off instantly"
+msgstr "Vypne telefon"
+
+msgid "Precondition failed"
+msgstr "nejsou předpoklady"
+
+msgid "Prefered one:"
+msgstr "Preferované:"
+
+msgid "Preffered download mirror site:"
+msgstr "Preferované servery pro stahování:"
+
+msgid "Preffered language:"
+msgstr "Preferovaný jazyk:"
+
+msgid "Prepare"
+msgstr "Připravuji"
+
+msgid "Prepare Your Phone"
+msgstr "Připrava telefonu"
+
+msgid "Preparing Installation..."
+msgstr "Připravuji instalaci..."
+
+msgid "Preparing Outbox"
+msgstr "Příprava odeslaných zpráv"
+
+msgid "Preparing Search..."
+msgstr "Připravují hledání..."
+
+msgid "Preview:"
+msgstr "Náhled:"
+
+msgid "Previou&s"
+msgstr "Předchozí"
+
+msgid "Previous"
+msgstr "Předchozí"
+
+msgid "Previous Folder"
+msgstr "Předchozí složka"
+
+msgid "Previous message saved in Drafts"
+msgstr "Předchozí zpráva uložena jako koncept"
+
+msgid "Priority to:"
+msgstr "Priorita na:"
+
+msgid "Product Version"
+msgstr "Verze produktu"
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "Profile \"%s\" activated."
+msgstr "Profil  \"%s\" activován."
+
+msgid "Profile Settings..."
+msgstr "Nastavení profilu..."
+
+msgid "Profile changed"
+msgstr "Profil změněn"
+
+msgid "Profile name:"
+msgstr "Název profilu"
+
+msgid "Progress"
+msgstr "Pracuji"
+
+msgid "Progress Dialog"
+msgstr "Průběh"
+
+msgid "Progress:"
+msgstr "Průběh:"
+
+msgid "Properties"
+msgstr "Nastavení"
+
+msgid "Protocol Settings"
+msgstr "Nastavení protokolu"
+
+msgid "Proximity"
+msgstr "Doba nečinnosti"
+
+msgid "Proximity Detection"
+msgstr "V době nečinnosti"
+
+msgid "Proximity settings cannot match for Away and Near"
+msgstr "Nastavení při nečinnosti neodpovídá stavu PRYČ a JSEM BLÍZKO"
+
+msgid "Proxy Authentication required"
+msgstr "je třeba ověřit přístupová práva"
+
+msgid "PurgeComm function failed"
+msgstr "Funkce PurgeComm selhala"
+
+msgid "Quotes are not allowed in SIM contact name"
+msgstr "Uvozovky nejsou na SIM povoleny"
+
+msgid ""
+"RTS Flow Control might be needed on some devices or cables\n"
+"(Credit goes to VoSSy)."
+msgstr ""
+"Řízení toku RTS je u některých kabelů nutno nastavit!\n"
+"(Díky VoSSy)."
+
+msgid "Range value: 120-255."
+msgstr "Rozsah hodnot: 120-255."
+
+msgid "ReadFile function failed"
+msgstr "Čtení ze souboru selhalo"
+
+msgid "Reading Outlook Folders..."
+msgstr "Načítám složky Outlooku..."
+
+msgid "Ready to Download"
+msgstr "Připraveno ke stažení"
+
+msgid "Ready to Install"
+msgstr "Připraveno k instalaci"
+
+msgid "Received"
+msgstr "Přijata"
+
+msgid "Received "
+msgstr "Přijato "
+
+msgid "Received Read Items"
+msgstr "Příjmout přečtené"
+
+msgid "Received Unread Items"
+msgstr "Přijmout nepřečtené"
+
+msgid "Received:"
+msgstr "Přijato:"
+
+msgid "Receiving "
+msgstr "Přijímám"
+
+msgid ""
+"Receiving %s\n"
+"(%.1n kB so far)"
+msgstr ""
+"Přijímám %s\n"
+"(%.1n kB)"
+
+msgid ""
+"Receiving %s\n"
+"(%.1n of %.1n kB)"
+msgstr ""
+"Přijímám %s\n"
+"(%.1n de %.1n kB)"
+
+msgid "Recent &Missed Calls..."
+msgstr "Zmeškané hovory..."
+
+msgid "Recent Calls"
+msgstr "Poslední hovory"
+
+msgid "Recent Missed Calls: "
+msgstr "Zmeškané hovory:"
+
+msgid "Recent calls:"
+msgstr "Poslední hovory:"
+
+msgid "Recent missed calls:"
+msgstr "Zmeškané hovory:"
+
+msgid "Recipients:"
+msgstr "Příjemci:"
+
+msgid "Reconnection needed (Baudrate changed)"
+msgstr "Je třeba provést nové připojení (změna rychlosti)"
+
+msgid "Reference:"
+msgstr "Reference:"
+
+msgid "Refresh"
+msgstr "Obnovit"
+
+msgid "Refresh Data"
+msgstr "Obnovit data"
+
+msgid "Refresh Text Messages"
+msgstr "Obnoví textové zprávy"
+
+msgid "Refresh View"
+msgstr "Obnovit zobrazení"
+
+msgid "Refreshing local calendar"
+msgstr "Obnovuji kalendář"
+
+msgid "Refreshing local phonebook"
+msgstr "Obnovuji lokální telefonní seznam"
+
+msgid "Region"
+msgstr "Region"
+
+msgid "Region:"
+msgstr "Region:"
+
+msgid "Region: "
+msgstr "Region: "
+
+msgid "Registry error"
+msgstr "Chyba registru"
+
+msgid "Reindex (Sort) All Contacts..."
+msgstr "Setřídit všechny kontakty..."
+
+msgid "Relocating FMA Database..."
+msgstr "Převádení FMA databáze..."
+
+msgid "Relocating phone profile database..."
+msgstr "Převádění databáze profilů..."
+
+msgid "Reminder"
+msgstr "Upozornění"
+
+msgid "Remove"
+msgstr "Odstranit"
+
+msgid "Remove..."
+msgstr "Odebrat..."
+
+msgid "Removing \"%0:s\" from group \"%1:s\". Do you wish to continue?"
+msgstr "Odebrat \"%0:s\" ze skupiny \"%1:s\". Opravdu chcete pokračovat?"
+
+msgid "Rename aborted"
+msgstr "Přejmenování přerušeno"
+
+msgid "Replace Script..."
+msgstr "Nahraď skript..."
+
+msgid "Replace..."
+msgstr "Nahraď..."
+
+msgid "Reply to Contact"
+msgstr "Odpovědět"
+
+msgid "Report"
+msgstr "Doručenka"
+
+msgid "Request Reply"
+msgstr "Požadovat odpověď"
+
+msgid "Request Status Report"
+msgstr "Zaslat doručenku"
+
+msgid "Request Time Out"
+msgstr "vypršel čas"
+
+msgid "Requested URL too large"
+msgstr "URL je příliš dlouhé"
+
+msgid "Requested entity too large"
+msgstr "vyžádaná entita je příliš velká"
+
+msgid "Reset Counter"
+msgstr "Vynulovat počítadlo"
+
+msgid "Reset Counter monthly on"
+msgstr "Vynulovat počítadlo každý"
+
+msgid "Reset Positions"
+msgstr "Zrušit pozici"
+
+msgid "Reset To Defaults"
+msgstr "Výchozí nastavení"
+
+msgid "Reset change flaq"
+msgstr "Smaž příznak změny"
+
+msgid "Restarting Application..."
+msgstr "Restartuji aplikaci..."
+
+msgid "Restore Last Used Profile"
+msgstr "Obnovit naposled použitý profil"
+
+msgid "Retrieving "
+msgstr "Obnovuji "
+
+msgid "Retrieving Phone info"
+msgstr "Načítám informace o přístroji"
+
+msgid "Retrieving SIM info"
+msgstr "Načítám informace o SIM"
+
+msgid "Retrieving battery status"
+msgstr "Načítám stav baterie"
+
+msgid "Retrieving bookmarks"
+msgstr "Načítám záložky"
+
+msgid "Retrieving calls"
+msgstr "Načítám hovory"
+
+msgid "Retrieving groups"
+msgstr "Načítám skupiny"
+
+msgid "Retrieving phone info"
+msgstr "Načítám informace o přístroji"
+
+msgid "Retrieving profiles"
+msgstr "Načítám profily"
+
+msgid "Retrieving signal status"
+msgstr "Získávám údaj o signálu"
+
+msgid "Ringing Tone: "
+msgstr "Vyzváněcí tón: "
+
+msgid "Ringing tone volumes:"
+msgstr "Hlasitost vyzvánění:"
+
+msgid "Ringing..."
+msgstr "Zvoní..."
+
+msgid "Row"
+msgstr "řádek"
+
+msgid "Run Screen Saver"
+msgstr "Spusť spořič"
+
+msgid "S&ync"
+msgstr "S&ynchronizace"
+
+msgid "SIM"
+msgstr "SIM"
+
+msgid "SIM book"
+msgstr "Seznam na SIM"
+
+msgid "SIM card"
+msgstr "SIM karta"
+
+msgid "SIM card found and ready with operator %s"
+msgstr "SIM karta nalezena a přijata operátorem %s"
+
+msgid "SIM card not found or not a SIM card, emergency mode activated"
+msgstr "SIM karta nenalezena, pouze tísňová volání"
+
+msgid "SMS"
+msgstr "SMS"
+
+msgid "SMS Count:"
+msgstr "Počet SMS:"
+
+msgid "SMS Received"
+msgstr "Přijata SMS"
+
+msgid "SMS Sended"
+msgstr "SMS odeslána"
+
+msgid "SMS: "
+msgstr "SMS: "
+
+msgid "Sa&ve"
+msgstr "Uložit"
+
+msgid "Save And Exit"
+msgstr "Uložit a ukončit"
+
+msgid "Save As"
+msgstr "Uložit jako"
+
+msgid "Save As Text..."
+msgstr "Uložit jako text..."
+
+msgid "Save As..."
+msgstr "Uložit jako..."
+
+msgid "Save Log As Text..."
+msgstr "Ulož výpisy jako text..."
+
+msgid "Save Log As..."
+msgstr "Uložit výpis jako..."
+
+msgid "Save Message in Drafts"
+msgstr "Uložit zprávu jako koncept"
+
+msgid "Save Notes..."
+msgstr "Uložit poznámky..."
+
+msgid "Save Screenshot..."
+msgstr "Uložit screenshot..."
+
+msgid "Saving changes..."
+msgstr "Ukládám změny..."
+
+msgid "Saving completed"
+msgstr "Ukládání skončeno"
+
+msgid "Saving contacts"
+msgstr "Ukládám kontakty"
+
+msgid "Saving error: %s"
+msgstr "Chyba při ukládání: %s"
+
+msgid "Saving messages data"
+msgstr "Ukládám data zpráv"
+
+msgid "Saving own card..."
+msgstr "Ukládání vlastní vizitky..."
+
+msgid "Saving started"
+msgstr "Ukládání začalo"
+
+msgid "Saving..."
+msgstr "Ukládám..."
+
+msgid "Script"
+msgstr "Skript"
+
+msgid "Script Code..."
+msgstr "Kód skriptu..."
+
+msgid "Script Type:"
+msgstr "Typ skriptu:"
+
+msgid "Script contains errors or save failed!"
+msgstr "Skript obsahuje chyby nebo se ukládání nezdařilo!"
+
+msgid "Script: Transmit Error!"
+msgstr "Skript: Chyba přenosu!"
+
+msgid "Scripting"
+msgstr "Skriptování"
+
+msgid "Scripting Engine"
+msgstr "Skriptovací engine"
+
+msgid "Search"
+msgstr "Hledat"
+
+msgid "Search Again"
+msgstr "Hledat znovu"
+
+msgid "Searching"
+msgstr "Hledám"
+
+msgid "Searching Bluetooth..."
+msgstr "Hledám bluetooth..."
+
+msgid "Searching Device..."
+msgstr "Hledám zařízení..."
+
+msgid "Searching Infrared..."
+msgstr "Hledám infraport..."
+
+msgid "Searching Ports..."
+msgstr "Hledám dostupné porty..."
+
+msgid "Searching for Bluetooth devices..."
+msgstr "Hledám bluetooth zařízení..."
+
+msgid "Searching..."
+msgstr "Hledám..."
+
+msgid "Select &All"
+msgstr "Označit vše"
+
+msgid "Select A Contact"
+msgstr "Zvolit kontakt"
+
+msgid "Select All"
+msgstr "Označ vše"
+
+msgid "Select Contacts"
+msgstr "Vyberte kontakty"
+
+msgid "Select Recent Recipients"
+msgstr "Vyberte všechny příjemce"
+
+msgid "Select Recepients..."
+msgstr "Vybrat příjemce..."
+
+msgid "Select Script File"
+msgstr "Zvol soubor skriptu"
+
+msgid "Select a preffered mirror site from which to retrieve updates."
+msgstr "Zvolte server, ze kterého chcete získávat aktualizace."
+
+msgid "Select all items"
+msgstr "Vybrat všechny položky"
+
+msgid "Select custom version to view its details here."
+msgstr "Zvolte verzi pro zobrazení podrobností."
+
+msgid "Select file to upload"
+msgstr "Vyber soubor pro uložení"
+
+msgid "Select mirror site(s) to use, then click Next to continue."
+msgstr "Zvolte server a klikněte na Pokračování."
+
+msgid "Select preffered phone device and click Next to continue."
+msgstr "Vyber telefon a klikni na Další."
+
+msgid "Select target product version to update to."
+msgstr "Zvolte verzi, na kterou chcete provést aktualizaci."
+
+msgid "Select..."
+msgstr "Zvolte..."
+
+msgid "Selected target:"
+msgstr "Zvolený cíl:"
+
+msgid "Send"
+msgstr "Odeslat"
+
+msgid "Send Current Outbox Messages"
+msgstr "Odeslat odchozí zprávy"
+
+msgid "Send Message Immediately"
+msgstr "Odeslat zprávu okamžitě"
+
+msgid "Send Outbox &Messages"
+msgstr "Odeslat odchozí zprávy"
+
+msgid "Send SMS"
+msgstr "Odeslat SMS"
+
+msgid "Send To Phone"
+msgstr "Pošli do telefonu"
+
+msgid "Send and Receive"
+msgstr "Odeslat a přijmout"
+
+msgid "Send as Flash Message"
+msgstr "Zpráva se zobrazí příjemci pouze na displeji"
+
+msgid "Send as Long Message"
+msgstr "Odeslat jakou dlouhou zprávu (rozdělí se na více sms)"
+
+msgid "Send to Phone"
+msgstr "Odeslat do telefonu"
+
+msgid "Sender SMSC:"
+msgstr "SMS centrum:"
+
+msgid "Sending "
+msgstr "Odesílám "
+
+msgid ""
+"Sending %s\n"
+"(%.1n of %.1n kB)"
+msgstr ""
+"Odesílám %s\n"
+"(%.1n de %.1n kB)"
+
+msgid "Sending long message to %s..."
+msgstr "Odesílám dlouhou právu pro %s..."
+
+msgid "Sending message to %s..."
+msgstr "Odesílám zprávu pro %s..."
+
+msgid "Sending message..."
+msgstr "Odesílám zprávu..."
+
+msgid "Sending messages from Outbox..."
+msgstr "Odesílání zpráv..."
+
+msgid "Sending out messages"
+msgstr "Odesílání zpráv"
+
+msgid ""
+"Sending out messages\n"
+"(%0:d sent, %1:d failed)"
+msgstr ""
+"Odesílání zpráv\n"
+"(%0:d odesláno, %1:d neodesláno)"
+
+msgid "Sending setting profile..."
+msgstr "Posílám nastavení profilu..."
+
+msgid "Sent "
+msgstr "Posladné"
+
+msgid "Serial"
+msgstr "seriová komunikace"
+
+msgid "Serial Number:"
+msgstr "Výrobní číslo:"
+
+msgid "Serial Port Setup"
+msgstr "Nastavení sériového portu"
+
+msgid "Serial port/device change Failed"
+msgstr "Chyba komunikace na seriovém portu"
+
+msgid "Serial/Virtual Port (If none of the above worked)"
+msgstr "Seriový/Virtuální port (jestliže přechozí volby nefungují)"
+
+msgid "Service Unavailable"
+msgstr "služba není přístupná"
+
+msgid "Set Port=0 to let the system decide which port to use."
+msgstr "Nastavte Port=0 pro automatickou detekci portu"
+
+msgid "Set Ring Level"
+msgstr "Nastavit hlasitost vyzvánění"
+
+msgid "Set Time"
+msgstr "Nastavit čas"
+
+msgid "Set global Silent mode"
+msgstr "Nastavit tichý režim"
+
+msgid "SetCommState function failed"
+msgstr "Funkce SetCommState selhala"
+
+msgid "SetCommTimeouts failed"
+msgstr "Funkce SetCommTimeouts selhala"
+
+msgid "Setting call monitoring"
+msgstr "Nastavuji monitoring hovorů"
+
+msgid "Setting caller ID"
+msgstr "Nastavuji ID volajícího"
+
+msgid "Setting mute notification"
+msgstr "Nastavuji zvuková upozornění"
+
+msgid "Setting presentation ID"
+msgstr "Nastavuji předání ID"
+
+msgid "Setting sms notification"
+msgstr "Nastavuji upozornění na SMS"
+
+msgid "Settings"
+msgstr "Nastavení"
+
+msgid "SetupComm function failed"
+msgstr "Funkce SetupComm selhala"
+
+msgid "Severity:"
+msgstr "Prostor:"
+
+msgid "Show"
+msgstr "Zobrazit"
+
+msgid "Show All Types"
+msgstr "Zobrazit všechny typy"
+
+msgid "Show Fma Options"
+msgstr "Volby"
+
+msgid "Show Phone Explorer"
+msgstr "Spustit průzkumník telefonu"
+
+msgid "Show Picture"
+msgstr "Zobrazit obrázek"
+
+msgid "Show Splash Screen on startup"
+msgstr "Zobrazovat logo při startu"
+
+msgid "Show Sync Log"
+msgstr "Zobrazit log synchronizace"
+
+msgid "Show if the main application is Not &Minimized"
+msgstr "Zobrazí se, pokud hlavní aplikace není &minimalizována"
+
+msgid "Show if the operation performed took too &Long Time"
+msgstr "Zobrazí se, pokud operace zabere mnoho času"
+
+msgid "Show me current Tasks and Events"
+msgstr "Aktuální úlohy a události"
+
+msgid "Show or hide additional information|"
+msgstr "Ukázat nebo skrýt další informace|"
+
+msgid "Show warning message when SMS Count reaches"
+msgstr "Zobrazit varování pokud počet sms překročí"
+
+msgid "Show when connecting to phone for the &First Time"
+msgstr "Zobrazí se, pokud je telefon poprvé připojen"
+
+msgid "Show when sending out Text Messages"
+msgstr "Zobrazí se při odesálání zprávy"
+
+msgid "Show when sending/receiving Files"
+msgstr "Zobrazí se při odesílání nebo přijímání souboru"
+
+msgid "Shows Activity Log"
+msgstr "Zobrazí výpis aktivit"
+
+msgid "Shows Authors Information"
+msgstr "Informace o autorech"
+
+msgid "Shows Call Favorites"
+msgstr "Oblíbená volání"
+
+msgid "Shows Current Profile Settings"
+msgstr "Ukaž nastavení profilu"
+
+msgid "Shows Debug Log"
+msgstr "Zobrazí Debug Log"
+
+msgid "Shows Developer Tools"
+msgstr "Vývojové nástroje"
+
+msgid "Shows Event Viewer Log Window"
+msgstr "Ukaž prohlížeč událostí"
+
+msgid "Shows Fma Options"
+msgstr "Nastavení FMA"
+
+msgid "Shows Fma Update Wizard"
+msgstr "Průvodce aktualizací FMA"
+
+msgid "Shows Log"
+msgstr "Zobrazí výpis"
+
+msgid "Shows Recent Missed Calls"
+msgstr "Zobrazí zmeškané hovory"
+
+msgid "Shows SMS Favorites"
+msgstr "Oblíbené SMS"
+
+msgid "Shows Script Editor"
+msgstr "Spusť editor skriptu"
+
+msgid "Shows Synchronize Log"
+msgstr "Zobrazí výpis synchronizace"
+
+msgid "Shows WAP Home Page"
+msgstr "Ukáže domovskou WAP stránku"
+
+msgid "Shows Your Business Card"
+msgstr "Ukáže Vaši vizitku"
+
+msgid "Signal"
+msgstr "Signál"
+
+msgid "Signal N/A"
+msgstr "Bez signálu"
+
+msgid "Silent"
+msgstr "Ticho"
+
+msgid "Silent Mode"
+msgstr "Tichý režim"
+
+msgid "Similar Files|*"
+msgstr "Stejné soubory |*"
+
+msgid "Size / Position"
+msgstr "Velikost"
+
+msgid "Size:"
+msgstr "Velikost:"
+
+msgid "Small"
+msgstr "Malé"
+
+msgid "Soft Keys Disable"
+msgstr "Funkční klávesy zakázány"
+
+msgid "Soft Keys Enable"
+msgstr "Funkční klávesy povoleny"
+
+msgid "Software Revision:"
+msgstr "Verze software:"
+
+msgid ""
+"Some database files are in use. Please close any applicatiions that might "
+"couse this and click OK to continue."
+msgstr ""
+"Některé soubory databáze jsou používané. Prosím ukončete všechny aplikace, "
+"které to mohou způsobovat a klikněte na OK pro pokračování."
+
+msgid "Sorting contacts will replace all contacts position. Are you sure?"
+msgstr "Třídění kontaktů změní všechny pozice. Přejete si pokračovat?"
+
+msgid "Sound"
+msgstr "Zvuk"
+
+msgid "Sound information:"
+msgstr "Informace o zvuku"
+
+msgid "Speech"
+msgstr "Hlas"
+
+msgid "Standard"
+msgstr "Standard"
+
+msgid "Standby"
+msgstr "Standby"
+
+msgid "Start Sync Bookmarks...."
+msgstr "Start sychnronizace záložek..."
+
+msgid "Start Sync Calendar...."
+msgstr "Start synchronizace kalendáře..."
+
+msgid "Start Sync Messages..."
+msgstr "Stahuji přečtené zprávy"
+
+msgid "Start Sync Phonebook...."
+msgstr "Start sychronizace telefonního seznamu..."
+
+msgid "Start date:"
+msgstr "Od data:"
+
+msgid "Start time:"
+msgstr "Start čas:"
+
+msgid "Starting..."
+msgstr "Spouštím..."
+
+msgid "Startup"
+msgstr "Spouštění"
+
+msgid "State: "
+msgstr "Stav:"
+
+msgid "Status"
+msgstr "Stav"
+
+msgid "Status Diagram"
+msgstr "Stavový diagram"
+
+msgid "Status:"
+msgstr "Stav:"
+
+msgid "Stored Sent Items"
+msgstr "Uložit poslané"
+
+msgid "Stored Unread Items"
+msgstr "Uložit neposlané"
+
+msgid "Street"
+msgstr "Ulice"
+
+msgid "Street:"
+msgstr "Ulice:"
+
+msgid "Street: "
+msgstr "Ulice: "
+
+msgid "Subject:"
+msgstr "Předmět:"
+
+msgid "Summary:"
+msgstr "Shrnutí:"
+
+msgid "Switch &Database..."
+msgstr "Přepnout &databázi..."
+
+msgid "Switch &Phone Database..."
+msgstr "Přepnout databázi telefonu"
+
+msgid "Switch To Profile"
+msgstr "Přepnout na profil"
+
+msgid "Switch to Bluetooth or Data Cable in order to use it."
+msgstr ""
+"Připojte telefon přes datový kabel nebo bluetooh, pokud chcete tuto funkci "
+"použít."
+
+msgid "Switching character set"
+msgstr "Nastavuji znakovou sadu"
+
+msgid "Sync Bookmarks completed."
+msgstr "Synchronizace záložek dokončena."
+
+msgid "Sync Calendar"
+msgstr "Synch. kalendář"
+
+msgid "Sync Calendar completed."
+msgstr "Synchronizace kalendáře dokončena"
+
+msgid "Sync Calendar started."
+msgstr "Synchronizace kalendáře začala."
+
+msgid "Sync Messages completed"
+msgstr "Synchronizace zpráv dokončena"
+
+msgid "Sync Outlook"
+msgstr "Synch. Outlook"
+
+msgid "Sync Phone Clock aborted"
+msgstr "Synchronizace času přerušena"
+
+msgid "Sync Phone Clock completed"
+msgstr "Sychronizace úspěšně dokončena."
+
+msgid "Sync Phone Clock started."
+msgstr "Synchronizace času zahájena."
+
+msgid "Sync Phone book"
+msgstr "Synch. telefonní seznam"
+
+msgid "Sync Phonebook completed."
+msgstr "Synchronizace seznamu dokončena."
+
+msgid "Sync Phonebook started."
+msgstr "Synchronizace telefonního seznamu začala."
+
+msgid "Sync Phonebook with Outlook"
+msgstr "Sychronizuj telefon s Outlookem"
+
+msgid "SyncML Settings"
+msgstr "Nastavení SyncML"
+
+msgid "Synching to remote data:"
+msgstr "Synchronizace:"
+
+msgid "Synchronization"
+msgstr "Synchronizace"
+
+msgid "Synchronize"
+msgstr "Synchronizace"
+
+msgid "Synchronize Bookmarks"
+msgstr "Synchronizace záložek"
+
+msgid "Synchronize Bookmarks in this Folder:"
+msgstr "Sychronizace záložek v této složce:"
+
+msgid "Synchronize Calendar"
+msgstr "Synchronizace kalendáře"
+
+msgid "Synchronize Calendar in these Folders:"
+msgstr "Synchronizace kalendáře v těchto složkách:"
+
+msgid "Synchronize Contacts in these Folders:"
+msgstr "Synchronizace kontaktů v těchto složkách:"
+
+msgid "Synchronize Log"
+msgstr "Synchonizuj log"
+
+msgid "Synchronize Log..."
+msgstr "Log synchronizace... "
+
+msgid "Synchronize Microsoft Outlook"
+msgstr "Synchronizace s MS Outlookem"
+
+msgid "Synchronize Notes"
+msgstr "Synchronizace poznámek"
+
+msgid "Synchronize Phone Bookmarks"
+msgstr "Synchronizace záložky prohlížeče"
+
+msgid "Synchronize Phone Calendar"
+msgstr "Synchronizace kalendáře"
+
+msgid "Synchronize Phone Clock"
+msgstr "Synchronizace času v telefonu"
+
+msgid "Synchronize Phonebook"
+msgstr "Synchronizace telefonního seznamu"
+
+msgid "Synchronize Phonebook Contacts"
+msgstr "Synchronizace telefonních kontaktů"
+
+msgid "Synchronize Tasks"
+msgstr "Synchronizace úkolů"
+
+msgid "Synchronize Tasks in these Folders:"
+msgstr "Sychronizace úloh v těchto složkách:"
+
+msgid "Synchronize completed"
+msgstr "Synchronizace ukončena"
+
+msgid "Synchronize error: %s"
+msgstr "Chyba synchronizace: %s"
+
+msgid "Synchronize started"
+msgstr "Synchronizace začala"
+
+msgid "Synchronizing calendar"
+msgstr "Synchronizuji kalendář"
+
+msgid "Synchronizing contacts"
+msgstr "Synchronizuji kontakty"
+
+msgid "Synchronizing phone bookmarks"
+msgstr "Synchronizuji záložky z telefonu"
+
+msgid "Synchronizing phonebook contacts"
+msgstr "Synchronizuji telefonní seznam"
+
+msgid "Talking..."
+msgstr "Hovor..."
+
+msgid "Task"
+msgstr "Úloha"
+
+msgid "Task Folders"
+msgstr "Složky úloh"
+
+msgid "Tech Preview"
+msgstr "Náhled"
+
+msgid "Temp"
+msgstr "Teplota"
+
+msgid "Test Language..."
+msgstr "Test jazyka..."
+
+msgid "Test Proximity"
+msgstr "Test"
+
+msgid "Testing..."
+msgstr "Testuji..."
+
+msgid "Text Messages Counter"
+msgstr "Počítadlo textových zpráv"
+
+msgid "Thanks to all!"
+msgstr "Děkujeme všem!"
+
+msgid ""
+"The Phone Memory should be Refreshed as soon as possible, since some contact "
+"positions are not available!"
+msgstr ""
+"Paměť telefonu musí být co nejdříve obnovena, do té doby budou některé "
+"pozice nedostupné!"
+
+msgid ""
+"The SIM Memory should be Refreshed as soon as possible, since some contact "
+"positions are not available!"
+msgstr ""
+"Paměť SIM karty musí být co nejdříve obnovena, do té doby budou některé "
+"pozice nedostupné!"
+
+msgid "The Sync Calendar can't start...try to restart your phone."
+msgstr ""
+"Synchronizace kalendáře nemůže začít, zkuste vypnout a zapnout telefon."
+
+msgid "The Sync Phonebook can't start...try to restart your phone."
+msgstr ""
+"Synchronizace telefonního seznamu nemůže začít, zkuste restartovat telefon."
+
+msgid ""
+"The Wizard is not complete. Do you realy want to exit it?\n"
+"\n"
+"You can run this wizard at a later time to complete it.\n"
+"\n"
+"To exit Wizard right now click Yes. To continue click No."
+msgstr ""
+"Průvodce není u konce. Opravdu si přejete jej přerušit?\n"
+"\n"
+"Později můžete průvodce kdykoliv znovu spustit.\n"
+"\n"
+"Kliknutím na 'Ano' ukončíte průvodce. Kliknutím na 'Ne' pokračuje."
+
+msgid ""
+"The Wizard is now ready to begin searching for your phone device. First make "
+"sure that your phone is powered on and its connection settings are activated:"
+msgstr ""
+"Průvodce je připraven vyhledat Váš telefon. První podmínkou pro úspěšné "
+"nalezení je aby byl telefon zapnut. dále máte na výběr připojit telefon "
+"pomocí:"
+
+msgid ""
+"The application Web Update Wizard is ready to install downloaded updates.\n"
+"\n"
+"While doing so the application should be restarted in order to apply "
+"updates. If you have some unsaved data or settings, please exit now and save "
+"them, then go back to Web Update Wizard. The updates will not be downloaded "
+"again.\n"
+"\n"
+"When the installation completed, application will be restarted once more "
+"with new updates applied (it might contains any bugfixes and improvement, or "
+"any new features as well)."
+msgstr ""
+"Průvodce aktualizací z Internetu je připraven instalovat aktualizace.\n"
+"\n"
+"Během instalace bude aplikace restartována, jestliže máte neuložená data "
+"nebo nastavení, prosím uložte si je a znovu spusťte průvodce. Aktualize se "
+"již nebudou znovu stahovat.\n"
+"\n"
+"Po dokončení aktualizace bude aplikace restartována znovu a všechny "
+"aktualizace tím budou aktivní."
+
+msgid "The appointment:"
+msgstr "Schůzka:"
+
+msgid "The contact:"
+msgstr "Kontakt:"
+
+msgid "The name at position %s is too long"
+msgstr "Jméno na pozici %s je příliš dlouhé"
+
+msgid "The number at position %s is too long"
+msgstr "Číslo na pozici %s je příliš dlouhé"
+
+msgid ""
+"The phone battery is too low! Plug the phone into the charger now if you "
+"wish to use it..."
+msgstr ""
+"Baterie v telefonu je téměř vybitá, připojte prosím telefon k nabíječce..."
+
+msgid "The possible contacts are sorted with the most probable contact on top."
+msgstr "Kontakty jsou řazeny podle prvního kontaktu."
+
+msgid "The task:"
+msgstr "Úloha:"
+
+msgid "Theme"
+msgstr "Schéma"
+
+msgid "There are no items to display in this view."
+msgstr "Nejsou žádné položky k zobrazení."
+
+msgid "There are no items to display in this view. Did you refresh the folder?"
+msgstr "Nejsou žádné položky k zobrazení. Zkuste obnovit složku."
+
+msgid ""
+"There are no items to display in this view. Did you synchronize phonebook?"
+msgstr "Nejsou žádné položky k zobrazení. Je synchronizován adresář?"
+
+msgid "This contact does not have any phone number"
+msgstr "Tento kontakt nemá telefonní číslo"
+
+msgid "This is English language."
+msgstr "Český překlad (c) www.ok-shop.cz"
+
+msgid ""
+"This is the first time you have started Outlook Synchronization. All FMA "
+"contacts will be added to Outlook and all Outlook contacts will be added to "
+"FMA, unless you choose to link them. The contacts will be linked after "
+"that.\n"
+"\n"
+"Make sure you have made a backup of your FMA and Outlook contacts!\n"
+"\n"
+"There is a maximum of %d contacts in the phonebook memory.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Nyní poprvé spouštíte synchronizaci s Outlookem, všechny kontakty z FMA "
+"budou přidány do Outlooku a všechny kontakty z Outlooku budou přidány do "
+"FMA.\n"
+"\n"
+"Ujistěte se prosím, že máte hotové zálohy kontaktů z FMA a Outlooku!\n"
+"\n"
+"Mějte také na pěměti, že do telefonu je možné uloži maximálně %d kontaktů.\n"
+"\n"
+"Přejete si pokračovat?"
+
+msgid "This phone type position is already taken by \"%s\". Overwrite it?"
+msgstr "Tuto pozici již zabírá \"%s\". Přepsat?"
+
+msgid "This profile name is hardcoded in phone and can not be renamed"
+msgstr "Tento profil nelze přejmenovat"
+
+msgid "This software product is licensed under terms and conditions of"
+msgstr "Tento software je šířen pod"
+
+msgid "This will crop some text from the end of the current message?"
+msgstr "Text z konce zprávy bude vymazán."
+
+msgid ""
+"This wizard will help you add a contact to a group. You can use default "
+"contact's number or select from a numbers list below."
+msgstr ""
+"Tento průvodce Vám pomůže přidat kontakty do skupiny. Můžete použít výchozí "
+"číslo nebo vybrat ze seznamu."
+
+msgid ""
+"This wizard will help you add a number to your phonebook. You could create a "
+"new contact or modify an existing one."
+msgstr ""
+"Tento průvodce Vám pomože přidat číslo do seznamu. Můžete vytvářet nové nebo "
+"upravovat staré."
+
+msgid "This wizard will help you connect to your phone."
+msgstr "Tento průvodce Vám pomůže připojit telefon."
+
+msgid ""
+"This wizard will help you update the %s via Internet or through an update "
+"file provided by application vendor."
+msgstr "Tento průvodce Vám pomůže aktualizovat %s pomocí internetu."
+
+msgid "Time"
+msgstr "Čas"
+
+msgid "Time:"
+msgstr "Čas:"
+
+msgid "Timeout (seconds)"
+msgstr "Prodleva (sekundy)"
+
+msgid "TimeoutS out of range (0-10)"
+msgstr "Prodleva (0-10)"
+
+msgid "Title"
+msgstr "Titul"
+
+msgid "Title:"
+msgstr "Títul:"
+
+msgid "Title: "
+msgstr "Titul: "
+
+msgid "To Address:"
+msgstr "Komu:"
+
+msgid ""
+"To create a new item click on Add button. To delete or arrange an item "
+"select it from the list then click on Remove, Move Up or Move Down."
+msgstr ""
+"Pro vytvoření nové položky klikni na tlačítko Přidat. Smazání nebo seřazení "
+"zvolte položku a potom klikni na Odstranit, Posunout nahoru nebo Posunout "
+"dolu."
+
+msgid "To..."
+msgstr "Komu..."
+
+msgid "Today Caption"
+msgstr "Uvítací nápis"
+
+msgid "Toggle"
+msgstr "Přepínání"
+
+msgid "Toggle Calls toolbar"
+msgstr "Vypni/zapni lištu hovorů"
+
+msgid "Toggle Connect / Disconnect"
+msgstr "Odpojit / připojit"
+
+msgid "Toggle Explorer toolbar"
+msgstr "Vypni/zapni průzkumníka"
+
+msgid "Toggle Keyboard Lock / Unlock"
+msgstr "Zamknout / odemknout klávesnici"
+
+msgid "Toggle Keypad On / Off"
+msgstr "Klávesnice telefonu zapnuta/vypnuta"
+
+msgid "Toggle Message Preview On / Off"
+msgstr "Náhled zprávy vypnut/zapnut"
+
+msgid "Toggle Messages toolbar"
+msgstr "Vypni/zapni lištu zpráv"
+
+msgid "Toggle Minute Minder On / Off"
+msgstr "Zapnout/Vypnout minutové upozornění"
+
+msgid "Toggle Phone Explorer On / Off"
+msgstr "Průzkumník telefonu zapnut/vypnut"
+
+msgid "Toggle Phone toolbar"
+msgstr "Vypni/zapni lištu telefonu"
+
+msgid "Toggle Profile toolbar"
+msgstr "Vypni/zapni lištu profilů"
+
+msgid "Toggle Silent Mode On / Off"
+msgstr "Vypnout / zapnout tichý režim"
+
+msgid "Toggle Standard toolbar"
+msgstr "Vypni/zapni standardní lištu"
+
+msgid "Tone"
+msgstr "Tón"
+
+msgid "Toolbars"
+msgstr "Nástrojová lišta"
+
+msgid "Tools"
+msgstr "Nástroje"
+
+msgid "Total messages sent: %d"
+msgstr "Celkem odeslaných zpráv: %d"
+
+msgid "Total update size: "
+msgstr "Celková velikost aktualizace: "
+
+msgid "Track New Messages"
+msgstr "Vytvoř novou zprávu"
+
+msgid "Track length is %d samples (Custom format)"
+msgstr "Stopa je dlouhá %d samplů (uživatelský formát)"
+
+msgid "TransmitCommChar function failed"
+msgstr "Funkce CommChar selhala"
+
+msgid "Transparency"
+msgstr "Transparentnost"
+
+msgid "Travel"
+msgstr "Cesta"
+
+msgid "Troubleshoot..."
+msgstr "Problém..."
+
+msgid "True-Color (24-bit colors)"
+msgstr "True-Color (24-bitové barvy)"
+
+msgid "True-Color (32-bit colors)"
+msgstr "True-Color (32-bitové barvy)"
+
+msgid "Try to Link to Existing"
+msgstr "Snažit se přidat k existujícímu"
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "Type / When"
+msgstr "Typ"
+
+msgid "Type name or Select from list:"
+msgstr "Zadejte jméno:"
+
+msgid "UDHI data:"
+msgstr "UDHI data:"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "URL:"
+msgstr "URL:"
+
+msgid "Uknown"
+msgstr "Neznámý"
+
+msgid "Unable to get async status"
+msgstr "Nelze získat stav Async"
+
+msgid "Unable to open com port"
+msgstr "Nelze otevřít COM port"
+
+msgid "Unauthorized"
+msgstr "neautorizováno"
+
+msgid "Undefined"
+msgstr "Nedefinováno"
+
+msgid "Undo|Reverts the last action"
+msgstr "Vrátí zpět poslední akci"
+
+msgid "Unknown"
+msgstr "Neznámý"
+
+msgid "Unknown (Unsupported format)"
+msgstr "Neznámý (nepodporovaný) formát"
+
+msgid "Unknown Battery"
+msgstr "Neznámá baterie"
+
+msgid "Unknown Contact"
+msgstr "Neznámý kontakt"
+
+msgid "Unknown Number"
+msgstr "Neznámé číslo"
+
+msgid "Unlink Contact"
+msgstr "Rozpojit kontakt"
+
+msgid "Unlinking completed"
+msgstr "Rozpojení dokončeno"
+
+msgid "Unlinking error: %s"
+msgstr "Chyby rozpojení: %s"
+
+msgid "Unlinking started"
+msgstr "Rozpojování začalo"
+
+msgid "Unlock Workstation (not implemented)"
+msgstr "Odemknout stanici (není možné)"
+
+msgid "Unmodified"
+msgstr "Nezměněno"
+
+msgid "Unmute"
+msgstr "zapnuto"
+
+msgid "Unsent Messages:"
+msgstr "Neodesláné zprávy:"
+
+msgid "Unsuported WBMP type"
+msgstr "Nepodporovaný WBMP typ"
+
+msgid "Unsuported extended header type"
+msgstr "Nepodporovaný rozšířený typ hlavičky"
+
+msgid "Unsuported feature: 00 multi-byte bitfield"
+msgstr "Nepodporovaná možnost: 00 multi-bajtové bitové pole"
+
+msgid "Unsupported media type"
+msgstr "nepodporovaný typ"
+
+msgid "Update %s  completed."
+msgstr "Aktualizace %s  provedena."
+
+msgid "Update %s failed."
+msgstr "Aktualizace %s selhala."
+
+msgid "Update %s started."
+msgstr "Aktualizace %s začala."
+
+msgid "Update SIM"
+msgstr "Aktualizuj údaje na SIM"
+
+msgid "Updates"
+msgstr "Aktualizace"
+
+msgid ""
+"Updates catalog for %s could not be located (or download failed) on web "
+"site \n"
+"\n"
+"%s\n"
+"\n"
+"You could try again later or you could proceed if you have local update "
+"files (Web updates are disabled)."
+msgstr ""
+"Seznam aktualizací pro %s nemohou být nalezeny (nebo selhalo stahování)\n"
+"\n"
+"%s\n"
+"\n"
+"Zkuste se prosím připojit později nebo použijte aktualizaci ze souboru."
+
+msgid "Updating %s"
+msgstr "Aktualizuji %s "
+
+msgid "Updating contact positions..."
+msgstr "Aktualizace pozic kontaktů..."
+
+msgid "Upgrade to a custom version:"
+msgstr "Aktualizovat na moji verzi:"
+
+msgid "Upgrade to the most recent version available"
+msgstr "Aktualizovat na poslední známou verzi"
+
+msgid "Upgrading phone profile database..."
+msgstr "Aktualizuji databázi profilů..."
+
+msgid "Upload..."
+msgstr "Nahrát..."
+
+msgid "Uploading contacts..."
+msgstr "Nahrávám kontakty..."
+
+msgid "Usage"
+msgstr "Použití"
+
+msgid "Use Ctrl+C to copy the report to the TntClipboard"
+msgstr "Použijte CTRL+C pro skopírování do schránky"
+
+msgid "Use Proximity feature"
+msgstr "Použijte volbu Přiblížení"
+
+msgid "Use Scripting Framework (usualy installed by FMA setup)"
+msgstr "Používat skriptovací Framework (nainstalováno FMA setupem)"
+
+msgid "Use X button to minimize instead to close Fma application"
+msgstr "Použijte tlačítko X místo minimalizace pro zavření FMA"
+
+msgid "Use all phone numbers"
+msgstr "Použít všechna čísla"
+
+msgid "Use currently used common call settings"
+msgstr "Použij právě používané nastavní hovoru"
+
+msgid "Use custom Script file which I will chose"
+msgstr "Použít vlastní skript dle výběru"
+
+msgid "Use custom numbers:"
+msgstr "Použít vlastní čísla:"
+
+msgid "Use default mirror provided by application vendor."
+msgstr "Použít výchozí server od autorů software."
+
+msgid "Use default number:"
+msgstr "Použív výchozí číslo:"
+
+msgid "Use localy stored update file"
+msgstr "Použít aktualizaci uloženou v počítači"
+
+msgid ""
+"Useful if your message characters limit suddenly drops from 160 down to 70 "
+"when you type in, or if you have problems reading received messages."
+msgstr ""
+"Maximální velikost zprávy se sníží na 70 znaků. Příjem těchto zpráv "
+"nepodporují starší telefony."
+
+msgid "User Interface"
+msgstr "Uživatelské rozhraní"
+
+msgid "Using Web mirror:"
+msgstr "Použit stínový server:"
+
+msgid "Using local update:"
+msgstr "Použít aktualizaci ze souboru:"
+
+msgid "V"
+msgstr "V"
+
+msgid "Vacation"
+msgstr "Volno"
+
+msgid "Vendor provided (default mirror)"
+msgstr "Hlavní poskytovatel"
+
+msgid "Version %s"
+msgstr "Verze %s"
+
+msgid "View"
+msgstr "Ver"
+
+msgid "WAP Home Page..."
+msgstr "Domovská stránka WAP"
+
+msgid "WBMP Image"
+msgstr "WBMP obrázek"
+
+msgid "Wait..."
+msgstr "Čekejte..."
+
+msgid "WaitForEvent method failed"
+msgstr "Metoda WaitForEvent selhala"
+
+msgid "Waiting"
+msgstr "Čekání"
+
+msgid "Wap Browser"
+msgstr "Prohlížeč wapu"
+
+msgid "Warn if storage is 95% full"
+msgstr "Upozornit při zaplnění 95%"
+
+msgid "Warning"
+msgstr "Upozornění"
+
+msgid "Warning! You have reached your send limit of %d messages."
+msgstr "Upozornění! Dosáhl jste limitu %d zpráv."
+
+msgid ""
+"Warning:\n"
+"Please note that any open connection will be closed and the application will "
+"be restarted in order updates to be applied successfuly."
+msgstr ""
+"Upozornění:\n"
+"Pro dokončení aktualizací je třeba restartovat program FMA, což způsobí "
+"ukončení spojení s telefonem."
+
+msgid "We are ready to download selected updates."
+msgstr "Jsme připraveni stáhnout označené aktualizace."
+
+msgid "We are ready to install downloaded updates."
+msgstr "Jsme připravení instalovat aktualizaci."
+
+msgid "Web Links"
+msgstr "Internetové odkazy"
+
+msgid "Web Update Wizard"
+msgstr "Aktualizace programu"
+
+msgid ""
+"Web Update Wizard is not complete. If you exit it now application will not "
+"be updated.\n"
+"\n"
+"You can run this wizard at a later time to complete the update process. \n"
+"\n"
+"To exit Web Update Wizard right now click Yes. To continue updating click No."
+msgstr ""
+"Průvodce aktualizací z Internetu nebyl dokončen. Jestliže jej nyní ukončíte, "
+"aktualizace nebude provedena.\n"
+"\n"
+"Průvodce můžete spustit kdykoliv později a aktualizaci dokončit. \n"
+"\n"
+"Pro ukončení průvodce klikněte na 'Ano', pro pokračování klikněte na 'Ne'."
+
+msgid "Web update installation has been aborted"
+msgstr "Aktualizace z Internetu byla přerušena"
+
+msgid "Web updates are not supported or not available yet"
+msgstr ""
+"Aktualizace z Internetu nejsou podporované nebo nejsou zatím k dispozici"
+
+msgid "Welcome"
+msgstr "Vítejte"
+
+msgid "Welcome to %s!"
+msgstr "Vítejte v %s!"
+
+msgid "Welcome!"
+msgstr "Vítejte!"
+
+msgid "What's next?"
+msgstr "A co dále?"
+
+msgid "When Connected"
+msgstr "Když je připojen"
+
+msgid "When Connecting"
+msgstr "Při připojování"
+
+msgid "When I go away from my computer:"
+msgstr "Když jsem pryč od počítače:"
+
+msgid "When I'm back near my computer:"
+msgstr "Když právě nejsem u počítače:"
+
+msgid "Window"
+msgstr "Okno"
+
+msgid "Work"
+msgstr "Do práce"
+
+msgid "Work Phone"
+msgstr "Telefon do práce"
+
+msgid "Work [%s]"
+msgstr "Do práce [%s]"
+
+msgid "Work phone:"
+msgstr "Telefon do práce:"
+
+msgid "Work phone: "
+msgstr "Do práce: "
+
+msgid "WriteFile function failed"
+msgstr "Zápis do souboru selhal"
+
+msgid "Wrong Who Received: "
+msgstr "Chybné příjmy:"
+
+msgid "Yes"
+msgstr "Ano"
+
+msgid ""
+"You are going to connect to \"%s\".\n"
+"\n"
+"The current connection will be dropped. Are you sure?"
+msgstr ""
+"Přejete se připojit na \"%s\".\n"
+"\n"
+"Současní spojení bude ukončeno. Přejete si pokračovat?"
+
+msgid "You are using the latest %s version."
+msgstr "Používáte nejnovější verzi %s."
+
+msgid ""
+"You can break up current Contact's linking to an existing Outlook contact in "
+"order to link it again to a different one. To do so, click the Unlink "
+"Contact button bellow."
+msgstr ""
+"Můžete přerušit propojování kontaktů do Outlooku, aby jste je mohli znovu "
+"propojit s jiným. To provedete kliknutím na Rozpojit kontakt."
+
+msgid "You have completed all update tasks."
+msgstr "Všechny aktualizace byly dokončeny."
+
+msgid ""
+"You have finished installing new devices. Click Finish to exit this wizard."
+msgstr "Dokončili jste instalaci nového telefonu. Klikněte na Dokončit."
+
+msgid "You have new missed call."
+msgstr "Máte nový zmeškaný hovor."
+
+msgid "You have new missed calls."
+msgstr "Máte nové zmeškané hovory."
+
+msgid "You have one unsent message."
+msgid_plural "You have %s unsent messages."
+msgstr[0] "Máte neodeslanou zprávu."
+msgstr[1] "Máte neodeslané zprávy."
+
+msgid ""
+"You have some unsent messages in your Outbox folder. Do you want to send "
+"them now?"
+msgstr "Máte nějaké neodeslané zprávy, přejete si je nyní odeslat?"
+
+msgid "You have to enter contact name"
+msgstr "Musíte zadat jméno"
+
+msgid "You have to enter contact phone number"
+msgstr "Musíte zadat telefonní číslo"
+
+msgid "You have to enter only one phone number"
+msgstr "Musíte zadávat pouze číslice"
+
+msgid "You have to select an existing contact first"
+msgstr "Nejprve musíte zvolit existující kontakt"
+
+msgid "You have to select at least one mirror."
+msgstr "Musíte zvolit alespoň jeden stínový server."
+
+msgid "You have to select at least one phone number"
+msgstr "Musíte zvolit alespoň jedno telefonní číslo"
+
+msgid "You have to select at least one recepient."
+msgstr "Zvolte alespoň jednoho příjemce."
+
+msgid "You have to select one target version."
+msgstr "Musíte zvolit verzi, na kterou si přejete aktualizovat."
+
+msgid "You have to select update file first."
+msgstr "Musíte nejprve zvolit soubor s aktualizací."
+
+msgid "You must specify a title"
+msgstr "Musíte zadat název"
+
+msgid "You must specify an URL"
+msgstr "Musíte zadat URL"
+
+msgid ""
+"You should refresh Explorer Files folder prior using this feature.\n"
+"\n"
+"Note that this is currently not supported if you are using IR connection."
+msgstr "Obnovte prosím složky v průzkumníku (není možné při IR komunikaci)."
+
+msgid "Your phone device is detected and supported."
+msgstr "Váš telefon byl nalezen a je podporován."
+
+msgid "[Binary - Size: %d bytes])"
+msgstr "[binární - velikost %d bajtů]"
+
+msgid "[EMS]"
+msgstr "[EMS]"
+
+msgid "[LONG SMS - REFID:"
+msgstr "[Dlouhé SMS - REFID:"
+
+msgid "[Unknown type %x]"
+msgstr "[Neznámý typ %x]"
+
+msgid "[active, auto detected]"
+msgstr "[aktivní, automaticky detekováno]"
+
+msgid "[active]"
+msgstr "[aktivní]"
+
+msgid "cached localy"
+msgstr "uloženo v PC"
+
+msgid "day"
+msgid_plural "days"
+msgstr[0] "den"
+msgstr[1] "dnů"
+
+msgid "day of the month"
+msgstr "den v měsíci"
+
+msgid "done"
+msgstr "hotovo"
+
+msgid "download failed"
+msgstr "nahrávání selhalo"
+
+msgid "entire phonebook"
+msgstr "celý telefonní seznam"
+
+msgid "file damaged, or unknown format"
+msgstr "soubor je poškozen, nebo není tento formát podporován"
+
+msgid "floAt's Mobile Agent"
+msgstr "floAt's Mobile Agent"
+
+msgid "floAt's Mobile Agent today"
+msgstr "floAt's Mobile Agent za podpory www.OK-SHOP.cz"
+
+msgid "frmSplash"
+msgstr "FMA - hezky česky"
+
+msgid "group"
+msgstr "Skupina:"
+
+msgid "http"
+msgstr "http"
+
+msgid "incremental"
+msgstr "vzrůstající"
+
+msgid "is deleted on phone and modified on pc."
+msgstr "je smazán v telefonu a změněn v PC."
+
+msgid "is modified on phone and deleted on pc."
+msgstr "je změněn v telefonu a smazán v PC."
+
+msgid "is modified on phone and modified on pc."
+msgstr "je změněn v telefonu i v PC."
+
+msgid "kV"
+msgstr "kV"
+
+msgid "mA"
+msgstr "mA"
+
+msgid "mV"
+msgstr "mV"
+
+msgid "no"
+msgstr "ne"
+
+msgid "none"
+msgstr "žádné"
+
+msgid "number"
+msgstr "číslo"
+
+msgid "picture"
+msgstr "obrázek"
+
+msgid "sound"
+msgstr "zvuk"
+
+msgid "stored in phone"
+msgstr "uloženo v telefonu"
+
+msgid "temperature"
+msgstr "teplota"
+
+msgid "theme"
+msgstr "schéma"
+
+msgid "use, charge"
+msgstr "odběr"
+
+msgid "yes"
+msgstr "ano"
+
+msgid "|All Files|*.*"
+msgstr "|Všechny soubory|*.*"
+
+msgid "°C"
+msgstr "°C"

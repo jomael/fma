@@ -1,0 +1,750 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: 2005-09-01 14:58\n"
+"PO-Revision-Date: 2005-09-06 18:30+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: ExpertOne <expertone@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: FMA Dev Team\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Bulgarian\n"
+"X-Poedit-Basepath: .\n"
+
+msgid "(Un)Lock"
+msgstr "Закл./Откл."
+
+msgid "(Un)Mute"
+msgstr "Вкл./Изкл. Звука"
+
+msgid "(Un)lock"
+msgstr "Закл./Откл."
+
+msgid "(Un)mute"
+msgstr "Вкл./Изкл. Звука"
+
+msgid "(default)"
+msgstr "(по подразбиране)"
+
+msgid "(empty)"
+msgstr "(празен)"
+
+msgid "(error)"
+msgstr "(грешка)"
+
+msgid "(no matches)"
+msgstr "(няма съвпадения)"
+
+msgid "(none)"
+msgstr "(няма)"
+
+msgid "16x9"
+msgstr "16x9"
+
+msgid "<default>"
+msgstr "<по подразбиране>"
+
+msgid "<empty>"
+msgstr "<празен>"
+
+msgid "<error>"
+msgstr "<грешка>"
+
+msgid "<no matches>"
+msgstr "<няма съвпадения>"
+
+msgid "<none>"
+msgstr "<няма>"
+
+msgid "About"
+msgstr "Относно"
+
+msgid "Address"
+msgstr "Адрес"
+
+msgid "Append"
+msgstr "Добави"
+
+msgid "Audio"
+msgstr "Аудио"
+
+msgid "Author"
+msgstr "Автор"
+
+msgid "Away"
+msgstr "Далече"
+
+msgid "Back"
+msgstr "Назад"
+
+msgid "Backward"
+msgstr "Назад"
+
+msgid "Begin"
+msgstr "Начало"
+
+msgid "Bottom"
+msgstr "Долу"
+
+msgid "Browse"
+msgstr "Избери"
+
+msgid "Browse..."
+msgstr "Избор..."
+
+msgid "Call"
+msgstr "Обаждане"
+
+msgid "Cancel"
+msgstr "Отказ"
+
+msgid "Canceled"
+msgstr "Прекъснато"
+
+msgid "Caption"
+msgstr "Заглавие"
+
+msgid "Change Status"
+msgstr "Промени Състоянието"
+
+msgid "Choose"
+msgstr "Избор"
+
+msgid "Choose..."
+msgstr "Избор..."
+
+msgid "Close"
+msgstr "Затвори"
+
+msgid "Configurator"
+msgstr "Конфигуратор"
+
+msgid "Configure"
+msgstr "Конфигуриране"
+
+msgid "DVD"
+msgstr "DVD"
+
+msgid "Debug"
+msgstr "Трасиране"
+
+msgid "Decrease"
+msgstr "Намаляне"
+
+msgid "Default"
+msgstr "Стандартни"
+
+msgid "Description"
+msgstr "Описание"
+
+msgid "Dialog"
+msgstr "Диалог"
+
+msgid "Disable"
+msgstr "Забранен"
+
+msgid "Disconnect"
+msgstr "Прек. Връзката"
+
+msgid "Down"
+msgstr "Надолу"
+
+msgid "Drive"
+msgstr "Устройство"
+
+msgid "Drives"
+msgstr "Устройства"
+
+msgid "Empty"
+msgstr "Празен"
+
+msgid "Enable"
+msgstr "Разрешен"
+
+msgid "End"
+msgstr "Край"
+
+msgid "Enter Text"
+msgstr "Въведете Текст"
+
+msgid "Enter URL"
+msgstr "Въведете URL"
+
+msgid "Enter message"
+msgstr "Въведете съобщението"
+
+msgid "Error"
+msgstr "Грешка"
+
+msgid "Error:"
+msgstr "Грешка:"
+
+msgid "Exit"
+msgstr "Изход"
+
+msgid "Explore"
+msgstr "Разгледай"
+
+msgid "Explorer"
+msgstr "Преглед"
+
+msgid "Faster"
+msgstr "По-бързо"
+
+msgid "Favorite"
+msgstr "Избрани"
+
+msgid "Favorites"
+msgstr "Избрани"
+
+msgid "Feedback"
+msgstr "Отговор"
+
+msgid "File"
+msgstr "Файл"
+
+msgid "Folder"
+msgstr "Папка"
+
+msgid "Forward"
+msgstr "Напред"
+
+msgid "Framework"
+msgstr "Работна среда"
+
+msgid "Freeze"
+msgstr "Замразяване"
+
+msgid "Full screen"
+msgstr "Пълен екран"
+
+msgid "FullScreen"
+msgstr "ПъленЕкран"
+
+msgid "Fullscreen"
+msgstr "Пълен екран"
+
+msgid "General"
+msgstr "Общи"
+
+msgid "Guide"
+msgstr "Ръководство"
+
+msgid "Help"
+msgstr "Помощ"
+
+msgid "Hide"
+msgstr "Скриване"
+
+msgid "Increase"
+msgstr "Увеличаване"
+
+msgid "Info"
+msgstr "Инфо"
+
+msgid "Information"
+msgstr "Информация"
+
+msgid "Input"
+msgstr "Вход"
+
+msgid "Input:"
+msgstr "Вход:"
+
+msgid "Insert"
+msgstr "Вмъкване"
+
+msgid "Integer"
+msgstr "Цяло число"
+
+msgid "Integer:"
+msgstr "Цяло число:"
+
+msgid "Key"
+msgstr "Клавиш"
+
+msgid "Launch"
+msgstr "Стартиране"
+
+msgid "Left"
+msgstr "Ляво"
+
+msgid "Level"
+msgstr "Ниво"
+
+msgid "Library"
+msgstr "Библиотека"
+
+msgid "Live"
+msgstr "На живо"
+
+msgid "Load"
+msgstr "Зареждане"
+
+msgid "Lock"
+msgstr "Блокировка"
+
+msgid "Logoff"
+msgstr "Лог. изкл."
+
+msgid "Master Volume"
+msgstr "Сила на звука"
+
+msgid "Maximize"
+msgstr "Максимизиране"
+
+msgid "Menu"
+msgstr "Меню"
+
+msgid "Message"
+msgstr "Съобщение"
+
+msgid "Message:"
+msgstr "Съобщение:"
+
+msgid "Minimize"
+msgstr "Минимизиране"
+
+msgid "Miscellaneous"
+msgstr "Разни"
+
+msgid "Mode"
+msgstr "Режим"
+
+msgid "More..."
+msgstr "Още..."
+
+msgid "Mouse"
+msgstr "Мишка"
+
+msgid "Music"
+msgstr "Музика"
+
+msgid "Mute"
+msgstr "Изкл. на звука"
+
+msgid "Mute/UnMute"
+msgstr "Вкл./Изкл. Звука"
+
+msgid "Mute/Unmute"
+msgstr "Вкл./Изкл. Звука"
+
+msgid "N/A"
+msgstr "---"
+
+msgid "Navigate"
+msgstr "Направляване"
+
+msgid "Navigate..."
+msgstr "Направляване..."
+
+msgid "New"
+msgstr "Нов"
+
+msgid "Next"
+msgstr "Следващ"
+
+msgid "Next Chapter"
+msgstr "Следв. Част"
+
+msgid "Next Track"
+msgstr "Следваща песен"
+
+msgid "No"
+msgstr "Не"
+
+msgid "No Matches"
+msgstr "Няма Съвпадения"
+
+msgid "None"
+msgstr "Няма"
+
+msgid "OK"
+msgstr "ОК"
+
+msgid "Off"
+msgstr "Изкл."
+
+msgid "Offline"
+msgstr "Без връзка"
+
+msgid "Ok"
+msgstr "Ок"
+
+msgid "On"
+msgstr "Вкл."
+
+msgid "Open"
+msgstr "Отвори"
+
+msgid "Options"
+msgstr "Опции"
+
+msgid "Order"
+msgstr "Последователност"
+
+msgid "Pause"
+msgstr "Пауза"
+
+msgid "Pause/Resume"
+msgstr "Пауза/Възст."
+
+msgid "Paused"
+msgstr "Пауза"
+
+msgid "Percent"
+msgstr "Процент"
+
+msgid "Percent:"
+msgstr "Процент:"
+
+msgid "Photo"
+msgstr "Снимка"
+
+msgid "Picture"
+msgstr "Картинка"
+
+msgid "Play"
+msgstr "Старт"
+
+msgid "Player"
+msgstr "Плеър"
+
+msgid "Playing"
+msgstr "Изпълнение"
+
+msgid "Plugin"
+msgstr "Приставка"
+
+msgid "Prev"
+msgstr "Пред"
+
+msgid "Prev."
+msgstr "Пред."
+
+msgid "Previous"
+msgstr "Предишна"
+
+msgid "Previous Chapter"
+msgstr "Пред. Част"
+
+msgid "Previous Track"
+msgstr "Предишна Песен"
+
+msgid "Quit"
+msgstr "Изход"
+
+msgid "Random"
+msgstr "Случайно"
+
+msgid "Read"
+msgstr "Четене"
+
+msgid "Recieve"
+msgstr "Получи"
+
+msgid "Recieved"
+msgstr "Получено"
+
+msgid "Record"
+msgstr "Запис"
+
+msgid "Recording"
+msgstr "Записване"
+
+msgid "Refresh"
+msgstr "Опресняване"
+
+msgid "Remote"
+msgstr "Дистанционно"
+
+msgid "Repeat"
+msgstr "Повтаряне"
+
+msgid "Restore"
+msgstr "Възстановяване"
+
+msgid "Resume/Pause"
+msgstr "Възст./Пауза"
+
+msgid "Return"
+msgstr "Връщане"
+
+msgid "Reverse"
+msgstr "Обръщане"
+
+msgid "Revert"
+msgstr "Възстановяване"
+
+msgid "Rewind"
+msgstr "Пренавиване"
+
+msgid "Right"
+msgstr "Дясно"
+
+msgid "Run"
+msgstr "Старт"
+
+msgid "Save"
+msgstr "Запис"
+
+msgid "Schedule"
+msgstr "Разписание"
+
+msgid "Script"
+msgstr "Скрипт"
+
+msgid "Search"
+msgstr "Търсене"
+
+msgid "Search For:"
+msgstr "Търсене на:"
+
+msgid "Search Results"
+msgstr "Резултати от търсенето"
+
+msgid "Search..."
+msgstr "Търсене..."
+
+msgid "Search/Browse"
+msgstr "Търси/Избери"
+
+msgid "Searching..."
+msgstr "Търсене..."
+
+msgid "Seek"
+msgstr "Търсене"
+
+msgid "Select"
+msgstr "Избор"
+
+msgid "Send"
+msgstr "Изпрати"
+
+msgid "Send Message"
+msgstr "Изпрати Съобщение"
+
+msgid "Set Volume"
+msgstr "Сила на звука"
+
+msgid "Setup"
+msgstr "Настройка"
+
+msgid "Setup Volume"
+msgstr "Сила на Звука"
+
+msgid "Shot"
+msgstr "Снимай"
+
+msgid "Show"
+msgstr "Покажи"
+
+msgid "Shuffle"
+msgstr "Разбъркано"
+
+msgid "Shutdown"
+msgstr "Изключване"
+
+msgid "Skip"
+msgstr "Пропускане"
+
+msgid "Slower"
+msgstr "Бавно"
+
+msgid "Snapshot"
+msgstr "Снимка"
+
+msgid "Sound"
+msgstr "Звук"
+
+msgid "Speed (+)"
+msgstr "Скорост (+)"
+
+msgid "Speed (-)"
+msgstr "Скорост (-)"
+
+msgid "Speed +"
+msgstr "Скорост +"
+
+msgid "Speed -"
+msgstr "Скорост -"
+
+msgid "Start"
+msgstr "Старт"
+
+msgid "Stopped"
+msgstr "Спрян"
+
+msgid "String"
+msgstr "Низ"
+
+msgid "String:"
+msgstr "Низ:"
+
+msgid "Sub Menu"
+msgstr "Под Меню"
+
+msgid "SubMenu"
+msgstr "ПодМеню"
+
+msgid "Submenu"
+msgstr "Подменю"
+
+msgid "Subtitle"
+msgstr "Под заглавие"
+
+msgid "Subtitles"
+msgstr "Субтитри"
+
+msgid "Switch"
+msgstr "Превключи"
+
+msgid "Text"
+msgstr "Текст"
+
+msgid "Text:"
+msgstr "Текст:"
+
+msgid "Time"
+msgstr "Време"
+
+msgid "Title"
+msgstr "Заглавие"
+
+msgid "Toggle"
+msgstr "Превключи"
+
+msgid "Tools"
+msgstr "Инструменти"
+
+msgid "Top"
+msgstr "Горе"
+
+msgid "Track"
+msgstr "Писта"
+
+msgid "Tracks"
+msgstr "Писти"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "URL:"
+msgstr "URL:"
+
+msgid "UnLock"
+msgstr "Отключване"
+
+msgid "Unmute"
+msgstr "Вкл. на Звука"
+
+msgid "Up"
+msgstr "Нагоре"
+
+msgid "Video"
+msgstr "Видео"
+
+msgid "Volume"
+msgstr "Сила на звука"
+
+msgid "Volume (+)"
+msgstr "Сила (+)"
+
+msgid "Volume (-)"
+msgstr "Сила (-)"
+
+# Volume (Muted)
+msgid "Volume (M)"
+msgstr "Сила (Χ)"
+
+msgid "Volume +"
+msgstr "Сила +"
+
+msgid "Volume -"
+msgstr "Сила -"
+
+msgid "Volume Down"
+msgstr "Намаляване на звука"
+
+msgid "Volume Up"
+msgstr "Увеличаване на звука"
+
+msgid "Volume is muted"
+msgstr "Звука е изкл."
+
+msgid "Volume: "
+msgstr "Сила на звука: "
+
+msgid "Wait"
+msgstr "Изчакайте"
+
+msgid "Wait..."
+msgstr "Изчакайте..."
+
+msgid "Waiting..."
+msgstr "Чакане..."
+
+msgid "Working"
+msgstr "Обработка"
+
+msgid "Working..."
+msgstr "Обработка..."
+
+msgid "Write"
+msgstr "Запис"
+
+msgid "Yes"
+msgstr "Да"
+
+msgid "Zoom"
+msgstr "Мащаб"
+
+msgid "[  ] "
+msgstr "[  ] "
+
+msgid "[*] "
+msgstr "[*] "
+
+msgid "[default]"
+msgstr "[по подразбиране]"
+
+msgid "[empty]"
+msgstr "[празен]"
+
+msgid "[error]"
+msgstr "[грешка]"
+
+msgid "[no matches]"
+msgstr "[няма съвпадения]"
+
+msgid "[none]"
+msgstr "[няма]"
+
+msgid "default"
+msgstr "по подразбиране"
+
+msgid "empty"
+msgstr "празен"
+
+msgid "no matches"
+msgstr "няма съвпадения"
+
+msgid "none"
+msgstr "няма"
+
+msgid "paused"
+msgstr "пауза"
+
+msgid "playing"
+msgstr "изпълнение"
+
+msgid "stopped"
+msgstr "спрян"
+

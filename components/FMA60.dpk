@@ -1,0 +1,69 @@
+package FMA60;
+
+{$R *.res}
+{$R '..\..\floAtMixer\components\amixer\AMixer.dcr'}
+{$R 'WebUpdate.dcr'}
+{$R 'OKTThemeEngine.dcr'}
+{$R 'SEProgress.dcr'}
+{$R 'PBFolderDialog.dcr'}
+{$R 'ImageListXP.dcr'}
+{$R 'WBluetoothSocket.dcr'}
+{$R 'WIrCOMMSocket.dcr'}
+{$R 'USBMonitor.dcr'}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'FMA'}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl,
+  vcljpg,
+  vclx,
+  dsnap,
+  dbrtl,
+  vcldb,
+  VclSmp,
+  B304_r60,
+  FMA60PRE,
+  TntUnicodeVcl_R60,
+  IcsDel60;
+
+contains
+  AMixer in '..\..\floAtMixer\components\amixer\AMixer.pas',
+  uolSelectPatchPath in 'uolSelectPatchPath.pas',
+  uolInetGet in 'uolInetGet.pas',
+  uolPatch in 'uolPatch.pas',
+  WebUpdate in 'WebUpdate.pas',
+  WebUpdateWizard in 'WebUpdateWizard.pas' {frmWebUpdate},
+  OKTThemeEngine in 'OKTThemeEngine.pas',
+  GIFImage in 'gifimage.pas',
+  SEProgress in 'SEProgress.pas',
+  PBFolderDialog in 'PBFolderDialog.pas',
+  LibTar in 'LibTar.pas',
+  uDialogs in '..\uDialogs.pas',
+  ImageListXP in 'ImageListXP.pas',
+  WBluetoothSocket in 'WBluetoothSocket.pas',
+  WIrCOMMSocket in 'WIrCOMMSocket.pas',
+  USBMonitor in 'USBMonitor.pas';
+
+end.

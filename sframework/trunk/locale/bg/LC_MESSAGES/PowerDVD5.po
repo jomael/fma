@@ -1,0 +1,80 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-03 10:13+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: ExpertOne <expertone@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: FMA Dev Team\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Bulgarian\n"
+"X-Poedit-Basepath: .\n"
+
+msgid "PowerDVD 5"
+msgstr "PowerDVD 5"
+
+msgid "Lets you control PowerDVD5"
+msgstr "Вие можете да контролирате PowerDVD5"
+
+msgid "Play"
+msgstr "Старт"
+
+msgid "Pause"
+msgstr "Пауза"
+
+msgid "Stop"
+msgstr "Стоп"
+
+msgid "Prev Chapter"
+msgstr "Пред. Част"
+
+msgid "Next Chapter"
+msgstr "След. Част"
+
+msgid "AudioStream"
+msgstr "Аудио Пътечка"
+
+msgid "Subtitles"
+msgstr "Субтитри"
+
+msgid "Fullscreen"
+msgstr "На Цял Екран"
+
+msgid "Volume +5"
+msgstr "Сила на звука +5"
+
+msgid "Volume -5"
+msgstr "Сила на звука -5"
+
+msgid "(Un)Mute"
+msgstr "Вкл./Изкл. Звука"
+
+msgid "Step Backward"
+msgstr "Стъпка Назад"
+
+msgid "Step Forward"
+msgstr "Стъпка Напред"
+
+msgid "Set Repeat"
+msgstr "Повтаряне"
+
+msgid "Capture Frame"
+msgstr "Запиши Кадъра"
+
+msgid "Minimize"
+msgstr "Минимизиране"
+
+msgid "Close"
+msgstr "Затвори"
+
+msgid "Launch"
+msgstr "Стартирай"
+

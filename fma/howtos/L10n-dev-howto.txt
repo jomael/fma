@@ -1,0 +1,199 @@
+Developer HOWTO
+---------------
+
+Folders and files:
+
+fma-root
+|   ignore.po                       // (dev only) Ignore messages. This messages will not be included in default.po file when generate new template
+|
++---locale                          // Available Translations (in separate subfolders)
+|   |   languagecodes.po            // (do not modify) Language code (ISO 639 language codes) to English language name
+|   |   languagecodes.mo            // (do not modify) Binary/compiled version of languagecodes.po
+|   |
+|   +---ar                          // ar = Arabic Language Folder (see ISO 639 language codes in languagecodes.po)
+|   |   |   flag.bmp                // Country/Language flag (23x14, 24 bit color)
+|   |   |
+|   |   \---LC_MESSAGES             // Arabic Messages subfolder (Test only, not real translation for now !!!)
+|   |           default.po          // FMA translated messages (ar)
+|   |           delphi6.po          // Delphi6 translated messages (ar)
+|   |           languages.po        // Translation of Language names (ar)
+|   |           *.mo                // Binary/compiled version of some translated messages (ar)
+|   |           *.ini               // Config for PoEdit
+|   |
+|   +---bg                          // bg = Bulgarian Language Folder
+|   |   |   flag.bmp                // Country/Language flag (23x14, 24 bit color)
+|   |   |
+|   |   \---LC_MESSAGES             // Bulgarian Messages subfolder
+|   |           default.po          // FMA translated messages (bg)
+|   |           delphi6.po          // Delphi6 translated messages (bg)
+|   |           languages.po        // Translation of Language names (bg)
+|   |           *.mo                // Binary/compiled version of some translated messages (bg)
+|   |           *.ini               // Config for PoEdit
+|   .
+|   .
+|   .
+|   \---en                          // en = English Language Folder (do not modify, use as template)
+|   .   |   flag.bmp                // Country/Language flag (23x14, 24 bit color)
+|   .   |
+|   .   \---LC_MESSAGES             // English Language Folder (templates)
+|               default.po          // FMA translation template (POT-file)
+|               delphi6.po          // Delphi6 translation template (POT-file)
+|               languages.po        // Language names translation template (POT-file)
+|               *.ini               // Config for PoEdit
+|
+.
+.
+.
+|
++---sframework                          // Script folder (may not be in fma-root folder)
+.   |
+.   +---locale                          // Available Translations for script/plugins (languages are in separate subfolders)
+.   .   |
+    .   +---ar                          // ar = Arabic Language Folder (see ISO 639 language codes in languagecodes.po)
+    .   |   |
+        |   \---LC_MESSAGES             // Arabic Messages subfolder (Test only, not real translation for now !!!)
+        |           default.po          // Global script translated messages (ar)
+        |           PluginClassName.po  // Plugin translated messages (ar)
+        |           ...                  
+        |           *.mo                // Binary/compiled version of some translated messages (ar)
+        |           *.ini               // Config for PoEdit
+        |
+        +---bg                          // bg = Bulgarian Language Folder
+        |   |
+        |   \---LC_MESSAGES             // Bulgarian Messages subfolder
+        |           default.po          // Global script translated messages (bg)
+        |           PluginClassName.po  // Plugin translated messages (bg)
+        |           ...
+        |           *.mo                // Binary/compiled version of some translated messages (bg)
+        |           *.ini               // Config for PoEdit
+        .
+        .
+        .
+        \---en                          // en = English Language Folder (do not modify, use as template)
+            |
+            \---LC_MESSAGES             // English Language Folder (Templates)
+                    default.po          // Global script template (POT-file)
+                    PluginClassName.po  // Plugin template (POT-file)
+                    ...
+                    *.ini               // Config for PoEdit
+
+FMA development:
+
+1. Download and install dxGetText 1.2 (http://dxgettext.sourceforge.net).
+2. Download and install PoEdit (v1.3.1 or later) for Windows (http://poedit.sourceforge.net).
+3. Read carrefuly dxgettext\Docs\manual.pdf.
+4. Read updated ide-howto.txt and l10n-howto.txt
+
+5. Notes
+
+5.1. Important files in FMA source:
+	gnugettext.pas - Delphi GNUGetText implementation (dxgettext).
+	gginitialize.pas - L10n Initialization (must be first /after gnugettext/ in main program uses clause).
+	gginitialize2.pas - Additional Initializations.
+	gnugettexthelpers.pas - Some l10n helper functions.
+
+5.2. Keep in mind: Everything what is in English may not be in English in program runtime.
+
+5.3. Some Source recommendations
+
+S := 'Some Text Here';
+// to
+S := _('Some Text Here');
+
+S := 'ATZ123';
+// to
+S := 'ATZ123'; // do not localize
+
+Form1.Debug('Some debug message here');
+// to
+Form1.Debug('Some debug message here'); // do not localize debug
+
+resourcestring
+  rcS = 'Some Text Here';
+...
+X.Caption := rcS;
+// to
+const
+  rcS = 'Some Text Here';
+...
+X.Caption := _(rcS);
+
+S1 := GetPhoneName(X); // X - names, codes or any nontranslateble texts
+S := 'Some ' + S1 + ' Here';
+// to
+S1 := GetPhoneName(X);
+S := WideFormat(_('Some %s Here'), S1);
+
+S1 := GetPhoneName(X);
+S := Format('Some %s Here', S1);
+// or to
+S1 := GetPhoneName(X);
+S := WideFormat(_('Some %s Here'), S1);
+
+if Expr then
+  S1 := 'Text1'
+else
+  S1 := 'Text2';
+S := 'Some ' + S1 + ' Here';
+// to
+if Expr then
+  S := _('Some Text1 Here')
+else
+  S := _('Some Text2 Here');
+
+S := IntToStr(FileCount) + ' file';
+if FileCount > 1 then S := S + 's';
+// to
+S := WideFormat(ngettext('%d file','%d files',FileCount), [FileCount]);
+
+if SomeComponent.Caption = 'Open file' then Beep;
+// to
+if SomeComponent = OpenFileItem then Beep;
+// or to
+if SomeComponent.Name = 'OpenFileItem' then Beep;
+// or to
+if SomeComponent.Caption = _('Open file') then Beep;
+// or to
+if SomeComponent.Tag = 123 then Beep;
+
+MessageDlg('Some Text', mtInformation, [mbOK], 0);
+// to
+MessageDlgW(_('Some Text'), mtInformation, MB_OK); 
+// Don't forget to list uDialogs unit in uses clause
+// Also use sLinebreak instead of #13 and #13#10
+
+ShowMessage('Some Text');
+// to
+ShowMessageW(_('Some Text')); 
+// Don't forget to list uDialogs unit in uses clause
+// Also use sLinebreak instead of #13 and #13#10
+
+s := 'Some Text'#13'Second Line';
+// or
+s := 'Some Text'#13#10'Second Line';
+// to
+s := 'Some Text'+sLinebreak+'Second Line';
+
+5.4. Use format string 'Some %0:s text %1:s here.' instead 'Some %s text %s here.'
+
+5.5. Use TNT components (forms and frames too) or some WideString/BiDi enabled components
+
+5.6. Use WideString instead String for everyhing wath be somethere readable from user.
+
+5.7. Use TTntStrings (TTntStringList) instead TStrings (TStringList).
+
+5.8. Use WideString functions.
+
+5.9. Use UTF8 encoded Strings in external text files (INI Files, Text DataBases, ...).
+
+5.10. Use gghTranslateComponent(Self) in Form OnCreate. (usually as first row in method)
+
+5.11. Use gnugettext as first units in USES clause:
+
+Uses
+  gnugettext, gnugettexthelpers,
+  ...;
+
+5.12. Set forms' ParentFont property to True, if not set. SetDefaultFont() function in
+Unit.pas will change default font used in application to one set by user in Windows theme
+settings (Control Panel/Display/Appearance). Do NOT change forms' font property manually!

@@ -1,0 +1,3775 @@
+# FMA Localization Project
+# Copyright (C) 2004 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: 2004-10-22 14:58\n"
+"PO-Revision-Date: 2005-03-13 19:29+0100\n"
+"Last-Translator: Knut Yrvin <knuty@skolelinux.no>\n"
+"X-Translators: Knut Yrvin <knuty@skolelinux.no>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: dxgettext 1.2 beta 5\n"
+"X-Poedit-Language: Norwegian\n"
+"X-Poedit-Country: NORWAY\n"
+"Language-Team: \n"
+
+msgid ""
+"\n"
+"\n"
+"Current version:\n"
+"   Build "
+msgstr ""
+"\n"
+"\n"
+"Nåværende versjon:\n"
+"   Build "
+
+msgid ""
+"\n"
+"   Build Unknown"
+msgstr ""
+"\n"
+"   Ukjent Build"
+
+msgid "  Overwrite"
+msgstr " Skriv over"
+
+msgid " %d bytes written"
+msgstr " %d bytes skrevet"
+
+msgid " (custom)"
+msgstr " (egen)"
+
+msgid " ** (auto detected)"
+msgstr " ** (oppdag automatiskt)"
+
+msgid " - chars "
+msgstr " - tegn "
+
+msgid " Audio "
+msgstr " Lyd"
+
+msgid " Backlight mode "
+msgstr " Bakgrunnbelysning "
+
+msgid " Click on Details to view the update log notes."
+msgstr " Klikk på Information for å se en logg over oppdateringer."
+
+msgid " DATA "
+msgstr " DATA "
+
+msgid " Do you wish to continue?"
+msgstr " Vil du fortsette?"
+
+msgid " FAX "
+msgstr " FAX "
+
+msgid " Font size "
+msgstr " Tekststørrelse"
+
+msgid " Key sound "
+msgstr " Tastelyd"
+
+msgid " Line 1 "
+msgstr " Linje 1 "
+
+msgid " Line 2 "
+msgstr " Linje 2 "
+
+msgid " Signal %s "
+msgstr " Signalstyrke %s "
+
+msgid " Starting..."
+msgstr "Starter..."
+
+msgid " Vibration"
+msgstr " Vibrator"
+
+msgid " added to FMA by Import (as dublicate)."
+msgstr " importert til FMA (som duplikat)."
+
+msgid " added to FMA by Import."
+msgstr " Importert til FMA "
+
+msgid " added to FMA by phone."
+msgstr " Lagt til FMA av telefon."
+
+msgid " added to phone by FMA."
+msgstr " Lagt til telefon av FMA."
+
+msgid " and changed in %s"
+msgstr " og endret i %s"
+
+msgid " and deleted from %s"
+msgstr " og slettet fra %s"
+
+msgid " and new in %s"
+msgstr " og ny i %s"
+
+msgid " and unchanged in %s"
+msgstr " og uforandret i %s"
+
+msgid " bytes)"
+msgstr " bytes)"
+
+msgid " contact"
+msgstr " kontakt"
+
+msgid " deleted in FMA by phone."
+msgstr " Slettet fra FMA av telefon."
+
+msgid " deleted in phone by FMA."
+msgstr " Slettet i telefon av FMA."
+
+msgid " modified in FMA by Import."
+msgstr " Endret i FMA etter importering."
+
+msgid " modified in FMA by phone."
+msgstr " Endret i FMA av telefon."
+
+msgid " modified in phone by FMA."
+msgstr " Endret i telefon av FMA."
+
+msgid "%dx%d (%dx%d pixels)"
+msgstr "%dx%d (%dx%d pixler)"
+
+msgid "%s - application error"
+msgstr "%s - programfeil"
+
+msgid "%s deleted in %s by FMA."
+msgstr "%s er slettet fra %s av FMA."
+
+msgid "%s has a conflict"
+msgstr "%s har en konflikt"
+
+msgid "%s is added to %s"
+msgstr "%s er lagt til  i %s"
+
+msgid "%s is calling..."
+msgstr "%s ringer..."
+
+msgid "%s is changed in %s"
+msgstr "%s er endret i %s"
+
+msgid "%s is deleted from %s"
+msgstr "%s er slettet fra %s"
+
+msgid "%s is linked to %s"
+msgstr "%s er linket til %s"
+
+msgid "%s is new in %s"
+msgstr "%s er ny i %s"
+
+msgid "%s is unchanged in %s"
+msgstr "%s er uforandret i %s"
+
+msgid "%s is updated into %s"
+msgstr "%s er endret til %s"
+
+msgid "%s stored in %s by FMA."
+msgstr "%s er lagret i %s av FMA."
+
+msgid "%s will be added to %s"
+msgstr "%s vil bli lagt til i %s"
+
+msgid "%s will be deleted from %s"
+msgstr "%s vil bli slettet fra %s"
+
+msgid "%s will be updated into %s"
+msgstr "%s vil bli endret til %s"
+
+msgid "&About..."
+msgstr "&Om..."
+
+msgid "&Activate Profile"
+msgstr "&Aktiver Profil"
+
+msgid "&Add"
+msgstr "&Legg til"
+
+msgid "&Add To Phonebook..."
+msgstr "&Legg til i Telefonliste..."
+
+msgid "&Add..."
+msgstr "&Legg til..."
+
+msgid "&Apply"
+msgstr "&Enter"
+
+msgid "&Auto Reconnect (use Proximity)"
+msgstr "Koble til automatiskt (bruk Nærhet)"
+
+msgid "&Call Contact..."
+msgstr "&Ring opp kontakt..."
+
+msgid "&Cancel"
+msgstr "&Avbryt"
+
+msgid "&Check for Update..."
+msgstr "&Søk efter oppdatering..."
+
+msgid "&Connect"
+msgstr "&Koble til"
+
+msgid "&Copy"
+msgstr "&Kopier"
+
+msgid "&Copy to Archive"
+msgstr "&Kopier til Arkiv"
+
+msgid "&Delete"
+msgstr "&Slett"
+
+msgid "&Details"
+msgstr "&Informasjon"
+
+msgid "&Dial..."
+msgstr "&Ring opp..."
+
+msgid "&Disconnect"
+msgstr "&Koble fra"
+
+msgid "&Download"
+msgstr "&Last ned"
+
+msgid "&Download..."
+msgstr "&Last ned..."
+
+msgid "&Edit"
+msgstr "&Rediger"
+
+msgid "&Explore"
+msgstr "&Utforsk"
+
+msgid "&Finish"
+msgstr "&Ferdig"
+
+msgid "&Forward"
+msgstr "&Videresend"
+
+msgid "&Help"
+msgstr "&Hjelp"
+
+msgid "&Install"
+msgstr "&Innstaller"
+
+msgid "&Link"
+msgstr "&Link"
+
+msgid "&Lookup Device"
+msgstr "&Søk etter telefon"
+
+msgid "&Message Contact..."
+msgstr "&Send melding til kontakt..."
+
+msgid "&Minimize"
+msgstr "&Minimer"
+
+msgid "&Move to Archive"
+msgstr "&Flytt til Arkiv"
+
+msgid "&New Message..."
+msgstr "&Ny Melding..."
+
+msgid "&New Person..."
+msgstr "&Ny Person..."
+
+msgid "&Next >"
+msgstr "&Neste >"
+
+msgid "&Next >>"
+msgstr "&Neste >>"
+
+msgid "&Options..."
+msgstr "&Innstillinger..."
+
+msgid "&Own Business Card..."
+msgstr "&Eget visittkort"
+
+msgid "&Paste"
+msgstr "Lim &inn"
+
+msgid "&Phone"
+msgstr "Tele&fon"
+
+msgid "&Properties"
+msgstr "&Egenskaper"
+
+msgid "&Refresh"
+msgstr "&Oppdater"
+
+msgid "&Refresh Contacts"
+msgstr "&Oppdater Kontakter"
+
+msgid "&Refresh Folders"
+msgstr "&Oppdater Mapper"
+
+msgid "&Remove"
+msgstr "&Fjern"
+
+msgid "&Reply"
+msgstr "&Svar"
+
+msgid "&Reset"
+msgstr "&Reset"
+
+msgid "&Restore"
+msgstr "&Gjennopprett"
+
+msgid "&Save Changes"
+msgstr "&Lagre endringer"
+
+msgid "&Screenshot..."
+msgstr "&Screenshot..."
+
+msgid "&Select a contact to call:"
+msgstr "&Velg en kontakt å ringe til:"
+
+msgid "&Select..."
+msgstr "&Velg..."
+
+msgid "&Send"
+msgstr "&Send"
+
+msgid "&Send Message..."
+msgstr "&Send Melding..."
+
+msgid "&Test Proximity"
+msgstr "&Test"
+
+msgid "&Toggle Connect"
+msgstr "&Koble til"
+
+msgid "&Tools"
+msgstr "Verk&tøy"
+
+msgid "&Undo"
+msgstr "&Angre"
+
+msgid "&Undo Edit Last Contact..."
+msgstr "&Angre endring av Kontakt..."
+
+msgid "&Upload..."
+msgstr "&Send..."
+
+msgid "&View"
+msgstr "&Vis"
+
+msgid "(Loading %s...)"
+msgstr "(Lader %s...)"
+
+msgid "(No Information)"
+msgstr "(Ingen information)"
+
+msgid "(Sending delayed, will try to send it later)"
+msgstr "(Sending avbrutt, vil prøve å sende senere)"
+
+msgid "(This implementation is Ericsson specific)"
+msgstr "(Støtten er Ericsson spesifikt)"
+
+msgid "(Unknown)"
+msgstr "(Ukjent)"
+
+msgid "(do not send any confidential information as passwords via your phone using text messages)"
+msgstr "(send ikke privat informasjon som f.eks passord med tekstmelding)"
+
+msgid "(in order of appearance)"
+msgstr "(i den rekkefølgen de vises)"
+
+msgid "(no version info)"
+msgstr "(ingen versjonsinformasjon)"
+
+msgid "(polyphonic stereo sound, supported by phone)"
+msgstr "(polyfoniskt stereolyd, støttes av telefonen)"
+
+msgid "(unknown)"
+msgstr "(ukjent)"
+
+msgid "(will be loaded from phone when connected)"
+msgstr "(hentes fra telefonen ved tilkobling)"
+
+msgid "* Application must be restarted in order to apply this setting"
+msgstr "* FMA må restartes  for å endre innstillingene"
+
+msgid "** Active Language"
+msgstr "** Valgt språk"
+
+msgid "*** Update finished"
+msgstr "*** Oppdatering klar"
+
+msgid "*** Update started\n"
+msgstr "*** Oppdatering startet\n"
+
+msgid ". Do you wish to continue?"
+msgstr ". Vil du fortsette?"
+
+msgid "0 min before"
+msgstr "0 min før"
+
+msgid "1 hour"
+msgstr "1 time"
+
+msgid "1 hour before"
+msgstr "1 time før"
+
+msgid "10 min before"
+msgstr "10 min før"
+
+msgid "128x127 (0x0 pixels)"
+msgstr "128x127 (0x0 pixler)"
+
+msgid "15 min before"
+msgstr "15 min før"
+
+msgid "2 hours"
+msgstr "2 timer"
+
+msgid "30 min before"
+msgstr "30 min før"
+
+msgid "30 minutes"
+msgstr "30 minutter"
+
+msgid "4 hours"
+msgstr "4 timer"
+
+msgid "5 min before"
+msgstr "5 min før"
+
+msgid ":: CREDITS ::"
+msgstr ":: TAKK TIL ::"
+
+msgid ":: DESIGN ::"
+msgstr ":: DESIGN ::"
+
+msgid ":: FORUMS ::"
+msgstr ":: FORUM ::"
+
+msgid ":: LEAD DEVS ::"
+msgstr ":: UTVIKLERE ::"
+
+msgid ":: LOCALIZATIONS ::"
+msgstr ":: OVERSETTINGER ::"
+
+msgid ":: SCRIPTS ::"
+msgstr ":: SCRIPT ::"
+
+msgid ":C"
+msgstr ":C"
+
+msgid ":O"
+msgstr ":O"
+
+msgid "< &Previous"
+msgstr "< &Forrige"
+
+msgid "<counter>"
+msgstr "<teller>"
+
+msgid "<description>"
+msgstr "<beskrivelse>"
+
+msgid "<device>"
+msgstr "<telefon>"
+
+msgid "<done>"
+msgstr "<klar>"
+
+msgid "<hint>"
+msgstr "<tips>"
+
+msgid "<info>"
+msgstr "<info>"
+
+msgid "<name>"
+msgstr "<navn>"
+
+msgid "<no photo>"
+msgstr "<ikke bilde>"
+
+msgid "<num>"
+msgstr "<nr>"
+
+msgid "<ready>"
+msgstr "<klar>"
+
+msgid "<version>"
+msgstr "<versjon>"
+
+msgid "<warning>"
+msgstr "<advarsel>"
+
+msgid "<what>"
+msgstr "<hva>"
+
+msgid ""
+"A lower value means more transparency, while a higher value will make a window more solid (less transparency).\n"
+" \n"
+"Range value: 120-255."
+msgstr ""
+"Lavere verdi gir mer gjennomsiktighet, høyere verdi gjør vinduet mindre gjennomsiktig.\n"
+" \n"
+"Verdi mellom: 120-255."
+
+msgid "A&bort"
+msgstr "Av&bryt"
+
+msgid "AC Powered"
+msgstr "Tilkoblet lader"
+
+msgid "About"
+msgstr "Om"
+
+msgid "Actio&n"
+msgstr "Funksjo&ner"
+
+msgid "Action »"
+msgstr "Funksjon »"
+
+msgid "Activate Profile"
+msgstr "Aktiv Profil"
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Activity Log"
+msgstr "Aktivitetslogg"
+
+msgid "Activity Log..."
+msgstr "Aktivitetslogg..."
+
+msgid "Add Category..."
+msgstr "Legg til Kategori..."
+
+msgid "Add New Contacts Here"
+msgstr "Legg til nye kontakter her"
+
+msgid "Add To Group Wizard"
+msgstr "Legg til i gruppe-guide"
+
+msgid "Add To Phonebook Wizard"
+msgstr "Legg til i telefonliste-guide"
+
+msgid "Add as &New"
+msgstr "Legg til som &ny"
+
+msgid "Add new Bookmark"
+msgstr "Legg til Bokmerke"
+
+msgid "Add new Group"
+msgstr "Legg til ny Gruppe"
+
+msgid "Add new Note"
+msgstr "Legg til Notat"
+
+msgid "Add new Person"
+msgstr "Legg til ny Person"
+
+msgid "Add sender to Phonebook"
+msgstr "Legg til avsender i Telefonliste"
+
+msgid "Add to &Group"
+msgstr "Legg til i &Gruppe"
+
+msgid "Add to Favorites"
+msgstr "Legg til i Favoritter"
+
+msgid "Add to group"
+msgstr "Legg til i gruppe"
+
+msgid "Add to phonebook"
+msgstr "Legg til i telefonliste"
+
+msgid "Add..."
+msgstr "Legg til..."
+
+msgid "Adding to Group..."
+msgstr "Legger til i Gruppe..."
+
+msgid "Adding to group..."
+msgstr "Legger til i gruppe..."
+
+msgid "Additional Information"
+msgstr "Ytterligere informasjon"
+
+msgid "Address"
+msgstr "Adresse"
+
+msgid "Advanced"
+msgstr "Avansert"
+
+msgid "All Categories"
+msgstr "Alle kategorier"
+
+msgid "All Contacts..."
+msgstr "Alle kontakter..."
+
+msgid "All Files (*.*)|*.*"
+msgstr "Alle filer (*.*)|*.*"
+
+msgid "All Files|*.*"
+msgstr "Alle filer|*.*"
+
+msgid "Allow this contact to call me even if call restrictions are applied."
+msgstr "Tillat denne kontakten å ringe meg selv om samtalebegrensning er aktivert."
+
+msgid "Always Add as New"
+msgstr "Legg alltid til som ny"
+
+msgid "Always hide my number when calling this contact"
+msgstr "Skjul alltid mitt nummer for denne kontakten"
+
+msgid "Always start Fma Minimized"
+msgstr "Start alltid FMA minimert"
+
+msgid "Anniversary"
+msgstr "Bursdag"
+
+msgid "Answer"
+msgstr "Svar"
+
+msgid "Any key"
+msgstr "Valgfri knapp"
+
+msgid "Appearance"
+msgstr "Utseende"
+
+msgid "Application"
+msgstr "FMA"
+
+msgid "Applying changes..."
+msgstr "Utfører endringer..."
+
+msgid "Appointment"
+msgstr "Avtale"
+
+msgid "Archive"
+msgstr "Arkiv"
+
+msgid "Archive (SIM)"
+msgstr "Arkiv (SIM)"
+
+msgid "Are you sure you want to delete the group \"%s\"?"
+msgstr "Vil du fjerne gruppen \"%s\"?"
+
+msgid "Are you sure you want to disconnect and power your phone off?"
+msgstr "Vil du koble fra og skrue telefonen av ?"
+
+msgid "As a New Contact"
+msgstr "Som en ny kontakt"
+
+msgid "Auto"
+msgstr "Auto"
+
+msgid "Auto Connect on Fma &Startup"
+msgstr "Koble til automatiskt når Fma &starter"
+
+msgid "Auto detect"
+msgstr "Auto detect"
+
+msgid "Automatic Updates"
+msgstr "Automatiske oppdateringer"
+
+msgid "Automaticaly"
+msgstr "Automatiskt"
+
+msgid "Autonumbering:"
+msgstr "Autonumering:"
+
+msgid "B&rowse..."
+msgstr "&Bla..."
+
+msgid "Battery "
+msgstr "Batteri "
+
+msgid "Battery Err"
+msgstr "Batteri-feil"
+
+msgid "Battery N/A"
+msgstr "Batteri ikke tilgjengelig"
+
+msgid "Battery Status:"
+msgstr "Batteristatus:"
+
+msgid "Battery Voltage:"
+msgstr "Batterispenning:"
+
+msgid "Battery and Phone State Monitoring"
+msgstr "Batteri- og Telefonstatus"
+
+msgid "Battery temperature:"
+msgstr "Batteritemperatur:"
+
+msgid "Battery type:"
+msgstr "Batteritype:"
+
+msgid "Battery:"
+msgstr "Batteri:"
+
+msgid "Baudrate"
+msgstr "Baudrate"
+
+msgid "Behaviour"
+msgstr "Oppførsel"
+
+msgid "Bluetooh Setup"
+msgstr "Bluetooth innstillninger"
+
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+msgid "Bookmark"
+msgstr "Bokmerke"
+
+msgid "Bookmark at position 1 is reserved and can not be edited"
+msgstr "Bokmerke på posisjon 1 er reservert og kan ikke endres"
+
+msgid "Bookmark changed"
+msgstr "Bokmerke endret"
+
+msgid "Bookmarks"
+msgstr "Bokmerke"
+
+msgid "Bookmarks Folder"
+msgstr "Bokmerkesmappe"
+
+msgid "Bookmarks Sync"
+msgstr "Synk. Bokmerke"
+
+msgid "Bro&wse"
+msgstr "&Bla"
+
+msgid "Browse for an update..."
+msgstr "Søk etter en oppdatering..."
+
+msgid "Build contact structure"
+msgstr "Bygger kontaktstruktur"
+
+msgid "Build phone folders"
+msgstr "Bygger telefon-mapper"
+
+msgid "Building Contact Lists..."
+msgstr "Bygger kontaktliste..."
+
+msgid "Busy"
+msgstr "Opptatt"
+
+msgid "C"
+msgstr "C"
+
+msgid "CDID:"
+msgstr "CDID:"
+
+msgid "CSV files (*.csv)|*.csv|XML files (*.xml)|*.xml|Html files (*.html)|*.html"
+msgstr "CSV-filer (*.csv)|*.csv|XML-filer (*.xml)|*.xml|HTML-filer (*.html)|*.html"
+
+msgid "Calendar"
+msgstr "Kalender"
+
+msgid "Calendar Month"
+msgstr "Kalender Måned"
+
+msgid "Calendar Week"
+msgstr "Kalender Uke"
+
+msgid "Call"
+msgstr "Samtale"
+
+msgid "Call Actions"
+msgstr "Samtalefunksjoner"
+
+msgid "Call Contact"
+msgstr "Ring opp kontakt"
+
+msgid "Call Contact..."
+msgstr "Ring opp kontakt..."
+
+msgid "Call Information Popup"
+msgstr "Samtaleinformasjons-popup"
+
+msgid "Call Monitor"
+msgstr "Samtaleovervåker"
+
+msgid "Call Popup"
+msgstr "Samtale-popup"
+
+msgid "Call Recipients"
+msgstr "Samtalemottaker"
+
+msgid "Call ended (%s)"
+msgstr "Samtale avsluttet (%s)"
+
+msgid "Calling"
+msgstr "Ringer"
+
+msgid "Calling..."
+msgstr "Ringer..."
+
+msgid "Calls"
+msgstr "Samtaler"
+
+msgid "Calls List"
+msgstr "Samtaleliste"
+
+msgid "Camera button"
+msgstr "Kameraknapp"
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "Cancel current Call"
+msgstr "Avbryt samtale"
+
+msgid "Categories:"
+msgstr "Kategorier:"
+
+msgid "Cell"
+msgstr "Mobil"
+
+msgid "Cell Phone"
+msgstr "Mobil"
+
+msgid "Cell [%s]"
+msgstr "Mobil [%s]"
+
+msgid "Cell phone: "
+msgstr "Mobil: "
+
+msgid "Change Profile"
+msgstr "Endre Profil"
+
+msgid "Changes have been made into current folder."
+msgstr "Endringer er gjort i mappen."
+
+msgid "Charge Counter:"
+msgstr "Batteri kapasitet:"
+
+msgid "Chars"
+msgstr "Tegn"
+
+msgid "Chat Contact..."
+msgstr "Chat med kontakt..."
+
+msgid "Chat Message"
+msgstr "Chatmelding"
+
+msgid "Chat with Contact"
+msgstr "Chat med kontakt"
+
+msgid "Chatting with"
+msgstr "Chatter med"
+
+msgid "Check For Update"
+msgstr "Søk etter oppdatering"
+
+msgid "Check out Outbox folder for unsent messages on Fma start and exit"
+msgstr "Søk etter usendte meldinger i Utboksen før FMA avslutter."
+
+msgid "Check your phone for instructions..."
+msgstr "Se din telefon for instruksjoner..."
+
+msgid "Checking Obex support"
+msgstr "Kontrollerer OBEX-støtte"
+
+msgid "Checking SIM status"
+msgstr "Kontrollerer SIM-status"
+
+msgid "Checking battery support"
+msgstr "Kontrollerer batteristøtte"
+
+msgid "Checking keypad support"
+msgstr "Kontrollerer støtte for taster"
+
+msgid "Checking phone clock"
+msgstr "Kontrollerer telefonklokke"
+
+msgid "Checking signal support"
+msgstr "Kontrollerer støtte for signalstyrke"
+
+msgid "Checking voice support"
+msgstr "Kontrollerer tale-støtte"
+
+msgid "Choose Link"
+msgstr "Velg Link"
+
+msgid "Cl&ear"
+msgstr "&Slett"
+
+msgid "Clear"
+msgstr "Slett"
+
+msgid "Clear All"
+msgstr "Slett alt"
+
+msgid "Clear Message Counter"
+msgstr "Slett Meldingsantall"
+
+msgid "Clear this Message"
+msgstr "Slett Meldin"
+
+msgid "Click"
+msgstr "Klikk"
+
+msgid "Click Cancel to abort current operation."
+msgstr "Klikk på Avbryt for å avbryte."
+
+msgid "Click Download to retrieve updates from Internet, or Cancel to exit."
+msgstr "Klikk på Hente for å hente oppdateringene fra Internet, eller Avbryt for å avbryte."
+
+msgid "Click Install to apply downloaded updates immediately, or Cancel to exit."
+msgstr "Klikk på Installere for å innstallere oppdateringene, eller Avbryt for å avbryte."
+
+msgid "Click Next to continue."
+msgstr "Klikk på Neste for å fortsette."
+
+msgid "Close"
+msgstr "Avslutt"
+
+msgid "Closing this box will Hang Up current outgoing call. Continue?"
+msgstr "Når du lukker dette vinduet avsluttes pågående samtale. Vil du fortsette?"
+
+msgid "Col"
+msgstr "Kul"
+
+msgid "Company: "
+msgstr "Selskap: "
+
+msgid "Completed"
+msgstr "Ferdig"
+
+msgid "Completed on:"
+msgstr "Ferdig på:"
+
+msgid "Compose Message Window"
+msgstr "Skriv ny melding"
+
+msgid "Confirm Adding"
+msgstr "Legge Til"
+
+msgid "Confirm Deleting"
+msgstr "Slett?"
+
+msgid "Confirm Updating"
+msgstr "Oppdater?"
+
+msgid "Confirmation is asked for %s"
+msgstr "Bekreft for %s"
+
+msgid "Conflict"
+msgstr "Konflikt"
+
+msgid "Conflict has not been solved"
+msgstr "Konflikten er ikke løst"
+
+msgid "Connect on Fma startup"
+msgstr "Koble til ved FMA start"
+
+msgid "Connect to Phone via"
+msgstr "Koble til Telefon via"
+
+msgid "Connected"
+msgstr "Tilkoblet"
+
+msgid "Connected successfully to %s phone."
+msgstr "Tilkoblet %s telefon."
+
+msgid "Connecting"
+msgstr "Kobler til"
+
+msgid "Connecting..."
+msgstr "Kobler til..."
+
+msgid "Connection"
+msgstr "Koble til"
+
+msgid "Connection Error (0x%s)"
+msgstr "Tilkoblingsfeil (0x%s)"
+
+msgid "Connection aborted!"
+msgstr "Tilkobling avbrutt!"
+
+msgid "Connection failed"
+msgstr "Tilkobling misslykkes"
+
+msgid "Connection failed!"
+msgstr "Tilkobling misslykkes!"
+
+msgid "Connection: Lost!"
+msgstr "Tilkobling frakoblet!"
+
+msgid "Consumption:"
+msgstr "Forbruk:"
+
+msgid "Contact"
+msgstr "Kontakt"
+
+msgid "Contact #"
+msgstr "Kontakt #"
+
+msgid "Contact - %s"
+msgstr "Kontakt - %s"
+
+msgid "Contact Actions"
+msgstr "Kontaktfunksjoner"
+
+msgid "Contact Calls..."
+msgstr "Kontakt ringer..."
+
+msgid "Contact Home"
+msgstr "Kontakt Hjem"
+
+msgid "Contact Mail"
+msgstr "Kontakt E-post"
+
+msgid "Contact Mobile"
+msgstr "Kontakt Mobil"
+
+msgid "Contact Name"
+msgstr "Kontakt Navn"
+
+msgid "Contact Notes"
+msgstr "Kontakt Anmerkninger"
+
+msgid "Contact Work"
+msgstr "Kontakt Arbeid"
+
+msgid "Contact name"
+msgstr "Navn"
+
+msgid "Contact:"
+msgstr "Kontakt:"
+
+msgid "Contacts"
+msgstr "Kontakter"
+
+msgid "Contents:"
+msgstr "Innhold:"
+
+msgid "Copy"
+msgstr "Kopier"
+
+msgid "Copy All from Phonebook to SIM..."
+msgstr "Kopier alle fra Telefonliste til SIM..."
+
+msgid "Copy All from SIM to Phonebook..."
+msgstr "Kopier alle fra SIM til Telefonliste..."
+
+msgid "Copy from Phonebook: %s new items"
+msgstr "Kopier fra Telefonliste: %s nytt sted"
+
+msgid "Copy to Archive"
+msgstr "Kopier til Arkiv"
+
+msgid "Could not create file %s"
+msgstr "Kunne ikke opprette fil %s"
+
+msgid "Create New Group"
+msgstr "Opprett ny gruppe"
+
+msgid "Credits:"
+msgstr "Takk til:"
+
+msgid "Cu&t"
+msgstr "Klipp u&t"
+
+msgid "Current Build:"
+msgstr "Nåværende Build:"
+
+msgid "Current Charge:"
+msgstr "Lading:"
+
+msgid "Current version:"
+msgstr "Nåværende versjon:"
+
+msgid "Custom"
+msgstr "Egen"
+
+msgid "Custom selection:"
+msgstr "Eget valg:"
+
+msgid "Custom:"
+msgstr "Egen:"
+
+msgid "D"
+msgstr "D"
+
+msgid "Database"
+msgstr "Database"
+
+msgid "Database Files:"
+msgstr "Databasefiler:"
+
+msgid "Date"
+msgstr "Treff"
+
+msgid "Date:"
+msgstr "Dato:"
+
+msgid "Debug"
+msgstr "Debug"
+
+msgid "Debug Log..."
+msgstr "Debug-logg..."
+
+msgid "Debug Window"
+msgstr "Debugg Vindu"
+
+msgid "Debug mode enabled (AT commands)."
+msgstr "Debug-innstilling aktivert (AT-kommando)."
+
+msgid "Debug mode enabled (OBEX hex)."
+msgstr "Debug-innstilling aktivert (OBEX hex)."
+
+msgid "Decrease 80%"
+msgstr "Senk 80%"
+
+msgid "Default Number"
+msgstr "Default nummer"
+
+msgid "Default phone: "
+msgstr "Default telefon: "
+
+msgid "Define the maximum size per packet, this is the value to negotiate with the Mobile Equipment and will use whichever lower."
+msgstr "Definier maksimal størrelse pr pakke. Denne verdien brukes ved tilkoblingen til mobiltelefonen."
+
+msgid "Delete"
+msgstr "Slett"
+
+msgid "Delete completed"
+msgstr "Slettet"
+
+msgid "Delete downloaded updates on Finish."
+msgstr "Fjern nedlastede oppdateringer etter installasjonen."
+
+msgid "Delete failed"
+msgstr "Sletting misslykkes."
+
+msgid "Deleted"
+msgstr "Slettet"
+
+msgid "Deleted "
+msgstr "Slettet"
+
+msgid "Deleted bookmark"
+msgstr "Slettet bokmerke"
+
+msgid "Deleted contact"
+msgstr "Slettet kontakt"
+
+msgid "Deleting "
+msgstr "Sletter"
+
+msgid "Deleting %s item(s)"
+msgstr "Sletter %s "
+
+msgid "Deleting %s item(s)."
+msgstr "Sletter %s "
+
+msgid "Deleting bookmark..."
+msgstr "Sletter bokmerke..."
+
+msgid "Deleting files"
+msgstr "Sletter filer"
+
+msgid "Desktop"
+msgstr "Skrivebord"
+
+msgid "Details"
+msgstr "Informasjon"
+
+msgid "Details are not available."
+msgstr "Det ingen informasjon tilgjengelig."
+
+msgid "Dial or answer Voice Call"
+msgstr "Ring eller svar på samtale"
+
+msgid "Dialing..."
+msgstr "Slår nummer..."
+
+msgid "Disable"
+msgstr "Koble fra"
+
+msgid "Disable &Keyboard"
+msgstr "Lås &taster"
+
+msgid "Disable &Silent Mode"
+msgstr "Deaktiver &lydløs"
+
+msgid "Disable IRMC Sync"
+msgstr "Deaktiver IRMC Synk."
+
+msgid "Disable OBEX"
+msgstr "Deaktiver OBEX"
+
+msgid "Disable SyncML"
+msgstr "Deaktiver SyncML"
+
+msgid "Disabled"
+msgstr "Deaktivert"
+
+msgid "Disconnect from Phone"
+msgstr "Koble fra telefon"
+
+msgid "Disconnected"
+msgstr "Frakoblet"
+
+msgid "Disconnected due to low battery"
+msgstr "Frakoblet pga lite strøm på batteri"
+
+msgid "Disconnecting due to low battery or power fault..."
+msgstr "Frakobler pga lite strøm på batteri eller strømfeil..."
+
+msgid "Disconnecting..."
+msgstr "Frakobler..."
+
+msgid "Display  : %dx%d pixels, %d bpp"
+msgstr "Vis : %dx%d pixler, %d bpp"
+
+msgid "Display contacts stored in:"
+msgstr "Vis kontakter lagret i:"
+
+msgid "Display name: "
+msgstr "Vis navn: "
+
+msgid "Do Strict UCS-2"
+msgstr "Bruk bare UCS-2"
+
+msgid "Do not retrieve Bookmarks"
+msgstr "Last ikke Bokmerker"
+
+msgid "Do not retrieve Calls"
+msgstr "Last ikke Samtaler"
+
+msgid "Do not retrieve Files / Folders"
+msgstr "Last ikke Filer / Mapper"
+
+msgid "Do not retrieve Groups"
+msgstr " Last ikke Grupper"
+
+msgid "Do not retrieve Profiles"
+msgstr "Last ikke Profiler"
+
+msgid "Do not show Progress Dialog at all"
+msgstr "Vis ikke Progress Dialog"
+
+msgid "Do not use scripts"
+msgstr "Bruk ikke skript"
+
+msgid "Do nothing"
+msgstr "Gjør ingenting"
+
+msgid "Do you want to save your current message as a Draft?"
+msgstr "Vil du lagre meldingen i Drafts-mappen?"
+
+msgid "Do you wish to update it now?"
+msgstr "Vil du oppdatere den nå?"
+
+msgid "Donate..."
+msgstr "Donere..."
+
+msgid "Downgrade to a previous version:"
+msgstr "Nedgrader til en tidligere versjon:"
+
+msgid "Download Entire Phonebook..."
+msgstr "Last ned hele Telefonlisten..."
+
+msgid "Download completed"
+msgstr "Nedlasting ferdig"
+
+msgid "Download from Phone"
+msgstr "Nedlast fra Telefon"
+
+msgid "Downloading Messages..."
+msgstr "Nedlaster Meldinger ..."
+
+msgid "Downloading files"
+msgstr "Nedlaster filer"
+
+msgid "Downloading phonebook"
+msgstr "Laster ned Telefonliste"
+
+msgid "Downloading phonebook (%s - %s)..."
+msgstr "Laster ned Telefonliste (%s - %s)..."
+
+msgid "Downloading read messages"
+msgstr "Laster ned leste meldinger"
+
+msgid "Downloading sent messages"
+msgstr "Laster ned sendte meldinger"
+
+msgid "Downloading unread messages"
+msgstr "Laster ned uleste meldinger"
+
+msgid "Duration:"
+msgstr "Varighet:"
+
+msgid "Dynamic Data"
+msgstr "Dynamiske data"
+
+msgid "E"
+msgstr "E"
+
+msgid "E&xit"
+msgstr "Av&slutt"
+
+msgid "E-mail:"
+msgstr "E-post:"
+
+msgid "E-mail: "
+msgstr "E-post: "
+
+msgid "Each contact's phone number has an unique position in phone's phonebook memory. When you're adding a contact to group or so, this position (index) is used. Ir order to speed up these operations Fma is maintaining a cache with positions."
+msgstr "Hver kontakts telefonnummer har en unik posisjon i telefonens telefonliste. Når du legger til en kontakt i en gruppe eller lignende, brukes dette posisjonsnummeret (index). For raskere funksjoner så oppretter FMA en cache med posisjonene."
+
+msgid "Edit"
+msgstr "Endre"
+
+msgid "Edit Profile"
+msgstr "Endre Profil"
+
+msgid "Edit Wap Home Page"
+msgstr "Endre WAP-hjemmeside"
+
+msgid "Edit..."
+msgstr "Endre..."
+
+msgid "Email"
+msgstr "E-post"
+
+msgid "Empty"
+msgstr "Tom"
+
+msgid "Enable"
+msgstr "Aktiver"
+
+msgid "Enable &Keyboard"
+msgstr "Lås opp &taster"
+
+msgid "Enable &Silent Mode"
+msgstr "Aktiver &lydløs"
+
+msgid "Enable Battery Status Monitor"
+msgstr "Aktiver batteristatus"
+
+msgid "Enable Minute Minder"
+msgstr "Aktiver minutt-påminnelse"
+
+msgid "Enable Silent Mode"
+msgstr "Aktiver lydløs"
+
+msgid "Enable SyncML server"
+msgstr "Aktiver SyncML-server"
+
+msgid "Enabled"
+msgstr "Aktivert"
+
+msgid "Enabled (ask me first)"
+msgstr "Aktivert (spør først)"
+
+msgid "End date:"
+msgstr "Sluttdato:"
+
+msgid "End time:"
+msgstr "Sluttid:"
+
+msgid "Enter URL:"
+msgstr "Skriv inn URL:"
+
+msgid "Enter category name:"
+msgstr "Skriv inn ett kategorinavn:"
+
+msgid "Enter group name:"
+msgstr "Skriv inn gruppnavn:"
+
+msgid "Entering new data:"
+msgstr "Legg til nye data:"
+
+msgid "Error Downloading SMS"
+msgstr "Feil ved henting av SMS"
+
+msgid "Error daling number"
+msgstr "Feil ved oppringing av nummer"
+
+msgid "Error downloading calendar"
+msgstr "Feil ved henting av kalender"
+
+msgid "Error sending "
+msgstr "Feil ved sending "
+
+msgid "Error switching profile"
+msgstr "Feil ved bytting av profil"
+
+msgid "Error: Outlook Synchronize aborted (%s: %s)"
+msgstr "Feil: Outlook-synkronisering avbrutt (%s: %s)"
+
+msgid "Error: synchronize aborted"
+msgstr "Feil: synkronisering avbrutt"
+
+msgid "Est. Time Left:"
+msgstr "Ca tid igjen:"
+
+msgid "Est.Time Left:"
+msgstr "Ca tid igjen: "
+
+msgid "Event"
+msgstr "Huskeliste"
+
+msgid "Exit Fma"
+msgstr "Avslutt FMA"
+
+msgid "Explorer"
+msgstr "Utforsker"
+
+msgid "Exploring current data:"
+msgstr "Utforsk data:"
+
+msgid "Export &Contacts..."
+msgstr "Exporter &Kontakter..."
+
+msgid "Export &Messages..."
+msgstr "&Exporter melding..."
+
+msgid "Export contacts"
+msgstr "Exporter kontakter"
+
+msgid "Export messages"
+msgstr "Exporter melding"
+
+msgid "Export to file"
+msgstr "Exporter til fil"
+
+msgid "Export..."
+msgstr "Exporter..."
+
+msgid "FMA"
+msgstr "FMA"
+
+msgid "Factory Defaults"
+msgstr "Resett Defaults"
+
+msgid "Favorites"
+msgstr "Favoritter"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Fax Number"
+msgstr "Fax"
+
+msgid "Fax number:"
+msgstr "Fax:"
+
+msgid "Fax number: "
+msgstr "Fax: "
+
+msgid "File"
+msgstr "Fil"
+
+msgid "File \"%s\" deleted."
+msgstr "Fil \"%s\" slettet."
+
+msgid "File \"%s\" received from phone."
+msgstr "Fil \"%s\" mottatt fra telefon."
+
+msgid "File \"%s\" sent to phone."
+msgstr "Fil \"%s\" sendt til telefon."
+
+msgid "File Actions"
+msgstr "Filfunksjoner"
+
+msgid "File As:"
+msgstr "Lagre som:"
+
+msgid "File type:"
+msgstr "Filetype:"
+
+msgid "Files"
+msgstr "Filer"
+
+msgid "Find"
+msgstr "Søk"
+
+msgid "Find Contact"
+msgstr "Søk kontakt"
+
+msgid "Find Next"
+msgstr "Søk neste"
+
+msgid "Find Next &Error"
+msgstr "Søk neste f&eil"
+
+msgid "Find..."
+msgstr "Søk..."
+
+msgid "Finished"
+msgstr "Ferdig"
+
+msgid "Finished!"
+msgstr "Ferdig!"
+
+msgid "Finishing Installation..."
+msgstr "Avslutter innstallasjonen..."
+
+msgid "First Last"
+msgstr "Fornavn Etternavn"
+
+msgid "Flash"
+msgstr "Flash"
+
+msgid "Fma - Connected to %s"
+msgstr "FMA - Koblet til %s"
+
+msgid "Fma - Connected to %s phone"
+msgstr "FMA - Kobler til %s telefon"
+
+msgid "Fma - Connecting..."
+msgstr "FMA - Kobler til..."
+
+msgid "Fma - Not Connected"
+msgstr "FMA - Ikke Tilkoblet"
+
+msgid "Fma Community Forums..."
+msgstr "FMA Forum..."
+
+msgid "Fma Developers Page..."
+msgstr "FMA for utviklere..."
+
+msgid "Fma Home Page..."
+msgstr "FMA..."
+
+msgid "Fma On The Web"
+msgstr "Fma på nettet"
+
+msgid "Fma Today"
+msgstr "FMA Idag"
+
+msgid "Fma Today Page"
+msgstr "FMA Idag"
+
+msgid "Folder"
+msgstr "Mappe"
+
+msgid "Folder browser"
+msgstr "Mappeutforsker"
+
+msgid "Force UCS-2"
+msgstr "Tving bruk av UCS-2"
+
+msgid "Force as Modified..."
+msgstr "Marker som  endret..."
+
+msgid "Force as New Contact (No Undo)..."
+msgstr "Marker som ny kontakt (går ikke å angre)..."
+
+msgid "Force as Not Modified..."
+msgstr "Marker som ikke endret..."
+
+msgid "Forward Message"
+msgstr "Videresend melding"
+
+msgid "Forward SMS"
+msgstr "Videresend SMS"
+
+msgid "Found device: "
+msgstr "Funnet Telefon : "
+
+msgid "From / To"
+msgstr "Fra / Til"
+
+msgid "From / To:"
+msgstr "Fra / Til:"
+
+msgid "From Address:"
+msgstr "Fra adresse:"
+
+msgid "From this button you can clear the cached information about this contact. Do it only if you know what are you doing or if you receive an inccorect name for this contact in the phone groups."
+msgstr "Med denne knappen kan du slette cachet informasjon for denne kontakten. Bare dersom du får ett feilaktig navn på kontakten."
+
+msgid "From:"
+msgstr "Fra:"
+
+msgid "Full Contents:"
+msgstr "Hele innholdet:"
+
+msgid "Full Name"
+msgstr "Navn"
+
+msgid "Full name:"
+msgstr "Navn:"
+
+msgid "Full name: "
+msgstr "Navn: "
+
+msgid "GUID:"
+msgstr "GUID:"
+
+msgid "General"
+msgstr "Generellt"
+
+msgid "General Public License (GPL)"
+msgstr "General Public License (GPL)"
+
+msgid "Get Messages"
+msgstr "Ta mot melding"
+
+msgid "Go Up"
+msgstr "opp ett nivå"
+
+msgid "Gone"
+msgstr "Borte"
+
+msgid "Group"
+msgstr "Gruppe"
+
+msgid "Group created"
+msgstr "Gruppe opprettet"
+
+msgid "Group:"
+msgstr "Gruppe:"
+
+msgid "Hang Up"
+msgstr "Legg på"
+
+msgid "Hangup Call"
+msgstr "Avslutt samtale"
+
+msgid "Headset"
+msgstr "Headset"
+
+msgid "Here you could put some Call Drafts about this contact. These notes could be edited while you are in call."
+msgstr "Her kan du skrive merknader om kontakten. Disse merknadene kan endres under pågående samtale."
+
+msgid "Hi-Color (65535 colors)"
+msgstr "Hi-Color (65535 farger)"
+
+msgid "Home"
+msgstr "Hjem"
+
+msgid "Home Phone"
+msgstr "Hjem"
+
+msgid "Home [%s]"
+msgstr "Hjem [%s]"
+
+msgid "Home page changed"
+msgstr "Hemmeside endret"
+
+msgid "Home phone:"
+msgstr "Hjem:"
+
+msgid "Home phone: "
+msgstr "Hjem: "
+
+msgid "IRDA"
+msgstr "IRDA"
+
+msgid "Identifying phone"
+msgstr "Identifierer telefon"
+
+msgid "If None is selected, the default phone number for a contact will be selected automaticaly in following order, depending of what phone number is present first:"
+msgstr "Om Ingen er valgt, kommer forvalgt telefonnummer for kontakten å bli valgt automatiskt lik følgende rekkefølge, beroende på vilket nummer som er først:"
+
+msgid "If silent"
+msgstr "Om lydløs"
+
+msgid "Ignore Low Battery Warnings"
+msgstr "Ignorer advarsel om lite strøm på batteri"
+
+msgid "Imp&ort Contacts..."
+msgstr "Imp&orter kontakter..."
+
+msgid "Imp&ort Messages..."
+msgstr "&Importer Meldinger..."
+
+msgid "Import &Contacts..."
+msgstr "Importer &Kontakter..."
+
+msgid "Import &Messages..."
+msgstr "Importer &meldinger..."
+
+msgid "Import / Export Selected"
+msgstr "Importer / Exporter markerte"
+
+msgid "Import Contacts..."
+msgstr "Importer kontakter..."
+
+msgid "Import Messages..."
+msgstr "Importer Meldinger..."
+
+msgid "Import complete."
+msgstr "Importering ferdig."
+
+msgid "Import finished"
+msgstr "Importering ferdig"
+
+msgid "Import from file"
+msgstr "Importer fra fil"
+
+msgid "Import started"
+msgstr "Importering startet"
+
+msgid "Importing SIM contacts"
+msgstr "Importer SIM-kontakter"
+
+msgid "Importing messages..."
+msgstr "Importerer Meldinger..."
+
+msgid "Importing phonebook contacts"
+msgstr "Importerer Telefonliste"
+
+msgid "In most cases the program (Fma) will need to be restarted to fully activate the selected script."
+msgstr "I de fleste tilfeller må programmet (FMA) restartes for å aktivere valgte skript."
+
+msgid "Inbox"
+msgstr "Innboks"
+
+msgid "Incoming Call..."
+msgstr "Innkommende samtale..."
+
+msgid "Incoming Calls"
+msgstr "Innkommende samtale"
+
+msgid "Incoming call..."
+msgstr "Innkommende samtale..."
+
+msgid "Increase 80%"
+msgstr "Øk 80%"
+
+msgid "Info:"
+msgstr "Info:"
+
+msgid "Initializing"
+msgstr "Initierer"
+
+msgid "Initializing Script Engine..."
+msgstr "Initierer skriptmotor..."
+
+msgid "Initializing..."
+msgstr "Initierer..."
+
+msgid "Initiate new Connection"
+msgstr "Initier ny tilkobling"
+
+msgid "Install"
+msgstr "Innstaller"
+
+msgid "Installing Updates"
+msgstr "Innstallerer oppdateringer"
+
+msgid "Internet Explorer"
+msgstr "Internet Explorer"
+
+msgid "Internet/Wap button"
+msgstr "Internet-/WAP-knapp"
+
+msgid "Invalid Respond "
+msgstr "Ugyldig svar"
+
+msgid "Invalid address specified."
+msgstr "Feil adresse."
+
+msgid "Invalid group address."
+msgstr "Feil gruppeadresse."
+
+msgid "Invalid number specified."
+msgstr "Feil skrevet nummer."
+
+msgid "Kb"
+msgstr "Kb"
+
+msgid "Key 'YES'"
+msgstr "Knapp 'JA'"
+
+msgid "Key Sent."
+msgstr "Knapp Sendt."
+
+msgid "LOG"
+msgstr "LOGG"
+
+msgid "Large"
+msgstr "Stor"
+
+msgid "Last First"
+msgstr "Etternavn Fornavn"
+
+msgid "Let me choose"
+msgstr "La meg velge"
+
+msgid "Lines"
+msgstr "Linjer"
+
+msgid "Link &All"
+msgstr "Link &alle"
+
+msgid "Linked contact not found"
+msgstr "Kunne ikke finne linket kontakt"
+
+msgid "List of loaded modules:"
+msgstr "Liste over brukte moduler:"
+
+msgid "Lithium Ion"
+msgstr "Lithium Ion"
+
+msgid "Lithium Polymer"
+msgstr "Lithium Polymer"
+
+msgid "Litium ion/Polymer Battery"
+msgstr "Litium ion/Polymer batteri"
+
+msgid "Load"
+msgstr "Åpne"
+
+msgid "Loading Calls..."
+msgstr "Åpner samtale..."
+
+msgid "Loading Profile Database..."
+msgstr "Åpner profildatabase..."
+
+msgid "Loading contacts"
+msgstr "Åpner kontakter"
+
+msgid "Loading folders..."
+msgstr "Åpner mapper..."
+
+msgid "Loading groups..."
+msgstr "Åpner grupper..."
+
+msgid "Loading own card..."
+msgstr "Åpner eget visittkort..."
+
+msgid "Loading phone profile database..."
+msgstr "Åpner telefonprofil..."
+
+msgid "Loading profiles..."
+msgstr "Åpner profiler..."
+
+msgid "Loading..."
+msgstr "Åpner..."
+
+msgid "Location"
+msgstr "Sted"
+
+msgid "Location name"
+msgstr "Hjemmeside"
+
+msgid "Location:"
+msgstr "Sted:"
+
+msgid "Lock Workstation"
+msgstr "Logg av"
+
+msgid "Log"
+msgstr "Logg"
+
+msgid "Log Files|*.log|All Files|*.*"
+msgstr "Loggfiler|*.log|Alle filer|*.*"
+
+msgid "Log Window"
+msgstr "Loggvindu"
+
+msgid "Long"
+msgstr "Lang"
+
+msgid "Long Message"
+msgstr "Lang melding"
+
+msgid "Long SMS Mode"
+msgstr "Lang SMS-Instilling"
+
+msgid "Low-Color (256 colors)"
+msgstr "Low-Color (256 färger)"
+
+msgid "Low-Color (<256 colors)"
+msgstr "Low-Color (<256 färger)"
+
+msgid "Main script file name:"
+msgstr "Hovedskriptfil:"
+
+msgid "Manufacturer:"
+msgstr "Av:"
+
+msgid "Mark as &Read"
+msgstr "Marker som &lest"
+
+msgid "Mark as &Unread"
+msgstr "Marker som &ulest"
+
+msgid "Max Packet Size (bytes) "
+msgstr "Max pakke Størrelse (bytes)"
+
+msgid "Me"
+msgstr "Jeg"
+
+msgid "Medium"
+msgstr "Medium"
+
+msgid "Message"
+msgstr "Melding"
+
+msgid "Message &Preview"
+msgstr "Melding &Forhåndsvis"
+
+msgid "Message Actions"
+msgstr "Meldingsfunksjoner"
+
+msgid "Message Arrived Popup"
+msgstr "Ny melding popup"
+
+msgid "Message Contact..."
+msgstr "Send Melding til kontakt ..."
+
+msgid "Message Details"
+msgstr "Meldingsdetaljer"
+
+msgid "Message Monitor"
+msgstr "Meldingsovervåker"
+
+msgid "Message Popup"
+msgstr "Meldings-popup"
+
+msgid "Message Recipients"
+msgstr "Send melding til flera mottakere"
+
+msgid "Message Recipients..."
+msgstr "Send melding til flera mottakere..."
+
+msgid "Message saved in Drafts"
+msgstr "Melding lagret i Drafts-mappen"
+
+msgid "Message to Contact"
+msgstr "Send melding til kontakt"
+
+msgid "Messages"
+msgstr "Meldinger"
+
+msgid "Messages Archive Folder"
+msgstr "Meldings-mappe: Arkivmappe"
+
+msgid "Messages Inbox Folder"
+msgstr " Innboks Meldinger"
+
+msgid "Messages downloaded"
+msgstr "Nedlastede Meldinger"
+
+msgid "Messages sent and moved to Archive."
+msgstr "Meldinger sendt og flyttet til Arkiv "
+
+msgid "Messages sent so far: "
+msgstr "Antall sendte Meldinger : "
+
+msgid "Messages sent so far:  "
+msgstr "Antall sendte Meldinger: "
+
+msgid "Microsoft Outlook"
+msgstr "Microsoft Outlook"
+
+msgid "Microsoft Outlook Folders"
+msgstr "Microsoft Outlook-mapper"
+
+msgid "Mirrors"
+msgstr "Alternative adresser"
+
+msgid "Miscellaneous"
+msgstr "Diverse"
+
+msgid "Missed Calls"
+msgstr "Ubesvarte samtaler"
+
+msgid "Missed Calls List:"
+msgstr "Ubesvarte samtaler:"
+
+msgid "Missed calls"
+msgstr "Ubesvarte samtaler"
+
+msgid "Mobile -> Work -> Home -> Other."
+msgstr "Mobil -> Arbeid -> Hjem -> Annet."
+
+msgid "Mobile [%s]"
+msgstr "Mobil [%s]"
+
+msgid "Mobile phone numbers only"
+msgstr "Kun mobiltelefonnummer"
+
+msgid "Mobile phone:"
+msgstr "Mobil:"
+
+msgid "Model:"
+msgstr "Modell:"
+
+msgid "Modified"
+msgstr "Endret"
+
+msgid "Modified Contacts..."
+msgstr "Endrede kontakter..."
+
+msgid "Modified bookmark"
+msgstr "Endret bokmerke"
+
+msgid "Modified contact"
+msgstr "Endret kontakt"
+
+msgid "Modify an Existing Contact:"
+msgstr "Endre eksisterende kontakt:"
+
+msgid "Move &Down"
+msgstr "Flytt &ned"
+
+msgid "Move &Up"
+msgstr "Flytt &opp"
+
+msgid "Move message to Archive"
+msgstr "Flytt melding til Arkiv"
+
+msgid "Move to Archive"
+msgstr "Flytt til Arkiv"
+
+msgid "Move to Phone (Upload)"
+msgstr "Flytt til Telefon (Send)"
+
+msgid "Mute"
+msgstr "Mute"
+
+msgid "My %s Phone"
+msgstr "Min %s Telefon"
+
+msgid "My %s Phone (%s)"
+msgstr "Min %s Telefon (%s)"
+
+msgid "My Phone"
+msgstr "Min Telefon"
+
+msgid "My Sounds"
+msgstr "Mine Lyder"
+
+msgid "Name"
+msgstr "Navn"
+
+msgid "Name:"
+msgstr "Navn:"
+
+msgid "Native Bluetooth (Requires Windows XP SP1 or later)"
+msgstr "Innebygd Bluetooth (Krever Windows XP SP1 eller senere)"
+
+msgid "Native IrDA Port (Requires Windows 2000 or later)"
+msgstr "Innebygd IrDA-port (Krever Windows 2000 eller senere)"
+
+msgid "Negotiate"
+msgstr "Organiserer"
+
+msgid "Never hide my number when calling this contact"
+msgstr "Skjul aldri nummeret mitt for denne kontakten"
+
+msgid "New"
+msgstr "Nytt"
+
+msgid "New &Bookmark..."
+msgstr "Nytt &Bokmerke..."
+
+msgid "New &Group..."
+msgstr "Ny &Gruppe..."
+
+msgid "New &Note..."
+msgstr "Nytt &Notat..."
+
+msgid "New &Upload..."
+msgstr "Ny &Opplasting..."
+
+msgid "New Event"
+msgstr "Ny Huskelapp"
+
+msgid "New Group"
+msgstr "Ny Gruppe"
+
+msgid "New Message"
+msgstr "Ny Melding"
+
+msgid "New Note"
+msgstr "Nytt Notat"
+
+msgid "New Person"
+msgstr "Ny Person"
+
+msgid "New SMS"
+msgstr "Ny SMS"
+
+msgid "New Task"
+msgstr "Ny Jobb"
+
+msgid "New Text Messages:"
+msgstr "Ny melding:"
+
+msgid "New bookmark"
+msgstr "Nytt bokmerke"
+
+msgid "New contact"
+msgstr "Ny kontakt"
+
+msgid "New message from "
+msgstr "Ny melding fra "
+
+msgid "New message received"
+msgstr "Ny melding mottatt"
+
+msgid "New message received."
+msgstr "Ny melding mottatt."
+
+msgid "Next"
+msgstr "Neste"
+
+msgid "Next Folder"
+msgstr "Neste mappe"
+
+msgid "No"
+msgstr "Nei"
+
+msgid "No Baloon"
+msgstr "Ingen Balongtips"
+
+msgid "No Popup"
+msgstr "Ingen Popup"
+
+msgid "No new updates are available over Internet right now.You could try again later or you could proceed if you have local update files."
+msgstr "Ingen oppdateringer tilgjengelige."
+
+msgid "None"
+msgstr "Ingen"
+
+msgid "None (do not synchronize)"
+msgstr "Ingen (ikke synkroniser)"
+
+msgid "Not Implemented"
+msgstr "Ikke støttet"
+
+msgid "Not implemented yet"
+msgstr "Ikke støttet enda"
+
+msgid "Not supported by phone"
+msgstr "Støttes ikke av telefon "
+
+msgid "Note that script file extension must be the scipting engine used, for example for \"MyScript.VBScript\" the system will interprate it using VBScript Engine."
+msgstr "Husk at skriptfilens filendelse må være korrekt. Eksempelvis kan \"MyScript.VBScript\"  tolkes av VBScript-motoren."
+
+msgid "Note: Click on Refresh to download/update the file from phone."
+msgstr "Tips: Klikk på Oppdater for å hente/oppdatere filen fra telefonen."
+
+msgid "Notes"
+msgstr "Notater"
+
+msgid "Nothing to import"
+msgstr "Ingenting å importere"
+
+msgid "Nothing to post"
+msgstr "Ingenting å legge til"
+
+msgid "Number"
+msgstr "Nummer"
+
+msgid "Number of contacts stored in Phone book:"
+msgstr "Antall kontakter i telefonlisten:"
+
+msgid "Number of messages stored in Archive:"
+msgstr "Antall lagrede meldinger i Arkivet:"
+
+msgid "OBEX"
+msgstr "OBEX"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Obex"
+msgstr "OBEX"
+
+msgid "Obex List Failed: "
+msgstr "OBEX-lista misslyckades: "
+
+msgid "Obex already in use"
+msgstr "OBEX er i bruk"
+
+msgid "Object is in use"
+msgstr "Objektet brukes"
+
+msgid "Object:"
+msgstr "Objekt:"
+
+msgid "On AC power:"
+msgstr "Tilkoblet lader:"
+
+msgid "Only bookmarks stored in this folder will be synchronized with your phone's bookmarks. Any subfolders will be ignored."
+msgstr "Bare bokmerker lagret i denne mappen kommer til å synkroniseres med telefonens bokmerkee. Eventuelle underkataloger blir ignorert."
+
+msgid "Open Target Location"
+msgstr "Åpne bokmerke"
+
+msgid "Opening phone database"
+msgstr "Åpner telefondatabasen"
+
+msgid "Opens a Web browser to Fma developers page."
+msgstr "Åpner FMA:s side for utviklere."
+
+msgid "Opens a Web browser to Fma forums page."
+msgstr "Åpner FMA:s Forum."
+
+msgid "Opens a Web browser to Fma home page."
+msgstr "Åpner FMA:s hjemmside."
+
+msgid "Operator"
+msgstr "Operatør"
+
+msgid "Options"
+msgstr "Innstillinger"
+
+msgid "Organization"
+msgstr "Organisasjon"
+
+msgid "Organization:"
+msgstr "Organisasjon:"
+
+msgid "Organize Favorites"
+msgstr "Organiser Favoritter"
+
+msgid "Organize Favorites..."
+msgstr "Organiser Favoritter..."
+
+msgid "Organizer"
+msgstr "Organiserer"
+
+msgid "Organizer Phone Page"
+msgstr "Organiser"
+
+msgid "Other"
+msgstr "Annet"
+
+msgid "Other [%s]"
+msgstr "Annet [%s]"
+
+msgid "Other phone: "
+msgstr "Annet: "
+
+msgid "Other reminder"
+msgstr "Annen påminnelse"
+
+msgid "Other:"
+msgstr "Annet:"
+
+msgid "Outbox"
+msgstr "Usendte"
+
+msgid "Outbox send complete"
+msgstr "Usendte meldinger sendt!"
+
+msgid "Outgoing Calls"
+msgstr "Utgående samtale"
+
+msgid "Outlook"
+msgstr "Outlook"
+
+msgid "Outlook Confirmation"
+msgstr "Outlook-bekreftelse"
+
+msgid "Outlook Contacts..."
+msgstr "Outlook-kontakter..."
+
+msgid "Outlook Folders"
+msgstr "Outlook-mapper"
+
+msgid "Outlook New Contacts Action"
+msgstr "Nye Oulook-kontakter"
+
+msgid "Outlook Priority"
+msgstr "Outlook-prioritet"
+
+msgid "Outlook Sync"
+msgstr "Outlook synk."
+
+msgid "Outlook Synchronize completed"
+msgstr "Outlook-synbkronisering ferdig"
+
+msgid "Outlook Synchronize started"
+msgstr "Outlook-synkronisering påbegynt"
+
+msgid "Own Business Card - %s"
+msgstr "Eget visittkort - %s"
+
+msgid "P&roperties"
+msgstr "Egenskape&r"
+
+msgid "PC"
+msgstr "PC"
+
+msgid "PDU data:"
+msgstr "PDU-data:"
+
+msgid "Palette:"
+msgstr "Palett:"
+
+msgid "Pc"
+msgstr "Pc"
+
+msgid "Performing cleanup"
+msgstr "Sletter"
+
+msgid "Performing cleanup..."
+msgstr "Sletter..."
+
+msgid "Personal Data"
+msgstr "Personlige data"
+
+msgid "Personalize"
+msgstr "Personifiser"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Phone & Battery"
+msgstr "Telefon & Batteri"
+
+msgid "Phone &Explorer"
+msgstr "Telefon&Utforsker"
+
+msgid "Phone &KeyPad..."
+msgstr "Telefon &Taster..."
+
+msgid "Phone Bookmarks..."
+msgstr "Telefon  Bokmerker..."
+
+msgid "Phone Calendar..."
+msgstr "Telefonkalender..."
+
+msgid "Phone Clock"
+msgstr "Telefonklokke"
+
+msgid "Phone Clock..."
+msgstr "Telefonklokke..."
+
+msgid "Phone Contacts..."
+msgstr "Telefonkontakter..."
+
+msgid "Phone Explorer"
+msgstr "Telefon Utforsker"
+
+msgid "Phone Explorer Startup folder:"
+msgstr "Telefon Utforskerens start-mappe:"
+
+msgid "Phone KeyPad"
+msgstr "Telefontaster"
+
+msgid "Phone Status Diagram"
+msgstr "Telefon Status diagram"
+
+msgid "Phone book"
+msgstr "Telefonliste"
+
+msgid "Phone clock is not synchronized with PC clock. "
+msgstr "Telefonens klokke er ikke synkronisert med PC-ens klokke. "
+
+msgid "Phone clock synchronization failed!"
+msgstr "Synkroniseringen av telefonens kloke mislykkes!"
+
+msgid "Phone clock synchronized successfully."
+msgstr "Telefonens klokke er synkronisert."
+
+msgid "Phone number"
+msgstr "Telefonnummer"
+
+msgid "Phone number:"
+msgstr "Telefonnummer:"
+
+msgid "Phone temperature:"
+msgstr "Telefontemperatur:"
+
+msgid "Phone:"
+msgstr "Telefon:"
+
+msgid "Phonebook"
+msgstr "Telefonliste"
+
+msgid "Phonebook (Phone memory)"
+msgstr "Telefonliste (Telefonminne)"
+
+msgid "Phonebook (SIM memory)"
+msgstr "Telefonliste (SIM)"
+
+msgid "Phonebook Priority"
+msgstr "Telefonliste Prioritet"
+
+msgid "Photo vcard:"
+msgstr "Photo vCard:"
+
+msgid "Picture"
+msgstr "Bilde"
+
+msgid "Picture File: "
+msgstr "Bilde-fil: "
+
+msgid "Picture information:"
+msgstr "Bildeinformasjon:"
+
+msgid "Please enter a contact name at position %s"
+msgstr "Skriv kontakt-navn på linje %s"
+
+msgid "Please enter a phone number at position %s"
+msgstr "Skriv telefonnummer på linje %s"
+
+msgid "Please note that settings for Personalize, Prefferences and Outlook are Fma specific and will not be synchronized with phone."
+msgstr "Innstillinger for Persondata, Innstillinger og Outlook er FMA-spesifikke og synkroniseres ikke med telefonen."
+
+msgid "Please select which Outlook folders contain contacts to be synchronized with FMA. Right-click to chose New Contacts target folder (shown in bold)."
+msgstr "Velg de Outlook-mapper som inneholder de kontakter som skal synkroniseres med FMA. Høyre-klikk for å velge ny mappe (vises i fetstil)."
+
+msgid "Please use the fma website mentioned below for any bug reports or feature requests. Do not contact the developers personally. You can also visit us on IRC (irc.chatspike.net #fma)."
+msgstr "Bruk FMA:s hjemmeside for å rapportere bugs eller forslag på framtidige funksjoner. Kontakt ikke utviklere personlig. Du kan også treffe oss på IRC (irc.chatspike.net #fma)."
+
+msgid "Please wait while %s downloads a list of available updates..."
+msgstr "Vent mens %s henter en liste over tilgjengelige oppdateringer..."
+
+msgid "Please wait while Fma downloads all appropriate update files from Fma web site..."
+msgstr "Vent mens FMA henter tilgjengelige oppdateringer..."
+
+msgid "Please, wait until Web Update Wizard finishes all update tasks."
+msgstr "Vent til WEB Oppdateringsguiden er ferdig."
+
+msgid "Polling Interval (seconds)"
+msgstr "Oppdateringsintervall (sekund)"
+
+msgid "Port"
+msgstr "Port"
+
+msgid "Pos"
+msgstr "Pos."
+
+msgid "Possible"
+msgstr "Mulig"
+
+msgid "Possible Link to:"
+msgstr "Mulig link til:"
+
+msgid "Post a bookmark"
+msgstr "Legg til bokmerke"
+
+msgid "Post a note"
+msgstr "Legg til notat"
+
+msgid "Power"
+msgstr "Strøm"
+
+msgid "Power Off Phone..."
+msgstr "Slå av telefon..."
+
+msgid "Powers phone off instantly"
+msgstr "Slår av telefonen med en gang"
+
+msgid "Prefered one:"
+msgstr "Forvalg:"
+
+msgid "Preferences"
+msgstr "Innstillinger"
+
+msgid "Preffered download mirror site:"
+msgstr "Foretrukket alternativ adresse:"
+
+msgid "Preffered language*"
+msgstr "Forhåndsvalgt språk*"
+
+msgid "Preparing Installation..."
+msgstr "Forbereder installasjon..."
+
+msgid "Preparing Outbox"
+msgstr "Forbereder Usendte Meldinger"
+
+msgid "Preview:"
+msgstr "Forhåndsvis:"
+
+msgid "Previous"
+msgstr "Forrige"
+
+msgid "Previous Folder"
+msgstr "Forrige mappe"
+
+msgid "Previous message saved in Drafts"
+msgstr "Forrige melding lagret i Drafts-mappen"
+
+msgid "Priority to:"
+msgstr "Prioritet til:"
+
+msgid "Product Version"
+msgstr "Produktversion"
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "Profile \"%s\" activated."
+msgstr "Profil \"%s\" aktivert."
+
+msgid "Profile Settings..."
+msgstr "Profil Innstillinger..."
+
+msgid "Profile changed"
+msgstr "Endret Profil"
+
+msgid "Profile name:"
+msgstr "Profilnavn:"
+
+msgid "Progress"
+msgstr "Utfører"
+
+msgid "Progress Dialog"
+msgstr "Utfører"
+
+msgid "Progress:"
+msgstr "Utfører:"
+
+msgid "Properties"
+msgstr "Egenskaper"
+
+msgid "Protocol Settings"
+msgstr "Protokollinnstillinger"
+
+msgid "Proximity"
+msgstr "Ved PC-en"
+
+msgid "Proximity Detection"
+msgstr "Ved PC-en"
+
+msgid "Proximity settings cannot match for Away and Near"
+msgstr "Ved PC-en-innstillingene stemmer ikke for Borte og Nær"
+
+msgid "Quotes are not allowed in SIM contact name"
+msgstr "Spesialtegn er ikke tillatt i SIM-kontakter"
+
+msgid ""
+"RTS Flow Control might be needed on some devices or cables\n"
+"(Credit goes to VoSSy)."
+msgstr ""
+"RTS flowkontroll kreves kansje av visse telefoner og kabler\n"
+"(Takk til VoSSy)."
+
+msgid "Reading Outlook Folders..."
+msgstr "Leser Outlook-mapper..."
+
+msgid "Ready"
+msgstr "Klar"
+
+msgid "Ready to Download"
+msgstr "Klar for nedlasting"
+
+msgid "Ready to Install"
+msgstr "Klar for innstallering"
+
+msgid "Received"
+msgstr "Mottatt"
+
+msgid "Received "
+msgstr "Mottatt"
+
+msgid "Received Read Items"
+msgstr "Mottatte leste meldinger"
+
+msgid "Received Unread Items"
+msgstr "Mottatte uleste meldinger"
+
+msgid "Received:"
+msgstr "Mottatt:"
+
+msgid "Receiving "
+msgstr "Mottar"
+
+msgid ""
+"Receiving %s\n"
+"(%.1n kB so far)"
+msgstr ""
+"Mottar %s\n"
+"(%.1n kB hittil)"
+
+msgid ""
+"Receiving %s\n"
+"(%.1n of %.1n kB)"
+msgstr ""
+"Mottar %s\n"
+"(%.1n av %.1n kB)"
+
+msgid "Recent &Missed Calls..."
+msgstr "&Ubesvarte samtaler..."
+
+msgid "Recent Calls"
+msgstr "Siste Samtaler"
+
+msgid "Recent Missed Calls: "
+msgstr "Ubesvarte samtaler: "
+
+msgid "Recent calls:"
+msgstr "Siste Samtaler:"
+
+msgid "Recent missed calls:"
+msgstr "Ubesvarte samtaler:"
+
+msgid "Recipients:"
+msgstr "Mottakere:"
+
+msgid "Reference:"
+msgstr "Referanse:"
+
+msgid "Refresh"
+msgstr "Oppdater"
+
+msgid "Refresh Data"
+msgstr "Oppdater Data"
+
+msgid "Refresh Text Messages"
+msgstr "Oppdater Meldinger"
+
+msgid "Refresh View"
+msgstr "Oppdater "
+
+msgid "Refreshing local calendar"
+msgstr "Oppdaterer lokal kalender"
+
+msgid "Refreshing local phonebook"
+msgstr "Oppdaterer lokal Telefonliste"
+
+msgid "Regional Settings"
+msgstr "Regionelle innstillinger"
+
+msgid "Registry error"
+msgstr "Registerfeil"
+
+msgid "Reindex (Sort) All Contacts..."
+msgstr "Sorter alle kontakter..."
+
+msgid "Reminder"
+msgstr "Påminnelse"
+
+msgid "Remove"
+msgstr "Slett"
+
+msgid "Rename aborted"
+msgstr "Navneskifte avbrutt"
+
+msgid "Replace Script..."
+msgstr "Erstatt skript..."
+
+msgid "Replace..."
+msgstr "Erstatt..."
+
+msgid "Reply to Contact"
+msgstr "Svar Kontakt"
+
+msgid "Report"
+msgstr "Rapport"
+
+msgid "Request Reply"
+msgstr "Ønsker svar"
+
+msgid "Request Status Report"
+msgstr "Ønsker statusrapport"
+
+msgid "Reset Counter"
+msgstr "Nullstill teller"
+
+msgid "Reset Counter monthly on"
+msgstr "Nullstill telleren den "
+
+msgid "Restarting Application..."
+msgstr "Omstarter FMA..."
+
+msgid "Restore Last Used Profile"
+msgstr "Gå til sist brukte Profil"
+
+msgid "Retrieving "
+msgstr "Henter "
+
+msgid "Retrieving Phone info"
+msgstr "Mottar telefoninformasjon"
+
+msgid "Retrieving SIM info"
+msgstr "Mottar SIM-informasjon"
+
+msgid "Retrieving battery status"
+msgstr "Mottar batteristatus"
+
+msgid "Retrieving bookmarks"
+msgstr "Mottar bokmerker"
+
+msgid "Retrieving calls"
+msgstr "Mottar samtaleliste"
+
+msgid "Retrieving groups"
+msgstr "Mottar grupper"
+
+msgid "Retrieving phone info"
+msgstr "Mottar telefoninformasjon"
+
+msgid "Retrieving profiles"
+msgstr "Mottar profiler"
+
+msgid "Retrieving signal status"
+msgstr "Mottar singalstatus"
+
+msgid "Ringing Tone: "
+msgstr "Ringesignal: "
+
+msgid "Ringing tone volumes:"
+msgstr "Ringesignalsvolum:"
+
+msgid "Ringing..."
+msgstr "Ringer..."
+
+msgid "Row"
+msgstr "Rad"
+
+msgid "Run Screen Saver"
+msgstr "Kjør skjermsparer"
+
+msgid "S&elect..."
+msgstr "&Velg..."
+
+msgid "S&ync"
+msgstr "S&ynkroniser"
+
+msgid "SIM"
+msgstr "SIM"
+
+msgid "SIM book"
+msgstr "SIM-kort"
+
+msgid "SIM card"
+msgstr "SIM-kort"
+
+msgid "SMS"
+msgstr "SMS"
+
+msgid "SMS Count:"
+msgstr "Antall SMS:"
+
+msgid "SMS Received"
+msgstr "SMS mottatt"
+
+msgid "SMS Sended"
+msgstr "Sendte SMS"
+
+msgid "SMS: "
+msgstr "SMS: "
+
+msgid "SYNC"
+msgstr "SYNK"
+
+msgid "Sa&ve"
+msgstr "&Lagre"
+
+msgid "Save As"
+msgstr "Lagre som"
+
+msgid "Save As..."
+msgstr "Lagre som..."
+
+msgid "Save Log As..."
+msgstr "Lagre logg som..."
+
+msgid "Save Message in Drafts"
+msgstr "Lagre Meldinger i Drafts-mappen"
+
+msgid "Save Notes..."
+msgstr "Lagre Notat..."
+
+msgid "Save Screenshot..."
+msgstr "Lagre Skjermbilde..."
+
+msgid "Saving changes..."
+msgstr "Lagre endringer..."
+
+msgid "Saving contacts"
+msgstr "Lagrer kontakter"
+
+msgid "Saving own card..."
+msgstr "Lagrer eget visittkort..."
+
+msgid "Saving..."
+msgstr "Lagrer..."
+
+msgid "Script"
+msgstr "Skript"
+
+msgid "Script Code..."
+msgstr "Skriptkode..."
+
+msgid "Script Type:"
+msgstr "Skripttype:"
+
+msgid "Scripting Engine"
+msgstr "Skriptmotor"
+
+msgid "Searching"
+msgstr "Søker"
+
+msgid "Searching Device..."
+msgstr "Søker etter telefon..."
+
+msgid "Searching..."
+msgstr "Søker..."
+
+msgid "Select &All"
+msgstr "Marker &alt"
+
+msgid "Select A Contact"
+msgstr "Velg en kontakt"
+
+msgid "Select Contacts"
+msgstr "Velg Kontakter"
+
+msgid "Select Recepients..."
+msgstr "Velg mottagare..."
+
+msgid "Select a preffered mirror site from which to retrieve updates."
+msgstr "Velg en alternativ adresse for å hente oppdateringer fra."
+
+msgid "Select all items"
+msgstr "Marker alt"
+
+msgid "Select custom version to view its details here."
+msgstr "Velg en versjon for å se  informasjon her."
+
+msgid "Select file to upload"
+msgstr "Velg fil å sende"
+
+msgid "Select mirror site(s) to use, then click Next to continue."
+msgstr "Velg alternativ adresse, klikk på Neste for å fortsette."
+
+msgid "Select target product version to update to."
+msgstr "Velg hvilken versjon du vil oppgradere til."
+
+msgid "Send"
+msgstr "Send"
+
+msgid "Send AT"
+msgstr "Send AT"
+
+msgid "Send Current Outbox Messages"
+msgstr "Send meldinger i Usendte-mappen"
+
+msgid "Send Message Immediately"
+msgstr "Send meldingen nå"
+
+msgid "Send Outbox &Messages"
+msgstr "Send meldinger i Usendte-mappen"
+
+msgid "Send SMS"
+msgstr "Send SMS"
+
+msgid "Send To Phone"
+msgstr "Send Til Telefon"
+
+msgid "Send and Receive"
+msgstr "Send og Motta"
+
+msgid "Send as Flash Message"
+msgstr "Send som Flash-melding"
+
+msgid "Send as Long Message"
+msgstr "Send som lang melding"
+
+msgid "Send to Phone"
+msgstr "Send till Telefon"
+
+msgid "Sender SMSC:"
+msgstr "Sender SMSC:"
+
+msgid "Sending "
+msgstr "Sender "
+
+msgid ""
+"Sending %s\n"
+"(%.1n of %.1n kB)"
+msgstr ""
+"Sender %s\n"
+"(%.1n av %.1n kB)"
+
+msgid "Sending long message to %s..."
+msgstr "Sender lang melding til %s..."
+
+msgid "Sending message to %s..."
+msgstr "Sender melding til %s..."
+
+msgid "Sending message..."
+msgstr "Sender melding..."
+
+msgid "Sending out messages"
+msgstr "Sender ut meldinger"
+
+msgid ""
+"Sending out messages\n"
+"(%d sent, %d failed)"
+msgstr ""
+"Sender ut meldinger\n"
+"(%d sendt, %d mislykket)"
+
+msgid "Sent "
+msgstr "Sendte"
+
+msgid "Serial"
+msgstr "Seriell"
+
+msgid "Serial Number:"
+msgstr "Serienummer:"
+
+msgid "Serial Port Setup"
+msgstr "Serieportsinnstillinger"
+
+msgid "Serial/Virtual Port (If none of the above worked)"
+msgstr "Seriell-/Virtuell-port (Om ingen av overstående fungerer)"
+
+msgid "Service Unavailable"
+msgstr "Tjenesten er Utilgjengelig"
+
+msgid "Set Port=0 to let the system decide which port to use."
+msgstr "Velg Port=0 for å la systemet velge port."
+
+msgid "Set Ring Level"
+msgstr "Still inn ringvolum"
+
+msgid "Set Time"
+msgstr "Still inn tid"
+
+msgid "Setting call monitoring"
+msgstr "Stiller inn samtalesovervåker"
+
+msgid "Setting caller ID"
+msgstr "Stiller inn nummerpresentør (CID)"
+
+msgid "Setting mute notification"
+msgstr "Stiller inn lydløs-melder"
+
+msgid "Setting presentation ID"
+msgstr "Stiller inn presentasjons ID"
+
+msgid "Setting sms notification"
+msgstr "Stiller inn SMS-melder"
+
+msgid "Settings"
+msgstr "Innstillinger"
+
+msgid "Show"
+msgstr "Vis"
+
+msgid "Show Fma Options"
+msgstr "Vis FMA-innstillinger"
+
+msgid "Show Phone Explorer"
+msgstr "Vis Telefonutforsker"
+
+msgid "Show Picture"
+msgstr "Vis bilde"
+
+msgid "Show Splash Screen on startup"
+msgstr "Vis bilde når FMA starter"
+
+msgid "Show if the main application is Not &Minimized"
+msgstr "Vis om FMA ikke er &minimert"
+
+msgid "Show me current Tasks and Events"
+msgstr "Vis Jobber og Huskelister"
+
+msgid "Show warning message when SMS Count reaches"
+msgstr "Vis advarsel når antall SMS er"
+
+msgid "Show when connecting to phone for the &First Time"
+msgstr "Vis ved tilkobling av telefonen for &ørste Gangen"
+
+msgid "Shows Activity Log"
+msgstr "Viser Aktivitetslogg"
+
+msgid "Shows Call Favorites"
+msgstr "Viser Samtalesfavoritter"
+
+msgid "Shows Current Profile Settings"
+msgstr "Vis nåværende profilinnstillinger"
+
+msgid "Shows Debug Log"
+msgstr "Viser Debug-logg"
+
+msgid "Shows Fma Options"
+msgstr "Viser FMA-innstillinger"
+
+msgid "Shows Fma Update Wizard"
+msgstr "Viser FMAs Oppdateringsguide"
+
+msgid "Shows Recent Missed Calls"
+msgstr "Viser ubesvarte samtaler"
+
+msgid "Shows SMS Favorites"
+msgstr "Viser SMS-favoritter"
+
+msgid "Shows Script Editor"
+msgstr "Viser Skripteditor"
+
+msgid "Shows Synchronize Log"
+msgstr "Viser Synkroniseringslogg"
+
+msgid "Shows WAP Home Page"
+msgstr "Viser WAP-hjemmeside"
+
+msgid "Shows Your Business Card"
+msgstr "Viser Eget Visittkort"
+
+msgid "Signal"
+msgstr "Signalstyrke"
+
+msgid "Signal N/A"
+msgstr "Signalstyrke utilgjengelig"
+
+msgid "Silent"
+msgstr "Lydløs"
+
+msgid "Silent Mode"
+msgstr "Lydløs"
+
+msgid "Similar Files|*"
+msgstr "Lignende filer|*"
+
+msgid "Size / Position"
+msgstr "Størrelse / Plass"
+
+msgid "Size:"
+msgstr "Størrelse:"
+
+msgid "Small"
+msgstr "Liten"
+
+msgid "Software Revision:"
+msgstr "Software Versjon:"
+
+msgid "Sound"
+msgstr "Lyd"
+
+msgid "Sound information:"
+msgstr "Lydinformasjon:"
+
+msgid "Speech"
+msgstr "Tale"
+
+msgid "Standard"
+msgstr "Standard"
+
+msgid "Standby"
+msgstr "Standby"
+
+msgid "Start Sync Calendar...."
+msgstr "Starter synkronisering av kalender..."
+
+msgid "Start Sync Phonebook...."
+msgstr "Starter synk. av telefonliste..."
+
+msgid "Start date:"
+msgstr "Start dato:"
+
+msgid "Start time:"
+msgstr "Starttid:"
+
+msgid "Starting..."
+msgstr "Starter..."
+
+msgid "Startup"
+msgstr "Oppstart"
+
+msgid "State: "
+msgstr "Status: "
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Status Diagram"
+msgstr "Statusdiagram"
+
+msgid "Status:"
+msgstr "Status:"
+
+msgid "Still in the progress of adding,"
+msgstr "Under utvikling,"
+
+msgid "Stored Sent Items"
+msgstr "Lagrede Sendte Meldinger "
+
+msgid "Stored Unread Items"
+msgstr "Lagrede Uleste Meldinger "
+
+msgid "Subject:"
+msgstr "Emne:"
+
+msgid "Summary:"
+msgstr "Summering:"
+
+msgid "Switch &Database..."
+msgstr "Bytt &Database"
+
+msgid "Switch &Phone Database..."
+msgstr "Bytt telefon &database..."
+
+msgid "Switch To Profile"
+msgstr "Bytt til Profil"
+
+msgid "Switching character set"
+msgstr "Skifter tegnoppsetting"
+
+msgid "Sync Bookmarks completed."
+msgstr "Synkronisering av bokmerkene er ferdig."
+
+msgid "Sync Calendar"
+msgstr "Synk. Kalender"
+
+msgid "Sync Calendar completed."
+msgstr "Synkronisering av kalender ferdig."
+
+msgid "Sync Calendar started."
+msgstr "Synkronisering av kalender startet."
+
+msgid "Sync Outlook"
+msgstr "Synk. Outlook"
+
+msgid "Sync Phone book"
+msgstr "Synk. Telefonliste"
+
+msgid "Sync Phonebook with Outlook"
+msgstr "Synkroniser Telefonliste med Outlook"
+
+msgid "SyncML Settings"
+msgstr "SyncML-innstillinger"
+
+msgid "Synching to remote data:"
+msgstr "Synkroniser data:"
+
+msgid "Synchronization"
+msgstr "Synkronisering"
+
+msgid "Synchronize"
+msgstr "Synkroniser"
+
+msgid "Synchronize Bookmarks"
+msgstr "Synkroniser Bokmerker"
+
+msgid "Synchronize Bookmarks in this Folder:"
+msgstr "Synkroniser Bokmerker i denne Mappen:"
+
+msgid "Synchronize Contacts in these Folders:"
+msgstr "Synkroniser Kontaktene i disse Mappene:"
+
+msgid "Synchronize Log"
+msgstr "Synkroniseringslogg"
+
+msgid "Synchronize Log..."
+msgstr "Synkroniseringslogg..."
+
+msgid "Synchronize Microsoft Outlook"
+msgstr "Synkroniser Microsoft Outlook"
+
+msgid "Synchronize Phone Bookmarks"
+msgstr "Synkroniser Telefonliste"
+
+msgid "Synchronize Phone Calendar"
+msgstr "Synkroniser Telefonkalender"
+
+msgid "Synchronize Phone Clock"
+msgstr "Synkroniser Telefonklokke"
+
+msgid "Synchronize Phonebook"
+msgstr "Synkroniser Telefonliste"
+
+msgid "Synchronize Phonebook Contacts"
+msgstr "Synkroniser Telefonkontakter"
+
+msgid "Synchronize completed"
+msgstr "Synkronisering ferdig"
+
+msgid "Synchronize error: %s"
+msgstr "Synkroniseringsfeil: %s"
+
+msgid "Synchronize started"
+msgstr "Synkronisering startet"
+
+msgid "Synchronizing calendar"
+msgstr "Synkroniserer kalender"
+
+msgid "Synchronizing contacts"
+msgstr "Synkroniserer kontakter"
+
+msgid "Synchronizing phonebook contacts"
+msgstr "Synkroniserer telefonlistens kontakter"
+
+msgid "System   : %s %s, Version: %d.%d, Build: %x, \"%s\""
+msgstr "System   : %s %s, Versjon: %d.%d, Build: %x, \"%s\""
+
+msgid "Talking..."
+msgstr "Snakker..."
+
+msgid "Target:"
+msgstr "Mål:"
+
+msgid "Task"
+msgstr "Jobb"
+
+msgid "Temp"
+msgstr "Temp"
+
+msgid "Terminal"
+msgstr "Terminal"
+
+msgid "Test"
+msgstr "Test"
+
+msgid "Test Application"
+msgstr "Testapplikation"
+
+msgid "Test Proximity"
+msgstr "Test"
+
+msgid "Testing..."
+msgstr "Tester..."
+
+msgid "Text"
+msgstr "Tekst"
+
+msgid "Text Files (*.txt)|*.txt|All Files|*.*"
+msgstr "Tekstfiler (*.txt)|*.txt|Alle filer|*.*"
+
+msgid "Text Messages Counter"
+msgstr "Meldings Teller"
+
+msgid "Thanks to all!"
+msgstr "Takk til alle!"
+
+msgid "The Sync Calendar can't start...try to restart your phone."
+msgstr "Synkronisering av kalenderen kan ikke startes...prøv å restarte telefonen."
+
+msgid "The appointment:"
+msgstr "Avtalt:"
+
+msgid "The contact:"
+msgstr "Kontakten:"
+
+msgid "The name at position %s is too long"
+msgstr "navnet på linje %s er for langt"
+
+msgid "The number at position %s is too long"
+msgstr "Nummeret på linje %s er for langt"
+
+msgid "The task:"
+msgstr "Jobb:"
+
+msgid "Theme"
+msgstr "Tema"
+
+msgid "There are no items to display in this view."
+msgstr "Mappen er tom."
+
+msgid "There are no items to display in this view. Did you refresh the folder?"
+msgstr "Mappen er tom. Er den oppdatert?"
+
+msgid "There are no items to display in this view. Did you synchronize phonebook?"
+msgstr "Telefonlisten er tom. Er den synkronisert?"
+
+msgid "This contact does not have any phone number"
+msgstr "Denne kontakten har ikke telefonnummer"
+
+msgid "This is English language."
+msgstr "Dette er Norsk."
+
+msgid "This will crop some text from the end of the current message?"
+msgstr "Dette kommer til å ta bort tekst fra slutten av meldingen. Vil du fortsette?"
+
+msgid "This wizard will help you add a contact to a group. You can use default contact's number or select from a numbers list below."
+msgstr "Denne guiden kommer til å hjelpe deg med å legge til en kontakt i en gruppe. Du kan bruk kontaktens forvalgte  nummer, eller velge ett nummer fra listen under."
+
+msgid "This wizard will help you add a number to your phonebook. You could create a new contact or modify an existing one."
+msgstr "Denne guiden kommer til å hjelpe deg med å legge til ett nummer i telefonlisten. Du kan lage en ny kontakt, eller endre en eksisterende."
+
+msgid "This wizard will help you update the %s via Internet or through an update file provided by application vendor."
+msgstr "Denne guiden kommer til å hjelpe deg med å oppdatere FMA via Internet eller en oppdateringsfil."
+
+msgid "Thread: %s"
+msgstr "Tråd: %s"
+
+msgid "Time"
+msgstr "Tid"
+
+msgid "Time:"
+msgstr "Tid:"
+
+msgid "Timeout (seconds)"
+msgstr "Timeout (sekunder)"
+
+msgid "Title"
+msgstr "Tittel"
+
+msgid "Title:"
+msgstr "Tittel:"
+
+msgid "Title: "
+msgstr "Tittel:"
+
+msgid "To Address:"
+msgstr "Til adresse:"
+
+msgid "To..."
+msgstr "Til..."
+
+msgid "To:"
+msgstr "Til:"
+
+msgid "Toggle Connect / Disconnect"
+msgstr "Koble til / Koble fra"
+
+msgid "Toggle Keyboard Lock / Unlock"
+msgstr "Tastelås På/ Av"
+
+msgid "Toggle Keypad On / Off"
+msgstr "Telefontaster På / Av"
+
+msgid "Toggle Message Preview On / Off"
+msgstr "Forhåndsvisning På / Av"
+
+msgid "Toggle Minute Minder On / Off"
+msgstr "Minutt-påminnelse På / Av"
+
+msgid "Toggle Phone Explorer On / Off"
+msgstr "Telefonutforsker På / Av"
+
+msgid "Toggle Silent Mode On / Off"
+msgstr "Lydløs På / Av"
+
+msgid "Tone"
+msgstr "Tone"
+
+msgid "Toolbars"
+msgstr "Verktøyfelt"
+
+msgid "Tools"
+msgstr "Verktøy"
+
+msgid "Total messages sent: %d"
+msgstr "Antall sendte meldinger: %d"
+
+msgid "Total update size: "
+msgstr "Total oppgraderingsstørrelse: "
+
+msgid "Transparency"
+msgstr "Gjennomsiktlighet"
+
+msgid "Travel"
+msgstr "Reise"
+
+msgid "True-Color (24-bit colors)"
+msgstr "True-Color (24-bit farger)"
+
+msgid "True-Color (32-bit colors)"
+msgstr "True-Color (32-bit farger)"
+
+msgid "Try to Link to Existing"
+msgstr "Forsøk å linke til eksisterende"
+
+msgid "Type"
+msgstr "Skriv"
+
+msgid "Type / When"
+msgstr "Skriv / Når"
+
+msgid "Type name or Select from list:"
+msgstr "Skriv navn eller velg fra listen:"
+
+msgid "UDHI data:"
+msgstr "UDHI-data:"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "URL:"
+msgstr "URL:"
+
+msgid "Undefined"
+msgstr "Udefinert"
+
+msgid "Unknown"
+msgstr "Ukjent"
+
+msgid "Unknown (Unsupported format)"
+msgstr "Ukjent (Formatet støttes ikke)"
+
+msgid "Unknown Battery"
+msgstr "Ukjent batteri"
+
+msgid "Unknown Contact"
+msgstr "Ukjent kontakt"
+
+msgid "Unknown Number"
+msgstr "Ukjent nummer"
+
+msgid "Unlink Contact"
+msgstr "Ta bort länk"
+
+msgid "Unlock Workstation (not implemented)"
+msgstr "Logg på  PC-en (ikke støttet enda)"
+
+msgid "Unmodified"
+msgstr "Uforandret"
+
+msgid "Unmute"
+msgstr "Lyd på"
+
+msgid "Unsent Messages:"
+msgstr "Usendte meldinger:"
+
+msgid "Unsuported WBMP type"
+msgstr "Ugykdig WBMP-type"
+
+msgid "Update %s  completed."
+msgstr "Oppdatering %s ferdig."
+
+msgid "Update %s failed."
+msgstr "Oppdatering %s mislyktes."
+
+msgid "Update %s started."
+msgstr "Oppdatering %s startet."
+
+msgid "Update SIM"
+msgstr "Oppdater SIM"
+
+msgid "Update files (*.dif;*.rev)|*.dif;*.rev|All files|*.*"
+msgstr "Oppdateringsfiler (*.dif;*.rev)|*.dif;*.rev|Alle filer|*.*"
+
+msgid "Update..."
+msgstr "Oppdatering..."
+
+msgid "Updates"
+msgstr "Oppdateringer"
+
+msgid "Updating %s"
+msgstr "Oppdaterer %s"
+
+msgid "Upgrade to a custom version:"
+msgstr "Oppgrader til valgfri versjon:"
+
+msgid "Upgrade to the most recent version available"
+msgstr "Oppgrader til siste versjon"
+
+msgid "Uploading contacts..."
+msgstr "Sender kontakter..."
+
+msgid "Use Proximity feature"
+msgstr "Bruk Ved PC-en"
+
+msgid "Use Scripting Framework (usualy installed by FMA setup)"
+msgstr "Bruk skript (vanligvis innstallert av FMA)"
+
+msgid "Use X button to minimize instead to close Fma application"
+msgstr "Bruk X-knappen for å minimere isteden for å avslutte FMA"
+
+msgid "Use all phone numbers"
+msgstr "Bruk alle telefonnummer"
+
+msgid "Use currently used common call settings"
+msgstr "Bruk nåværende samtaleinnstillinger"
+
+msgid "Use custom Script file which I will chose"
+msgstr "Velg en egen skript-fil"
+
+msgid "Use custom numbers:"
+msgstr "Bruk egne nummer:"
+
+msgid "Use default mirror provided by application vendor."
+msgstr "Bruk standardadresse tildelt av programutvikler."
+
+msgid "Use default number:"
+msgstr "Bruk forvalgt nummer:"
+
+msgid "Use localy stored update file"
+msgstr "Bruk oppdateringsfil"
+
+msgid "User Interface"
+msgstr "Brukergrensesnitt"
+
+msgid "VBScript"
+msgstr "VBScript"
+
+msgid "VBScript (*.vbscript)|*.vbscript;*.vbs|JScript (*.jscript)|*.jscript|All Files|*.*"
+msgstr "VBScript (*.vbscript)|*.vbscript;*.vbs|JScript (*.jscript)|*.jscript|Alle filer|*.*"
+
+msgid "VBScript Files (*.vbs)|*.vbs"
+msgstr "VBScript-filer (*.vbs)|*.vbs"
+
+msgid "Vacation"
+msgstr "Ferie"
+
+msgid "Version "
+msgstr "Versjon "
+
+msgid "View"
+msgstr "Vis"
+
+msgid "WAP Home Page..."
+msgstr "WAP-hjemmeside..."
+
+msgid "WBMP Image"
+msgstr "WBMP-bilde"
+
+msgid "Wait..."
+msgstr "Vent..."
+
+msgid "Waiting"
+msgstr "Venter"
+
+msgid "Wap Browser"
+msgstr "WAP-leser"
+
+msgid "Warn if storage is 95% full"
+msgstr "Advar om minnet 95% fullt"
+
+msgid "Warning! You have reached your send limit of %d messages."
+msgstr "Advarsel! Du har nått grensen på %d meldinger."
+
+msgid "We are ready to download selected updates."
+msgstr "Klar for nedlastning av oppdateringer."
+
+msgid "We are ready to install downloaded updates."
+msgstr "Klar for innstallering av oppdateringer."
+
+msgid "Web Links"
+msgstr "Web-linker"
+
+msgid "Web Update Wizard"
+msgstr "Web-Oppdateringsguide"
+
+msgid "Web Update Wizard is not complete. If you exit it now application will not be updated.You can run this wizard at a later time to complete the update process. To exit Web Update Wizard right now click Yes. To continue updating click No."
+msgstr "Web Oppdatering er ikke ferdig. Om du avbryter nå vil FMA ikke oppdateres. Du kan starte guiden senere for å avslutte oppdaterinsprosessen. For å avslutte web oppdateringen nå, klikk på Ja. For å fortsette oppdateringen klikk på Nei."
+
+msgid "Web update installation has been aborted"
+msgstr "Web oppdatering avbrutt"
+
+msgid "Web updates are NOT supported"
+msgstr "Web oppdatering støttes IKKE"
+
+msgid "Welcome"
+msgstr "Velkommen"
+
+msgid "Welcome to %s!"
+msgstr "Velkommen til %s!"
+
+msgid "Welcome!"
+msgstr "Velkommen!"
+
+msgid "What's next?"
+msgstr "Neste Huskelapp:"
+
+msgid "When Connected"
+msgstr "Når Tilkoblet"
+
+msgid "When Connecting"
+msgstr "Når tilkoble"
+
+msgid "When I go away from my computer:"
+msgstr "Når jeg forlater PC-en:"
+
+msgid "When I'm back near my computer:"
+msgstr "Når jeg er ved PC-en:"
+
+msgid "Window"
+msgstr "Vindu"
+
+msgid "Windows Bitmap (*.bmp)|*.bmp|All Files|*.*"
+msgstr "Windows Bitmap (*.bmp)|*.bmp|Alle filer|*.*"
+
+msgid "Work"
+msgstr "Arbeid"
+
+msgid "Work Phone"
+msgstr "Arbeid"
+
+msgid "Work [%s]"
+msgstr "Arbeid [%s]"
+
+msgid "Work phone:"
+msgstr "Arbeid:"
+
+msgid "Work phone: "
+msgstr "Arbeid: "
+
+msgid "X"
+msgstr "X"
+
+msgid "Y"
+msgstr "Y"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "You are using the latest %s version."
+msgstr "Du bruker den siste %s versjonen."
+
+msgid "You have to enter contact name"
+msgstr "Du må skrive inn ett navn"
+
+msgid "You have to enter contact phone number"
+msgstr "Du må skrive inn ett telefonnummer"
+
+msgid "You have to enter only one phone number"
+msgstr "Du kan bare skrive inn ett telefonnummer"
+
+msgid "You have to select an existing contact first"
+msgstr "Du må velge en eksisterende kontakt først"
+
+msgid "You have to select at least one phone number"
+msgstr "Du må markere minst ett telefonnummer"
+
+msgid "You have to select at least one recepient."
+msgstr "Du må markere minst en mottaker."
+
+msgid "You have to select one target version."
+msgstr "Du må velge en versjon."
+
+msgid "You have to select update file first."
+msgstr "Du må velge oppdateringsfil først."
+
+msgid "You must specify an URL"
+msgstr "Du må angi en URL"
+
+msgid "[Binary - Size: %d bytes])"
+msgstr "[Binær - Størrelse: %d bytes])"
+
+msgid "[EMS]"
+msgstr "[EMS]"
+
+msgid "[Unknown type %x]"
+msgstr "[Ukjent type %x]"
+
+msgid "c"
+msgstr "c"
+
+msgid "cached localy"
+msgstr "cache lokalt"
+
+msgid "d.M.yyyy"
+msgstr "d.M.yyyy"
+
+msgid "day of the month"
+msgstr "hver måned"
+
+msgid "dddd, mmmm dd, yyyy"
+msgstr "dddd, mmmm dd, yyyy"
+
+msgid "done"
+msgstr "ferdig"
+
+msgid "download failed"
+msgstr "nedlasting mislykkes"
+
+msgid "e"
+msgstr "e"
+
+msgid "entire phonebook"
+msgstr "hele telefonlisten"
+
+msgid "f"
+msgstr "f"
+
+msgid "file damaged, or unknown format"
+msgstr "fil skadet, eller ukjent filformat"
+
+msgid "floAt's Mobile Agent"
+msgstr "floAt's Mobile Agent"
+
+msgid "floAt's Mobile Agent today"
+msgstr "floAt's Mobile Agent Idag"
+
+msgid "group"
+msgstr "gruppe"
+
+msgid "h"
+msgstr "h"
+
+msgid "http"
+msgstr "http"
+
+msgid "incremental"
+msgstr "økende"
+
+msgid "is deleted on phone and modified on pc."
+msgstr "er slettet i telefon og endret i PC-en."
+
+msgid "is modified on phone and deleted on pc."
+msgstr "er slettet i telefon og slettet i PC-en."
+
+msgid "is modified on phone and modified on pc."
+msgstr "er endret i telefon og endret i PC-en"
+
+msgid "let me know if your name"
+msgstr "hva er navnet ditt?"
+
+msgid "log"
+msgstr "logg"
+
+msgid "mmmm yyyy"
+msgstr "mmmm yyyy"
+
+msgid "no"
+msgstr "nei"
+
+msgid "none"
+msgstr "Ingen"
+
+msgid "number"
+msgstr "nummer"
+
+msgid "phone"
+msgstr "telefon"
+
+msgid "picture"
+msgstr "bilde"
+
+msgid "s"
+msgstr "s"
+
+msgid "should be here :-)"
+msgstr "burde vært med her :-)"
+
+msgid "sound"
+msgstr "lyd"
+
+msgid "stored in phone"
+msgstr "lagre i telefonen"
+
+msgid "temperature"
+msgstr "temperatur"
+
+msgid "theme"
+msgstr "tema"
+
+msgid "txt"
+msgstr "tekst"
+
+msgid "type"
+msgstr "type"
+
+msgid "v"
+msgstr "v"
+
+msgid "vCard Files (*.vcf)|*.vcf|All Files|*.*"
+msgstr "vCard-filer (*.vcf)|*.vcf|Alle filer|*.*"
+
+msgid "vCard files (*.vcf)|*.vcf|CSV files (*.csv)|*.csv|XML files (*.xml)|*.xml|Html files (*.html)|*.html"
+msgstr "vCard-filer (*.vcf)|*.vcf|CSV-filer (*.csv)|*.csv|XML-filer (*.xml)|*.xml|HTML-filer (*.html)|*.html"
+
+msgid "vCard files (*.vcf)|*.vcf|XML files (*.xml)|*.xml|"
+msgstr "vCard-filer (*.vcf)|*.vcf|XML-filer (*.xml)|*.xml|"
+
+msgid "vbscript"
+msgstr "VBScript"
+
+msgid "yes"
+msgstr "ja"
+
+msgid "|All Files|*.*"
+msgstr "|Alle filer|*.*"
+
+msgid "°C"
+msgstr "°C"
+

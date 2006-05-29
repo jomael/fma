@@ -1,0 +1,80 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-09-01 13:50+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: \n"
+"Language-Team: FMA Dev Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+
+msgid "MoreTV"
+msgstr ""
+
+msgid "Lets you control MoreTV"
+msgstr ""
+
+msgid "Button 1"
+msgstr ""
+
+msgid "Button 2"
+msgstr ""
+
+msgid "Button 3"
+msgstr ""
+
+msgid "Button 4"
+msgstr ""
+
+msgid "Button 5"
+msgstr ""
+
+msgid "Button 6"
+msgstr ""
+
+msgid "Button 7"
+msgstr ""
+
+msgid "Button 8"
+msgstr ""
+
+msgid "Button 9"
+msgstr ""
+
+msgid "Button 0"
+msgstr ""
+
+msgid "MoreTV - Remote"
+msgstr ""
+
+msgid "Remote Mode"
+msgstr ""
+
+msgid "Channel Up"
+msgstr ""
+
+msgid "Channel Down"
+msgstr ""
+
+msgid "(Un)Mute"
+msgstr ""
+
+msgid "Fullscreen"
+msgstr ""
+
+msgid "Videotext"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Launch"
+msgstr ""

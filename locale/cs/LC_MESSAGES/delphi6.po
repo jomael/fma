@@ -1,0 +1,2709 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2003-03-04 17:49\n"
+"PO-Revision-Date: 2004-02-17 10:01-0500\n"
+"Last-Translator: PRIM <prichystal@ok-shop.cz>\n"
+"X-Translators: PRIM <prichystal@ok-shop.cz\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-Country: Czech Republic\n"
+
+msgid " (%dx%d)"
+msgstr " (%dx%d)"
+
+msgid " - Dock zone has no control"
+msgstr " - Zona de acoplamiento no tiene un control"
+
+msgid " - Dock zone not found"
+msgstr " - Zona de acoplamiento no encontrada"
+
+msgid " Database "
+msgstr "Base de datos"
+
+msgid " not specified"
+msgstr " no especificado"
+
+msgid "%d is an invalid PageIndex value.  PageIndex must be between 0 and %d"
+msgstr ""
+"%d es un valor de índice de página (PageIndex) no válido. El índice de "
+"página debe estar entre 0 y %d"
+
+msgid "%s"
+msgstr "%s"
+
+msgid "%s (%s, line %d)"
+msgstr "%s (%s, linea %d)"
+
+msgid "%s Properties"
+msgstr "Propiedades %s"
+
+msgid "%s could not be loaded."
+msgstr "%s no puede ser cargado."
+
+msgid "%s does not allow hiding"
+msgstr "%s no permite ocultarse"
+
+msgid "%s expected"
+msgstr "Se esperaba %s"
+
+msgid "%s has a factor of zero"
+msgstr "%s tiene un factor de cero"
+
+msgid "%s is already associated with %s"
+msgstr "%s ya está asociada con %s"
+
+msgid "%s is not a Gopher+ server"
+msgstr "%s no es un servidor Gopher+"
+
+msgid "%s is not a valid BCD value"
+msgstr "%s no es un valor BCD válido"
+
+msgid "%s is not a valid service."
+msgstr "%s no es un servicio válido."
+
+msgid "%s must be the lookup table's active index"
+msgstr "%s debe ser el índice activo de la tabla de búsqueda"
+
+msgid "%s on %s"
+msgstr "%s en %s"
+
+msgid "%s on line %d"
+msgstr "%s en la linea %d"
+
+msgid "%s property out of range"
+msgstr "Propiedad %s fuera de rango"
+
+msgid "%s%s%s Database"
+msgstr "%s%s%s Base de datos"
+
+msgid "%s%s%s Index Files"
+msgstr "%s%s%s archivos de índice"
+
+msgid "%s%s%s Parameters"
+msgstr "%s%s%s parámetros"
+
+msgid "&Abort"
+msgstr "&Abortar"
+
+msgid "&About..."
+msgstr "&Acerca de..."
+
+msgid "&Add or Remove Buttons"
+msgstr "&Añadir o eliminar botones"
+
+msgid "&All"
+msgstr "&Todo"
+
+msgid "&Close"
+msgstr "&Cerrar"
+
+msgid "&Connections"
+msgstr "&Conexiones"
+
+msgid "&Contents"
+msgstr "&Contenido"
+
+msgid "&Customize"
+msgstr "&Personalizar"
+
+msgid "&Database:"
+msgstr "Base de &Datos:"
+
+msgid "&Directories:"
+msgstr "&Carpetas"
+
+msgid "&Disconnect"
+msgstr "&Desconectar"
+
+msgid "&Files: (*.*)"
+msgstr "&Archivos"
+
+msgid "&Help"
+msgstr "Ay&uda"
+
+msgid "&Ignore"
+msgstr "&Ignorar"
+
+msgid "&New Message Part..."
+msgstr "&Nueva parte de mensaje..."
+
+msgid "&No"
+msgstr "&No"
+
+msgid "&OK"
+msgstr "&Aceptar"
+
+msgid "&Password:"
+msgstr "&Contraseña: "
+
+msgid "&Replace"
+msgstr "&Reemplazar"
+
+msgid "&Retry"
+msgstr "&Reintentar"
+
+msgid "&Server"
+msgstr "&Servidor"
+
+msgid "&UpdateSQL Editor..."
+msgstr "Editor &UpdateSQL..."
+
+msgid "&User Name:"
+msgstr "Nombre de &Usuario: "
+
+msgid "&Yes"
+msgstr "&Sí"
+
+msgid "'%s' cannot be opened"
+msgstr "'%s' no puede ser abierto"
+
+msgid "''%s'' expected"
+msgstr "Se esperaba \"%s\""
+
+msgid "''%s'' is not a valid component name"
+msgstr "\"%s\" no es un nombre de componente válido"
+
+msgid "''%s'' is not a valid date"
+msgstr "''%s'' no es una fecha válida"
+
+msgid "''%s'' is not a valid date and time"
+msgstr "''%s'' no es una fecha y hora válidas"
+
+msgid "''%s'' is not a valid integer value"
+msgstr "''%s'' no es un valor entero válido"
+
+msgid "''%s'' is not a valid time"
+msgstr "''%s'' no es una hora válida"
+
+msgid "(All Actions)"
+msgstr "(Todas las acciones)"
+
+msgid "(No Category)"
+msgstr "Ninguna categoría"
+
+msgid "(No Name)"
+msgstr "(Sin nombre)"
+
+msgid "(None)"
+msgstr "(Ninguno)"
+
+msgid "(Null)"
+msgstr "(Null)"
+
+msgid "(Unknown)"
+msgstr "(Desconocido)"
+
+msgid "(Untitled)"
+msgstr "(Sin título)"
+
+msgid "-Err 501 MailB is not implemented"
+msgstr "-Err 501 MailB no está implementado"
+
+msgid "0009"
+msgstr "0009"
+
+msgid ": [ - no volume label - ]"
+msgstr ": [ - sin etiqueta - ]"
+
+msgid ";Input;Output;Input/Output;Result"
+msgstr ";Entrada;Salida;Entrada/Salida;Resultado"
+
+msgid ""
+";String;SmallInt;Integer;Word;Boolean;Float;Currency;BCD;Date;Time;"
+"DateTime;;;;Blob;Memo;Graphic;;;;;Cursor;"
+msgstr ""
+";String;SmallInt;Integer;Word;Boolean;Float;Currency;BCD;Date;Time;"
+"DateTime;;;;Blob;Memo;Graphic;;;;;Cursor;"
+
+msgid "<EOL>"
+msgstr "<EOL>"
+
+msgid "<unknown>"
+msgstr "<desconocido>"
+
+msgid "?"
+msgstr "?"
+
+msgid "A Win32 API function failed"
+msgstr "Ha fallado una función del API Win32"
+
+msgid "A call to an OS function failed"
+msgstr "Ha fallado una llamada a una función del SO"
+
+msgid "A class named %s already exists"
+msgstr "Ya existe una Clase con nombre %s"
+
+msgid "A component named %s already exists"
+msgstr "Ya existe una componente de nombre %s"
+
+msgid "A control cannot have itself as its parent"
+msgstr "Un control no puede referirse al él mismo como ancestro"
+
+msgid "A key with the name of \"%s\" already exists"
+msgstr "Una clave con el nombre \"%s\" ya existe"
+
+msgid "A property category called %s already exists"
+msgstr "Una categoría de pripiedad con nombre %s ya existe"
+
+msgid "ABCDEFGHIJKLMNOP"
+msgstr "ABCDEFGHIJKLMNOP"
+
+msgid "AVIVideo"
+msgstr "AVIVideo"
+
+msgid "Abort"
+msgstr "Abortar"
+
+msgid "About"
+msgstr "Acerca de..."
+
+msgid "About Indy"
+msgstr "Acerca de Indy"
+
+msgid "About Internet &Direct (Indy) %s..."
+msgstr "Acerca de Internet &Direct (Indy) %s..."
+
+msgid "Abstract Error"
+msgstr "Error abstracto"
+
+msgid "Accepted"
+msgstr "Aceptado"
+
+msgid "Access denied."
+msgstr "Acceso denegado."
+
+msgid "Access to %s denied"
+msgstr "Acceso a %s denegado"
+
+msgid "Access violation at address %p, accessing address %p"
+msgstr "Violación de acceso a la dirección %p. %s de dirección %p"
+
+msgid "Access violation at address %p. %s of address %p"
+msgstr "Violación de acceso a la dirección %p. Accediendo a la dirección %p"
+
+msgid "ActionManager must first be assigned"
+msgstr "El ActionManager primero debe ser asignado"
+
+msgid "Address already in use."
+msgstr "Dirección ya en uso."
+
+msgid "Address family not supported by protocol family."
+msgstr "Address family not supported by protocol family."
+
+msgid "Address type not supported."
+msgstr "Tipo de dirección no soportada."
+
+msgid "Aggregate expressions not allowed in filters"
+msgstr "Aggregate expressions not allowed in filters"
+
+msgid "All"
+msgstr "Todos"
+
+msgid "All Commands"
+msgstr "Todos los comandos"
+
+msgid "All files (*.*)|*.*"
+msgstr "Todos los archivos (*.*)|*.*"
+
+msgid ""
+"All files (*.*)|*.*|Wave files (*.wav)|*.wav|Midi files (*.mid)|*.mid|Video "
+"for Windows (*.avi)|*.avi"
+msgstr ""
+"Todos los archivos (*.*)|*.*|Archivos Wave|(*.wav)|*.wav|Archivos Mido (*."
+"mid)|*.mid|Videos para Windows (*.avi)|*.avi"
+
+msgid "Allowed login attempts exceeded, good bye."
+msgstr "No se permiten más intentos de acceso, adios."
+
+msgid "Already connected."
+msgstr "Ya está conectado."
+
+msgid "Alt+"
+msgstr "Alt+"
+
+msgid ""
+"An error occurred while attempting to initialize the Borland Database Engine "
+"(error $%.4x)"
+msgstr ""
+"Ha ocurrido un error mientras se intentaba inicializar el Motor de la Base "
+"de Datos (error $%.4x)"
+
+msgid "An error returned from DDE  ($0%x)"
+msgstr "DDE devolvió un error ($0%x)"
+
+msgid "Ancestor for '%s' not found"
+msgstr "No se ha encontrado predecesor para '%s'"
+
+msgid "Application Error"
+msgstr "Error de la aplicación"
+
+msgid "Application is not licensed to use this feature"
+msgstr "La aplicación no está autorizada para usar esta característica"
+
+msgid "Apr"
+msgstr "Abr"
+
+msgid "April"
+msgstr "Abril"
+
+msgid "Arithmetic in filter expressions not supported"
+msgstr "Operación aritmética no soportqada en la expresión del filtro"
+
+msgid "Array index out of range : %d"
+msgstr "Indice de matriz fuera de rango : %d"
+
+msgid "Assertion failed"
+msgstr "Falló la aserción"
+
+msgid "Attempting to put items into a virtual style listbox"
+msgstr "Intentando colocar elementos en una ListBox de estilo virtual"
+
+msgid "Aug"
+msgstr "Ago"
+
+msgid "August"
+msgstr "Agosto"
+
+msgid "Authentication error to socks server."
+msgstr "Error de autentificación al socks del servidor."
+
+msgid "BCD overflow"
+msgstr "Sobrecarga BCD"
+
+msgid "BDE error $%.4x"
+msgstr "Error BDE $%.4x"
+
+msgid "BG"
+msgstr "BG"
+
+msgid "BackTab"
+msgstr "Tab Atrás"
+
+msgid "Backspace"
+msgstr "Retroceso"
+
+msgid "Bad Gateway"
+msgstr "Gateway erróneo"
+
+msgid "Bad Request"
+msgstr "Respuesta errónea"
+
+msgid "Bad address."
+msgstr "Dirección errónea."
+
+msgid "Bad file number."
+msgstr "Numero de archivo erróneo."
+
+msgid "Bad protocol option."
+msgstr "Opción de protocolo errónea."
+
+msgid "Bitmap image is not valid"
+msgstr "Imagen Bitmap no válida"
+
+msgid "Bitmap is empty"
+msgstr "El Bitmap está vacío"
+
+msgid "Bitmaps"
+msgstr "Mapas de bit"
+
+msgid "Bits index out of range"
+msgstr "Indice de bits fuera de rango"
+
+msgid "BkSp"
+msgstr "Retr"
+
+msgid "Body Text Editor"
+msgstr "Editor de texto del cuerpo"
+
+msgid "Bold"
+msgstr "Negrita"
+
+msgid "Bold Italic"
+msgstr "Negrita itálica"
+
+msgid "Break link operation is not supported."
+msgstr "La operación de rotura de enlace no es soportada"
+
+msgid "Byte index out of range."
+msgstr "Indice de Byte fuera de rango."
+
+msgid "CDAudio"
+msgstr "CDAudio"
+
+msgid "CRC Failed"
+msgstr "CRC fallido"
+
+msgid "Call to %s.GetByte [property Bytes] with index <> [0..%d]"
+msgstr "Call to %s.GetByte [property Bytes] with index <> [0..%d]"
+
+msgid "Can only modify an image if it contains a bitmap"
+msgstr "Sólo se puede modificar una imagen si contiene un bitmap"
+
+msgid "Can't change value while socket is active"
+msgstr "No puede cambiarse el valor mientras el socket está activo"
+
+msgid "Can't create new socket"
+msgstr "No puede crearse un nuevo socket"
+
+msgid "Can't listen on an open socket"
+msgstr "No puede escucharse un socket abierto"
+
+msgid "Can't write to a read-only resource stream"
+msgstr "No se puede escribir sobre un flujo de recursos de solo lectura"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Cannot access field '%s' in a filter"
+msgstr "No se puede acceder al campo '%s' en un filtro"
+
+msgid ""
+"Cannot add a session to the form or data-module while session '%s' has "
+"AutoSessionName enabled"
+msgstr ""
+"No se puede añadir una sesión al formulario o módulo de datos mientras la "
+"sesión '%s' tiene la propiedad AutoSessionName activada"
+
+msgid "Cannot allocate socket."
+msgstr "No se encuentra el socket."
+
+msgid "Cannot assign a %s to a %s"
+msgstr "No puede asignarse %s a %s"
+
+msgid ""
+"Cannot assign a subitem to an actionbar when one of it's parent's is already "
+"assigned to an actionbar"
+msgstr ""
+"No se puede asignar un subelemento a un ActionBar cuando uno de sus "
+"ancestros ya está asignado a un ActionBar"
+
+msgid "Cannot assign requested address."
+msgstr "No se puede asignar dirección de respuesta."
+
+msgid "Cannot change Visible in OnShow or OnHide"
+msgstr "No se puede cambiar la propiedad Visible en \"OnShow\" o \"OnHide\""
+
+msgid "Cannot change session state when the server is active."
+msgstr "Cannot change session state when the server is active."
+
+msgid "Cannot change target while active."
+msgstr "No se puede cambiar objetivo mientras esté activo."
+
+msgid "Cannot change the size of an icon"
+msgstr "No se puede cambiar el tamaño de un icono"
+
+msgid "Cannot connect to database '%s'"
+msgstr "No se puede conectar con la base de datos '%s'"
+
+msgid "Cannot convert field '%s' to a floating point value"
+msgstr "No se puede convertir el campo '%s' en un valor de punto flotante"
+
+msgid "Cannot convert field '%s' to an integer value"
+msgstr "No se puede convertir el campo '%s' en un valor entero"
+
+msgid "Cannot convert from the specified type"
+msgstr "No se puede convertir desde el tipo especificado"
+
+msgid "Cannot convert to the specified type"
+msgstr "No se puede convertir al tipo especificado"
+
+msgid "Cannot create file %s"
+msgstr "No puede crearse el archivo %s"
+
+msgid "Cannot create form. No MDI forms are currently active"
+msgstr ""
+"No se puede crear el formulario. Actualmente no hay formularios MDI activos"
+
+msgid "Cannot drag a form"
+msgstr "No se puede arrastrar un formulario"
+
+msgid ""
+"Cannot enable AutoSessionName property with more than one session on a form "
+"or data-module"
+msgstr ""
+"No se puede activar la propiedad AutoSessionName con más de una sesión en un "
+"formulario o módulo de datos"
+
+msgid "Cannot focus a disabled or invisible window"
+msgstr "Una ventana invisible o desactivada no puede recibir el foco"
+
+msgid "Cannot focus a disabled or invisible window (%s)"
+msgstr "No puede enfocarse una ventana deshabilitada o invisible (%s)"
+
+msgid "Cannot have more than one MDI form per application"
+msgstr "No puede haber más de un formulario MDI por aplicación"
+
+msgid "Cannot hide an MDI Child Form"
+msgstr "No se puede ocultar un formulario MDI Child"
+
+msgid "Cannot insert or delete rows from grid"
+msgstr "No se puede insertar o eliminar filas de la rejilla"
+
+msgid "Cannot link to an invalid source."
+msgstr "No puede enlazarse a una fuente no válida"
+
+msgid "Cannot load older version of TShape"
+msgstr "No se puede cargar una versión anterior de TShape"
+
+msgid "Cannot make a visible window modal"
+msgstr "No se puede hacer visible una ventana modal"
+
+msgid "Cannot modify SessionName while AutoSessionName is enabled"
+msgstr ""
+"No se puede modificar SessionName mientras la propiedad AutoSessionName está "
+"activada"
+
+msgid "Cannot modify a read-only dataset"
+msgstr "No puede modificarse una fuente de datos de sólo lectura"
+
+msgid "Cannot open AVI"
+msgstr "No se puede abrir el archivo AVI"
+
+msgid "Cannot open clipboard"
+msgstr "No se puede abrir el portapapeles"
+
+msgid "Cannot open file %s"
+msgstr "No puede abrirse el archivo %s"
+
+msgid "Cannot perform operation -- DB is currently open"
+msgstr "No se puede ejecutar esta operación en una base de datos abierta"
+
+msgid "Cannot perform operation -- DB is not open"
+msgstr "No se puede ejecutar esta operación en una base de datos cerrada"
+
+msgid "Cannot perform this operation on a closed database"
+msgstr "No se puede ejecutar esta operación en una base de datos cerrada"
+
+msgid "Cannot perform this operation on a closed dataset"
+msgstr "No puede ejecutarse esta operación en una fuente de datos cerrada"
+
+msgid "Cannot perform this operation on an active session"
+msgstr "No se puede ejecutar esta operación sobre una sesión activa"
+
+msgid "Cannot perform this operation on an empty dataset"
+msgstr "No puede ejecutarse esta operación en una fuente de datos vacía"
+
+msgid "Cannot perform this operation on an open database"
+msgstr "No se puede ejecutar esta operación en una base de datos abierta"
+
+msgid "Cannot perform this operation on an open dataset"
+msgstr "No puede ejecutarse esta operación en una fuente de datos abierta"
+
+msgid "Cannot send or receive after socket is closed."
+msgstr "No se puede enviar y/o recibir una vez que el socket esté cerrado."
+
+msgid "Cannot set database"
+msgstr "No se puede establecer base de datos"
+
+msgid "Cannot update, %s is not owned by %s"
+msgstr "No se puede actualizar, %s no es propiedad de %s"
+
+msgid "Cannot use array of Field values with Expression Indices"
+msgstr "No se puede usar la matriz de valores Campo con Expression Indices"
+
+msgid "Cannt connect to the Master server"
+msgstr "No se puede conectar al servidor maestro"
+
+msgid "Canvas does not allow drawing"
+msgstr "El Canvas no permite dibujar"
+
+msgid "Circular datalinks are not allowed"
+msgstr "No se permiten enlaces de datos circulares"
+
+msgid "Circular references not allowed"
+msgstr "No se permiten referencias circulares"
+
+msgid "Class %s could not create QT widget"
+msgstr "Clase %s no pudo crear el widget QT"
+
+msgid "Class %s not found"
+msgstr "Clase %s no encontrada"
+
+msgid "Client of TDrag not initialized"
+msgstr "Cliente de TDrag no inicializado"
+
+msgid "Clipboard does not support Icons"
+msgstr "El portapapeles no soporta iconos"
+
+msgid "Color"
+msgstr "Color"
+
+msgid "Color depth must be 1, 8 or 32 bpp"
+msgstr "La profundidad del color debe ser 1, 8 i 32 bpp"
+
+msgid "Column index out of range : %d"
+msgstr "Indice de columna fuera de rango : %d"
+
+msgid "Command not supported."
+msgstr "Comando no soportado."
+
+msgid "Confirm"
+msgstr "Confirmación"
+
+msgid "Conflict"
+msgstr "Conflicto"
+
+msgid "Connected."
+msgstr "Conectado."
+
+msgid "Connecting"
+msgstr "Conectando"
+
+msgid "Connecting to %s."
+msgstr "Conectando a %s."
+
+msgid "Connection Closed Gracefully."
+msgstr "Conexión cerrada."
+
+msgid "Connection not allowed by ruleset."
+msgstr "Conexión no soportada por ruleset."
+
+msgid "Connection refused."
+msgstr "Conexión rechazada."
+
+msgid "Connection reset by peer."
+msgstr "Connection reset by peer."
+
+msgid "Connection timed out."
+msgstr "Conexión fuera de tiempo."
+
+msgid "Constant is not correct type %s"
+msgstr "La constante no es del tipo correcto %s"
+
+msgid "Constant out of range"
+msgstr "Constante fuera de rango"
+
+msgid "Continue"
+msgstr "Continuar"
+
+msgid "Control '%s' has no parent widget"
+msgstr "El control '%s' no tiene un widget padre"
+
+msgid "Control file save to %s"
+msgstr "Archivo de control guardado en %s"
+
+msgid "Control-C hit"
+msgstr "Control-C hit"
+
+msgid "Conversion family (%s) already registered"
+msgstr "La familia de conversión (%s) ya está registrada"
+
+msgid "Conversion type (%s) already registered"
+msgstr "La conversión de tipo (%s) ya está registrada"
+
+msgid "Could not bind socket. Address and port are already in use."
+msgstr "Could not bind socket. Address and port are already in use."
+
+msgid "Could not load CARDS.DLL"
+msgstr "No se pudo cargar CARDS.DLL"
+
+msgid "Could not load SSL library."
+msgstr "No se puede leer la librería SSL."
+
+msgid "Could not load certificate."
+msgstr "No se puede leer el certificado."
+
+msgid "Could not load key, check password."
+msgstr "No se puede cargar la clave, verifique la contraseña."
+
+msgid "Could not load root certificate."
+msgstr "No se puede leer el certificado del administrador."
+
+msgid "Could not obtain OLE control window handle"
+msgstr "No pudo obtenerse el Handle de ventana del control OLE"
+
+msgid "Could not parse SQL TimeStamp string"
+msgstr "Podría no analizar la cadena SQL TimeStamp"
+
+msgid "Created"
+msgstr "Creado"
+
+msgid "Ctrl+"
+msgstr "Ctrl+"
+
+msgid "Custom Colors"
+msgstr "Colores personalizados"
+
+msgid "Custom message interpretation failed"
+msgstr "Interpretación del mensaje personalizado fallida"
+
+msgid "Custom variant type ($.4x) is out of range"
+msgstr "Custom variant type ($.4x) is out of range"
+
+msgid "Custom variant type (%.4x) already used by %s"
+msgstr "Custom variant type (%.4x) already used by %s"
+
+msgid "Custom variant type (%.4x) is not usable"
+msgstr "Custom variant type (%.4x) is not usable"
+
+msgid "Custom..."
+msgstr "Personalizar..."
+
+msgid "D&rives:"
+msgstr "&Discos"
+
+msgid "DAT"
+msgstr "DAT"
+
+msgid "DDE Error - conversation not established ($0%x)"
+msgstr "Error DDE - conversación no establecida ($0%x)"
+
+msgid "DNS Server Reports Query Format Error"
+msgstr "El servidor DNS mostró un error en el formato de la consulta"
+
+msgid "DNS Server Reports Query Name Error"
+msgstr "El servidor DNS mostró un error en el nombre de la consulta"
+
+msgid "DNS Server Reports Query Not Implemented Error"
+msgstr "El servidor DNS mostró un error de No Implementación en la consulta"
+
+msgid "DNS Server Reports Query Refused Error"
+msgstr "El servidor DNS mostró un error de rechazo en la consulta"
+
+msgid "DNS Server Reports Query Server Error"
+msgstr "El servidor DNS mostró un error del servidor en la consulta"
+
+msgid "Da&tabase Editor..."
+msgstr "Editor de Base de Da&tos..."
+
+msgid "Data file saved to %s"
+msgstr "Datos de archivo guardados en %s"
+
+msgid "DataSource cannot be changed"
+msgstr "La fuente de datos no puede ser cambiada"
+
+msgid "Databas&e:"
+msgstr "Bas&e de datos"
+
+msgid "Database"
+msgstr "Base de datos"
+
+msgid "Database connection timed out"
+msgstr "Conexión a base de datos fuera de tiempo."
+
+msgid "Database handle owned by a different session"
+msgstr ""
+"El \"Handle\" de la base de datos está siendo utilizado por una sesión "
+"diferente"
+
+msgid "Database is currently connected. Disconnect and continue?"
+msgstr "La base de datos está conectada actualmente. Desconectar y continuar?"
+
+msgid "Database name is missing"
+msgstr "Base de datos no posee nombre"
+
+msgid "Database name missing"
+msgstr "Nombre de la base de datos ausente"
+
+msgid "Database not assigned"
+msgstr "Base de datos no asignada"
+
+msgid "Database:"
+msgstr "Base de datos:"
+
+msgid "Dataset is not a query"
+msgstr "Fuente de datos no es resultado de una consulta"
+
+msgid "Dataset not in edit or insert mode"
+msgstr "La fuente de datos no está en modo edición o inserción"
+
+msgid "Date exceeds maximum of %s"
+msgstr "La fecha excede el máximo de %s"
+
+msgid "Date is less than minimum of %s"
+msgstr "La fecha es menor que el mínimo de %s"
+
+msgid "Date range can only be used in multiselect mode"
+msgstr "El rango de la fecha sólo puede ser usado en el modo multiselección"
+
+msgid "Days"
+msgstr "Días"
+
+msgid "Dec"
+msgstr "Dic"
+
+msgid "Decades"
+msgstr "Decadas"
+
+msgid "December"
+msgstr "Diciembre"
+
+msgid "Default"
+msgstr "Por defecto"
+
+msgid "Define &Parameters..."
+msgstr "Define &Parametros..."
+
+msgid "Del"
+msgstr "Supr"
+
+msgid "Delete all selected records?"
+msgstr "Eliminar todos los registros seleccionados?"
+
+msgid "Delete record?"
+msgstr "Eliminar registro?"
+
+msgid "Destination address required."
+msgstr "Dirección de destino requerida."
+
+msgid "Destination file already exists."
+msgstr "El archivo de destino ya existe."
+
+msgid "DigitalVideo"
+msgstr "DigitalVideo"
+
+msgid "Direction"
+msgstr "Dirección"
+
+msgid "Directory %s does not exist"
+msgstr "El directorio %s no existe"
+
+msgid "Directory &Name:"
+msgstr "&Nombre de carpeta"
+
+msgid "Directory not empty"
+msgstr "Directorio no vacío"
+
+msgid "Disconnect"
+msgstr "Desconectado"
+
+msgid "Disconnected."
+msgstr "Desconectado."
+
+msgid "Disconnecting from %s."
+msgstr "Desconectando desde %s."
+
+msgid "Disk Quota Exceeded."
+msgstr "Cuenta de tamaño en disco excedida."
+
+msgid "Disk full"
+msgstr "Disco lleno"
+
+msgid "Division by zero"
+msgstr "División por cero"
+
+msgid "Do not allow connctions now"
+msgstr "No se encuentran conecxiones ahora"
+
+msgid "Docked control must have a name"
+msgstr "El control de acoplamiento debe tener un nombre"
+
+msgid "Down"
+msgstr "Abajo"
+
+msgid "Drawings"
+msgstr "Dibujos"
+
+msgid "Duplicate CardId found"
+msgstr "CardId duplicado encontrado"
+
+msgid "Duplicate database name '%s'"
+msgstr "Duplicado el nombre de base de datos: '%s'"
+
+msgid "Duplicate session name '%s'"
+msgstr "Duplicado el nombre de sesión: '%s'"
+
+msgid "E&xecute"
+msgstr "E&jectuar"
+
+msgid "E&xplore"
+msgstr "E&xplorador"
+
+msgid "E&xport..."
+msgstr "E&xportar..."
+
+msgid "Encoding attachment"
+msgstr "Codificando datos adjuntos"
+
+msgid "End"
+msgstr "Fin"
+
+msgid "Enhanced Metafiles"
+msgstr "Metaarchivos realzados"
+
+msgid "Enter"
+msgstr "Intro"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Error accepting connection with SSL."
+msgstr "Error aceptando conexión con SSL."
+
+msgid "Error assigning Hot-Key to %s. %s"
+msgstr "Error al asignar Hot-Key a %s. %s"
+
+msgid "Error binding data to SSL socket."
+msgstr "Error encuadernando datos al socket SSL."
+
+msgid "Error connecting with SSL."
+msgstr "Error conectando con SSL."
+
+msgid "Error creating SSL context."
+msgstr "Error creando contexto SSL."
+
+msgid "Error creating cursor handle"
+msgstr "Error al crear el cursor"
+
+msgid "Error creating variant array"
+msgstr "Error al crear matriz de Variant"
+
+msgid "Error creating widget"
+msgstr "Error creando widget"
+
+msgid "Error creating window"
+msgstr "Error al crear la ventana"
+
+msgid "Error creating window class"
+msgstr "Error al crear la clase de ventana"
+
+msgid "Error creating window device context"
+msgstr "Error al crear el dispositivo de contexto de la ventana"
+
+msgid "Error downloading URL: %s"
+msgstr "Error en la descarga URL: %s"
+
+msgid "Error geting SSL method."
+msgstr "Error obteniendo método SSL."
+
+msgid "Error in parsing command."
+msgstr "Error en el comando de corrección."
+
+msgid "Error in transformation before send"
+msgstr "Error en la transformación antes enviada"
+
+msgid "Error occurred when DDE ran out of memory ($0%x)"
+msgstr "Ocurrió un error cuando DDE se ejecutó fuera de memoria ($0%x)"
+
+msgid "Error reading %s%s%s: %s"
+msgstr "Error leyedo %s%s%s: %s"
+
+msgid "Error removing control from dock tree"
+msgstr "Error al eliminar el control del árbol de acoplamiento"
+
+msgid "Error sending mail"
+msgstr "Error al enviar el correo"
+
+msgid "Error setting %s.Count"
+msgstr "Error al establecer %s.Count"
+
+msgid "Error setting path: \"%s\""
+msgstr "Error al establecer la ruta: \"%s\""
+
+msgid "Error: No program code to return request!"
+msgstr "Error: Sin código de programa para ofrecer respuesta!"
+
+msgid "Error: no queues defined"
+msgstr "Error: Listas de trabajo no definidas"
+
+msgid "Esc"
+msgstr "Esc"
+
+msgid "Exception in safecall method"
+msgstr "Excepción en método Safecall"
+
+msgid "Execute not supported: %s"
+msgstr "Ejecutar no soportado: %s"
+
+msgid "Expand"
+msgstr "Expandir"
+
+msgid "Expression expected but %s found"
+msgstr "Expresión esperada pero %s encontrado"
+
+msgid "Expression is not an aggregate expression"
+msgstr "Expression is not an aggregate expression"
+
+msgid "External exception %x"
+msgstr "Excepción external %x"
+
+msgid "Extra Headers Text Editor"
+msgstr "Editor de texto de cabeceras extra"
+
+msgid "FB"
+msgstr "FB"
+
+msgid "FG"
+msgstr "FG"
+
+msgid "Failed attempting to retrieve time zone information."
+msgstr "Fallo al intentar recuperar la información de hora de la zona."
+
+msgid "Failed to Load Stream"
+msgstr "Error al cargar un Stream"
+
+msgid "Failed to Save Stream"
+msgstr "Error al grabar un Stream"
+
+msgid "Failed to clear tab control"
+msgstr "Error al limpiar el control de página"
+
+msgid "Failed to delete tab at index %d"
+msgstr "Error al eliminar la página en índice %d"
+
+msgid "Failed to get object at index %d"
+msgstr "Error al obtener objeto en índice %d"
+
+msgid "Failed to read ImageList data from stream"
+msgstr "Error al leer datos de ImageList desde el flujo"
+
+msgid "Failed to retrieve tab at index %d"
+msgstr "Error al recuperar la página en índice %d"
+
+msgid "Failed to set calendar date or time"
+msgstr "Error al establecer la fecha o la hora del calendario"
+
+msgid "Failed to set calendar min/max range"
+msgstr "Error al establecer el rango max/min del calendario"
+
+msgid "Failed to set calendar selected range"
+msgstr "Error al establecer el rango seleccionado del calendario"
+
+msgid "Failed to set maximum selection range"
+msgstr "Error al establecer el rango máximo de selección"
+
+msgid "Failed to set object at index %d"
+msgstr "Error al establecer objetos en el índice %d"
+
+msgid "Failed to set tab \"%s\" at index %d"
+msgstr "Error al establecer página \"%s\" en el índice %d"
+
+msgid "Failed to write ImageList data to stream"
+msgstr "Error al escribir en el flujo los datos de Imagelist"
+
+msgid "False"
+msgstr "FALSO"
+
+msgid "Feb"
+msgstr "Feb"
+
+msgid "February"
+msgstr "Febrero"
+
+msgid ""
+"Field '%s' is not the correct type of calculated field to be used in an "
+"aggregate, use an internalcalc"
+msgstr ""
+"Field '%s' is not the correct type of calculated field to be used in an "
+"aggregate, use an internalcalc"
+
+msgid "Field index out of range"
+msgstr "Indice de campo fuera de rango"
+
+msgid "Field name missing"
+msgstr "Falta el nombre del campo"
+
+msgid "Fields '%s' and '%s' are not assignment compatible"
+msgstr "Los campos '%s' y '%s' no son de asignación compatible"
+
+msgid "File access denied"
+msgstr "Acceso al archivo denegado"
+
+msgid "File load error"
+msgstr "Error en la carga del archivo"
+
+msgid "File name too long."
+msgstr "Nombre de archivo demasiado largo."
+
+msgid "File not found"
+msgstr "Archivo no encontrado"
+
+msgid "FileName property cannot be blank"
+msgstr "La propiedad FileName no puede estar en blanco"
+
+msgid "Filter expression incorrectly terminated"
+msgstr "Expresión del filtro terminada incorrectamente"
+
+msgid "Fixed column count must be less than column count"
+msgstr ""
+"El número de columnas fijas debe ser menor que el número total de columnas"
+
+msgid "Fixed row count must be less than row count"
+msgstr "El número de filas fijas debe ser menor que el número total de filas"
+
+msgid "Floating point division by zero"
+msgstr "División de coma flotante por cero"
+
+msgid "Floating point overflow"
+msgstr "Desbordamiento de coma flotante"
+
+msgid "Floating point underflow"
+msgstr "Floating point underflow"
+
+msgid "For the latest updates and information please visit:"
+msgstr "For the latest updates and information please visit:"
+
+msgid "Forbidden"
+msgstr "Prohibido"
+
+msgid "Format result longer than 4096 characters"
+msgstr "Formato del resultado más largo de 4096 caracteres"
+
+msgid "Format string too long"
+msgstr "Formato de cadena demasiado largo"
+
+msgid "Fri"
+msgstr "Vie"
+
+msgid "Friday"
+msgstr "Viernes"
+
+msgid "Gateway timeout"
+msgstr "Gateway fuera de tiempo"
+
+msgid "General SOCKS server failure."
+msgstr "Error general de SOCKS del servidor."
+
+msgid "Gone"
+msgstr "Ido"
+
+msgid "Goodbye"
+msgstr "Adios"
+
+msgid "Grid index out of range"
+msgstr "Indice de la rejilla fuera de rango"
+
+msgid "Grid requested to display more than 256 columns"
+msgstr "Grid requested to display more than 256 columns"
+
+msgid "Grid too large for operation"
+msgstr "Rejilla demasiado grande para la operación"
+
+msgid "GroupIndex cannot be less than a previous menu item's GroupIndex"
+msgstr ""
+"GroupIndex no puede ser menor que el GroupIndex de un item del menú previo"
+
+msgid "HTTP version not supported"
+msgstr "Versión de HTTP no soportada"
+
+msgid "Help"
+msgstr "Ayuda"
+
+msgid "Home"
+msgstr "Inicio"
+
+msgid "Host is down."
+msgstr "Host caído."
+
+msgid "Host not found."
+msgstr "Host no encontrado."
+
+msgid "Host unreachable."
+msgstr "Host inaccesible."
+
+msgid "Hot-Key is assigned to another window"
+msgstr "Hot-Key está asignada a otra ventana"
+
+msgid "Hot-Key is invalid"
+msgstr "Hot-Key no es valido"
+
+msgid "Hours"
+msgstr "Horas"
+
+msgid "I/O error %d"
+msgstr "Error E/S %d"
+
+msgid "ICMP Receive Error = 0."
+msgstr "Recibe error ICMP = 0."
+
+msgid "IN predicate list may not be empty"
+msgstr "IN predicate list may not be empty"
+
+msgid "IP Address"
+msgstr "Dirección IP"
+
+msgid "Icon image is not valid"
+msgstr "Imagen Icon no válida"
+
+msgid "Icons"
+msgstr "Iconos"
+
+msgid "Identifier expected"
+msgstr "Se esperaba un identificador"
+
+msgid "Illegal family"
+msgstr "Familia ilegal"
+
+msgid "Illegal type"
+msgstr "Tipo ilegal"
+
+msgid "Image dimensions do not match image list dimensions"
+msgstr ""
+"El tamaño de la imagen no concuerda con el tamaño de la lista de imágenes"
+
+msgid "Image format not recognized"
+msgstr "Formato de imagen no reconocido"
+
+msgid "Incompatible conversion types [%s - %s, %s - %s]"
+msgstr "Conversión de tipos [%s - %s, %s - %s] incompatible"
+
+msgid "Incompatible conversion types [%s, %s, %s]"
+msgstr "Conversión de tipos [%s, %s, %s] incompatible"
+
+msgid "Incompatible conversion types [%s, %s]"
+msgstr "Conversión de tipos [%s, %s] incompatible"
+
+msgid "Incorrect level assignment"
+msgstr "Nivel de asignación incorrecto"
+
+msgid "Incorrectly formed filter expression"
+msgstr "Expresión del filtro formada incorrectamente"
+
+msgid "Index does not exist. Index: %s"
+msgstr "El índice no existe. Indice: %s"
+
+msgid "Indy Misc"
+msgstr "Indy Misc"
+
+msgid "Indy Servers"
+msgstr "Servidores Indy"
+
+msgid "Indy Telnet Server"
+msgstr "Servidor Telnet Indy"
+
+msgid "Information"
+msgstr "Información"
+
+msgid "Ins"
+msgstr "Ins"
+
+msgid "Integer overflow"
+msgstr "Desbordamimento de entero"
+
+msgid "Intercept value is not valid"
+msgstr "Valor de Intercept inválido"
+
+msgid "InterceptEnabled cannot be set to true when Intercept is nil."
+msgstr "InterceptEnabled cannot be set to true when Intercept is nil."
+
+msgid "Interface not supported"
+msgstr "Interfaz no soportada"
+
+msgid "Internal Server Error"
+msgstr "Error interno del servidor"
+
+msgid "Internet Direct (Indy)"
+msgstr "Internet Direct (Indy)"
+
+msgid "Interpretation of message failed"
+msgstr "Interpretación de mensaje fallida"
+
+msgid "Interrupted system call."
+msgstr "Llamada de sistema interrumpida."
+
+msgid "Invaild Query Count %d"
+msgstr "Contador %d de consulta inválido"
+
+msgid "Invalid Enum Value"
+msgstr "Valor de Enum no válido"
+
+msgid "Invalid Event"
+msgstr "Evento inválido."
+
+msgid "Invalid FieldKind"
+msgstr "Tipo de campo no válido"
+
+msgid "Invalid Header Id %d"
+msgstr "Id %d de cabecera invalido"
+
+msgid "Invalid ImageList"
+msgstr "ImageList no válida"
+
+msgid "Invalid ImageList Index"
+msgstr "Indice de ImageList no válido"
+
+msgid "Invalid Login."
+msgstr "Nombre de usuario inválido."
+
+msgid "Invalid MDIParent for class %s"
+msgstr "Padre MDI para la clase %s inválido"
+
+msgid "Invalid Packet Size %d"
+msgstr "Tamaño de paquete inválido %d"
+
+msgid "Invalid SQL date/time values"
+msgstr "Valores fecha/hora SQL no válidos"
+
+msgid "Invalid Text count. TIdText must be greater than 1"
+msgstr "Contador de texto inválido. TIdText debe ser mayor que 1"
+
+msgid "Invalid action creation"
+msgstr "Acción de creación no válida"
+
+msgid "Invalid action enumeration"
+msgstr "Acción de enumeración no válida"
+
+msgid "Invalid action registration"
+msgstr "Acción de registro no válida"
+
+msgid "Invalid action unregistration"
+msgstr "Acción de eliminación del registro no válida"
+
+msgid "Invalid alias name %s"
+msgstr "Nombre de alias no válido: %s"
+
+msgid "Invalid argument to date encode"
+msgstr "Argumento no válido para codificar fecha"
+
+msgid "Invalid argument to time encode"
+msgstr "Argumento para codificar la hora no válido"
+
+msgid "Invalid argument."
+msgstr "Argumento inválido."
+
+msgid "Invalid batch move parameters"
+msgstr "Parámetros de TBatchMove inválidos"
+
+msgid "Invalid binary value"
+msgstr "Valor binario inválido"
+
+msgid "Invalid canvas state request"
+msgstr "Petición del estado del canvas inválida"
+
+msgid "Invalid class typecast"
+msgstr "Invalid class typecast"
+
+msgid "Invalid clipboard format"
+msgstr "Formato del portapapeles no válido"
+
+msgid "Invalid component registration"
+msgstr "Registro de componente inválido"
+
+msgid "Invalid field registration"
+msgstr "Registro del campo no válido"
+
+msgid "Invalid field size"
+msgstr "Tamaño de campo no válido"
+
+msgid "Invalid file name - %s"
+msgstr "Nombre de archivo no válido - %s"
+
+msgid "Invalid filename"
+msgstr "Nombre de archivo no válido"
+
+msgid "Invalid floating point operation"
+msgstr "Operación de coma flotante no válida"
+
+msgid "Invalid format type for BCD"
+msgstr "Tipo de formato para BCD no válido"
+
+msgid "Invalid image"
+msgstr "Imagen inválida"
+
+msgid "Invalid image dimension"
+msgstr "Dimensión de imagen inválida"
+
+msgid "Invalid image size"
+msgstr "Tamaño de imagen no válido"
+
+msgid "Invalid image type"
+msgstr "Tipo de imagen inválido"
+
+msgid "Invalid index"
+msgstr "Indice no válido"
+
+msgid "Invalid input value"
+msgstr "Valor de entrada no válido"
+
+msgid "Invalid input value.  Use escape key to abandon changes"
+msgstr ""
+"Valor de entrada no válido. Use la tecla ESC para abandonar los cambios"
+
+msgid "Invalid item level assignment"
+msgstr "Asignación de nivel de elemento no válida"
+
+msgid "Invalid level (%d) for item \"%s\""
+msgstr "Nivel (%d) no válido para el elemento \"%s\""
+
+msgid "Invalid network mask."
+msgstr "Máscara de red inválida."
+
+msgid "Invalid numeric input"
+msgstr "Entrada numérica no válida"
+
+msgid "Invalid numeric value"
+msgstr "Valor numérico no válido"
+
+msgid "Invalid object verb"
+msgstr "Verbo de objeto no válido"
+
+msgid "Invalid operation on TOleGraphic"
+msgstr "Operación sobre TOleGraphic no válida"
+
+msgid "Invalid outline index"
+msgstr "Indice Outline no válido"
+
+msgid "Invalid owner"
+msgstr "Propietario no válido"
+
+msgid "Invalid package handle"
+msgstr "Handle del paquete no válido"
+
+msgid "Invalid pixel format"
+msgstr "Formato de pixel no válido"
+
+msgid "Invalid pointer operation"
+msgstr "Operación de puntero no válida"
+
+msgid "Invalid property element: %s"
+msgstr "Elemento de propiedad inválido: %s"
+
+msgid "Invalid property path"
+msgstr "Ruta de propiedad inválida"
+
+msgid "Invalid property type: %s"
+msgstr "Tipo de propiedad inválido: %s"
+
+msgid "Invalid property value"
+msgstr "Valor de propiedad inválido"
+
+msgid "Invalid selection"
+msgstr "Selección no válida"
+
+msgid "Invalid session name %s"
+msgstr "Nombre de sesión inválido: %s"
+
+msgid "Invalid socks authentication method."
+msgstr "Método de autentificación de socks inválida."
+
+msgid "Invalid stream format"
+msgstr "Formato del flujo no válido"
+
+msgid "Invalid string constant"
+msgstr "Constante de cadena inválida"
+
+msgid "Invalid use of keyword"
+msgstr "Uso de clave no válido"
+
+msgid "Invalid value for current item"
+msgstr "Valor no válido para el elemento actual"
+
+msgid "Invalid value length: Should be 32."
+msgstr "Valor de anchura inválido: Debe ser 32."
+
+msgid "Invalid variant operation"
+msgstr "Operación variant no válida"
+
+msgid "Invalid variant type conversion"
+msgstr "Conversión de tipo variant no válida"
+
+msgid "Invalid widget handle"
+msgstr "Manejador Widjet inválido"
+
+msgid "Italic"
+msgstr "Itálica"
+
+msgid "Item %s has subitems, delete anyway?"
+msgstr "El elemento %s tiene subelementos. Eliminar de todos modos ?"
+
+msgid "Jan"
+msgstr "Ene"
+
+msgid "January"
+msgstr "Enero"
+
+msgid "Jul"
+msgstr "Jul"
+
+msgid "July"
+msgstr "Julio"
+
+msgid "Jun"
+msgstr "Jun"
+
+msgid "June"
+msgstr "Junio"
+
+msgid "Key"
+msgstr "Clave"
+
+msgid "Key \"%s\" not found"
+msgstr "Clave \"%s\" no encontrada"
+
+msgid "Key may not contain equals sign (\"=\")"
+msgstr "La clave podría no contener signos igual (\"=\")"
+
+msgid "Left"
+msgstr "Izq"
+
+msgid "Length Required"
+msgstr "Tamaño requerido"
+
+msgid "License information for %s is invalid"
+msgstr "La información de licencia para %s no es válida"
+
+msgid ""
+"License information for %s not found. You cannot use this control in design "
+"mode"
+msgstr ""
+"Información de licencia para %s no encontrada. No se puede usar este control "
+"en modo de diseño"
+
+msgid "Line too long"
+msgstr "Línea demasiado larga"
+
+msgid "Link Properties"
+msgstr "Propiedades del enlace"
+
+msgid "Linked %s"
+msgstr "Enlazado %s"
+
+msgid "List capacity out of bounds (%d)"
+msgstr "Desbordamiento de la capacidad de la lista (%d)"
+
+msgid "List count out of bounds (%d)"
+msgstr "Desbordamiento del contador de la lista (%d)"
+
+msgid "List does not allow duplicates ($0%x)"
+msgstr "La lista no permite duplicados ($0%x)"
+
+msgid "List index out of bounds (%d)"
+msgstr "Indice de la lista fuera de rango (%d)"
+
+msgid "Listbox (%s) style must be virtual in order to set Count"
+msgstr "El estilo del Listbox (%s) debe ser virtual para establecer Count"
+
+msgid "Load Picture"
+msgstr "Cargar Imagen"
+
+msgid "LookupSource must be connected to TTable component"
+msgstr "LookupSource debe estar conectado a un componente TTable"
+
+msgid "MD is an Obsolete Command. Use MX."
+msgstr "MD es un comando obsoleto. Use MX."
+
+msgid "MF is an Obsolete Command. USE MX."
+msgstr "MF es un comando obsoleto. USE MX."
+
+msgid "MMMovie"
+msgstr "MMMovie"
+
+msgid "MailA is an Obsolete Command. USE MX."
+msgstr "MailA es un comando obsoleto. USE MX."
+
+msgid "Mar"
+msgstr "Mar"
+
+msgid "March"
+msgstr "Marzo"
+
+msgid "Maximum outline depth exceeded"
+msgstr "Profundidad máxima de Outline excedida"
+
+msgid "May"
+msgstr "Mayo"
+
+msgid "Menu index out of range"
+msgstr "Indice de menú fuera de rango"
+
+msgid "Menu inserted twice"
+msgstr "Menú insertado dos veces"
+
+msgid "Menu insertion recursion not allowed"
+msgstr "No está permitida la recursividad en la inserción del menú"
+
+msgid "Message handling failed"
+msgstr "Message handling failed"
+
+msgid "Message too long."
+msgstr "Mensaje demasiado largo."
+
+msgid "Message type recognition error"
+msgstr "Error de tipo de de reconocimiento"
+
+msgid "Metafile is not valid"
+msgstr "Metaarchivo no válido"
+
+msgid "Metafiles"
+msgstr "Metaarchivos"
+
+msgid "Meters"
+msgstr "Metros"
+
+msgid "Method not allowed"
+msgstr "Método no admitido"
+
+msgid "MilliSeconds"
+msgstr "Milisegundos"
+
+msgid "Mime format not supported for TIcon"
+msgstr "Formato Mime no soportado para TIcon"
+
+msgid "Minutes"
+msgstr "Minutos"
+
+msgid "Missing DataSet property"
+msgstr "Propiedad DataSet sin valor"
+
+msgid "Missing DataSetField property"
+msgstr "Propiedad DataSetField sin valor"
+
+msgid "Missing TableName property"
+msgstr "Propiedad TableName sin valor"
+
+msgid "Mode has not been set."
+msgstr "El modo no ha sido asignado."
+
+msgid "Mon"
+msgstr "Lun"
+
+msgid "Monday"
+msgstr "Lunes"
+
+msgid "Months"
+msgstr "Meses"
+
+msgid "More Buttons"
+msgstr "Más botones"
+
+msgid "Moved Permanently"
+msgstr "Movido permanentemente"
+
+msgid "Moved Temporarily"
+msgstr "Movido temporalmente"
+
+msgid "MultiLine must be True when TabPosition is tpLeft or tpRight"
+msgstr ""
+"MultiLine debe ser \"True\" cuando TabPosition es \"tpLeft\" o \"tpRight\""
+
+msgid "Multiselect mode must be on for this feature"
+msgstr "El modo Multiselect debe estar activado para esta opción"
+
+msgid "Must have a valid field type selected"
+msgstr "Debe haber un tipo de campo válido seleccionado"
+
+msgid "Must select at least one key field and one update field"
+msgstr "Debe seleccionar, al menos, un campo clave y un campo para actualizar"
+
+msgid "N&o to All"
+msgstr "N&o a todo"
+
+msgid "Ne&twork..."
+msgstr "&Red..."
+
+msgid "Nested dataset must inherit from %s"
+msgstr "La fuente de datos anidada debe heredar de %s"
+
+msgid "Nested datasets cannot have a MasterSource"
+msgstr "La fuente de datos anidadas no pueden tener un MasterSource"
+
+msgid "Net dropped connection or reset."
+msgstr "Conexión de red caída o reseteada"
+
+msgid "Network is down."
+msgstr "Red caída."
+
+msgid "Network subsystem is unavailable."
+msgstr "Subsistema de red no disponible."
+
+msgid "Network unreachable."
+msgstr "Red inaccesible."
+
+msgid "New Lookup Field"
+msgstr "Nuevo campo Lookup"
+
+msgid "No Content"
+msgstr "Sin contenido"
+
+msgid "No MCI device open"
+msgstr "No hay dispositivos MCI abiertos"
+
+msgid "No OnNewGroupsList event has been defined."
+msgstr "El evento OnNewGroupsList no ha sido definido."
+
+msgid "No OnNewNewsList event has been defined."
+msgstr "El evento OnNewNewsList no ha sido definido."
+
+msgid "No OnNewsgroupList event has been defined."
+msgstr "El evento OnNewsgroupList no ha sido definido."
+
+msgid "No Provider"
+msgstr "Proveedor no disponible"
+
+msgid "No SQL statement available"
+msgstr "No hay sentencia SQL disponible"
+
+msgid "No address specified"
+msgstr "Dirección no especificada"
+
+msgid "No authentication handler has been specified."
+msgstr "No ha sido espeficiada una atentifiación."
+
+msgid "No bindings specified."
+msgstr "Encuadernación no especificada."
+
+msgid "No buffer space available."
+msgstr "Espacio del búfer no disponible."
+
+msgid "No data to read."
+msgstr "No hay datos para leer."
+
+msgid "No dataset association"
+msgstr "No hay asociación con dataset"
+
+msgid "No default browser is specified"
+msgstr "No hay navegador especificado por defecto"
+
+msgid "No execute handler found."
+msgstr "Ejecución guiada no especificada."
+
+msgid "No help available"
+msgstr "No hay ayuda disponible"
+
+msgid "No index currently active"
+msgstr "No índice actualmente activo"
+
+msgid "No parameter type for parameter '%s'"
+msgstr "No hay tipo de parámetro para el parámetro '%s'"
+
+msgid "No printer adapter available for printing"
+msgstr "No hay adaptador de impresora disponible para imprimir"
+
+msgid "No provider available"
+msgstr "Proveedor no disponible"
+
+msgid "No route to host."
+msgstr "No guiado al host."
+
+msgid "No value for parameter '%s'"
+msgstr "No hay valor para el parámetro '%s'"
+
+msgid "Non-authoritative Information"
+msgstr "Información sin autoridad"
+
+msgid "Non-authoritative response (try again or check DNS setup)."
+msgstr "Non-authoritative response (try again or check DNS setup)."
+
+msgid "Non-echo type response received"
+msgstr "Respuesta recibida de tipo No-Eco"
+
+msgid "Non-recoverable errors: FORMERR, REFUSED, NOTIMP."
+msgstr "Errores no recuperables: FORMERR, REFUSED, NOTIMP."
+
+msgid "Not Acceptable"
+msgstr "No aceptable"
+
+msgid "Not Found"
+msgstr "No encontrado"
+
+msgid "Not Implemented"
+msgstr "No implementado"
+
+msgid "Not Modified"
+msgstr "No modificado"
+
+msgid "Not all bytes sent."
+msgstr "No se han enviado todos los bytes."
+
+msgid "Not connected."
+msgstr "No conectado."
+
+msgid "Not enough bytes received"
+msgstr "No se han recibido los suficientes datos"
+
+msgid "Not enough data in buffer."
+msgstr "No hay datos suficientes en el búfer."
+
+msgid "Not enough timers available"
+msgstr "No hay suficientes timers disponibles"
+
+msgid "Not found"
+msgstr "No encontrado"
+
+msgid "Not in cached update mode"
+msgstr "No se encuentra en modo cached update"
+
+msgid "Nov"
+msgstr "Nov"
+
+msgid "November"
+msgstr "Noviembre"
+
+msgid "Number expected"
+msgstr "Se esperaba un número"
+
+msgid "OK"
+msgstr "Aceptar"
+
+msgid "OLE control activation failed"
+msgstr "Falló la activación del control OLE"
+
+msgid "OLE error %.8x"
+msgstr "Error OLE %.8x"
+
+msgid "Object type not supported."
+msgstr "Tipo de objeto no soportado."
+
+msgid "Oct"
+msgstr "Oct"
+
+msgid "October"
+msgstr "Octubre"
+
+msgid "OnDataAvailable event is nil."
+msgstr "El evento OnDataAvailable es nulo."
+
+msgid "OnExecute not assigned."
+msgstr "Evento OnExecute no asignado."
+
+msgid "Only one TIdAntiFreeze can exist per application."
+msgstr "Sólo puede existir un TIdAntiFreeze por aplicación."
+
+msgid "Open"
+msgstr "Abrir"
+
+msgid "Operation aborted"
+msgstr "Operación abortada"
+
+msgid "Operation already in progress."
+msgstr "Operación ya en progreso."
+
+msgid "Operation cannot mix aggregate value with record-varying value"
+msgstr "Operation cannot mix aggregate value with record-varying value"
+
+msgid "Operation not allowed on a unidirectional dataset"
+msgstr "Operación no permitida en una fuente de datos unidireccional"
+
+msgid "Operation not allowed on an empty OLE container"
+msgstr "Operación no permitida en un contenedor OLE vacío"
+
+msgid "Operation not allowed on sorted string list"
+msgstr "Operación no soportada en una lista de cadenas ordenada"
+
+msgid "Operation not supported on selected printer"
+msgstr "Operación no soportada por la impresora seleccionada"
+
+msgid "Operation not supported on socket."
+msgstr "Operación no soportada en socket."
+
+msgid "Operation now in progress."
+msgstr "Operación ahora en progreso."
+
+msgid "Operation would block. "
+msgstr "Bloquearía la operación. "
+
+msgid "Other"
+msgstr "Otro"
+
+msgid "Out of memory"
+msgstr "Fuera de memoria"
+
+msgid "Out of memory while expanding memory stream"
+msgstr "Sin memoria expandiendo el flujo de memoria"
+
+msgid "Out of system resources"
+msgstr "Sin recursos del sistema"
+
+msgid "Outline index not found"
+msgstr "Indice de Outline no encontrado"
+
+msgid "Overlay"
+msgstr "Overlay"
+
+msgid "PNGs"
+msgstr "PNGs"
+
+msgid "Package Size Too Big."
+msgstr "El tamaño del paquete es demasiado grande."
+
+msgid "Pages"
+msgstr "Páginas"
+
+msgid "Parameter '%s' truncated on output"
+msgstr "El parámetro '%s' truncado en salida"
+
+msgid "Parent given is not a parent of '%s'"
+msgstr "El padre dado no es un padre de '%s'"
+
+msgid "Parent must be expanded"
+msgstr "El ancestro debe estar expandido"
+
+msgid "Partial Content"
+msgstr "Contenido parcial"
+
+msgid "Pass&word:"
+msgstr "Contrase&ña: "
+
+msgid "Password: "
+msgstr "Contraseña: "
+
+msgid "PgDn"
+msgstr "Av Pág"
+
+msgid "PgUp"
+msgstr "Re Pág"
+
+msgid "Picture:"
+msgstr "Imagen"
+
+msgid "Pixmaps"
+msgstr "Pismaps"
+
+msgid "Precondition Failed"
+msgstr "Precondición fallida"
+
+msgid "Preview"
+msgstr "Previsualización"
+
+msgid "Printer index out of range"
+msgstr "Indice de impresora fuera de rango"
+
+msgid "Printer is not currently printing"
+msgstr "La impresora no se encuentra actualmente imprimiendo"
+
+msgid "Printer selected is not valid"
+msgstr "La impresora seleccionada no es válida"
+
+msgid "Printing in progress"
+msgstr "Impresión en progreso"
+
+msgid "Privileged instruction"
+msgstr "Instrucción privilegiada"
+
+msgid "Project Co-Coordinator"
+msgstr "Ayte. de Coordinador de proyecto"
+
+msgid "Project Coordinator"
+msgstr "Coordinador de proyecto"
+
+msgid "Properties"
+msgstr "Propiedades"
+
+msgid "Property category does not exist (%s)"
+msgstr "No existe categoría de pripiedad (%s)"
+
+msgid "Property does not exist"
+msgstr "No existe la propiedad"
+
+msgid "Property is read-only"
+msgstr "La propiedad es de sólo lectura"
+
+msgid "Property may not be modified while aggregate is active"
+msgstr "Propiedad no puede ser modificada mientras agregar este activo"
+
+msgid "Protocol family not supported."
+msgstr "Familia de protocolo no soportada."
+
+msgid "Protocol not supported."
+msgstr "Protocolo no soportado."
+
+msgid "Protocol wrong type for socket."
+msgstr "Protocolo de tipo incorrecto para socket."
+
+msgid "Proxy Authentication Required"
+msgstr "Autentificación de Proxy requerida"
+
+msgid "PutObject to undefined item"
+msgstr "Elemento no definido para PutObject"
+
+msgid "Queue %s status: %s"
+msgstr "Estado de la cola %s : %s"
+
+msgid "Quit key hit"
+msgstr "Quit key hit"
+
+msgid "RCode NO Error"
+msgstr "RCode NO Error"
+
+msgid "Range check error"
+msgstr "Error de comprobación de rango"
+
+msgid "Raw Receive Error = 0."
+msgstr "Recibe error Raw = 0."
+
+msgid "Read"
+msgstr "Leer"
+
+msgid "Read beyond end of file"
+msgstr "Lectura más allá del final del archivo"
+
+msgid "Receive control file"
+msgstr "Recibir archivo de control"
+
+msgid "Receive data file"
+msgstr "Recibir archivo de datos"
+
+msgid "Received Packet is too small. %d"
+msgstr "El paquete recibido es demasiado pequeño. %d"
+
+msgid "Received Packet is too small. Less than 12 bytes %d"
+msgstr "El paquete recibido es demasiado pequeño. Más que 12 bytes %d"
+
+msgid "Received Packet is too small. Less than 4 bytes %d"
+msgstr "El paquete recibido es demasiado pequeño. Más que 4 bytes %d"
+
+msgid "Received someone else's packet"
+msgstr "Recibidos algunos paquetes"
+
+msgid "Record not found"
+msgstr "Registro no encontrado"
+
+msgid "Record not found or changed by another user"
+msgstr "Registro no encontrado o cambiado por otro usuario"
+
+msgid "Recv: "
+msgstr "Recivido: "
+
+msgid "ReferenceTableName not specified for field '%s'"
+msgstr "ReferenceTableName no ha sido especificado para el campo '%s'"
+
+msgid "Regular"
+msgstr "Normal"
+
+msgid "Rep&lace with:"
+msgstr "Reemp&lazar con:"
+
+msgid "Replace"
+msgstr "Reemplazar"
+
+msgid "Replace &All"
+msgstr "Reemplaz&ar Todo"
+
+msgid "Request Entity To Long"
+msgstr "Entidad de respuesta a alargar"
+
+msgid "Request Timeout"
+msgstr "Respuesta fuera de tiempo"
+
+msgid "Request rejected because SOCKS server cannot connect."
+msgstr "Request rejected because SOCKS server cannot connect."
+
+msgid ""
+"Request rejected because the client program and identd report different user-"
+"ids."
+msgstr ""
+"Request rejected because the client program and identd report different user-"
+"ids."
+
+msgid "Request rejected or failed."
+msgstr "Respuesta rechazada o fallida."
+
+msgid "Request-URI Too Long. 256 Chars max"
+msgstr "Respuesta URI demasiado larga. 256 caracteres máximo"
+
+msgid "Reset Content"
+msgstr "Resetear contenido"
+
+msgid "Reset Toolbar"
+msgstr "Inicializar Toolbar"
+
+msgid "Reset all usage data?"
+msgstr "Inicializar todos los datos del usuario ?"
+
+msgid "Resource %s is of incorrect class"
+msgstr "El recurso %s es una clase incorrecta"
+
+msgid "Resource %s not found"
+msgstr "Recurso %s no encontado"
+
+msgid "Result"
+msgstr "Resultado"
+
+msgid "Return"
+msgstr "Retorno"
+
+msgid "RichEdit line insertion error"
+msgstr "Error al insertar una linea en RichEdit"
+
+msgid "Right"
+msgstr "Der"
+
+msgid "Row index out of range : %d"
+msgstr "Indice de file fuera de rango : %d"
+
+msgid "Run"
+msgstr "Ejecutar"
+
+msgid "S&QL Builder..."
+msgstr "Constructor S&QL..."
+
+msgid "SQL &Builder ..."
+msgstr "Constructor S&QL..."
+
+msgid "SQL not supported: %s"
+msgstr "SQL no soportado: %s"
+
+msgid "SSL certificate request error."
+msgstr "Error de la respuesta de certificado SSL."
+
+msgid "SSL connection has dropped."
+msgstr "La conexión SSL ha sido detenida."
+
+msgid "SSL library internal error."
+msgstr "Error interno de librería SSL."
+
+msgid "SSL status: \"%s\""
+msgstr "Estado SSL: \"%s\""
+
+msgid "Samples"
+msgstr "Ejemplos"
+
+msgid "Sat"
+msgstr "Sab"
+
+msgid "Saturday"
+msgstr "Sábado"
+
+msgid "Save %s as"
+msgstr "Grabar %s como"
+
+msgid "Save As"
+msgstr "Grabar Como"
+
+msgid "Save Picture As"
+msgstr "Grabar Imagen Como"
+
+msgid "Scan line index out of range"
+msgstr "Indice de la línea examinada fuera de rango"
+
+msgid "Scanner"
+msgstr "Scanner"
+
+msgid "Scrollbar property out of range"
+msgstr "Propiedad Scrollbar fuera de rango"
+
+msgid "Seconds"
+msgstr "Segundos"
+
+msgid "See Other"
+msgstr "Ver otro"
+
+msgid "Select Directory"
+msgstr "Seleccione una carpeta"
+
+msgid "Sent: "
+msgstr "Enviado: "
+
+msgid "Sep"
+msgstr "Sep"
+
+msgid "Separator"
+msgstr "Separador"
+
+msgid "September"
+msgstr "Septiembre"
+
+msgid "Sequencer"
+msgstr "Sequencer"
+
+msgid "Server Returned Unknown Error"
+msgstr "El servidor retornó un error desconocido"
+
+msgid "Server did not respond."
+msgstr "El servidor no respondió."
+
+msgid "Server status: active"
+msgstr "Estado del servidor: activo"
+
+msgid "Service \"%s\" failed to install with error: \"%s\""
+msgstr "Error al instalar el servicio \"%s\". Error: \"%s\""
+
+msgid "Service \"%s\" failed to uninstall with error: \"%s\""
+msgstr "Error al desintalar el servicio \"%s\". Error: \"%s\""
+
+msgid "Service Unavailable"
+msgstr "Servicio no disponible"
+
+msgid "Service failed in custom message(%d): %s"
+msgstr "El servicio falló en mensaje personalizado (%d): %s"
+
+msgid "Service failed on %s: %s"
+msgstr "El servicio falló en %s: %s"
+
+msgid "Service installed successfully"
+msgstr "Servicio instalado satisfactoriamente"
+
+msgid "Service uninstalled successfully"
+msgstr "Servicio desinstalado satisfactoriamente"
+
+msgid "Session name missing"
+msgstr "Nombre de sesión ausente"
+
+msgid "Set Size Exceeded."
+msgstr "Asignación de tamaño excedida."
+
+msgid "SetCipher failed."
+msgstr "SetCipher fallido."
+
+msgid "Shift+"
+msgstr "Mayús+"
+
+msgid "Socket already open"
+msgstr "El socket ya está abierto"
+
+msgid "Socket is already connected."
+msgstr "El Socket está actualmente conectado."
+
+msgid "Socket is not connected."
+msgstr "El Socket no está conectado."
+
+msgid "Socket operation on non-socket."
+msgstr "Operación de Socket en non-socket."
+
+msgid "Socket type not supported."
+msgstr "Tipo de Socket no soportado."
+
+msgid "Socks server did not respond."
+msgstr "El Sock del servidor no respondió."
+
+msgid "Software caused connection abort."
+msgstr "El software causo que se abortara la conexión."
+
+msgid "Source and destination tables are incompatible"
+msgstr "Las tablas fuente y destino son incompatibles"
+
+msgid "Space"
+msgstr "Espacio"
+
+msgid "Stack overflow"
+msgstr "Desbordamiento de la pila"
+
+msgid "Stale NFS file handle."
+msgstr "Stale NFS file handle."
+
+msgid "StatusBar cannot have more than 64 panels"
+msgstr "El StatusBar no puede tener más de 64 paneles"
+
+msgid "Stream read error"
+msgstr "Error de lectura del flujo"
+
+msgid "Stream write error"
+msgstr "Error de escritura del flujo"
+
+msgid "String"
+msgstr "String"
+
+msgid "String expected"
+msgstr "Se esperaba una cadena"
+
+msgid "String list does not allow duplicates"
+msgstr "La lista de cadenas no permite duplicados"
+
+msgid "Stringlist not initialized!"
+msgstr "Lista no inicializada!"
+
+msgid "Sub-menu is not in menu"
+msgstr "El sub-menú no se encuentra en un menú"
+
+msgid "Sun"
+msgstr "Dom"
+
+msgid "Sunday"
+msgstr "Domingo"
+
+msgid "Switching protocols"
+msgstr "Protocolos Switching"
+
+msgid ""
+"System Error.  Code: %d.\n"
+"%s"
+msgstr ""
+"Error del sistema. Código: %d\n"
+"%s"
+
+msgid "TIdMessagePart can not be created.  Use descendant classes. "
+msgstr "TIdMessagePart can not be created.  Use descendant classes. "
+
+msgid "TMenu.SetForm: argument must be TCustomForm"
+msgstr "TMenu.SetForm: el argumento debe ser TCustomForm"
+
+msgid "TTL expired."
+msgstr "TTL caducada."
+
+msgid "Tab"
+msgstr "Tab"
+
+msgid "Tab index out of bounds"
+msgstr "Indice de página fuera de rango"
+
+msgid "Tab position incompatible with current tab style"
+msgstr "Posición de página incompatible con el actual estilo de página"
+
+msgid "Tab style incompatible with current tab position"
+msgstr "Estilo de página incompatible con la actual posición de página"
+
+msgid "Text exceeds memo capacity"
+msgstr "El texto excede la capacidad de la memoria"
+
+msgid "Text not found: \"%s\""
+msgstr "Texto no encontrado: \"%s\""
+
+msgid "The MasterSource property of '%s' must be linked to a DataSource"
+msgstr ""
+"La propiedad MasterSource de '%s' debe estar enlazada con una fuente de "
+"datos DataSource"
+
+msgid "The specified directory does not exist. Create it?"
+msgstr "La carpeta especificada no existe. Crearla ?"
+
+msgid "The string %s does not translate into a valid IP."
+msgstr "El texto %s no se puede pasar a una IP válida."
+
+msgid "The transaction isolation level must be dirty read for local databases"
+msgstr ""
+"El nivel de transacción debe ser ''dirty read'' para bases de datos locales"
+
+msgid "There is no default printer currently selected"
+msgstr "Actualmente no hay impresora seleccionada por defecto"
+
+msgid ""
+"There is too many IP addresses in the specified range (%d) to be displayed "
+"at design time."
+msgstr ""
+"There is too many IP addresses in the specified range (%d) to be displayed "
+"at design time."
+
+msgid "This control requires version 4.70 or greater of COMCTL32.DLL"
+msgstr "Este control requiere versión 4.70 o mayor de COMCTL32.DLL"
+
+msgid "Thread Class Not Specified."
+msgstr "Clase Thread no especificada."
+
+msgid "Thu"
+msgstr "Jue"
+
+msgid "Thursday"
+msgstr "Jueves"
+
+msgid "Timeout"
+msgstr "Fuera de tiempo"
+
+msgid "Too many buttons specified for message box"
+msgstr "Demasiados botones especificados para la caja de mensaje"
+
+msgid "Too many custom variants have been registered"
+msgstr "Too many custom variants have been registered"
+
+msgid "Too many images"
+msgstr "Demasiadas imágenes"
+
+msgid "Too many levels of remote in path."
+msgstr "Demasiados niveles de la ruta remota."
+
+msgid "Too many levels of symbolic links."
+msgstr "Demasiados niveles de enlaces simbólicos."
+
+msgid "Too many open files"
+msgstr "Demasiados archivos abiertos"
+
+msgid "Too many open files."
+msgstr "Demasiados archivos abiertos."
+
+msgid "Too many processes."
+msgstr "Demasiados procesos."
+
+msgid "Too many references, cannot splice."
+msgstr "Demasiadas referencias, no se pueden unir."
+
+msgid "Too many rows or columns deleted"
+msgstr "Demasiadas filas o columnas eliminadas"
+
+msgid "Too many users."
+msgstr "Demasiados usuarios."
+
+msgid "Transform failed"
+msgstr "Tranformación fallida"
+
+msgid "True"
+msgstr "VERDADERO"
+
+msgid "Tue"
+msgstr "Mar"
+
+msgid "Tuesday"
+msgstr "Martes"
+
+msgid "Type mismatch in expression"
+msgstr "El tipo no concuerda en la expresión"
+
+msgid "UDP Receive Error = 0."
+msgstr "Recibe error UDP = 0."
+
+msgid "Unable to Replace Image"
+msgstr "Incapaz de reemplazar imagen"
+
+msgid "Unable to complete write request, progress halted at %d bytes"
+msgstr "Modo de trasnferencia no soportado: \"%s\""
+
+msgid "Unable to connect DDE conversation"
+msgstr "Incapaz de conectar con conversación DDE"
+
+msgid "Unable to create directory"
+msgstr "Incapaz de crear directorio"
+
+msgid "Unable to create new column"
+msgstr "Incapaz de crear una nueva columna"
+
+msgid "Unable to create new item"
+msgstr "Incapaz de crear un nuevo elemento"
+
+msgid "Unable to determine field names for %s"
+msgstr "Incapaz de determinar los nombres de campo para %s"
+
+msgid "Unable to insert a line"
+msgstr "Incapaz de insertar una línea"
+
+msgid "Unable to insert an item"
+msgstr "Incapaz de insertar un elemento"
+
+msgid "Unable to load bind parameters"
+msgstr "Unable to load bind parameters"
+
+msgid "Unable to open %s"
+msgstr "No se puede abrir %s"
+
+msgid "Unable to open the MasterSource Table"
+msgstr "Incapaz de abrir la tabla maestra"
+
+msgid ""
+"Unable to retrieve a pointer to a running object registered with OLE for %s/%"
+"s"
+msgstr ""
+"Unable to retrieve a pointer to a running object registered with OLE for %s/%"
+"s"
+
+msgid "Unable to save settings"
+msgstr "Incapaz de guadar la configuración"
+
+msgid "Unable to use duplicate DataSource and LookupSource"
+msgstr "Incapaz de usar DataSource y LookupSource duplicados"
+
+msgid "Unable to write to %s"
+msgstr "Incapaz de escribir en %s"
+
+msgid "Unassigned variant value"
+msgstr "Valor variant sin asignar"
+
+msgid "Unauthorized"
+msgstr "No autorizado"
+
+msgid "Unexpected operation from %s:%d"
+msgstr "Operación inesperada desde %s:%d"
+
+msgid "Unknown Response Code"
+msgstr "Código de respuesta desconocido"
+
+msgid "Unknown RichEdit conversion file extension (.%s)"
+msgstr "Extensión de archivo (.%s) de texto enriquecido desconocida"
+
+msgid "Unknown conversion family %s"
+msgstr "Familia de conversión (%s) desconocida"
+
+msgid "Unknown conversion type %s"
+msgstr "Conversión del tipo %s desconocida"
+
+msgid "Unknown custom variant type ($.4x)"
+msgstr "Unknown custom variant type ($.4x)"
+
+msgid "Unknown error code"
+msgstr "Código de error desconocido"
+
+msgid "Unknown picture file extension (.%s)"
+msgstr "Extensión de archivo de imagen (.%s) desconocida"
+
+msgid "Unknown queue %s"
+msgstr "Cola %s desconocida"
+
+msgid "Unknown socks error."
+msgstr "Error de sock desconocido."
+
+msgid "Unsupported Media Type"
+msgstr "Tipo de medio no soportado"
+
+msgid "Unsupported authorization scheme."
+msgstr "Conbinación de autorización no soportada."
+
+msgid "Unsupported clipboard format"
+msgstr "Formato del portapapeles no soportado"
+
+msgid "Unsupported data type : %s"
+msgstr "Tipo de dato no soportado : %s"
+
+msgid "Unsupported transfer mode: \"%s\""
+msgstr "Modo de trasnferencia no soportado: \"%s\""
+
+msgid "Unterminated field name"
+msgstr "Nombre de campo sin terminar"
+
+msgid "Unterminated string constant"
+msgstr "Cadena constante sin terminar"
+
+msgid "Untitled Application"
+msgstr "Aplicación sín nombre"
+
+msgid "Up"
+msgstr "Arriba"
+
+msgid "Update SQL statements not generated, exit anyway?"
+msgstr "Sentencia SQL no generada, abandonar?"
+
+msgid "Update failed"
+msgstr "Fallo en la actualización"
+
+msgid "Use Proxy"
+msgstr "Usar Proxy"
+
+msgid "Username: "
+msgstr "Nombre de usuario: "
+
+msgid "VCR"
+msgstr "VCR"
+
+msgid "Valid name, no data record (check DNS setup)."
+msgstr "Nombre válido, datos no grabados (verifique la configuración DNS)."
+
+msgid "Value"
+msgstr "Valor"
+
+msgid "Value must be between %d and %d"
+msgstr "El valor debe hallarse entre %d y %d"
+
+msgid "Variant array index out of bounds"
+msgstr "Indice de matriz Variant fuera de rango"
+
+msgid "Variant does not reference an OLE object"
+msgstr "La variable no hace referencia a un objeto OLE"
+
+msgid "Variant does not reference an automation object"
+msgstr "La variante no hace referencia a un objeto de automatización"
+
+msgid "Variant is empty"
+msgstr "La variable está vacía"
+
+msgid "Variant is not an array"
+msgstr "Variant no es una matriz"
+
+msgid "Variant method calls not supported"
+msgstr "Llamadas al método Variant no soportadas"
+
+msgid "Version %s"
+msgstr "Versión %s"
+
+msgid "Version 6.0"
+msgstr "Versión 6.0"
+
+msgid "Videodisc"
+msgstr "Videodisc"
+
+msgid "Visual"
+msgstr "Visual"
+
+msgid "WINSOCK DLL Version out of range."
+msgstr "Versión WINSOCK DLL fuera de rango."
+
+msgid "Warning"
+msgstr "Aviso"
+
+msgid "WaveAudio"
+msgstr "WaveAudio"
+
+msgid "Wed"
+msgstr "Mie"
+
+msgid "Wednesday"
+msgstr "Miércoles"
+
+msgid "Weeks"
+msgstr "Semanas"
+
+msgid ""
+"Win32 Error.  Code: %d.\n"
+"%s"
+msgstr ""
+"Error Win32. Código: %d.\n"
+"%s"
+
+msgid "Window is invalid or a child window"
+msgstr "La ventana no es válida o es una ventana-hija"
+
+msgid "Winshoes LPD Server %s "
+msgstr "Servidor Winshoes LPD %s "
+
+msgid "Winsock Initialization Error."
+msgstr "Error de inicialización de Winsock."
+
+msgid "Winsock not loaded yet."
+msgstr "Winsock no cargado todavía."
+
+msgid "Winsock stack"
+msgstr "Winsock stack"
+
+msgid "Write"
+msgstr "Escribir"
+
+msgid "WriteObject called twice for the same instance"
+msgstr "WriteObject llamado dos veces por la misma instancia"
+
+msgid "Years"
+msgstr "Años"
+
+msgid "Yes to &All"
+msgstr "Sí a &todo"
+
+msgid "You must be in ShowCheckbox mode to set to this date"
+msgstr "Debe estar en modo ShoyCheckbox para asignar esta fecha"
+
+msgid "[%.8x]"
+msgstr "[%.8x]"
+
+msgid "[Error]"
+msgstr "[Error]"
+
+msgid "abort job"
+msgstr "Abortar trabajo"
+
+msgid "closing connection"
+msgstr "Cerrando conexión"
+
+msgid "command not recognized"
+msgstr "comando no reconocido"
+
+msgid "command not recognized (%s)"
+msgstr "Comando no reconocido (%s)"
+
+msgid "connected with %s"
+msgstr "Conectado con %s"
+
+msgid "continue"
+msgstr "continuar"
+
+msgid "execute"
+msgstr "ejecuta"
+
+msgid "goColMoving is not a supported option"
+msgstr "goColMoving no es una opción soportada"
+
+msgid "http://www.nevrona.com/indy"
+msgstr "http://www.nevrona.com/indy"
+
+msgid "http://www.nevrona.com/indy/"
+msgstr "http://www.nevrona.com/indy/"
+
+msgid "interrogate"
+msgstr "pregunta"
+
+msgid "nothing"
+msgstr "nada"
+
+msgid "pause"
+msgstr "pausa"
+
+msgid "server not responding"
+msgstr "server not responding"
+
+msgid "shutdown"
+msgstr "apagado"
+
+msgid "sigaction call failed"
+msgstr "sigaction call failed"
+
+msgid "start"
+msgstr "inicio"
+
+msgid "stop"
+msgstr "parada"

@@ -1,0 +1,747 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-09-01 13:50+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: \n"
+"Language-Team: FMA Dev Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+
+msgid "(Un)Lock"
+msgstr ""
+
+msgid "(Un)Mute"
+msgstr ""
+
+msgid "(Un)lock"
+msgstr ""
+
+msgid "(Un)mute"
+msgstr ""
+
+msgid "(default)"
+msgstr ""
+
+msgid "(empty)"
+msgstr ""
+
+msgid "(error)"
+msgstr ""
+
+msgid "(no matches)"
+msgstr ""
+
+msgid "(none)"
+msgstr ""
+
+msgid "16x9"
+msgstr ""
+
+msgid "<default>"
+msgstr ""
+
+msgid "<empty>"
+msgstr ""
+
+msgid "<error>"
+msgstr ""
+
+msgid "<no matches>"
+msgstr ""
+
+msgid "<none>"
+msgstr ""
+
+msgid "About"
+msgstr ""
+
+msgid "Address"
+msgstr ""
+
+msgid "Append"
+msgstr ""
+
+msgid "Audio"
+msgstr ""
+
+msgid "Author"
+msgstr ""
+
+msgid "Away"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "Backward"
+msgstr ""
+
+msgid "Begin"
+msgstr ""
+
+msgid "Bottom"
+msgstr ""
+
+msgid "Browse"
+msgstr ""
+
+msgid "Browse..."
+msgstr ""
+
+msgid "Call"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Canceled"
+msgstr ""
+
+msgid "Caption"
+msgstr ""
+
+msgid "Change Status"
+msgstr ""
+
+msgid "Choose"
+msgstr ""
+
+msgid "Choose..."
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Configurator"
+msgstr ""
+
+msgid "Configure"
+msgstr ""
+
+msgid "DVD"
+msgstr ""
+
+msgid "Debug"
+msgstr ""
+
+msgid "Decrease"
+msgstr ""
+
+msgid "Default"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Dialog"
+msgstr ""
+
+msgid "Disable"
+msgstr ""
+
+msgid "Disconnect"
+msgstr ""
+
+msgid "Down"
+msgstr ""
+
+msgid "Drive"
+msgstr ""
+
+msgid "Drives"
+msgstr ""
+
+msgid "Empty"
+msgstr ""
+
+msgid "Enable"
+msgstr ""
+
+msgid "End"
+msgstr ""
+
+msgid "Enter Text"
+msgstr ""
+
+msgid "Enter URL"
+msgstr ""
+
+msgid "Enter message"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Error:"
+msgstr ""
+
+msgid "Exit"
+msgstr ""
+
+msgid "Explore"
+msgstr ""
+
+msgid "Explorer"
+msgstr ""
+
+msgid "Faster"
+msgstr ""
+
+msgid "Favorite"
+msgstr ""
+
+msgid "Favorites"
+msgstr ""
+
+msgid "Feedback"
+msgstr ""
+
+msgid "File"
+msgstr ""
+
+msgid "Folder"
+msgstr ""
+
+msgid "Forward"
+msgstr ""
+
+msgid "Framework"
+msgstr ""
+
+msgid "Freeze"
+msgstr ""
+
+msgid "Full screen"
+msgstr ""
+
+msgid "FullScreen"
+msgstr ""
+
+msgid "Fullscreen"
+msgstr ""
+
+msgid "General"
+msgstr ""
+
+msgid "Guide"
+msgstr ""
+
+msgid "Help"
+msgstr ""
+
+msgid "Hide"
+msgstr ""
+
+msgid "Increase"
+msgstr ""
+
+msgid "Info"
+msgstr ""
+
+msgid "Information"
+msgstr ""
+
+msgid "Input"
+msgstr ""
+
+msgid "Input:"
+msgstr ""
+
+msgid "Insert"
+msgstr ""
+
+msgid "Integer"
+msgstr ""
+
+msgid "Integer:"
+msgstr ""
+
+msgid "Key"
+msgstr ""
+
+msgid "Launch"
+msgstr ""
+
+msgid "Left"
+msgstr ""
+
+msgid "Level"
+msgstr ""
+
+msgid "Library"
+msgstr ""
+
+msgid "Live"
+msgstr ""
+
+msgid "Load"
+msgstr ""
+
+msgid "Lock"
+msgstr ""
+
+msgid "Logoff"
+msgstr ""
+
+msgid "Master Volume"
+msgstr ""
+
+msgid "Maximize"
+msgstr ""
+
+msgid "Menu"
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "Message:"
+msgstr ""
+
+msgid "Minimize"
+msgstr ""
+
+msgid "Miscellaneous"
+msgstr ""
+
+msgid "Mode"
+msgstr ""
+
+msgid "More..."
+msgstr ""
+
+msgid "Mouse"
+msgstr ""
+
+msgid "Music"
+msgstr ""
+
+msgid "Mute"
+msgstr ""
+
+msgid "Mute/UnMute"
+msgstr ""
+
+msgid "Mute/Unmute"
+msgstr ""
+
+msgid "N/A"
+msgstr ""
+
+msgid "Navigate"
+msgstr ""
+
+msgid "Navigate..."
+msgstr ""
+
+msgid "New"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "Next Chapter"
+msgstr ""
+
+msgid "Next Track"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "No Matches"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "OK"
+msgstr ""
+
+msgid "Off"
+msgstr ""
+
+msgid "Offline"
+msgstr ""
+
+msgid "Ok"
+msgstr ""
+
+msgid "On"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
+msgid "Order"
+msgstr ""
+
+msgid "Pause"
+msgstr ""
+
+msgid "Pause/Resume"
+msgstr ""
+
+msgid "Paused"
+msgstr ""
+
+msgid "Percent"
+msgstr ""
+
+msgid "Percent:"
+msgstr ""
+
+msgid "Photo"
+msgstr ""
+
+msgid "Picture"
+msgstr ""
+
+msgid "Play"
+msgstr ""
+
+msgid "Player"
+msgstr ""
+
+msgid "Playing"
+msgstr ""
+
+msgid "Plugin"
+msgstr ""
+
+msgid "Prev"
+msgstr ""
+
+msgid "Prev."
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Previous Chapter"
+msgstr ""
+
+msgid "Previous Track"
+msgstr ""
+
+msgid "Quit"
+msgstr ""
+
+msgid "Random"
+msgstr ""
+
+msgid "Read"
+msgstr ""
+
+msgid "Recieve"
+msgstr ""
+
+msgid "Recieved"
+msgstr ""
+
+msgid "Record"
+msgstr ""
+
+msgid "Recording"
+msgstr ""
+
+msgid "Refresh"
+msgstr ""
+
+msgid "Remote"
+msgstr ""
+
+msgid "Repeat"
+msgstr ""
+
+msgid "Restore"
+msgstr ""
+
+msgid "Resume/Pause"
+msgstr ""
+
+msgid "Return"
+msgstr ""
+
+msgid "Reverse"
+msgstr ""
+
+msgid "Revert"
+msgstr ""
+
+msgid "Rewind"
+msgstr ""
+
+msgid "Right"
+msgstr ""
+
+msgid "Run"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Schedule"
+msgstr ""
+
+msgid "Script"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Search For:"
+msgstr ""
+
+msgid "Search Results"
+msgstr ""
+
+msgid "Search..."
+msgstr ""
+
+msgid "Search/Browse"
+msgstr ""
+
+msgid "Searching..."
+msgstr ""
+
+msgid "Seek"
+msgstr ""
+
+msgid "Select"
+msgstr ""
+
+msgid "Send"
+msgstr ""
+
+msgid "Send Message"
+msgstr ""
+
+msgid "Set Volume"
+msgstr ""
+
+msgid "Setup"
+msgstr ""
+
+msgid "Setup Volume"
+msgstr ""
+
+msgid "Shot"
+msgstr ""
+
+msgid "Show"
+msgstr ""
+
+msgid "Shuffle"
+msgstr ""
+
+msgid "Shutdown"
+msgstr ""
+
+msgid "Skip"
+msgstr ""
+
+msgid "Slower"
+msgstr ""
+
+msgid "Snapshot"
+msgstr ""
+
+msgid "Sound"
+msgstr ""
+
+msgid "Speed (+)"
+msgstr ""
+
+msgid "Speed (-)"
+msgstr ""
+
+msgid "Speed +"
+msgstr ""
+
+msgid "Speed -"
+msgstr ""
+
+msgid "Start"
+msgstr ""
+
+msgid "Stopped"
+msgstr ""
+
+msgid "String"
+msgstr ""
+
+msgid "String:"
+msgstr ""
+
+msgid "Sub Menu"
+msgstr ""
+
+msgid "SubMenu"
+msgstr ""
+
+msgid "Submenu"
+msgstr ""
+
+msgid "Subtitle"
+msgstr ""
+
+msgid "Subtitles"
+msgstr ""
+
+msgid "Switch"
+msgstr ""
+
+msgid "Text"
+msgstr ""
+
+msgid "Text:"
+msgstr ""
+
+msgid "Time"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Toggle"
+msgstr ""
+
+msgid "Tools"
+msgstr ""
+
+msgid "Top"
+msgstr ""
+
+msgid "Track"
+msgstr ""
+
+msgid "Tracks"
+msgstr ""
+
+msgid "URL"
+msgstr ""
+
+msgid "URL:"
+msgstr ""
+
+msgid "UnLock"
+msgstr ""
+
+msgid "Unmute"
+msgstr ""
+
+msgid "Up"
+msgstr ""
+
+msgid "Video"
+msgstr ""
+
+msgid "Volume"
+msgstr ""
+
+msgid "Volume (+)"
+msgstr ""
+
+msgid "Volume (-)"
+msgstr ""
+
+# Volume (Muted)
+msgid "Volume (M)"
+msgstr ""
+
+msgid "Volume +"
+msgstr ""
+
+msgid "Volume -"
+msgstr ""
+
+msgid "Volume Down"
+msgstr ""
+
+msgid "Volume Up"
+msgstr ""
+
+msgid "Volume is muted"
+msgstr ""
+
+msgid "Volume: "
+msgstr ""
+
+msgid "Wait"
+msgstr ""
+
+msgid "Wait..."
+msgstr ""
+
+msgid "Waiting..."
+msgstr ""
+
+msgid "Working"
+msgstr ""
+
+msgid "Working..."
+msgstr ""
+
+msgid "Write"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "Zoom"
+msgstr ""
+
+msgid "[  ] "
+msgstr ""
+
+msgid "[*] "
+msgstr ""
+
+msgid "[default]"
+msgstr ""
+
+msgid "[empty]"
+msgstr ""
+
+msgid "[error]"
+msgstr ""
+
+msgid "[no matches]"
+msgstr ""
+
+msgid "[none]"
+msgstr ""
+
+msgid "default"
+msgstr ""
+
+msgid "empty"
+msgstr ""
+
+msgid "no matches"
+msgstr ""
+
+msgid "none"
+msgstr ""
+
+msgid "paused"
+msgstr ""
+
+msgid "playing"
+msgstr ""
+
+msgid "stopped"
+msgstr ""

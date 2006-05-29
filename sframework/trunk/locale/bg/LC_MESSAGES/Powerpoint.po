@@ -1,0 +1,62 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-03 11:07+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: ExpertOne <expertone@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: FMA Dev Team\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Bulgarian\n"
+"X-Poedit-Basepath: .\n"
+
+msgid "PowerPoint"
+msgstr "PowerPoint"
+
+msgid "Lets you control Powerpoint"
+msgstr "Вие можете да контролирате PowerPoint"
+
+msgid "Start Show"
+msgstr "Старт Презентация"
+
+msgid "Resume"
+msgstr "Продължи"
+
+msgid "End Show"
+msgstr "Край Презентация"
+
+msgid "Prev Slide"
+msgstr "Пред. Слайд"
+
+msgid "Navigate..."
+msgstr "Направляване..."
+
+msgid "Next Slide"
+msgstr "Следв. Слайд"
+
+msgid "Choose..."
+msgstr "Избор..."
+
+msgid "Toggle Screen"
+msgstr "Превкл. Екрана"
+
+msgid "Close"
+msgstr "Затвори"
+
+msgid "Launch"
+msgstr "Стартирай"
+
+msgid "Use Joystick or keys for next/prev slide, 5 to choose, 0 to quit"
+msgstr "Използвайте джойстика или клавишите за пред./след. слайд, 5 за избор, 0 за изход"
+
+msgid "Use Joystick or keys to select slide, 5 to continue, 0 to quit"
+msgstr "Използвайте джойстика или клавишите за избор на слайд, 5 за следващ, 0 за изход"
+

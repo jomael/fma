@@ -1,0 +1,98 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-23 21:49+0100\n"
+"Last-Translator: Stanley Sandriman <stansan@chello.nl>\n"
+"X-Translators: \n"
+"Language-Team: FMA Dev Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Walloon\n"
+"X-Poedit-Country: BELGIUM\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "WinDVD"
+msgstr "WinDVD"
+
+msgid "Lets you control Intervideo WinDVD"
+msgstr "Bedien uw Intervideo WinDVD"
+
+msgid "Play"
+msgstr "Afspelen"
+
+msgid "Pause/Resume"
+msgstr "Pauze/Resume"
+
+msgid "Stop"
+msgstr "Stop"
+
+msgid "Prev Chapter"
+msgstr "Vorig hoofdstuk"
+
+msgid "Next Chapter"
+msgstr "Volgende Hoofdstuk"
+
+msgid "Audio Stream"
+msgstr "Audio Stream"
+
+msgid "Volume +"
+msgstr "Volume +"
+
+msgid "Volume -"
+msgstr "Volume -"
+
+msgid "(Un)Mute"
+msgstr "(Un)Mute"
+
+msgid "?SubTitles"
+msgstr "?Ondertitels"
+
+msgid "Fullscreen"
+msgstr "Volledig scherm"
+
+msgid "Step Backward"
+msgstr "Stap Achteruit"
+
+msgid "Step Forward"
+msgstr "Stap Voorwaarts"
+
+msgid "Speed +"
+msgstr "Snelheid +"
+
+msgid "Speed -"
+msgstr "Snelheid -"
+
+msgid "Capture Frame"
+msgstr "Vang Kader"
+
+msgid "DVD Menu"
+msgstr "DVD Menu"
+
+msgid "Select"
+msgstr "Selecteer"
+
+msgid "Up"
+msgstr "Omhoog"
+
+msgid "Down"
+msgstr "Omlaag"
+
+msgid "Left"
+msgstr "Links"
+
+msgid "Right"
+msgstr "Rechts"
+
+msgid "Close"
+msgstr "Sluiten"
+
+msgid "Launch"
+msgstr "Opstarten"
+

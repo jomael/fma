@@ -1,0 +1,415 @@
+# FMA Localization Project
+# Copyright (C) 2004 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Languages suomeksi\n"
+"POT-Creation-Date: 2003-05-05 12:39\n"
+"PO-Revision-Date: 2005-05-05 18:46+0200\n"
+"Last-Translator: Heikki Suopanki <firstname.lastname@mail.ru>\n"
+"X-Translators: Heikki Suopanki <firstname.lastname@mail.ru>\n"
+"Language-Team: finnish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0beta2\n"
+
+#. Language in the asian country of approximately the same name
+msgid "Abkhazian"
+msgstr "Abhaasi"
+
+#. Dutch-like language in South Africa
+msgid "Afrikaans"
+msgstr "Afrikaans"
+
+#. Language in Albania
+msgid "Albanian"
+msgstr "Albania"
+
+msgid "American English"
+msgstr "Englanti (USA)"
+
+msgid "Arabic"
+msgstr "Arabia"
+
+#. Language in Armenia
+msgid "Armenian"
+msgstr "Armenia"
+
+msgid "Australian English"
+msgstr "Englanti (AUS)"
+
+msgid "Austrian German"
+msgstr "Saksa (Itävaltä)"
+
+#. Asian language from a nation of the same name
+msgid "Azerbaijani"
+msgstr "Azeri"
+
+#. Spoken in a small part of Spain
+msgid "Basque"
+msgstr "Baski"
+
+#. East Europe
+msgid "Belarusian"
+msgstr "Valkovenäjä"
+
+#. Language in Bangladesh
+msgid "Bengali"
+msgstr "Bengali"
+
+#. Language in Bosnia-Herzegovina, Europe
+msgid "Bosnian"
+msgstr "Bosnia"
+
+#. Language in small part of France
+msgid "Breton"
+msgstr "Bretoni"
+
+#. Language of Brazil
+msgid "Brazilian Portuguese"
+msgstr "Portugali (Brasilia)"
+
+#. Language of England
+msgid "British English"
+msgstr "Englanti (UK)"
+
+#. Language of Bulgaria, Europe
+msgid "Bulgarian"
+msgstr "Bulgaria"
+
+#. Language of Burma, Asia
+msgid "Burmese"
+msgstr "Burma"
+
+msgid "Canadian English"
+msgstr "Englanti (Kanada)"
+
+#. Language of Andorra, a small part of France and a small part of Spain
+msgid "Catalan"
+msgstr "Katalaani"
+
+#. language of Chechnya, Asia
+msgid "Chechen"
+msgstr "Tshetseeni"
+
+msgid "Chinese"
+msgstr "Kiina"
+
+#. Corsica is the island south of France, that belongs to France
+msgid "Corsican"
+msgstr "Korsika"
+
+#. Croatia is just east of Italy
+msgid "Croatian"
+msgstr "Kroatia"
+
+#. Language of the Czech Republic, Europe
+msgid "Czech"
+msgstr "Tsekki"
+
+#. Language of Denmark
+msgid "Danish"
+msgstr "Tanska"
+
+#. Language of Netherlands (Holland) and half of Belgium (often named Flamish)
+msgid "Dutch"
+msgstr "Hollanti"
+
+msgid "English"
+msgstr "Englanti"
+
+#. Artificial language, not used in any country
+msgid "Esperanto"
+msgstr "Esperanto"
+
+#. Estonia is in the baltics, just west of Russia
+msgid "Estonian"
+msgstr "Viro"
+
+#. Faroese is spoken on the Faroe islands, which is part of Denmark, Europe
+msgid "Faroese"
+msgstr "Fääri"
+
+#. The same language as Dutch, but the version that is spoken in Belgium, Europe
+msgid "Flemish"
+msgstr "Flaami"
+
+#. Finland is in north Europe
+msgid "Finnish"
+msgstr "Suomi"
+
+#. Language of France
+msgid "French"
+msgstr "Ranska"
+
+#. Language of a small region in the north of Netherlands and Germany
+msgid "Frisian"
+msgstr "Friisi"
+
+#. A language spoken in Scotland, north of England
+msgid "Gaelic"
+msgstr "Gaeli"
+
+#. The most widely used language of Georgia, a country that neighbors Turkey (middle east)
+msgid "Georgian"
+msgstr "Gruusia"
+
+#. Language of Germany, Austria and others
+msgid "German"
+msgstr "Saksa"
+
+#. Language of Greece
+msgid "Greek"
+msgstr "Kreikka"
+
+#. Language of Greenland, the largest island in the world, located in North America but belongs to Denmark, Europe
+msgid "Greenlandic"
+msgstr "Inuit"
+
+#. A language spoken in India
+msgid "Gujarati"
+msgstr "Gujarati"
+
+#. Language spoken on haiti and The Bahamas (amongst immigrants). Also named Creole.
+msgid "Haitian"
+msgstr "Haiti"
+
+#. Language of Israel
+msgid "Hebrew"
+msgstr "Heprea"
+
+#. The largest language in India
+msgid "Hindi"
+msgstr "Hindi"
+
+#. The language of Hungary, Europe
+msgid "Hungarian"
+msgstr "Unkari"
+
+#. The language of iceland, Europe
+msgid "Icelandic"
+msgstr "Islanti"
+
+#. Official language of Indonesia, Asia, a modified form of Malay
+msgid "Indonesian"
+msgstr "Indonesia"
+
+#. Language of Italy, Europe
+msgid "Italian"
+msgstr "Italia"
+
+#. Language of Ireland, Europe
+msgid "Irish"
+msgstr "Iiri"
+
+#. Language spoken in Indonesia and Suriname. Java is the most densely populated island in Indonesia, Asia.
+msgid "Javanese"
+msgstr "Jaava"
+
+#. Language of Japan, Asia
+msgid "Japanese"
+msgstr "Japani"
+
+#. Language spoken in India
+msgid "Kashmiri"
+msgstr "Kashmiri"
+
+#. Language of Kazakhstan, a former soviet republic
+msgid "Kazakh"
+msgstr "Kasakki"
+
+#. Language of Cambodia, Asia
+msgid "Khmer"
+msgstr "Khmer"
+
+#. language of Kyrgyzstan, a former soviet republic
+msgid "Kirghiz"
+msgstr "Kirgiisi"
+
+#. Language of Korea, Asia
+msgid "Korean"
+msgstr "Korea"
+
+#. Language spoken in northern Iraq, East Turkey and northern Iran
+msgid "Kurdish"
+msgstr "Kurdi"
+
+#. Language of the ancient romans. Language used by the catholic christian church.
+msgid "Latin"
+msgstr "Latina"
+
+#. Language of Latvia, North Europe
+msgid "Latvian"
+msgstr "Latvia"
+
+#. Language in Congo, Africa
+msgid "Lingala"
+msgstr "Lingala"
+
+#. Language of Lithuania, North Europe
+msgid "Lithuanian"
+msgstr "Liettua"
+
+#. Language of Luxembourgh, Europe
+msgid "Luxembourgish"
+msgstr "Luxemburg"
+
+#. Language of the republic of macedonia, East of Italy, north of Greece
+msgid "Macedonian"
+msgstr "Makedonia"
+
+#. Language on Malta, an Island in the mediterranean, the ocean between europe and africa
+msgid "Maltese"
+msgstr "Malta"
+
+#. The language of Moldavia, Asia
+msgid "Moldavian"
+msgstr "Moldavia"
+
+#. Language of Mongolia, north of China
+msgid "Mongolian"
+msgstr "Mongolia"
+
+#. An official language in New Zealand (besides English)
+msgid "Maori"
+msgstr "Maori"
+
+#. Language of the country Nepal
+msgid "Nepali"
+msgstr "Nepali"
+
+#. The common name of the language, which in Norway, Europe, is named "Bokmaal"
+msgid "Norwegian"
+msgstr "Norja"
+
+#. The language in Norway, Europe, that is very close to Danish
+msgid "Norwegian Bokmaal"
+msgstr "Norja (Bokmaal)"
+
+#. The language that is spoken in mostly western Norway
+msgid "Norwegian Nynorsk"
+msgstr "Norja (Nynorsk)"
+
+#. Language of Iran, Asia
+msgid "Persian"
+msgstr "Persia"
+
+#. Language of Poland, Europe
+msgid "Polish"
+msgstr "Puola"
+
+#. Language of Portugal, Europe
+msgid "Portuguese"
+msgstr "Portugali"
+
+#. Language in a part of Switzerland, Europe
+msgid "Raeto-Romance"
+msgstr "Retoromania"
+
+#. Language of Romania, Europe
+msgid "Romanian"
+msgstr "Romania"
+
+#. Language of Russia
+msgid "Russian"
+msgstr "Venäjä"
+
+#. Language of Serbia, east of Italy
+msgid "Serbian"
+msgstr "Serbia"
+
+#. Language of Slovakia, central Europe
+msgid "Slovak"
+msgstr "Slovakia"
+
+#. Language of Slovenia, east of italy
+msgid "Slovenian"
+msgstr "Slovenia"
+
+#. Language of Somalia, East Africa
+msgid "Somali"
+msgstr "Somali"
+
+#. Language of Spain, Europe
+msgid "Spanish"
+msgstr "Espanja"
+
+#. Language spoken in Africa
+msgid "Swahili"
+msgstr "Suahili"
+
+#. Language of Sweden, North Europe
+msgid "Swedish"
+msgstr "Ruotsi"
+
+#. Most widely spoken language in Switzerland
+msgid "Swiss German"
+msgstr "Saksa (Sveitsi)"
+
+#. Language of Tajikistan, a former soviet republic
+msgid "Tajik"
+msgstr "Tadzikki"
+
+#. Language in the northern part of Sri Lanka, an island close to India
+msgid "Tamil"
+msgstr "Tamili"
+
+#. Language of Thailand, Asia
+msgid "Thai"
+msgstr "Thai"
+
+#. Language of Tibet, close to China
+msgid "Tibetan"
+msgstr "Tiibet"
+
+#. Language of Turkmenistan, a former soviet republic
+msgid "Turkmen"
+msgstr "Turkmeeni"
+
+#. Language of Turkey
+msgid "Turkish"
+msgstr "Turkki"
+
+#. language of Ukraine
+msgid "Ukrainian"
+msgstr "Ukraina"
+
+#. A language spoken in various countries
+msgid "Urdu"
+msgstr "Urdu"
+
+#. language of Uzbekistan, a former soviet republic
+msgid "Uzbek"
+msgstr "Uzbek"
+
+#. Language of Vietnam, Indochina
+msgid "Vietnamese"
+msgstr "Vietnam"
+
+#. The french spoken in south Belgium, Europe
+msgid "Walloon"
+msgstr "Vallooni"
+
+#. The language in Wales, Great Britain, Europe
+msgid "Welsh"
+msgstr "Kymri"
+
+#. Language spoken in South Africa
+msgid "Zulu"
+msgstr "Zulu"
+
+#, fuzzy
+#~ msgid "Kalaallisut"
+#~ msgstr "Name=Kalaallisut"
+
+#, fuzzy
+#~ msgid "Limburgish"
+#~ msgstr "Name=Luxemburg"
+#~ msgid "\t Font:\t"
+#~ msgstr "\t Kirjasin:\t"
+#~ msgid "\tdisabled"
+#~ msgstr "\tpois käytöstä"
+

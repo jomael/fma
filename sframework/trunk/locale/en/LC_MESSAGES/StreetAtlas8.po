@@ -1,0 +1,243 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-09-06 09:39+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: \n"
+"Language-Team: FMA Dev Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+
+msgid "Street Atlas"
+msgstr ""
+
+msgid "Lets you control Delorme Street Atlas 8.0"
+msgstr ""
+
+msgid "Calculate Route"
+msgstr ""
+
+msgid "Get Directions"
+msgstr ""
+
+msgid "Back on Track"
+msgstr ""
+
+msgid "Time/Distance"
+msgstr ""
+
+msgid "Guide"
+msgstr ""
+
+msgid "Heading"
+msgstr ""
+
+msgid "Miles Remaining"
+msgstr ""
+
+msgid "Reverse Route"
+msgstr ""
+
+msgid "Set Current Location"
+msgstr ""
+
+msgid "Set Destination"
+msgstr ""
+
+msgid "Get Map"
+msgstr ""
+
+msgid "Home"
+msgstr ""
+
+msgid "Address"
+msgstr ""
+
+msgid "Full address:"
+msgstr ""
+
+msgid "Directions"
+msgstr ""
+
+msgid "Street Atlas has been closed"
+msgstr ""
+
+# say phrase
+msgid "North"
+msgstr ""
+
+# say phrase
+msgid "South"
+msgstr ""
+
+# say phrase
+msgid "East"
+msgstr ""
+
+# say phrase
+msgid "West"
+msgstr ""
+
+# say phrase
+msgid "Southwest"
+msgstr ""
+
+# say phrase
+msgid "Southeast"
+msgstr ""
+
+# say phrase
+msgid "Northeast"
+msgstr ""
+
+# say phrase
+msgid "Northwest"
+msgstr ""
+
+# say phrase
+msgid "There is poor GPS coverage.  Please try again later."
+msgstr ""
+
+# say phrase
+msgid "Back on track is on"
+msgstr ""
+
+# say phrase
+msgid "Back on track is off"
+msgstr ""
+
+# say phrase
+msgid "You are currently on "
+msgstr ""
+
+# say phrase
+msgid "north"
+msgstr ""
+
+# say phrase
+msgid "north north east"
+msgstr ""
+
+# say phrase
+msgid "north east"
+msgstr ""
+
+# say phrase
+msgid "east north east"
+msgstr ""
+
+# say phrase
+msgid "east"
+msgstr ""
+
+# say phrase
+msgid "east south east"
+msgstr ""
+
+# say phrase
+msgid "south east"
+msgstr ""
+
+# say phrase
+msgid "south south east"
+msgstr ""
+
+# say phrase
+msgid "south"
+msgstr ""
+
+# say phrase
+msgid "south south west"
+msgstr ""
+
+# say phrase
+msgid "south west"
+msgstr ""
+
+# say phrase
+msgid "west south west"
+msgstr ""
+
+# say phrase
+msgid "west"
+msgstr ""
+
+# say phrase
+msgid "west north west"
+msgstr ""
+
+# say phrase
+msgid "north west"
+msgstr ""
+
+# say phrase
+msgid "north north west"
+msgstr ""
+
+# say phrase
+msgid "You are headed "
+msgstr ""
+
+# say phrase
+msgid " going "
+msgstr ""
+
+# say phrase
+msgid " miles per hour at "
+msgstr ""
+
+# say phrase
+msgid " feet above sea level."
+msgstr ""
+
+# say phrase
+msgid "The route has been reversed."
+msgstr ""
+
+# say phrase
+msgid "The destination is home"
+msgstr ""
+
+# say phrase
+msgid "The destination is "
+msgstr ""
+
+# display
+msgid "Go "
+msgstr ""
+
+# display
+msgid " on"
+msgstr ""
+
+# display
+msgid "Near "
+msgstr ""
+
+# display
+msgid "for "
+msgstr ""
+
+# display
+msgid " mi"
+msgstr ""
+
+# display
+msgid "So Far: "
+msgstr ""
+
+# display
+msgid "Elapsed: "
+msgstr ""
+
+# display
+msgid "Exit: "
+msgstr ""

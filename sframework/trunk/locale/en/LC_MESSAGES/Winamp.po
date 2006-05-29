@@ -1,0 +1,140 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-09-01 13:50+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: \n"
+"Language-Team: FMA Dev Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+
+msgid "WinAmp"
+msgstr ""
+
+msgid "This plugin controls winamp. You may use the menu and the phones volume keys."
+msgstr ""
+
+msgid "Browse Artists"
+msgstr ""
+
+msgid "Search Artists"
+msgstr ""
+
+msgid "Search Titles"
+msgstr ""
+
+msgid "Search Both"
+msgstr ""
+
+msgid "Search/Browse"
+msgstr ""
+
+msgid "Restart"
+msgstr ""
+
+msgid "Play"
+msgstr ""
+
+msgid "Resume"
+msgstr ""
+
+msgid "Pause"
+msgstr ""
+
+msgid "Stop"
+msgstr ""
+
+msgid "<< Prev Track "
+msgstr ""
+
+msgid ">> Next Track "
+msgstr ""
+
+msgid "Volume"
+msgstr ""
+
+msgid "Show Playlist"
+msgstr ""
+
+msgid "Load Playlist"
+msgstr ""
+
+msgid "Seek"
+msgstr ""
+
+msgid "Shuffle Off"
+msgstr ""
+
+msgid "Shuffle On"
+msgstr ""
+
+msgid "Repeat Off"
+msgstr ""
+
+msgid "Repeat On"
+msgstr ""
+
+msgid "Help"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Launch"
+msgstr ""
+
+msgid "Increase Volume: Joy-up,-right,Vol-up - Decrease volume: Joy-down,-left,Vol-down"
+msgstr ""
+
+msgid "The menu should be mostly self-explaining."
+msgstr ""
+
+msgid "(empty)"
+msgstr ""
+
+msgid "Playlist"
+msgstr ""
+
+# artist - song
+msgid " - "
+msgstr ""
+
+#mark: selected
+msgid ">"
+msgstr ""
+
+#mark: not selected
+msgid "  "
+msgstr ""
+
+msgid "Artists"
+msgstr ""
+
+msgid "Search artists"
+msgstr ""
+
+msgid "Artists:"
+msgstr ""
+
+msgid "Search titles"
+msgstr ""
+
+msgid "Titles:"
+msgstr ""
+
+msgid "Search both"
+msgstr ""
+
+msgid "Artists/Titles:"
+msgstr ""
+
+msgid "(no matches!)"
+msgstr ""

@@ -1,0 +1,135 @@
+<html>
+	<head>
+		<title>The LinkedList</title>
+	</head>
+	<body>
+		<h1>The LinkedList</h1>
+		<h2>Table of contents</h2>
+		<ul>
+			<li><a href="#LinkedList">The LinkedList</a></li>
+			<li><a href="#Iterator">The Iterator</a></li>
+			<li><a href="#BI">The BackInserter</a></li>
+			<li><a href="#ArrayContainer">The ArrayContainer</a></li>
+		</ul>
+		
+		<a name='#LinkedList' />
+		<h2>The LinkedList</h2>
+		<h3>What is a linked list?</h3>
+		<p>A linked list is a container element a bit similar to an array, but differently working.
+		An array is a block of memory split up in many parts which is reserved when it is created, or
+		redimensioned. A linked list doesn't have to be redimensioned: New elements are created
+		elsewhere in the memory and linked to each other (every element contains a reference to 
+		the next and, in case of a double-linked list, to the previous element). This way we can
+		create and delete elements when- and whereever we want to.</p>
+		<h3>How to use the LinkedList</h3>
+		<p>You create a linked list with
+		 <code>Set <i>ll</i> = New LinkedList</code>
+		  If you don't use the <a href="#BI">BackInserter</a>, you can add an item at the back of the
+		  list with
+		<p><code><i>itemRef</i> = <i>ll</i>.AddBack( <i>valueorobject</i> )</code></p>
+		 or in front of the list with
+		 <p><code><i>itemRef</i> = <i>ll</i>.AddFront( <i>valueorobject</i> )</code></p>
+		 You can also add an item at a various position in the list with 
+		 <p><code><i>itemRef</i> = <i>ll</i>.Insert( <i>position</i>, <i>valueorobject</i> )</code></p>
+		 The return values are references to the item object. The item can simply be deleted from the
+		 list with using
+		 <p><code><i>itemRef</i>.Delete</code> or <code><i>ll</i>.Delete ( <i>index</i> )</code></p>
+		 <br>
+		 Once an item is in the list, you can access it with 
+		 <p><code><i>valueorobjectvar</i> = <i>ll</i>( <i>index</i> )</code></p>
+		 or
+		 <p><code><i>valueorobjectvar</i> = <i>ll</i>.Item( <i>index</i> )</code></p>
+		 Assigning values and objects to a position is done with<br>
+		 <p><code><i>ll</i>.Item( <i>index</i> ) = <i>value</i><br>
+		 Set <i>ll</i>.Item( <i>index</i> ) = <i>object</i> </code><br></p>
+		  (It occasionally works without the .Item, but I don't get why. Basically it shouldn't, 
+		  as VBS doesn't allow more than 1 default method/property.)
+		  <B>IMPORTANT:</B> The use of these array-imitating methods is deprecated for several reasons
+		  (speed as well as invalidation issues after insertions/deletions) and provided only for 
+		  compatibility with the array approach. Use iterators instead to walk through lists.
+		  </p>
+		  <p>The number of items in the list is returned with
+		  <p><code><i>var</i> = <i>ll</i>.Count</code></p>
+		  </p>
+		  <h3>Important: Arrays in LinkedLists</h3>
+		  <p>If you add an array as an item to a linked list, you can't access it normally with
+		  <p><code><i>ll</i>( <i>index</i>, <i>ArrayIndex</i> )</code></p>
+		  because of VBS's limitations (no optional arguments). Internally the array is packed into an
+		  object which handles it. So you have to use
+		  <p><code><i>ll</i>( <i>index</i> ).Item( <i>AryIndex</i> )</code></p>
+		  Because of the same reason currently only 1-dimensional arrays are supported.
+		  
+		
+		
+		<a name='#Iterator' />
+		<h2>The Iterator</h2>
+		<h3>What is an iterator?</h3>
+		<p>Basically, the original iterator is an abstraction of a pointer for to point
+		inside containers. This iterator however doesn't have the original pointer interface for
+		obvious reasons (VBS doesn't have any pointers or overloadable operators.)</p>
+		
+		<h3>What do I use it for?</h3>
+		<p>It is useful for performing actions on a sequence of items in a LinkedList. Most basic
+		example is
+		<p><code><pre>
+<i>myIterator</i> = <i>ll</i>.Begin
+<i>lastIterator</i>= <i>ll</i>.Last
+Do Until <i>myIterator</i>.Object Is <i>lastIterator</i>.Object
+	Debug.DebugMsg <i>myIterator</i>.Item
+	<i>myIterator</i>.Iterate()
+Loop
+</pre></code></p>
+		This will output a list of all values in <i>ll</i>. 
+		</p>
+		
+		<h3>How do I use it?</h3>
+		<p>
+		You first have to get an iterator with
+		<p><code>
+		<i>it</i> = <i>ll</i>.Begin<br>
+		<i>it</i> = <i>ll</i>.Last<br>
+		<i>it</i> = <i>ll</i>.RBegin<br>
+		<i>it</i> = <i>ll</i>.RLast<br>
+		<i>it</i> = <i>ll</i>.AtIt ( <i>index</i> )
+		</code></p>
+		Begin and Last return the iterators for the first element and the terminator (NOT the last
+		element. The terminator is the position behind the last element, the first element not to be
+		processed anymore.) RBegin and RLast are used to go through the list backwards: RBegin returns
+		the last item and RLast the item before the first (a front terminator). AtIt returns the
+		iterator for the item at position <i>index</i>. 
+		</p>
+		<p>You get the selected item with <code><i>it</i>.Item</code> and the selected LinkedList
+		object (needed for equivalency comparison) with <code><i>it</i>.Object</code>. 
+		<code><i>it</i>.Delete()</code> deletes the current item and proceeds to the next one.</p>
+		<p> With <code><i>it</i>.Iterate()</code> you proceed forward in the list, with 
+		<code><i>it</i>.Iterate()</code> you step backwards. Both of the functions return a copy
+		of the iterator after the operation. <b>Important:</b> For going through the list backwards,
+		you need <code>IterateBack()</code>, even though the end of the list is in RBegin and the start
+		in RLast. This may change in future versions, if a direction flag is implemented.</p>
+		<p>You get a copy of the iterator through normal assignment (without Set): <code><i>it2</i> = 
+		<i>it1</i></code> or with <code><i>it2</i> = <i>it1</i>.GetCopy</code>
+		<a name='#BI' />
+		<h2>The BackInserter</h2>
+		<h3>What is a back inserter?</h3>
+		Originally, the back inserter is a special form of iterator which iterates automatically after
+		having been used and is write-only. It adds the assigned value as item at the end of the list.
+		<h3>How do I use it?</h3>
+		The usage is fairly simple. First you get a BackInserter instance of a LinkedList with 
+		<code><i>bi</i> = <i>ll</i>.BackInserter()</code>. Afterwards you can add items to 
+		the list with
+		<p><code>
+		<i>bi</i>.Item = <i>valueorobject1</i><br>
+		<i>bi</i>.Item = <i>valueorobject2</i><br>
+		<i>bi</i>.Item = <i>valueorobject3</i><br>
+		</code></p>
+		You can get a copy of the BackInserter through assignment, i.e. <code><i>bi2</i> = <i>bi1</i>
+		</code> or explicitly with <code><i>bi2</i> = <i>bi1</i>.GetCopy</code>. 
+		
+		
+		
+		<a name='#ArrayContainer' />
+		<h2>The ArrayContainer</h2>
+		
+		
+	</body>
+</html>

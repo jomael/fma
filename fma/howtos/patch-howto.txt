@@ -1,0 +1,43 @@
+HOW TO RELEASE PATCHES for FMA?
+
+- Uninstall any current FMA packages.
+
+- Update entire FMA module from CVS stable branch.
+
+- Compile/install updated FMA packages.
+  Be aware of changed path in Delphi Library.
+
+- Set 'uAbout.inc' with proper const values.
+
+- Build FMA project with JCL Debug data.
+
+- Check 'SanityCheck.txt' for build testing.
+
+- Tag the files in CVS with this version
+
+- Update local 'history.txt' file with release changes.
+
+- Download 'MOBILEAGENT.updates' from FMA web site.
+
+- Run FMA Update Manager and open 'MOBILEAGENT.updates'.
+
+- Add new version as the new FMA is compiled as.
+
+- Select previous version in tree and do Add Update.
+
+- Check both executables and release notes paths.
+
+- Generate updates (reverse one is optional).
+
+- Switch to Updates Index view and check new updates position.
+  Ascanding version order is important (update first appearance)
+
+- Test the update localy by running previous FMA.
+
+- Save 'MOBILEAGENT.updates'.
+
+- Upload .dif and .rev files to FMA web site under /updates.
+
+- Upload 'MOBILEAGENT.updates' to FMA web site.
+
+- Post announcement to FMA forums.

@@ -1,0 +1,38 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-03 10:14+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: ExpertOne <expertone@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: FMA Dev Team\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Bulgarian\n"
+"X-Poedit-Basepath: .\n"
+
+msgid "Moose++"
+msgstr "Мишка++"
+
+msgid "Mouse and keyboard control."
+msgstr "Контрол върху клавиатурата и мишката."
+
+msgid "1:tab 2,5,4,6:curs 3:esc 7:alt-tab 8,9:pgdn/up 0:enter *:alt-F4 #:text"
+msgstr "1:tab 2,5,4,6:крср 3:esc 7:alt-tab 8,9:pgdn/up 0:enter *:alt-F4 #:текст"
+
+msgid "1:style 2,5:up/dn 3,6:nav 4:new 7:next *:close 8:prev 9:tab 0:enter #:text"
+msgstr "1:стил 2,5:up/dn 3,6:нав 4:нов 7:следв *:затв 8:пред 9:tab 0:enter #:текст"
+
+msgid "?!?"
+msgstr "?!?"
+
+msgid "Prompt:"
+msgstr "Въведи:"
+

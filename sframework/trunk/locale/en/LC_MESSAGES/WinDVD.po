@@ -1,0 +1,95 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-09-01 13:50+0200\n"
+"Last-Translator: ExpertOne <expertone@users.sourceforge.net>\n"
+"X-Translators: \n"
+"Language-Team: FMA Dev Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+
+msgid "WinDVD"
+msgstr ""
+
+msgid "Lets you control Intervideo WinDVD"
+msgstr ""
+
+msgid "Play"
+msgstr ""
+
+msgid "Pause/Resume"
+msgstr ""
+
+msgid "Stop"
+msgstr ""
+
+msgid "Prev Chapter"
+msgstr ""
+
+msgid "Next Chapter"
+msgstr ""
+
+msgid "Audio Stream"
+msgstr ""
+
+msgid "Volume +"
+msgstr ""
+
+msgid "Volume -"
+msgstr ""
+
+msgid "(Un)Mute"
+msgstr ""
+
+msgid "?SubTitles"
+msgstr ""
+
+msgid "Fullscreen"
+msgstr ""
+
+msgid "Step Backward"
+msgstr ""
+
+msgid "Step Forward"
+msgstr ""
+
+msgid "Speed +"
+msgstr ""
+
+msgid "Speed -"
+msgstr ""
+
+msgid "Capture Frame"
+msgstr ""
+
+msgid "DVD Menu"
+msgstr ""
+
+msgid "Select"
+msgstr ""
+
+msgid "Up"
+msgstr ""
+
+msgid "Down"
+msgstr ""
+
+msgid "Left"
+msgstr ""
+
+msgid "Right"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Launch"
+msgstr ""

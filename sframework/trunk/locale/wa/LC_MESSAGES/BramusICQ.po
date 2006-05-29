@@ -1,0 +1,104 @@
+# FMA Localization Project
+# Copyright (C) 2005 FMA Dev Team
+# This file is distributed under the same license as the FMA package.
+# ExpertOne <expertone@users.sourceforge.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FMA\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-23 21:32+0100\n"
+"Last-Translator: Stanley Sandriman <stansan@chello.nl>\n"
+"X-Translators: \n"
+"Language-Team: FMA Dev Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Walloon\n"
+"X-Poedit-Country: BELGIUM\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "BramusICQ"
+msgstr "BramusICQ"
+
+msgid "Control your ICQ running at your pc from your phone"
+msgstr "Bedien uw ICQ draaiend op uw PC vanaf uw telefoon"
+
+msgid "Error : ICQ Not Running"
+msgstr "Error : ICQ Not Running"
+
+msgid "Error : Wrong ICQ API version"
+msgstr "Error : Foute ICQ API versie"
+
+msgid "Error : API Not installed"
+msgstr "Error : API Niet geïnstalleerd"
+
+msgid "Change Status"
+msgstr "Verander Status"
+
+msgid "ContactList"
+msgstr "Contactlijst"
+
+msgid "Main menu"
+msgstr "Hoofd menu"
+
+msgid "Online"
+msgstr "Online"
+
+msgid "Invisible"
+msgstr "Onzichtbaar"
+
+msgid "Away"
+msgstr "Weg"
+
+msgid "N/A"
+msgstr "N/A"
+
+msgid "DND"
+msgstr "DND"
+
+msgid "Occupied"
+msgstr "Bezet"
+
+msgid "Free For Chat"
+msgstr "Vrij Voor Chat"
+
+msgid "Disconnect/Offline"
+msgstr "Verbreken/Offline"
+
+msgid "Send Message"
+msgstr "Verzend Bericht"
+
+msgid "Send URL"
+msgstr "Verzend URL"
+
+msgid "Contact Options"
+msgstr "Contact Opties"
+
+msgid "Error : Unknown error"
+msgstr "Error : Unknown error"
+
+msgid "No contacts online"
+msgstr "Geen Contacten online"
+
+msgid "Contact List"
+msgstr "Contact lijst"
+
+msgid "Enter message"
+msgstr "Schrijf bericht"
+
+msgid "Message:"
+msgstr "Bericht:"
+
+msgid "Message Sent to "
+msgstr "Bericht verzonden naar"
+
+msgid "Enter URL"
+msgstr "Voer URL in"
+
+msgid "URL:"
+msgstr "URL:"
+
+msgid "URL Sent to "
+msgstr "URL Verzonden naar"
+
