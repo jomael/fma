@@ -1,0 +1,46 @@
+This control is used in various fma's scripts.
+It controls the audio's volume of your OS.
+
+INSTALLATION:
+As this is an Automation Server Object, the installation is straight forward.
+
+1. unzip the downloaded file into the folder desired, e.g. c:\Program Files\floAtMixer\
+
+2. Run it once, by double clicking on the executable file, it will show an icon into tray area (near clock)
+
+3. You will notice nothing but the program had register itself as an Automation Server and it is still running in the background
+
+4. Done
+
+5. If desired, Unload it from the tray icon popup menu (it does not need to stay resident), or leave it till the next time windows is restarted
+
+6. While it is running, try changing the volume control and you will notice some OSD display at the top left corner of your screen, it will stay there for 5 seconds.
+
+
+DETAILED  LIST: 
+ProgID:
+ floAtMediaCtrl.VolumeCtrl
+ 
+Properties:
+ Integer Mute : 1=Mute 0=UnMute
+ Integer Volume : Volume in percentage
+ (Write Only) int ShowDurationMS : Default to 5000
+ (Write Only) int DestinationID : Default to 0 (Playback)
+ (Write Only) int ConnectionID : Default to -1 (Master Volume)
+ 
+Methods:
+ void Show(void) : Show current Volume Control Status
+ 
+Sample Code (VB):
+ Sub test()
+    Dim a
+    Set a = CreateObject("floAtMixer.VolumeCtrl")
+    a.Show          'show current status
+    a.Mute = 1      'mute
+    a.Mute = 0      'unmute
+    a.Volume = 50   'set volume to 50%
+    Set a = Nothing 'destroy the object, will terminate display immediately
+End Sub
+ 
+NOTES:
+It could be used as a Volume Status display if it is running in the background as a standalone executable

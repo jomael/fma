@@ -1,0 +1,29 @@
+[main]
+; format: update_name-from_version_signature-to_version_signature=patch_file_name,patch_file_size,update_engine1+pdate_engine2+...
+; mandatory (incremental)
+MobileAgent-0.1.0.31-0.1.0.32=update-0.1.0.31-0.1.0.32.dif,203768,bin
+;
+; optional (fast - skip some middle versions)
+MobileAgent-0.1.0.31-0.1.0.99=update-0.1.0.31-0.1.0.99.dif,125500,bin
+;
+; optional (back)
+MobileAgent-0.1.0.32-0.1.0.31=update-0.1.0.32-0.1.0.31.rev,202636,bin
+;
+; optional (full - by using a * char as source version)
+MobileAgent-*-0.1.0.99=MobileAgent-0.1.0.99.exe,2000000,null
+
+[manager]
+; update manager settings (do not modify manually)
+From Dir=
+To Dir=
+History File=
+Max Compress=1
+Add Reverse=1
+Add History=1
+Filter=
+Compression=1
+Encryption=0
+Protection=0
+
+[mirrors]
+mirror_0="SourceForge.net",http://fma.sourceforge.net/updates/
