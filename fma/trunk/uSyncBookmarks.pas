@@ -337,7 +337,7 @@ begin
       PhoneData.status := bsNormal;
       PhoneData.position := StrToInt(GetToken(sl[i],0));
       PhoneData.url := GetToken(sl[i],1);
-      PhoneData.title := UTF8StringToWideString(GetToken(sl[i],2));
+      PhoneData.title := UTF8StringToWideString(WideStringToLongString(GetToken(LongStringToWideString(sl[i]),2)));
       PhoneData.id := GetBookmarkNewID(@PhoneData);
       Log.AddSynchronizationMessage('Debug: Processing phone bookmark '+PhoneData.title, lsDebug);
       { Locate Bookmark in FMA }
@@ -884,7 +884,7 @@ begin
     for j := 0 to it.Count - 2 do begin
       if pos('*EWBA', it[j]) = 1 then begin // do not localize
         s := it[j];
-        if Form1.FUseUTF8 then s := UTF8StringToWideString(s);
+        if Form1.FUseUTF8 then s := UTF8StringToWideString(it[j]);
         System.Delete(s,1,7);
         bindex := GetToken(s,0);
         burl := GetToken(s,1);

@@ -131,7 +131,7 @@ type
     procedure btnCancelClick(Sender: TObject);
   private
     { Private declarations }
-    OldName: string;
+    OldName: WideString;
     Oldindex: string;
 
     MMIFontSupport: boolean;
@@ -540,7 +540,7 @@ begin
       else
         Form1.TxAndWait('AT*EAPN="' + Edit1.Text + '"'); // do not localize
     except
-      edit1.Text := OldName;
+      Edit1.Text := OldName;
       lblNameCopy.Caption := OldName;
       btnApply.Enabled := False; // we're done already sinte this is the last setting
       Form1.Status(_('Rename aborted'));
@@ -583,7 +583,7 @@ end;
 procedure TfrmEditProfile.EAPS_N;
 var
   i: Integer;
-  str: WideString;
+  str: string;
   strlst: TStringlist;
 begin
   try
@@ -595,11 +595,12 @@ begin
       if pos('*EAPS', ThreadSafe.RxBuffer.Strings[i]) = 1 then // do not localize
         begin
           str := Copy(ThreadSafe.RxBuffer.Strings[i], 8, length(ThreadSafe.RxBuffer.Strings[i]));
-          if Form1.FUseUTF8 then str := UTF8StringToWideString(str);
+          //if Form1.FUseUTF8 then str := UTF8StringToWideString(str);
           strlst.DelimitedText := str;
           Oldindex := strlst[0];
           OldName := strlst[1];
-          edit1.Text  := OldName;
+          if Form1.FUseUTF8 then OldName := UTF8StringToWideString(strlst[1]);
+          Edit1.Text  := OldName;
           Edit1Change(nil);
         end;
     end;
@@ -641,7 +642,7 @@ procedure TfrmEditProfile.btnApplyClick(Sender: TObject);
 begin
   Form1.Status(_('Sending setting profile...'));
   SendSetting;
-  if Oldname <> edit1.Text then
+  if Oldname <> Edit1.Text then
     Form1.InitProfile();
   Form1.Status('');
   btnApply.Enabled := False;

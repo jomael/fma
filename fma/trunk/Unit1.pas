@@ -8086,7 +8086,7 @@ var
   begin
     { WARNING!! contact.StateIndex meaning should match SIM.imageindex one (new,mod,del) }
     { SEE ParsePhonebookListFromEditor !!! Implementations should match }
-    sl.Add(WideQuoteStr(WideStringToUTF8String(Name + TelType),True) + ',' + Tel + ',' +
+    sl.Add(WideStringToUTF8String(WideQuoteStr(Name + TelType,True)) + ',' + Tel + ',' +
       IntToStr(position) + ',' + IntToStr(contact.StateIndex) + ',' +
       GUIDToString(contact^.CDID) + ',"' + contact^.LUID + '"');
   end;
@@ -12930,12 +12930,12 @@ begin
   if AsFirst then begin
     itm := ExplorerNew.InsertNode(Node,amAddChildFirst);
     data := ExplorerNew.GetNodeData(Node);
-    TStrings(data.Data).Insert(0,WideQuoteStr(contact,True) + ',"' + time + '"');
+    TStrings(data.Data).Insert(0,WideStringToUTF8String(WideQuoteStr(contact,True) + ',"' + time + '"'));
   end
   else begin
     itm := ExplorerNew.AddChild(Node);
     data := ExplorerNew.GetNodeData(Node);
-    TStrings(data.Data).Add(WideQuoteStr(contact,True) + ',"' + time + '"');
+    TStrings(data.Data).Add(WideStringToUTF8String(WideQuoteStr(contact,True) + ',"' + time + '"'));
   end;
   data2 := ExplorerNew.GetNodeData(itm);
   data2.Text := contact;
@@ -13005,10 +13005,8 @@ begin
         for j := 0 to it.Count - 2 do begin
           if pos('+CPBR', it[j]) = 1 then begin // do not localize
             // could receive this for unknown number ?
-            //   +CPBR: 7,"",145,"","2004/03/20,12:55"
-            s := LongStringToWideString(ThreadSafe.RxBuffer.Strings[j]);
-            if FUseUTF8 then s := UTF8StringToWideString(WideStringToLongString(s));
-            buffer := WideStringToUTF8String(s);
+            //   +CPBR: 7,"number",145,"name","2004/03/20,12:55"
+            buffer := ThreadSafe.RxBuffer.Strings[j];
             k := Pos('"',buffer);
             System.Delete(buffer,1,k-1); // remove up to 1st "
             slTmp.DelimitedText := buffer;

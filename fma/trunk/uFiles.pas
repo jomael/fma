@@ -384,8 +384,8 @@ begin
      NewFile := TFile.Create;
      NewFile.Parent := Self;
 
-     CurName := HTMLDecode(XMLNode.attribute['name']); // do not localize
-     if Form1.FUseUTF8 then CurName := UTF8StringToWideString(CurName);
+     CurName := LongStringToWideString(HTMLDecode(XMLNode.attribute['name'])); // do not localize
+     if Form1.FUseUTF8 then CurName := UTF8StringToWideString(WideStringToLongString(CurName));
 
      NewFile.ExternalName := CurName;
 
