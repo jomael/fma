@@ -26,9 +26,10 @@ package FMA70PRE;
 {$IMPLICITBUILD OFF}
 
 requires
-  rtl;
+  rtl,
+  Fundamentals3_UtilitiesD7;
 
 contains
-  gnugettext in '..\gnugettext.pas';
+  gnugettext in '..\fma\trunk\gnugettext.pas';
 
 end.

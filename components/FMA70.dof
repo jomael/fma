@@ -10,7 +10,7 @@ F=0
 G=1
 H=1
 I=1
-J=0
+J=1
 K=0
 L=1
 M=0
@@ -139,3 +139,7 @@ c:\program files\borland\delphi7\Projects\Bpl\FMA.bpl=FMA
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+[HistoryLists\hlSearchPath]
+Count=2
+Item0=C:\Projects\cvsroot\fma
+Item1=..\

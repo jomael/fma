@@ -1,7 +1,7 @@
 package FMA70;
 
 {$R *.res}
-{$R '..\..\floAtMixer\components\amixer\AMixer.dcr'}
+{$R 'AMixer.dcr'}
 {$R 'WebUpdate.dcr'}
 {$R 'OKTThemeEngine.dcr'}
 {$R 'SEProgress.dcr'}
@@ -51,7 +51,7 @@ requires
   vclactnband;
 
 contains
-  AMixer in '..\..\floAtMixer\components\amixer\AMixer.pas',
+  AMixer in 'AMixer.pas',
   uolSelectPatchPath in 'uolSelectPatchPath.pas',
   uolInetGet in 'uolInetGet.pas',
   uolPatch in 'uolPatch.pas',
@@ -62,10 +62,10 @@ contains
   SEProgress in 'SEProgress.pas',
   PBFolderDialog in 'PBFolderDialog.pas',
   LibTar in 'LibTar.pas',
-  uDialogs in '..\uDialogs.pas',
   ImageListXP in 'ImageListXP.pas',
   WBluetoothSocket in 'WBluetoothSocket.pas',
   WIrCOMMSocket in 'WIrCOMMSocket.pas',
-  USBMonitor in 'USBMonitor.pas';
+  USBMonitor in 'USBMonitor.pas',
+  uDialogs in '..\fma\trunk\uDialogs.pas';
 
 end.
