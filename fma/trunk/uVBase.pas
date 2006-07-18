@@ -409,7 +409,7 @@ begin
   begin
     Result := PropertyName;
     if PropertyParams.Count <> 0 then
-      Result := Result + ';' + PropertyParams.DelimitedText;
+      Result := Result + ';' + LongStringToWideString(PropertyParams.DelimitedText);
     Result := Result + ':' + PropertyValue;
   end;
 end;
@@ -438,7 +438,7 @@ begin
     else PropertyParams.DelimitedText := UpperCase(Copy(PropText, ParamStart + 1, ParamEnd - ParamStart - 1));
 
     PropertyName := UpperCase(Copy(PropText, 1, ParamStart - 1));
-    PropertyValue := Copy(PropText, ParamEnd + 1, StrLen - ParamEnd);
+    PropertyValue := LongStringToWideString(Copy(PropText, ParamEnd + 1, StrLen - ParamEnd));
 
   end
   else FIsSet := False;
@@ -462,10 +462,10 @@ begin
       begin
         if (GetParamIndex('UTF-8') < 0) and (GetParamIndex('QUOTED-PRINTABLE') < 0) then
         begin
-          strTemp := WideStringToUTF8(PropertyValue);
+          strTemp := LongStringToWideString(WideStringToUTF8(PropertyValue));
           if (Owner.OutputCharSet <> tecUtf8) or (strTemp = PropertyValue) then
           begin
-            strTemp := Str2QP(PropertyValue);
+            strTemp := LongStringToWideString(Str2QP(WideStringToLongString(PropertyValue)));
             if PropertyValue <> strTemp then Result := Result + ';ENCODING=QUOTED-PRINTABLE';
           end
           else Result := Result + ';CHARSET=UTF-8';
@@ -474,7 +474,7 @@ begin
     end;
 
     if PropertyParams.Count <> 0 then
-      Result := Result + ';' + PropertyParams.DelimitedText;
+      Result := Result + ';' + LongStringToWideString(PropertyParams.DelimitedText);
     Result := Result + ':' + strTemp;
   end;
 end;
@@ -521,7 +521,7 @@ begin
   Index := GetParamIndex('UTF-7');
   if Index >= 0 then
   begin
-    PropertyValue := UTF7ToWideString(PropertyValue);
+    PropertyValue := UTF7ToWideString(WideStringToLongString(PropertyValue));
     PropertyParams.Delete(Index);
     Exit;
   end;
@@ -529,7 +529,7 @@ begin
   Index := GetParamIndex('UTF-8');
   if Index >= 0 then
   begin
-    PropertyValue := UTF8StringToWideString(PropertyValue);
+    PropertyValue := UTF8StringToWideString(WideStringToLongString(PropertyValue));
     PropertyParams.Delete(Index);
     Exit;
   end;

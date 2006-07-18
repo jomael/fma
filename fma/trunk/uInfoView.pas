@@ -170,12 +170,13 @@ unit uInfoView;
 
 interface
 
-uses 
+uses
   Windows, TntWindows, Messages, SysUtils, TntSysUtils, Classes, TntClasses, Graphics, TntGraphics, Controls, TntControls, Forms, TntForms, Dialogs, TntDialogs,
   StdCtrls, TntStdCtrls, ExtCtrls, TntExtCtrls, TeEngine, Series, TeeProcs, Chart, ComCtrls, TntComCtrls, UniTntCtrls,
   ImgList, jpeg, Buttons, TntButtons, LMDControl, LMDBaseControl,
   LMDBaseGraphicControl, LMDGraphicControl, LMDBaseMeter,
-  LMDCustomProgressFill, LMDProgressFill, LMDFill, Menus, TntMenus, VirtualTrees;
+  LMDCustomProgressFill, LMDProgressFill, LMDFill, Menus, TntMenus, VirtualTrees,
+  cUnicodeCodecs;
 
 type
   TfrmInfoView = class(TTntFrame)
@@ -423,6 +424,20 @@ var
     end;
     Result := c;
   end;
+  procedure AddCallsItem(Target: TTntListView);
+  var
+    ws: WideString;
+  begin
+    with Target.Items.Add do begin
+      ImageIndex := EData.ImageIndex;
+      if Form1.FUseUTF8 then
+        ws := UTF8StringToWideString(TStrings(EData2.Data)[EData.StateIndex-1])
+      else
+        ws := TStrings(EData2.Data)[EData.StateIndex-1];
+      Caption := GetFirstToken(ws);
+      SubItems.Add(GetFirstToken(ws));
+    end;
+  end;
 begin
   { Signal and Power }
   if Form1.FConnectingComplete then begin
@@ -572,12 +587,7 @@ begin
         Node := Form1.FNodeCallsIn.FirstChild;
         while Node <> nil do begin
           EData := Form1.ExplorerNew.GetNodeData(Node);
-          with lvCalls.Items.Add do begin
-            ImageIndex := EData.ImageIndex;
-            s := TStrings(EData2.Data)[EData.StateIndex-1];
-            Caption := GetFirstToken(s);
-            SubItems.Add(GetFirstToken(s));
-          end;
+          AddCallsItem(lvCalls);
           Node := Node.NextSibling;
         end;
 
@@ -585,12 +595,7 @@ begin
         Node := Form1.FNodeCallsOut.FirstChild;
         while Node <> nil do begin
           EData := Form1.ExplorerNew.GetNodeData(Node);
-          with lvCalls.Items.Add do begin
-            ImageIndex := EData.ImageIndex;
-            s := TStrings(EData2.Data)[EData.StateIndex-1];
-            Caption := GetFirstToken(s);
-            SubItems.Add(GetFirstToken(s));
-          end;
+          AddCallsItem(lvCalls);
           Node := Node.NextSibling;
         end;
         wRecentCallsNum.Caption := IntToStr(lvCalls.Items.Count);
@@ -605,12 +610,7 @@ begin
         Node := Form1.FNodeCallsMissed.FirstChild;
         while Node <> nil do begin
           EData := Form1.ExplorerNew.GetNodeData(Node);
-          with lvMissed.Items.Add do begin
-            ImageIndex := EData.ImageIndex;
-            s := TStrings(EData2.Data)[EData.StateIndex-1];
-            Caption := GetFirstToken(s);
-            SubItems.Add(GetFirstToken(s));
-          end;
+          AddCallsItem(lvMissed);
           Node := Node.NextSibling;
         end;
       finally
