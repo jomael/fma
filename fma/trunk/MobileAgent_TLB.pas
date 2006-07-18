@@ -12,16 +12,16 @@ unit MobileAgent_TLB;
 // ************************************************************************ //
 
 // PASTLWTR : 1.2
-// File generated on 21.4.2006 17:49:16 from Type Library described below.
+// File generated on 18.07.2006 15:48:12 from Type Library described below.
 
 // ************************************************************************  //
-// Type Lib: c:\install\fma\MobileAgent.tlb (1)
+// Type Lib: C:\Projects\FMA\fma\trunk\MobileAgent.tlb (1)
 // LIBID: {6D3D646F-A801-4FE4-8610-F209E33D0D6E}
 // LCID: 0
 // Helpfile: 
 // HelpString: MobileAgent Library
 // DepndLst: 
-//   (1) v2.0 stdole, (C:\WINDOWS\system32\stdole2.tlb)
+//   (1) v2.0 stdole, (C:\WINDOWS\system32\STDOLE2.TLB)
 // ************************************************************************ //
 {$TYPEDADDRESS OFF} // Unit must be compiled without type-checked pointers. 
 {$WARN SYMBOL_PLATFORM OFF}

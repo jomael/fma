@@ -1842,7 +1842,7 @@ uses
   LMDProgressFill, LMDHookComponent, LMDFMDrop, WSocket, WBluetoothSocket, WIrCOMMSocket, mmsystem, uAccessoriesMenu,
   uMissedCalls, uKeyPad, CoolTrayIcon, WebUtil, jpeg, AMixer, LMDFill, WebUpdate, aw_SCtrl, CPort, uScriptEditor,
   uContactSync, uChatSMS, GR32_Image, uFiles, uCalendarView, PBFolderDialog, uSIMEdit, uMEEdit, uMsgView, uInfoView,
-  uSyncPhonebook, uSyncBookmarks, uVCard, uLog, uLogger, SEProgress, USBMonitor;
+  uXML, uSyncPhonebook, uSyncBookmarks, uVCard, uLog, uLogger, SEProgress, USBMonitor;
 
 const
   LongOperationsTimeout = 45000; // 45 seconds (for searching in phone book, sending messages etc.)
@@ -3019,7 +3019,7 @@ uses
   uThreadSafe, JclSysInfo, ShlObj, uCalling, uAbout, uOptions, uOptionsPage, uNewMessage, uMobileAgentUI,
   uPostNote, uGlobal, uEditProfile, uPostURL, uConnProgress, uComposeSMS, uVersion, uStatusDlg, TeEngine,
   uFolderProps, Types, uOfflineProfile, uFMASync, uOutlookSync, uPromptConflict, uChooseLink, uLogObserverWriter,
-  uOrganizeFavs, uCallContact, uAddToPhonebook, uXML, StrUtils, uLogWriters, janXMLParser2, uInputQuery,
+  uOrganizeFavs, uCallContact, uAddToPhonebook, StrUtils, uLogWriters, janXMLParser2, uInputQuery,
   uVBase, uVCalendar, uSplash, uConflictChanges, jclShell, MobileAgent_TLB, UrlMOn, uDialogs, uNewDeviceWizard,
   uWelcome, LMDGradient, uBrowseFolders, JwaHtmlHelp, uPassword;
 

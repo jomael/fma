@@ -22,14 +22,14 @@ object Form1: TForm1
   object Splitter1: TTntSplitter
     Left = 197
     Top = 54
-    Height = 577
+    Height = 576
     Visible = False
   end
   object FramePanel: TTntPanel
     Left = 200
     Top = 54
     Width = 682
-    Height = 577
+    Height = 576
     Align = alClient
     BevelOuter = bvNone
     Color = clWindow
@@ -38,7 +38,7 @@ object Form1: TForm1
       Left = 0
       Top = 24
       Width = 682
-      Height = 553
+      Height = 552
       Align = alClient
       BevelOuter = bvNone
       BorderStyle = bsSingle
@@ -47,7 +47,7 @@ object Form1: TForm1
       Visible = False
       DesignSize = (
         678
-        549)
+        548)
       object TntPageControl1: TTntPageControl
         Left = 4
         Top = 4
@@ -60,7 +60,7 @@ object Form1: TForm1
           Caption = 'Terminal'
           DesignSize = (
             663
-            511)
+            512)
           object Memo3: TTntMemo
             Left = 8
             Top = 8
@@ -104,7 +104,7 @@ object Form1: TForm1
           Caption = 'Obex'
           DesignSize = (
             663
-            511)
+            512)
           object Label1: TTntLabel
             Left = 528
             Top = 363
@@ -251,7 +251,7 @@ object Form1: TForm1
           Caption = 'Codec'
           DesignSize = (
             663
-            511)
+            512)
           object Label2: TTntLabel
             Left = 8
             Top = 8
@@ -554,7 +554,7 @@ object Form1: TForm1
   end
   object StatusBar: TTntStatusBar
     Left = 0
-    Top = 631
+    Top = 630
     Width = 882
     Height = 19
     Panels = <
@@ -603,35 +603,35 @@ object Form1: TForm1
         Control = tbMainMenu
         ImageIndex = -1
         MinHeight = 21
-        Width = 265
+        Width = 267
       end
       item
         Break = False
         Control = tbExplorer
         ImageIndex = -1
         MinHeight = 24
-        Width = 219
+        Width = 223
       end
       item
         Break = False
         Control = tbMessages
         ImageIndex = -1
         MinHeight = 24
-        Width = 291
+        Width = 295
       end
       item
         Break = False
         Control = tbCalls
         ImageIndex = -1
         MinHeight = 24
-        Width = 101
+        Width = 83
       end
       item
         Control = tbStandard
         ImageIndex = -1
         MinHeight = 24
         Visible = False
-        Width = 235
+        Width = 239
       end
       item
         Break = False
@@ -639,7 +639,7 @@ object Form1: TForm1
         ImageIndex = -1
         MinHeight = 24
         Visible = False
-        Width = 117
+        Width = 121
       end
       item
         Break = False
@@ -647,14 +647,14 @@ object Form1: TForm1
         ImageIndex = -1
         MinHeight = 22
         Visible = False
-        Width = 526
+        Width = 512
       end>
     EdgeBorders = [ebTop, ebBottom]
     OnChange = CoolBarChange
     object tbStandard: TToolBar
-      Left = 10
+      Left = 9
       Top = 26
-      Width = 222
+      Width = 228
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -747,9 +747,9 @@ object Form1: TForm1
       end
     end
     object tbProfile: TToolBar
-      Left = 366
+      Left = 377
       Top = 27
-      Width = 512
+      Width = 501
       Height = 22
       AutoSize = True
       ButtonWidth = 25
@@ -782,9 +782,9 @@ object Form1: TForm1
       end
     end
     object tbMessages: TToolBar
-      Left = 498
+      Left = 507
       Top = 0
-      Width = 278
+      Width = 284
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -872,7 +872,7 @@ object Form1: TForm1
       end
     end
     object tbCalls: TToolBar
-      Left = 791
+      Left = 806
       Top = 0
       Width = 90
       Height = 24
@@ -911,9 +911,9 @@ object Form1: TForm1
       end
     end
     object tbMainMenu: TToolBar
-      Left = 10
+      Left = 9
       Top = 1
-      Width = 252
+      Width = 256
       Height = 21
       AutoSize = True
       ButtonHeight = 21
@@ -930,9 +930,9 @@ object Form1: TForm1
       OnCustomDrawButton = tbMainMenuCustomDrawButton
     end
     object tbPhone: TToolBar
-      Left = 247
+      Left = 252
       Top = 26
-      Width = 104
+      Width = 110
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -967,9 +967,9 @@ object Form1: TForm1
       end
     end
     object tbExplorer: TToolBar
-      Left = 277
+      Left = 280
       Top = 0
-      Width = 206
+      Width = 212
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -1047,7 +1047,7 @@ object Form1: TForm1
     Left = 0
     Top = 54
     Width = 197
-    Height = 577
+    Height = 576
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 0
@@ -1095,7 +1095,7 @@ object Form1: TForm1
       Left = 0
       Top = 22
       Width = 197
-      Height = 555
+      Height = 554
       HelpContext = 1
       Align = alClient
       BevelInner = bvLowered
