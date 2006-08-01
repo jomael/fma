@@ -1360,48 +1360,48 @@ begin
     ListContacts.NodeDataSize := sizeof(TContactData);
     i := 0;
     while i < sl.Count do begin
-      s := sl[i];
+      s := LongStringToWideString(sl[i]);
       if Trim(s) = '' then continue;
-      
+
       { Workaround for NewLine chars in contact names }
       while (not EvenQuotes(s)) and (i < sl.Count - 2) do begin
         Inc(i);
-        s := s + sLinebreak + sl.Strings[i];
+        s := s + sLinebreak + LongStringToWideString(sl.Strings[i]);
       end;
 
       if Pos('LOG:', s) = 1 then begin // do not localize
          CC := Copy(s, Pos(':', s) + 1, length(s));
          Break;
       end;
-      
+
       Node := ListContacts.AddChild(nil);
       try
         contact := ListContacts.GetNodeData(Node);
         { Enter data }
         contact.stateindex := strtoint(GetFirstToken(s));
-        contact.title := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
-        contact.name := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
-        contact.surname := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
-        contact.org := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
-        contact.email := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
-        contact.home := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
-        contact.work := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
-        contact.cell := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
-        contact.fax := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
-        contact.other := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
+        contact.title := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.name := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.surname := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.org := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.email := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.home := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.work := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.cell := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.fax := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.other := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
         contact.LUID := GetFirstToken(s);
         { Get number positions }
         FillChar(contact.Position,SizeOf(contact.Position),0);
-        contact.Position.home := StrToInt(GetFirstToken(s));
-        contact.Position.work := StrToInt(GetFirstToken(s));
-        contact.Position.cell := StrToInt(GetFirstToken(s));
-        contact.Position.fax := StrToInt(GetFirstToken(s));
-        contact.Position.other := StrToInt(GetFirstToken(s));
+        contact.Position.home := StrToInt(WideStringToLongString(GetFirstToken(s)));
+        contact.Position.work := StrToInt(WideStringToLongString(GetFirstToken(s)));
+        contact.Position.cell := StrToInt(WideStringToLongString(GetFirstToken(s)));
+        contact.Position.fax := StrToInt(WideStringToLongString(GetFirstToken(s)));
+        contact.Position.other := StrToInt(WideStringToLongString(GetFirstToken(s)));
         { Get default number }
-        contact.DefaultIndex := StrToInt(GetFirstToken(s));
+        contact.DefaultIndex := StrToInt(WideStringToLongString(GetFirstToken(s)));
         { Get personalization }
-        contact.picture := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
-        contact.sound := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
+        contact.picture := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.sound := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
         try
           { Outlook sync ID field }
           contact.CDID := StringToGUID(GetFirstToken(s));
@@ -1410,12 +1410,12 @@ begin
           Modified := True;
         end;
         { Display Name }
-        contact.displayname := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
-        contact.Street := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
-        contact.City := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
-        contact.Region := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
-        contact.PostalCode := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
-        contact.Country := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
+        contact.displayname := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.Street := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.City := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.Region := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.PostalCode := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.Country := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
       except
         ListContacts.DeleteNode(Node);
         Log.AddMessageFmt(_('Database: Error loading data (DB Index %d)'), [i], lsError);

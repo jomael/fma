@@ -387,13 +387,13 @@ begin
     ListNumbers.Clear;
     ListNumbers.NodeDataSize := sizeof(TSIMData);
     for i := 0 to sl.Count - 1 do begin
-      s := sl[i];
+      s := LongStringToWideString(sl[i]);
       if Trim(s) = '' then continue;
       { process DB }
       Node := ListNumbers.AddChild(nil);
       try
         contact := ListNumbers.GetNodeData(Node);
-        contact.cname := UTF8StringToWideString(HTMLDecode(GetFirstToken(s)));
+        contact.cname := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
         contact.pnumb := GetFirstToken(s);
         contact.position := StrToInt(GetFirstToken(s));
         if contact.position = 0 then NeedRefresh := True;
@@ -444,7 +444,8 @@ procedure TfrmContactsSMEdit.UpdateSIM(MaxItems: cardinal);
 var
   PerformCleanup: boolean;
   i,maxPos,LastPos,numType: Integer;
-  w, name, number, buf: WideString;
+  name, number: WideString;
+  w, buf: string;
   Item: PSIMData;
   Node: PVirtualNode;
   frmConnect: TfrmConnect;
@@ -481,7 +482,6 @@ begin
             numType := 129;
             Name := item.cname;
             Number := item.pnumb;
-            if Form1.FUseUTF8 then Name := WideStringToUTF8String(Name);
 
             if maxPos <= item.position then maxPos := item.position;
 
@@ -497,9 +497,12 @@ begin
                 Number := copy(Number, 2, length(Number));
                 numType := 145;
               end;
-              w := Name;
-              { NOTE: When writing to SM, <text> shall be written as “last name” + comma +
-                white space +”first name” + “/” + <type_of_number> }
+
+              if Form1.FUseUTF8 then w := WideStringToUTF8String(Name)
+                else w := name;
+
+              { NOTE: When writing to SM, <text> shall be written as “last name?+ comma +
+                white space +”first name?+ ??+ <type_of_number> }
               if IsMEMode then begin
                 if (Length(w) < (FMaxNameLen-1)) and (item.ptype <> '') then
                 case item.ptype[1] of
@@ -550,7 +553,7 @@ begin
   finally
     FreeProgressDialog;
     Form1.Status('');
-  end;  
+  end;
 end;
 
 procedure TfrmContactsSMEdit.btnUpdateSIMClick(Sender: TObject);
@@ -1091,7 +1094,7 @@ begin
       t := GetToken(sl.Strings[i],1);
       s := Copy(t,1,FMaxTelLen+byte(Pos('+',t) <> 0));
       { Construct a database item }
-      item := '"' + item + '",' + s + ',' + IntToStr(i+1) + ',1'; // and mark (1) as modified 
+      item := '"' + item + '",' + s + ',' + IntToStr(i+1) + ',1'; // and mark (1) as modified
       { Add to SIM database }
       dl.Add(item);
     end;

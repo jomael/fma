@@ -2984,7 +2984,7 @@ var
   Note that passed by time is checked in steps of 10 miliseconds }
 procedure WaitASec(Seconds: integer = 1; ForceMSecs: boolean = False);
 
-function EvenQuotes(const Str: String): Boolean;
+function EvenQuotes(const Str: WideString): Boolean;
 
 { The default TFont uses "MS Sans Serif" which doesn't work well with most non-ANSI characters.
   I'd recommend using a TrueType font such as "Tahoma" if it is installed on the machine.
@@ -3116,18 +3116,18 @@ begin
   Graphics.DefFontData.Charset := DEFAULT_CHARSET;
 end;
 
-function EvenQuotes(const Str: String): Boolean;
+function EvenQuotes(const Str: WideString): Boolean;
 var
   P: Integer;
-  S: String;
+  WS: WideString;
 begin
-  S := Str;
+  WS := Str;
   Result := False;
   repeat
     { D7 code
     P := PosEx('"', S, P + 1); }
     { D6 code }
-    P := Pos('"',S); Delete(S,1,P);
+    P := Pos(WideString('"'),WS); Delete(WS,1,P);
     {}
     Result := not Result;
   until P = 0;
@@ -4762,7 +4762,7 @@ begin
         if (NumType = '145') and (Number[1] <> '+') then
           Number := '+' + Number;
 
-        sl.Add(WideQuoteStr(WideStringToUTF8String(Name),True) + ',' + Number + ',' + IntToStr(position) +
+        sl.Add(WideStringToUTF8String(WideQuoteStr(Name,True)) + ',' + Number + ',' + IntToStr(position) +
           ',3' + // 3 = not modified (new) item
           ',' + GUIDToString(NewGUID) + ',""'); // CDID and LUID fields
       end;
@@ -12032,7 +12032,7 @@ var
   procedure DoAdd(Name: WideString);
   begin
     { SEE ParsePhonebookListFromSync !!! Implementations should match }
-    sl.Add(WideQuoteStr(WideStringToUTF8String(Name),True) + ',' + contact^.pnumb + ',' +
+    sl.Add(WideStringToUTF8String(WideQuoteStr(Name,True)) + ',' + contact^.pnumb + ',' +
       IntToStr(contact^.position) + ',' + IntToStr(contact^.imageindex) + ',' +
       GUIDToString(contact^.CDID) + ',"' + contact^.LUID + '"');
   end;
@@ -12958,7 +12958,6 @@ var
   sl,it,slTmp: TStringList;
   grp: PVirtualNode;
   data: PFmaExplorerNode;
-  s: WideString;
 begin
   ExplorerNew.DeleteChildren(Node);
   data := ExplorerNew.GetNodeData(Node);
