@@ -1,14 +1,17 @@
-HOWTO: Delphi 6 & 7 EE IDE Setup
+HOWTO: Delphi 6 & 7 EE IDE Setup in 7 steps :)
 
 Development tool is Borland Delphi 6 and 7 Enterprise edition. I'm not sure about 
 Professional Edition but Personal edition definatelly can't be used.
 
+FMA recent source code is available from Subversion (SVN) repository located at
+https://svn.sourceforge.net/svnroot/fma
+
 FMA is current based on the following 3rd party components/libraries, all of 
-them are freeware:
+them are free source components (if nothing else stated in their licenses):
 
 
-I. Those component have custom FMA patches included in Fma CVS. Apply those patches
-   before installing the components, please:
+1.  Those component have custom FMA patches included in FMA SVN. Apply those patches
+    before installing the components, please:
 
   - ComPort Library, available from  
     http://sourceforge.net/projects/comport/
@@ -16,7 +19,7 @@ I. Those component have custom FMA patches included in Fma CVS. Apply those patc
   - ToolBar/ToolButton, by Gabriel Corneanu, available from 
     http://download.tntware.com/delphi_unicode_controls/contrib/unitntctrls.zip
 
-II. Those components packages have an Installer which should be used instead, thus
+2.  Those components packages have an Installer which should be used instead, thus
     they are not included in our SDK packages:
 
   - LMD Tools SE, available from 
@@ -25,7 +28,7 @@ II. Those components packages have an Installer which should be used instead, th
   - JCL 1.94 Exception Dialog, available from 
     http://sourceforge.net/projects/jcl/
 
-III. Those components are available on Internet and in our SDK packages:
+3.  Those components are available on Internet and in our SDK packages:
 
   - awScript, available from 
     http://www.btinternet.com/~a.wingrove/scripting/
@@ -60,47 +63,52 @@ III. Those components are available on Internet and in our SDK packages:
   - Delphi Fundamentals 3.28, available from  
     http://fundementals.sourceforge.net/index.html
 
-IV. Those components are included in Fma CVS and our SDK packages:
+4.  Those components are included in FMA SVN and our SDK packages:
     (note: First install PRE and FMA and then DT packages)
 
-  - WBluetoothSocket, by floAt, included in the CVS
+  - WBluetoothSocket, by floAt, included in the SVN
 
-  - WIrCOMMSocket, by Gabrijelcic (http://17slon.com/gp/gp), included in CVS
+  - WIrCOMMSocket, by Gabrijelcic (http://17slon.com/gp/gp), included in SVN
 
-  - SEProgress component, by Zdravko, included in the CVS
+  - SEProgress component, by Zdravko, included in the SVN
 
-  - WebUtil by Danny Heijl (danny.heijl@pandora.be), included in the CVS
+  - WebUtil by Danny Heijl (danny.heijl@pandora.be), included in the SVN
 
-  - FmaWebUpdate component, by Zdravko, included in the CVS
+  - FMAWebUpdate component, by Zdravko, included in the SVN
 
-  - OKTThemeEngine, by Oktay Kocaturk, included in the CVS
+  - OKTThemeEngine, by Oktay Kocaturk, included in the SVN
 
-  - PBFolderDialog, older free version, included in the CVS
+  - PBFolderDialog, older free version, included in the SVN
 
-  - ImageListXP, by Zdravko, included in the CVS
+  - ImageListXP, by Zdravko, included in the SVN
     For full design-time support copy 'delphi32.exe.manifest' file in yours 
     Delphi BIN folder and restart the Delphi IDE.
 
-  - Various Delphi units located in CVS components subfolder
+  - Various Delphi units located in SVN components subfolder
 
-V. This component is for Delphi 6 only, and is obsolete for Delphi 7:
+5.  This component is for Delphi 6 only, and is obsolete for Delphi 7:
 
   - XP ThemeManager, available from 
     http://www.delphi-gems.com/ThemeManager.php
 
-VI. This component requires special intervention, please read notes below:
+6.  This component requires special intervention, please read notes below:
 
   - Project JEDI API Library 1.1, available from 
     http://sourceforge.net/projects/jedi-apilib/
 
     Please enable {$DEFINE UNICODE} in jediapilib.inc to get unicode support !
-    Use version never then 2005/02/24 - do a CVS checkout if nessesery !
+    Use version never then 2005/02/24 - do a CVS/SVN checkout if nessesery !
 
   - TurboPower Visual PlanIt 1.03, available from 
     http://sourceforge.net/projects/tpvplanit/
 
-    Use version never then 2005/12/20 - do a CVS checkout if nessesery !
+    Use version never then 2005/12/20 - do a CVS/SVN checkout if nessesery !
+
+7.  Once you Checked Out the source code from FMA SVN repository we recommend
+    installing NTFS Link, available from http://www.elsdoerfer.info/ntfslink/
+    and to create a NTFS junction point in "\fma\trunk" folder which points
+    to "\locale" folder. Please name this junction point "locale".
 
 It should be all, let us know if you've anything to add. Good luck!!
 
-/fMA team
+/FMA team
