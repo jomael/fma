@@ -20,7 +20,7 @@ object frmCallContact: TfrmCallContact
     Left = 56
     Top = 14
     Width = 261
-    Height = 35
+    Height = 39
     AutoSize = False
     Caption = 
       'Type the name of a contact or phone number, select it from Favor' +

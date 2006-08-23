@@ -560,9 +560,7 @@ type
     GroupBox19: TTntGroupBox;
     lblSTypePrefix: TTntLabel;
     lblScriptType: TTntLabel;
-    Label9: TTntLabel;
     Label10: TTntLabel;
-    Label12: TTntLabel;
     cbNoMsgBaloon: TTntCheckBox;
     cbNoMsgPopup: TTntCheckBox;
     cbStateMonitor: TTntCheckBox;
@@ -1123,6 +1121,7 @@ begin
   rbUseIRDA.Font.Style := rbUseIRDA.Font.Style + [fsBold];
   rbUseSerial.Font.Style := rbUseSerial.Font.Style + [fsBold];
   lblSMSCount.Font.Style := lblSMSCount.Font.Style + [fsBold];
+  lblDeliveryStatus.Left := TntLabel29.Left + TntLabel29.Width + 8;
   lblDeliveryStatus.Font.Style := lblDeliveryStatus.Font.Style + [fsBold];
 
   sePort.Style := csDropDown;

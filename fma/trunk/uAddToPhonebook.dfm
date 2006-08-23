@@ -62,7 +62,7 @@ object frmAddContact: TfrmAddContact
       Left = 176
       Top = 44
       Width = 305
-      Height = 33
+      Height = 41
       AutoSize = False
       Caption = 
         'This wizard will help you add a number to your phonebook. You co' +

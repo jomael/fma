@@ -469,7 +469,6 @@ begin
       NoItemsPanel.Visible := True;
       btnFindDB.Enabled := False;
     end;
-    NoItemsPanel.Height := lvDatabase.Height - 32;
 
     // Phones
     if data.ImageIndex in [9..13] then begin

@@ -51,28 +51,28 @@ object frmAddToGroup: TfrmAddToGroup
     object Label1: TTntLabel
       Left = 176
       Top = 84
-      Width = 42
+      Width = 40
       Height = 13
       Caption = 'Contact:'
     end
     object lblName: TTntLabel
       Left = 228
       Top = 84
-      Width = 42
+      Width = 38
       Height = 13
       Caption = '<name>'
     end
     object Label2: TTntLabel
       Left = 176
       Top = 104
-      Width = 33
+      Width = 32
       Height = 13
       Caption = 'Group:'
     end
     object lblGroup: TTntLabel
       Left = 228
       Top = 104
-      Width = 28
+      Width = 27
       Height = 13
       Caption = 'group'
     end
@@ -89,7 +89,7 @@ object frmAddToGroup: TfrmAddToGroup
       Left = 176
       Top = 44
       Width = 305
-      Height = 33
+      Height = 41
       AutoSize = False
       Caption = 
         'This wizard will help you add a contact to a group. You can use ' +
@@ -114,7 +114,7 @@ object frmAddToGroup: TfrmAddToGroup
     object lblNumber: TTntLabel
       Left = 192
       Top = 152
-      Width = 36
+      Width = 32
       Height = 13
       Caption = '<num>'
     end

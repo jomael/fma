@@ -75,7 +75,7 @@ object frmFolderProps: TfrmFolderProps
         Top = 60
         Width = 353
         Height = 273
-        ActivePage = tsFile
+        ActivePage = tsDatabase
         MultiLine = True
         Style = tsButtons
         TabOrder = 2
@@ -406,7 +406,7 @@ object frmFolderProps: TfrmFolderProps
           end
           object NoItemsPanel: TTntPanel
             Left = 8
-            Top = 28
+            Top = 32
             Width = 329
             Height = 22
             Anchors = [akLeft, akTop, akRight]

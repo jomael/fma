@@ -109,7 +109,7 @@ object frmOptions: TfrmOptions
     Top = 40
     Width = 413
     Height = 317
-    ActivePage = tabCalendar
+    ActivePage = tabLanguage
     Anchors = [akTop, akRight, akBottom]
     MultiLine = True
     Style = tsButtons
@@ -846,27 +846,21 @@ object frmOptions: TfrmOptions
         Left = 4
         Top = 72
         Width = 397
-        Height = 113
+        Height = 105
         Caption = 'Max Packet Size'
         TabOrder = 1
         object lblObexPacketSize: TTntLabel
           Left = 10
-          Top = 49
-          Width = 369
-          Height = 33
+          Top = 53
+          Width = 375
+          Height = 44
           AutoSize = False
           Caption = 
             'Define the maximum size per packet, this is the value to negotia' +
-            'te with the Mobile Equipment and will use whichever lower.'
+            'te with the Mobile Equipment and will use whichever lower. This ' +
+            'implementation is Ericsson specific.'
           Transparent = True
           WordWrap = True
-        end
-        object Label12: TTntLabel
-          Left = 10
-          Top = 85
-          Width = 217
-          Height = 13
-          Caption = 'Note: This implementation is Ericsson specific.'
         end
         object TntLabel28: TTntLabel
           Left = 106
@@ -1014,27 +1008,17 @@ object frmOptions: TfrmOptions
           Caption = 'vbscript'
           Transparent = True
         end
-        object Label9: TTntLabel
-          Left = 10
-          Top = 52
-          Width = 379
-          Height = 33
-          AutoSize = False
-          Caption = 
-            'In most cases FMA will need to be restarted to fully activate th' +
-            'e selected script.'
-          WordWrap = True
-        end
         object Label10: TTntLabel
           Left = 10
           Top = 18
           Width = 379
-          Height = 33
+          Height = 67
           AutoSize = False
           Caption = 
             'Note that script file extension must be the scipting engine used' +
             ', for example for "MyScript.VBScript" the system will interprate' +
-            ' it using VBScript Engine.'
+            ' it using VBScript Engine. In most cases FMA will need to be res' +
+            'tarted to fully activate the selected script.'
           ShowAccelChar = False
           Transparent = True
           WordWrap = True
@@ -1906,7 +1890,7 @@ object frmOptions: TfrmOptions
         end
         object lblLinkL10N: TTntLabel
           Left = 10
-          Top = 102
+          Top = 106
           Width = 135
           Height = 13
           Cursor = crHandPoint
@@ -2036,7 +2020,7 @@ object frmOptions: TfrmOptions
           Left = 10
           Top = 66
           Width = 377
-          Height = 23
+          Height = 25
           AutoSize = False
           Caption = 
             'This setting is to be used as default when importing new contact' +
@@ -2127,10 +2111,10 @@ object frmOptions: TfrmOptions
         TabOrder = 0
         object TntLabel12: TTntLabel
           Left = 10
-          Top = 114
-          Width = 240
+          Top = 118
+          Width = 173
           Height = 13
-          Caption = 'You could always do Web Update check manualy.'
+          Caption = 'You could always do check manualy'
         end
         object btnCheckForUpdates: TTntButton
           Left = 284
@@ -2180,7 +2164,7 @@ object frmOptions: TfrmOptions
         Left = 4
         Top = 152
         Width = 397
-        Height = 145
+        Height = 149
         Caption = 'Details'
         TabOrder = 1
         object TntLabel8: TTntLabel
@@ -2194,7 +2178,7 @@ object frmOptions: TfrmOptions
           Left = 10
           Top = 68
           Width = 375
-          Height = 48
+          Height = 53
           AutoSize = False
           Caption = 
             'New application versions will be announced on SourceForge.net FM' +
@@ -2205,7 +2189,7 @@ object frmOptions: TfrmOptions
         end
         object lblSupportURL: TTntLabel
           Left = 10
-          Top = 116
+          Top = 120
           Width = 99
           Height = 13
           Cursor = crHandPoint
@@ -2543,7 +2527,7 @@ object frmOptions: TfrmOptions
         Left = 4
         Top = 0
         Width = 397
-        Height = 221
+        Height = 205
         Caption = 'Sorting Correspondence'
         TabOrder = 0
         object TntLabel25: TTntLabel
@@ -2568,7 +2552,7 @@ object frmOptions: TfrmOptions
           Left = 10
           Top = 72
           Width = 297
-          Height = 137
+          Height = 121
           Columns = <
             item
               Caption = 'Rule Name'
@@ -2629,7 +2613,7 @@ object frmOptions: TfrmOptions
         end
         object btnRunRules: TTntButton
           Left = 316
-          Top = 184
+          Top = 168
           Width = 69
           Height = 25
           Caption = '&Run Now'
@@ -2640,16 +2624,16 @@ object frmOptions: TfrmOptions
       end
       object TntGroupBox14: TTntGroupBox
         Left = 4
-        Top = 228
+        Top = 212
         Width = 397
-        Height = 77
+        Height = 93
         Caption = 'Details'
         TabOrder = 1
         object TntLabel30: TTntLabel
           Left = 10
           Top = 18
           Width = 375
-          Height = 27
+          Height = 37
           AutoSize = False
           Caption = 
             'Sorting Correspondence feature requires '#39'Move new SMS messages t' +
@@ -2660,21 +2644,21 @@ object frmOptions: TfrmOptions
         end
         object TntLabel29: TTntLabel
           Left = 10
-          Top = 52
+          Top = 68
           Width = 70
           Height = 13
           Caption = 'Current Status:'
         end
         object lblDeliveryStatus: TTntLabel
-          Left = 92
-          Top = 52
+          Left = 88
+          Top = 68
           Width = 40
           Height = 13
           Caption = '<status>'
         end
         object TntButton1: TTntButton
           Left = 316
-          Top = 40
+          Top = 56
           Width = 69
           Height = 25
           Caption = 'Change'
