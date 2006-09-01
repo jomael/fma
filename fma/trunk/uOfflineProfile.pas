@@ -128,6 +128,7 @@ procedure TfrmOfflineProfile.RefreshView;
 var
   R: TSearchRec;
   s: WideString;
+  d: Integer;
   procedure SearchProfilesIn(Dir: string; IsOld: boolean);
     function GetDefName: WideString;
     begin
@@ -150,7 +151,8 @@ var
             end
             else begin
               ImageIndex := 28;
-              SubItems.Add(GetDefName); // DB Format
+              //SubItems.Add(GetDefName); // DB Format
+              SubItems.Add('');
             end;
             SubItems.Add(R.Name); // Profile ID
             Selected := AnsiCompareText(R.Name,Form1.PhoneIdentity) = 0;
@@ -161,8 +163,10 @@ var
                   s := ReadString('Global','PhoneName',''); // do not localize
                   if s <> '' then Caption := s;
                   if not IsOld then begin
-                    s := UTF8StringToWideString(ReadString('Global','DBVersion','')); // do not localize
-                    if s <> '' then SubItems[0] := WideFormat('FMA %s',[s]);
+                    d := StrToInt(ReadString('Global','Modified','0')); // do not localize
+                    if d <> 0 then SubItems[0] := DateToStr(d); // do not localize
+                    //s := UTF8StringToWideString(ReadString('Global','DBVersion','')); // do not localize
+                    //if s <> '' then SubItems[0] := WideFormat('FMA %s',[s]);
                   end;
                 finally
                   Free;

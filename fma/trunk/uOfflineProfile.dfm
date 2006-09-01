@@ -37,7 +37,7 @@ object frmOfflineProfile: TfrmOfflineProfile
         Width = 210
       end
       item
-        Caption = 'Database Format'
+        Caption = 'Modified'
         Width = 100
       end>
     ColumnClick = False
@@ -101,7 +101,7 @@ object frmOfflineProfile: TfrmOfflineProfile
   end
   object NoItemsPanel: TTntPanel
     Left = 16
-    Top = 36
+    Top = 40
     Width = 319
     Height = 22
     Anchors = [akLeft, akTop, akRight]

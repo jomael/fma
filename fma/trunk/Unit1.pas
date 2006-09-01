@@ -6985,6 +6985,8 @@ begin
   { Save Profile settings }
   with TIniFile.Create(Fullpath + 'Phone.dat') do // do not localize
   try
+    if PhoneIdentity = '' then FSelPhone := '';
+    WriteString('Global','Modified',IntToStr(Trunc(Date))); // do not localize
     WriteString('Global','DBVersion',WideStringToUTF8String(FDatabaseVersion)); // do not localize
     WriteString('Global','PhoneName',WideStringToUTF8String(FSelPhone)); // do not localize
     WriteString('Global','PhoneBrand',WideStringToUTF8String(FPhoneModel)); // do not localize
@@ -8276,6 +8278,7 @@ begin
       if not LoadPhoneDataFiles then
         Log.AddMessage(_('ERROR: Could not initialize phone database (load failed)'), lsError);
     except
+      PhoneIdentity := '';
     end;
 
     ShowStatus(_('Building Contact Lists...'));
@@ -12583,7 +12586,7 @@ begin
         data.Text := FSelPhone;
         ExplorerNew.Repaint;
         Caption := WideFormat(_('floAt''s Mobile Agent %s'),[GetBuildVersionDtl]);
-        
+
         with ExplorerNew.Header.Columns[1] do begin
           MinWidth := 24; // respore column original width
           MaxWidth := 24;
@@ -12595,6 +12598,7 @@ begin
   except
   end;
   FDatabaseLoaded := False;
+  FSelPhone := '';
 end;
 
 function TForm1.GetNextLongSMSRefference: string;
@@ -12687,8 +12691,7 @@ begin
             { load selected }
             Status(_('Loading selected profile...')); Update;
             FRelocateDBDenied := False;
-            LoadPhoneDataFiles(SelectedProfile);
-            break; // leave
+            if LoadPhoneDataFiles(SelectedProfile) then break; // leave
           end;
           mrRetry: begin
             { selected profile is already open? }

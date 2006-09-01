@@ -203,9 +203,5 @@ begin
   CanClose := btnOK.Enabled;
 end;
 
-{
-initialization
-  if BaseDecode(BaseEncode('Здравко Dako 123')) <> 'Здравко Dako 123' then Halt(100);
-}
 end.
 
