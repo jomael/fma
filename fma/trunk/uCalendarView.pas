@@ -424,6 +424,8 @@ begin
         Err := WideFormat(_('Error: Sync Phone Calendar aborted - %s'), [E.Message]);
         Form1.Status(Err);
         Log.AddSynchronizationMessage(Err, lsError);
+        { TODO: Made calendar baloon optional }
+        Form1.ShowBaloonError(_('Phone calendar synchronization failed!'),30);
       end;
     end;
   finally
@@ -833,7 +835,7 @@ begin
   try
     VpDB.Connected := False;
     vStorage.LoadFromFile(FileName);
-    Log.AddMessage('Database: Load Calendar: vStorage.Count: ' + inttostr(vStorage.Count), lsDebug); // do not localize debug
+    Log.AddMessage('Database: Loading Calendar: Storage = ' + inttostr(vStorage.Count), lsDebug); // do not localize debug
     if vStorage.Count = 1 then
       FCalendar.Raw := (vStorage[0] as TVCalendar).Raw
     else begin
@@ -846,7 +848,7 @@ begin
         end;
       end;
     end;
-    Log.AddMessage('Database: Load Calendar: loaded ' + inttostr(FCalendar.count)+ ' entries', lsDebug); // do not localize debug
+    Log.AddMessage('Database: Loading Calendar: Items = ' + inttostr(FCalendar.count), lsDebug); // do not localize debug
 
     VpDB.Connected := True;
 
@@ -1215,25 +1217,27 @@ begin
 
           if AEntity.VDtStart.IsSet and (YearOf(AEntity.VDtStart.DateTime) < YearOf(Date)) then begin
             if not Modified and Form1.FCalRecurrAsk then begin
-              Update;
+              if Visible then Update;
               MessageBeep(MB_ICONQUESTION);
               if MessageDlgW(_('You have some Calendar entities in the past year. Do you want to recurrent them to this year?'),
                 mtConfirmation,MB_YESNO) = ID_NO then break;
             end;
 
-            AEntity.VFmaState := 1; // set to modified
-
-            AEntity.VDtStart.DateTime := DoShiftDate(AEntity.VDtStart.DateTime,1,0,0);
-
-            if AEntity.VDtEnd.IsSet and (AEntity.VDtEnd.DateTime < AEntity.VDtStart.DateTime) then
-              AEntity.VDtEnd.DateTime := DoShiftDate(AEntity.VDtEnd.DateTime,1,0,0);
-            if AEntity.VDue.IsSet and (AEntity.VDue.DateTime < AEntity.VDtStart.DateTime) then
-              AEntity.VDue.DateTime := DoShiftDate(AEntity.VDue.DateTime,1,0,0);
-            if AEntity.VAAlarm.IsSet and (AEntity.VAAlarm.DateTime < AEntity.VDtStart.DateTime) then
-              AEntity.VAAlarm.DateTime := DoShiftDate(AEntity.VAAlarm.DateTime,1,0,0);
-
-            AEntity.VCompleted.Clear;
-            AEntity.VLastModified.DateTime := Now;
+            AEntity.Raw.BeginUpdate;
+            try
+              AEntity.VFmaState := 1; // set to modified
+              AEntity.VDtStart.DateTime := DoShiftDate(AEntity.VDtStart.DateTime,1,0,0);
+              if AEntity.VDtEnd.IsSet and (AEntity.VDtEnd.DateTime < AEntity.VDtStart.DateTime) then
+                AEntity.VDtEnd.DateTime := DoShiftDate(AEntity.VDtEnd.DateTime,1,0,0);
+              if AEntity.VDue.IsSet and (AEntity.VDue.DateTime < AEntity.VDtStart.DateTime) then
+                AEntity.VDue.DateTime := DoShiftDate(AEntity.VDue.DateTime,1,0,0);
+              if AEntity.VAAlarm.IsSet and (AEntity.VAAlarm.DateTime < AEntity.VDtStart.DateTime) then
+                AEntity.VAAlarm.DateTime := DoShiftDate(AEntity.VAAlarm.DateTime,1,0,0);
+              AEntity.VCompleted.Clear;
+              AEntity.VLastModified.DateTime := Now;
+            finally
+              AEntity.Raw.EndUpdate;
+            end;
 
             Modified := True;
           end;
@@ -1241,9 +1245,9 @@ begin
       finally
         if Modified then begin
           // Store changes and repaint
-          VpDB.PostEvents;
-          VpDB.PostTasks;
-          VpDB.PostResources;
+          try VpDB.PostEvents; except end;
+          try VpDB.PostTasks; except end;
+          try VpDB.PostResources; except end;
         end;
         VpDB.Connected := True;
         if Visible then Update;

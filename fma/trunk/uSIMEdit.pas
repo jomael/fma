@@ -320,11 +320,11 @@ type
   protected
     { Protected declarations }
     FRendered: Boolean;
-    FMaxNumbers: cardinal;
     function GetCapacity(Target, LogName: string): Integer;
   public
     { Public declarations }
     SelContact: PSIMData;
+    FMaxNumbers: Cardinal;
     FMaxNameLen,FMaxTelLen: integer;
     constructor Create(AOwner: TComponent); override;
     function RenderData(ForceDBNode: PVirtualNode = nil): boolean;
@@ -455,7 +455,7 @@ begin
     target := _('Phonebook')
   else
     target := _('SIM');
-  PerformCleanup := MaxItems = ListNumbers.ChildCount[nil];
+  PerformCleanup := MaxItems = ListNumbers.RootNodeCount;
   Form1.RequestConnection;
   Log.AddSynchronizationMessageFmt(_('Update %s started.'),[target]);
   frmConnect := GetProgressDialog;
@@ -738,7 +738,7 @@ end;
 procedure TfrmContactsSMEdit.ListNumbersAfterPaint(Sender: TBaseVirtualTree;
   TargetCanvas: TCanvas);
 begin
-  NoItemsPanel.Visible := ListNumbers.ChildCount[nil] = 0;
+  NoItemsPanel.Visible := ListNumbers.RootNodeCount = 0;
 end;
 
 procedure TfrmContactsSMEdit.ListNumbersCompareNodes(Sender: TBaseVirtualTree;
@@ -842,7 +842,6 @@ begin
   SendAllContactstoPhonebook1.Visible := not IsMEMode;
   UpdateContactsfromPhonebook1.Enabled := SendAllContactstoPhonebook1.Enabled;
   UpdateContactsfromPhonebook1.Visible := SendAllContactstoPhonebook1.Visible;
-  N3.Visible := SendAllContactstoPhonebook1.Visible;
   DownloadEntirePhonebook1.Enabled := Form1.FConnected and not Form1.FObex.Connected;
 end;
 
@@ -1059,7 +1058,7 @@ end;
 procedure TfrmContactsSMEdit.UpdateContactsfromPhonebook1Click(Sender: TObject);
 var
   sl,dl: TStrings;
-  i: integer;
+  i,maxd: integer;
   s,kind,item,t: WideString;
   data1, data2: PFmaExplorerNode;
 begin
@@ -1068,7 +1067,7 @@ begin
   sl := TStrings(data1.Data); // source
   dl := TStrings(data2.Data); // destination
 
-  if ListNumbers.ChildCount[nil] <> 0 then begin
+  if ListNumbers.RootNodeCount <> 0 then begin
     if sl.Count = 0 then begin
       if MessageDlgW(_('Phonebook is empty. All current SIM entries will be deleted. Continue anyway?'),
         mtConfirmation, MB_YESNO or MB_DEFBUTTON2) <> ID_YES then exit;
@@ -1083,7 +1082,9 @@ begin
   Form1.ExplorerNew.DeleteChildren(Form1.FNodeContactsSM);
   try
     { Build new database }
-    for i := 0 to sl.Count-1 do begin
+    maxd := sl.Count;
+    if Cardinal(maxd) > FMaxNumbers then maxd := FMaxNumbers;
+    for i := 0 to maxd-1 do begin
       // '"Alycia/M",+359887555555555,0'
       { get full name }
       item := GetToken(sl.Strings[i],0);
@@ -1102,7 +1103,7 @@ begin
     Form1.RenderContactList(Form1.FNodeContactsSM);
     { Update view }
     RenderData;
-    Form1.Status(WideFormat(_('Copy from Phonebook: %s new items'),[IntToStr(ListNumbers.ChildCount[nil])]));
+    Form1.Status(WideFormat(_('Copy from Phonebook: %s new items'),[IntToStr(ListNumbers.RootNodeCount)]));
   end;
 end;
 
@@ -1155,29 +1156,39 @@ begin
         contact^.StateIndex := 1; // contact modified
         inc(UpdCnt);
       end
-      else begin
+      else
+      if Form1.frmSyncPhonebook.ListContacts.RootNodeCount < Form1.frmSyncPhonebook.FMaxRecME then begin
         NewNode := Form1.frmSyncPhonebook.ListContacts.AddChild(nil);
         contact := Form1.frmSyncPhonebook.ListContacts.GetNodeData(NewNode);
         FillChar(contact^,SizeOf(contact^),0);
         contact^.cell := item.pnumb;
         contact^.StateIndex := 0; // new contact
         s := Copy(item.cname,1,Form1.frmSyncPhonebook.FMaxNameLen+byte(Pos(' ',s) <> 0)); // sanity check name length
-        j := Pos(' ',s);
-        if j = 0 then
-          contact^.name := s
+        j := Pos(', ',s);
+        if j = 0 then begin
+          j := Pos(' ',s);
+          if j = 0 then
+            contact^.name := s
+          else begin
+            contact^.name := Copy(s,1,j-1);
+            contact^.surname := Copy(s,j+1,Length(s)-j);
+          end;
+        end
         else begin
-          contact^.name := Copy(s,1,j-1);
-          contact^.surname := Copy(s,j+1,Length(s)-j);
+          contact^.surname := Copy(s,1,j-1);
+          contact^.name := Copy(s,j+2,Length(s)-j-1);
         end;
         inc(NewCnt);
-      end;
+      end
+      else
+        break;
     finally
       Node := ListNumbers.GetNext(Node);
     end;
   finally
     if (NewCnt + UpdCnt) <> 0 then Form1.UpdateMEPhonebook;
     Form1.Status(WideFormat(_('Copy to Phonebook: %s new, %s modified and %s items skipped'),
-      [IntToStr(NewCnt),IntToStr(UpdCnt),IntToStr(ListNumbers.ChildCount[nil] - NewCnt - UpdCnt)]));
+      [IntToStr(NewCnt),IntToStr(UpdCnt),IntToStr(ListNumbers.RootNodeCount - NewCnt - UpdCnt)]));
   end;
 end;
 

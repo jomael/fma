@@ -556,7 +556,7 @@ type
   public
     State: Integer;
     SelContact: PContactData;
-    FMaxRecME,FMaxNameLen,FMaxTitleLen,FMaxOrgLen,FMaxMailLen,FMaxTellen: cardinal;
+    FMaxRecME,FMaxNameLen,FMaxTitleLen,FMaxOrgLen,FMaxMailLen,FMaxTelLen: cardinal;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure LoadContacts(FileName:WideString);
@@ -1557,6 +1557,8 @@ begin
         Err := WideFormat(_('Error: Sync Phonebook aborted - %s'), [E.Message]);
         Form1.Status(Err);
         Log.AddSynchronizationMessage(Err, lsError);
+        { TODO: Made phonebook baloon optional }
+        Form1.ShowBaloonError(_('Phonebook synchronization failed!'),30);
       end;
     end;
   finally
@@ -1571,11 +1573,10 @@ end;
 
 procedure TfrmSyncPhonebook.btnNEWClick(Sender: TObject);
 begin
-  if ListContacts.ChildCount[nil] >= FMaxRecME then begin
-    ShowMessageW(_('No more space in pb memory!'+sLinebreak+'I''m sorry.'));
-    Exit;
-  end;
-  DoEdit(True);
+  if ListContacts.RootNodeCount < FMaxRecME then 
+    DoEdit(True)
+  else
+    ShowMessageW(_('No more space in memory! New contact can not be created.'));
 end;
 
 procedure TfrmSyncPhonebook.btnDELClick(Sender: TObject);

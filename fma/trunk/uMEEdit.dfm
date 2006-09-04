@@ -173,17 +173,6 @@ object frmContactsMEEdit: TfrmContactsMEEdit
         OnClick = UpdateContactsPosition1Click
       end
     end
-    object otalCopy1: TTntMenuItem
-      Caption = 'Total Copy'
-      object UpdateContactsfromPhonebook1: TTntMenuItem
-        Caption = 'Copy All from Phonebook to SIM...'
-        OnClick = UpdateContactsfromPhonebook1Click
-      end
-      object SendAllContactstoPhonebook1: TTntMenuItem
-        Caption = 'Copy All from SIM to Phonebook...'
-        OnClick = SendAllContactstoPhonebook1Click
-      end
-    end
     object N7: TTntMenuItem
       Caption = '-'
     end

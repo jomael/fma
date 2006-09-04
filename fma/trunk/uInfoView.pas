@@ -692,7 +692,7 @@ end;
 
 procedure TfrmInfoView.linkNewContactClick(Sender: TObject);
 begin
-  if Form1.frmSyncPhonebook.DoEdit(True) then
+  if Form1.ActionContactsNewPerson.Execute then
     UpdateWelcomePage;
 end;
 

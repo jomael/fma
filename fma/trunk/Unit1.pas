@@ -2955,7 +2955,8 @@ type
 
     procedure SetTaskPercentage(Pos: Integer; Max: Integer = 100; Loop: Boolean = False);
     procedure FloatingRectangles(Minimizing, OverrideUserSettings: Boolean);
-    procedure ShowBaloonInfo(Text: WideString; Timeout: TBalloonHintTimeOut = 10; Where: TCoolTrayIcon = nil);
+    procedure ShowBaloonInfo(Text: WideString; Timeout: TBalloonHintTimeOut = 10; Where: TCoolTrayIcon = nil; IconT: TBalloonHintIcon = bitInfo);
+    procedure ShowBaloonError(Text: WideString; Timeout: TBalloonHintTimeOut = 10);
 
     { Explorer properties }
     function FindExplorerChildNode(Named: WideString; RootNode: PVirtualNode = nil): PVirtualNode;
@@ -6985,7 +6986,7 @@ begin
   { Save Profile settings }
   with TIniFile.Create(Fullpath + 'Phone.dat') do // do not localize
   try
-    if PhoneIdentity = '' then FSelPhone := '';
+    if PhoneIdentity = '' then FSelPhone := ''; // reset phone name if default profile is saved
     WriteString('Global','Modified',IntToStr(Trunc(Date))); // do not localize
     WriteString('Global','DBVersion',WideStringToUTF8String(FDatabaseVersion)); // do not localize
     WriteString('Global','PhoneName',WideStringToUTF8String(FSelPhone)); // do not localize
@@ -7019,6 +7020,18 @@ begin
     WriteString('Chat','Nick','"'+WideStringToUTF8String(FChatNick)+'"'); // do not localize
     WriteBool('Chat','Long SMS',FChatLongSMS); // do not localize
     WriteBool('Chat','Bold Font',FChatBold); // do not localize
+    WriteInteger('Contacts','PBMax',frmSyncPhonebook.FMaxRecME);  // do not localize
+    WriteInteger('Contacts','PBMaxName',frmSyncPhonebook.FMaxNameLen);  // do not localize
+    WriteInteger('Contacts','PBMaxTel',frmSyncPhonebook.FMaxTelLen);  // do not localize
+    WriteInteger('Contacts','PBMaxTitle',frmSyncPhonebook.FMaxTitleLen);  // do not localize
+    WriteInteger('Contacts','PBMaxOrg',frmSyncPhonebook.FMaxOrgLen);  // do not localize
+    WriteInteger('Contacts','PBMaxMail',frmSyncPhonebook.FMaxMailLen);  // do not localize
+    WriteInteger('Contacts','MEMax',frmMEEdit.FMaxNumbers);  // do not localize
+    WriteInteger('Contacts','MEMaxName',frmMEEdit.FMaxNameLen);  // do not localize
+    WriteInteger('Contacts','MEMaxTel',frmMEEdit.FMaxTelLen);  // do not localize
+    WriteInteger('Contacts','SMMax',frmSMEdit.FMaxNumbers);  // do not localize
+    WriteInteger('Contacts','MEMaxName',frmSMEdit.FMaxNameLen);  // do not localize
+    WriteInteger('Contacts','MEMaxTel',frmSMEdit.FMaxTelLen);  // do not localize
   finally
     Free;
   end;
@@ -7504,7 +7517,7 @@ begin
         DoDisconnect;
         if not Application.Terminated then
           if ThreadSafe.AbortDetected then
-            CoolTrayIcon1.ShowBalloonHint(TntApplication.Title,_('Connection aborted by user!'),bitError,10)
+            ShowBaloonError(_('Connection aborted by user!'),10)
           else begin
             { Connection error, check for some specifi error codes and show user friendly error message }
             if Pos('10043',e.Message) <> 0 then
@@ -7539,7 +7552,7 @@ begin
             else
               { Unknown error code, use common error message }
               ErrMsg := _('Connection failed!');
-            CoolTrayIcon1.ShowBalloonHint(TntApplication.Title, ErrMsg, bitError, 10);
+            ShowBaloonError(ErrMsg,10);
           end;
       end;
     end;
@@ -8411,11 +8424,17 @@ begin
   Application.Minimize;
 end;
 
-procedure TForm1.ShowBaloonInfo(Text: WideString; Timeout: TBalloonHintTimeOut; Where: TCoolTrayIcon);
+procedure TForm1.ShowBaloonInfo(Text: WideString; Timeout: TBalloonHintTimeOut; Where: TCoolTrayIcon;
+  IconT: TBalloonHintIcon);
 begin
   if Where = nil then Where := CoolTrayIcon1;
-  Where.ShowBalloonHint(TntApplication.Title,Text,bitInfo,Timeout);
+  Where.ShowBalloonHint(TntApplication.Title,Text,IconT,Timeout);
   Log.AddMessage(Text);
+end;
+
+procedure TForm1.ShowBaloonError(Text: WideString; Timeout: TBalloonHintTimeOut);
+begin
+  ShowBaloonInfo(Text,Timeout,nil,bitError);
 end;
 
 procedure TForm1.LogFormDestroy(Sender: TObject);
@@ -9570,7 +9589,9 @@ begin
   else
   { Allow new person task even if phonebook view is not active one }
   if IsIrmcSyncEnabled or frmSyncPhonebook.Visible then
-    frmSyncPhonebook.btnNEWClick(nil);
+    frmSyncPhonebook.btnNEWClick(nil)
+  else
+    frmMEEdit.NewPerson1Click(nil);
 end;
 
 procedure TForm1.ActionContactsVoiceCallUpdate(Sender: TObject);
@@ -10357,6 +10378,18 @@ begin
         FChatNick := UTF8StringToWideString(ReadString('Chat','Nick',DefaultChatNick)); // do not localize
         FChatLongSMS := ReadBool('Chat','Long SMS',False); // do not localize
         FChatBold := ReadBool('Chat','Bold Font',False); // do not localize
+        frmSyncPhonebook.FMaxRecME := ReadInteger('Contacts','PBMax',frmSyncPhonebook.FMaxRecME);  // do not localize
+        frmSyncPhonebook.FMaxNameLen := ReadInteger('Contacts','PBMaxName',frmSyncPhonebook.FMaxNameLen);  // do not localize
+        frmSyncPhonebook.FMaxTelLen := ReadInteger('Contacts','PBMaxTel',frmSyncPhonebook.FMaxTelLen);  // do not localize
+        frmSyncPhonebook.FMaxTitleLen := ReadInteger('Contacts','PBMaxTitle',frmSyncPhonebook.FMaxTitleLen);  // do not localize
+        frmSyncPhonebook.FMaxOrgLen := ReadInteger('Contacts','PBMaxOrg',frmSyncPhonebook.FMaxOrgLen);  // do not localize
+        frmSyncPhonebook.FMaxMailLen := ReadInteger('Contacts','PBMaxMail',frmSyncPhonebook.FMaxMailLen);  // do not localize
+        frmMEEdit.FMaxNumbers := ReadInteger('Contacts','MEMax',frmMEEdit.FMaxNumbers);  // do not localize
+        frmMEEdit.FMaxNameLen := ReadInteger('Contacts','MEMaxName',frmMEEdit.FMaxNameLen);  // do not localize
+        frmMEEdit.FMaxTelLen := ReadInteger('Contacts','MEMaxTel',frmMEEdit.FMaxTelLen);  // do not localize
+        frmSMEdit.FMaxNumbers := ReadInteger('Contacts','SMMax',frmSMEdit.FMaxNumbers);  // do not localize
+        frmSMEdit.FMaxNameLen := ReadInteger('Contacts','MEMaxName',frmSMEdit.FMaxNameLen);  // do not localize
+        frmSMEdit.FMaxTelLen := ReadInteger('Contacts','MEMaxTel',frmSMEdit.FMaxTelLen);  // do not localize
       finally
         Free;
       end;
@@ -10699,7 +10732,8 @@ begin
       inc(ProximityCheck);
       if ProximityCheck > 10 then ProximityCheck := 1;
 
-      if IsScriptInitialized and ActionConnectionAutoConnect.Checked and (ActionConnectionAutoConnect.Tag = 0) then begin
+      if IsStartCompleted and (IsScriptInitialized or not FUseScript) and
+        ActionConnectionAutoConnect.Checked and (ActionConnectionAutoConnect.Tag = 0) then begin
         { will wait until script is initialized before perform connect on startup }
         try
           RequestConnection;
@@ -11787,7 +11821,7 @@ begin
 
         EData := ExplorerNew.GetNodeData(FNodeMsgOutbox);
         if TStrings(EData.Data).Count <> 0 then begin
-          CoolTrayIcon1.ShowBalloonHint(TntApplication.Title,_('Outbox send failed and suspended temporary!'),bitError,30);
+          ShowBaloonError(_('Outbox send failed and suspended temporary!'),30);
           Status(_('Outbox send failed and suspended until user intervention'));
           frmInfoView.linkSendMessages.Enabled := True;
         end
@@ -12278,6 +12312,8 @@ begin
           [E.Message,E.ClassName]);
         Status(Err);
         Log.AddSynchronizationMessage(Err, lsError);
+        { TODO: Made outlook baloon optional }
+        ShowBaloonError(_('Outlook contacts synchronization failed!'),30);
       end;
     end;
   finally
@@ -14511,7 +14547,7 @@ begin
 
           if FNewPDUList.Count <> 0 then begin
             if (LastSMSReceiveFailure = 0) and FTextMessageOptions.NoBaloon then
-              CoolTrayIcon1.ShowBalloonHint(TntApplication.Title,_('Inbox receive failed and suspended temporary!'),bitError,30);
+              ShowBaloonError(_('Inbox receive failed and suspended temporary!'),30);
             Status(_('Inbox receive failed and suspended temporary'));
             frmInfoView.linkSendMessages.Enabled := True;
           end
@@ -14811,7 +14847,7 @@ begin
           Status(Err);
           Log.AddSynchronizationMessage(Err, lsError);
           { TODO: Made clock baloon optional }
-          CoolTrayIcon1.ShowBalloonHint(TntApplication.Title,_('Phone clock synchronization failed!'),bitError,10);
+          ShowBaloonError(_('Phone clock synchronization failed!'),30);
         end;
       end;
     end;

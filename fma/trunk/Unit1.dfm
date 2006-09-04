@@ -603,14 +603,14 @@ object Form1: TForm1
         Control = tbMainMenu
         ImageIndex = -1
         MinHeight = 21
-        Width = 267
+        Width = 305
       end
       item
         Break = False
         Control = tbExplorer
         ImageIndex = -1
         MinHeight = 24
-        Width = 223
+        Width = 261
       end
       item
         Break = False
@@ -624,14 +624,14 @@ object Form1: TForm1
         Control = tbCalls
         ImageIndex = -1
         MinHeight = 24
-        Width = 83
+        Width = 7
       end
       item
         Control = tbStandard
         ImageIndex = -1
         MinHeight = 24
         Visible = False
-        Width = 239
+        Width = 277
       end
       item
         Break = False
@@ -639,7 +639,7 @@ object Form1: TForm1
         ImageIndex = -1
         MinHeight = 24
         Visible = False
-        Width = 121
+        Width = 159
       end
       item
         Break = False
@@ -647,14 +647,14 @@ object Form1: TForm1
         ImageIndex = -1
         MinHeight = 22
         Visible = False
-        Width = 512
+        Width = 436
       end>
     EdgeBorders = [ebTop, ebBottom]
     OnChange = CoolBarChange
     object tbStandard: TToolBar
       Left = 9
       Top = 26
-      Width = 228
+      Width = 266
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -747,9 +747,9 @@ object Form1: TForm1
       end
     end
     object tbProfile: TToolBar
-      Left = 377
+      Left = 453
       Top = 27
-      Width = 501
+      Width = 425
       Height = 22
       AutoSize = True
       ButtonWidth = 25
@@ -782,7 +782,7 @@ object Form1: TForm1
       end
     end
     object tbMessages: TToolBar
-      Left = 507
+      Left = 583
       Top = 0
       Width = 284
       Height = 24
@@ -872,7 +872,7 @@ object Form1: TForm1
       end
     end
     object tbCalls: TToolBar
-      Left = 806
+      Left = 882
       Top = 0
       Width = 90
       Height = 24
@@ -913,7 +913,7 @@ object Form1: TForm1
     object tbMainMenu: TToolBar
       Left = 9
       Top = 1
-      Width = 256
+      Width = 294
       Height = 21
       AutoSize = True
       ButtonHeight = 21
@@ -930,9 +930,9 @@ object Form1: TForm1
       OnCustomDrawButton = tbMainMenuCustomDrawButton
     end
     object tbPhone: TToolBar
-      Left = 252
+      Left = 290
       Top = 26
-      Width = 110
+      Width = 148
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -967,9 +967,9 @@ object Form1: TForm1
       end
     end
     object tbExplorer: TToolBar
-      Left = 280
+      Left = 318
       Top = 0
-      Width = 212
+      Width = 250
       Height = 24
       AutoSize = True
       ButtonHeight = 24

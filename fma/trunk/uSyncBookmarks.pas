@@ -817,6 +817,8 @@ begin
         Err := WideFormat(_('Error: Sync Phone Bookmarks aborted - %s'), [E.Message]);
         Form1.Status(Err);
         Log.AddSynchronizationMessage(Err, lsError);
+        { TODO: Made bookmarks baloon optional }
+        Form1.ShowBaloonError(_('Phone bookmarks synchronization failed!'),30);
       end;
     end;
   finally

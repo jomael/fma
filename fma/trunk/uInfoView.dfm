@@ -62,7 +62,7 @@ object frmInfoView: TfrmInfoView
         Left = 8
         Top = 8
         Width = 78
-        Height = 34
+        Height = 33
         Caption = 'Inbox'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 14346715
@@ -245,8 +245,8 @@ object frmInfoView: TfrmInfoView
       object Label15: TTntLabel
         Left = 8
         Top = 8
-        Width = 174
-        Height = 34
+        Width = 168
+        Height = 33
         Caption = 'Recent Calls'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 14346715
@@ -414,8 +414,8 @@ object frmInfoView: TfrmInfoView
       object Label26: TTntLabel
         Left = 8
         Top = 8
-        Width = 225
-        Height = 34
+        Width = 219
+        Height = 33
         Caption = 'Phone & Battery'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 14346715
@@ -889,8 +889,8 @@ object frmInfoView: TfrmInfoView
       object Label18: TTntLabel
         Left = 8
         Top = 8
-        Width = 102
-        Height = 34
+        Width = 101
+        Height = 33
         Caption = 'Outbox'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 14346715
@@ -1073,8 +1073,8 @@ object frmInfoView: TfrmInfoView
       object Label24: TTntLabel
         Left = 8
         Top = 8
-        Width = 176
-        Height = 34
+        Width = 174
+        Height = 33
         Caption = 'Missed Calls'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 14346715
@@ -1249,8 +1249,8 @@ object frmInfoView: TfrmInfoView
       object Label32: TTntLabel
         Left = 8
         Top = 8
-        Width = 193
-        Height = 34
+        Width = 187
+        Height = 33
         Caption = 'Personal Data'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 14346715
@@ -1774,8 +1774,8 @@ object frmInfoView: TfrmInfoView
     object Label9: TTntLabel
       Left = 84
       Top = 12
-      Width = 278
-      Height = 27
+      Width = 290
+      Height = 28
       Caption = 'floAt'#39's Mobile Agent today'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clGreen
