@@ -7,26 +7,26 @@ object frmMsgView: TfrmMsgView
   Visible = False
   object Splitter2: TTntSplitter
     Left = 0
-    Top = 217
+    Top = 216
     Width = 515
     Height = 2
     Cursor = crVSplit
     Align = alBottom
-    MinSize = 157
+    MinSize = 158
     OnMoved = Splitter2Moved
   end
   object PreviewPanel: TTntPanel
     Left = 0
-    Top = 219
+    Top = 218
     Width = 515
-    Height = 157
+    Height = 158
     Align = alBottom
     BevelOuter = bvNone
     BorderStyle = bsSingle
     TabOrder = 2
     object MemoMsgBody: TTntRichEdit
       Left = 135
-      Top = 21
+      Top = 22
       Width = 267
       Height = 132
       Align = alClient
@@ -38,7 +38,7 @@ object frmMsgView: TfrmMsgView
     end
     object ImagePanel: TTntPanel
       Left = 0
-      Top = 21
+      Top = 22
       Width = 135
       Height = 132
       Align = alLeft
@@ -84,19 +84,19 @@ object frmMsgView: TfrmMsgView
       Left = 0
       Top = 0
       Width = 511
-      Height = 21
+      Height = 22
       Align = alTop
       Alignment = taLeftJustify
       TabOrder = 2
       DesignSize = (
         511
-        21)
+        22)
       object SpeedButton1: TTntSpeedButton
         Left = 491
-        Top = 2
+        Top = 3
         Width = 18
         Height = 17
-        Action = Form1.ActionViewMsgPreview
+        Hint = 'Close'
         Anchors = [akTop, akRight]
         Flat = True
         Glyph.Data = {
@@ -109,10 +109,11 @@ object frmMsgView: TfrmMsgView
           0000330033330033000033333333333300003333333333330000}
         ParentShowHint = False
         ShowHint = True
+        OnClick = SpeedButton1Click
       end
       object Label1: TTntLabel
         Left = 5
-        Top = 3
+        Top = 4
         Width = 78
         Height = 13
         Caption = 'Message Details'
@@ -121,7 +122,7 @@ object frmMsgView: TfrmMsgView
     end
     object tbCommands: TToolBar
       Left = 402
-      Top = 21
+      Top = 22
       Width = 109
       Height = 132
       Align = alRight
@@ -185,7 +186,7 @@ object frmMsgView: TfrmMsgView
       515
       22)
     object sbClearSearch: TTntSpeedButton
-      Left = 496
+      Left = 495
       Top = 3
       Width = 18
       Height = 17
@@ -202,7 +203,7 @@ object frmMsgView: TfrmMsgView
         0000330033330033000033333333333300003333333333330000}
       ParentShowHint = False
       ShowHint = True
-      OnClick = SpeedButton1Click
+      OnClick = sbSearchClick
     end
     object TntLabel1: TTntLabel
       Left = 300
@@ -215,7 +216,7 @@ object frmMsgView: TfrmMsgView
       Transparent = True
     end
     object edSearchFor: TTntEdit
-      Left = 342
+      Left = 340
       Top = 1
       Width = 153
       Height = 21
@@ -232,18 +233,18 @@ object frmMsgView: TfrmMsgView
     Left = 0
     Top = 22
     Width = 515
-    Height = 195
+    Height = 194
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
     DesignSize = (
       515
-      195)
+      194)
     object ListMsg: TVirtualStringTree
       Left = 0
       Top = 0
       Width = 515
-      Height = 195
+      Height = 194
       Align = alClient
       DefaultNodeHeight = 17
       DragMode = dmAutomatic
@@ -321,7 +322,7 @@ object frmMsgView: TfrmMsgView
     end
     object Animate1: TAnimate
       Left = 218
-      Top = 80
+      Top = 79
       Width = 80
       Height = 50
       Anchors = []

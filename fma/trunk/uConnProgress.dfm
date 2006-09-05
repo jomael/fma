@@ -69,7 +69,7 @@ object frmConnect: TfrmConnect
   object cbDontShow: TTntCheckBox
     Left = 8
     Top = 138
-    Width = 120
+    Width = 161
     Height = 17
     Caption = 'Don'#39't show it again'
     TabOrder = 1

@@ -98,7 +98,7 @@ type
   PTaskData = ^TTaskData;
 
   { Do not create/destroy this form by yourself!!!
-    Instead use two methods below:
+    Instead use two methods bellow:
       - GetProgressDialog
       - FreeProgressDialog }
   TfrmConnect = class(TTntForm)
@@ -362,7 +362,7 @@ begin
     t^.ProgressBar.Frame := 1;
     t^.ProgressBar.ShowBorder := False;
     t^.ProgressBar.BarColor := clHighlight;
-    t^.ProgressBar.Color := clScrollBar;
+    t^.ProgressBar.Color := clDkGray;
     t^.ProgressBar.UnknownWidth := 25;
     if MaxProgress <> -1 then
       t^.ProgressBar.Max := MaxProgress;
@@ -486,7 +486,7 @@ begin
         if t^.Captions.Count >= 1 then
           Canvas.TextOut(GetTextLeft(t^.Captions[0]),ContentRect.Top+2,t^.Captions[0]);
         if Canvas.Font.Color = clWindowText then
-          Canvas.Font.Color := clGrayText;
+          Canvas.Font.Color := clDkGray;
         w := '';
         if t^.Captions.Count >= 2 then begin
           w := t^.Captions[1];

@@ -497,7 +497,7 @@ type
     procedure Properties1Click(Sender: TObject);
     procedure Copy1Click(Sender: TObject);
     procedure pmListMsgPopup(Sender: TObject);
-    procedure SpeedButton1Click(Sender: TObject);
+    procedure sbSearchClick(Sender: TObject);
     procedure ListMsgKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure Splitter2Moved(Sender: TObject);
@@ -536,6 +536,7 @@ type
     procedure ListMsgKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FixSMSDatabase1Click(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
   private
     FCustomImage: Boolean;
     FRendered: TStringList;
@@ -1372,7 +1373,7 @@ begin
   Form1.Status('');
 end;
 
-procedure TfrmMsgView.SpeedButton1Click(Sender: TObject);
+procedure TfrmMsgView.sbSearchClick(Sender: TObject);
 begin
   edSearchFor.Text := '';
   SearchForMessages('');
@@ -2282,6 +2283,11 @@ end;
 procedure TfrmMsgView.FixSMSDatabase1Click(Sender: TObject);
 begin
   CleanupDatabase(True,not Form1.FArchiveDublicates);
+end;
+
+procedure TfrmMsgView.SpeedButton1Click(Sender: TObject);
+begin
+  Form1.ActionViewMsgPreview.Execute;
 end;
 
 end.

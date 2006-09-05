@@ -4397,7 +4397,10 @@ begin
 
 {$IFNDEF VER150}
   ThemeManager1 := TTntThemeManager.Create(Self);
-  ThemeManager1.Options := [toAllowNonClientArea, toAllowControls, toAllowWebContent, toSubclassButtons, toSubclassCheckListbox, toSubclassDBLookup, toSubclassFrame, toSubclassGroupBox, toSubclassPanel, toSubclassTabSheet, toSubclassSpeedButtons, toSubclassStatusBar, toSubclassTrackBar, toSubclassWinControl, toResetMouseCapture, toSetTransparency];
+  ThemeManager1.Options := [toAllowNonClientArea, toAllowControls, toAllowWebContent, toSubclassButtons,
+    toSubclassCheckListbox, toSubclassDBLookup, toSubclassFrame, toSubclassGroupBox, toSubclassPanel,
+    toSubclassTabSheet, toSubclassSpeedButtons, toSubclassStatusBar, toSubclassTrackBar, toSubclassWinControl,
+    toResetMouseCapture, toSetTransparency];
 {$ELSE}
   FramePanel.ParentBackground := False;
 {$ENDIF}
@@ -13188,6 +13191,7 @@ begin
   if BrandName = '' then model := FPhoneModel else model := BrandName;
   // do not localize - begin
   Result := (Pos('K750',model) <> 0) or // and K750 clones
+            (Pos('K790',model) <> 0) or
             (Pos('D750',model) <> 0) or
             (Pos('Z520',model) <> 0) or
             IsWalkmanClone;             // and better... !!!
@@ -13205,6 +13209,7 @@ begin
             (Pos('W300',model) <> 0) or
             (Pos('W550',model) <> 0) or
             (Pos('W600',model) <> 0) or
+            (Pos('K610',model) <> 0) or // K610-series have Media Player as W-series
             (Pos('W900',model) <> 0);
   // do not localize - end
 end;
