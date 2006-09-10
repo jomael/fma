@@ -207,6 +207,10 @@ type
     ActionUpdateMD5: TAction;
     MD5Update1: TMenuItem;
     Mirror1: TMenuItem;
+    ToolButton13: TToolButton;
+    ActionDeployApp: TAction;
+    ToolButton17: TToolButton;
+    ToolButton18: TToolButton;
     procedure TreeView1Change(Sender: TObject; Node: TTreeNode);
     procedure Exit1Click(Sender: TObject);
     procedure ActionAddUpdateUpdate(Sender: TObject);
@@ -266,6 +270,7 @@ type
     procedure ActionUpdateMD5Execute(Sender: TObject);
     procedure ActionUpdateMD5Update(Sender: TObject);
     procedure pmExplorerPopup(Sender: TObject);
+    procedure ActionDeployAppExecute(Sender: TObject);
   private
     { Private declarations }
     FSyncingCode,FLoadingFile,FModified,FInitialized: boolean;
@@ -303,7 +308,7 @@ type
 {$ENDIF}
     procedure ClearRecentHistory;
   published
-    property Syncing: boolean read Get_Syncing;
+    property IsSyncChanges: boolean read Get_Syncing;
     property ScriptChanged: boolean read Get_Changed write Set_Changed;
     property GUIChanged: boolean read Get_ChangedGUI write Set_ChangedGUI;
   end;
@@ -404,9 +409,9 @@ var
   sl: TStringList;
   ver,script: string;
 begin
+  FLoadingFile := True;
   Timer1.Enabled := False;
   Timer2.Enabled := False;
-  FLoadingFile := True;
   try
     if ReloadFile then CheckScriptSave;
 
@@ -515,7 +520,7 @@ end;
 
 procedure TForm1.ActionAddUpdateUpdate(Sender: TObject);
 begin
-  ActionAddUpdate.Enabled := not Syncing and
+  ActionAddUpdate.Enabled := not IsSyncChanges and
    ((ActiveControl = ListView1) and (ListView1.Selected <> nil) and
     (ListView1.Selected.ImageIndex = 18)) or ((ActiveControl = TreeView1) and
     (TreeView1.Selected <> nil) and (TreeView1.Selected.Parent = TreeView1.Items[0]) and
@@ -563,7 +568,7 @@ begin
     try
       sl.Assign(Memo1.Lines);
       for i := 0 to frmAddUpdate.ReadyUpdates.Count-1 do begin
-        { udate name }
+        { update name }
         s := ExtractFileName(ChangeFileExt(frmAddUpdate.ReadyUpdates[i],''));
         Delete(s,1,Pos('-',s));
         s := 'MobileAgent-'+s+'='+ExtractFileName(frmAddUpdate.ReadyUpdates[i])+',';
@@ -612,8 +617,7 @@ begin
             end;
             if InMain then
               for k := m+1 to TreeView1.Selected.Parent.Count-1 do begin
-                { MobileAgent-0.1.0.01-0.1.0.99=update-0.1.0.32-0.1.0.31.rev,202636,bin
-                  MobileAgent-*-0.1.0.99=MobileAgent-0.1.0.99.exe,2000000,null }
+                { MobileAgent-0.1.0.01-0.1.0.99=update-0.1.0.32-0.1.0.31.rev,202636,bin[,<md5>] }
                 ver := '-' + TreeView1.Selected.Parent.Item[k].Text;
                 if Pos(ver,sl[j]) <> 0 then begin
                   Found := True;
@@ -630,7 +634,7 @@ begin
       Memo1.Lines.Assign(sl);
     finally
       sl.Free;
-      SyncGUI2Code; 
+      SyncGUI2Code;
     end;
   end
   else
@@ -753,14 +757,14 @@ end;
 
 procedure TForm1.ActionDelUpdateUpdate(Sender: TObject);
 begin
-  ActionDelUpdate.Enabled := not Syncing and
+  ActionDelUpdate.Enabled := not IsSyncChanges and
     (ActiveControl = TreeView1) and (TreeView1.Selected <> nil) and
     (TreeView1.Selected.Parent <> nil) and (TreeView1.Selected.ImageIndex = 29); // update
 end;
 
 procedure TForm1.ActionDelVersionUpdate(Sender: TObject);
 begin
-  ActionDelVersion.Enabled := not Syncing and
+  ActionDelVersion.Enabled := not IsSyncChanges and
     (ActiveControl = TreeView1) and (TreeView1.Selected <> nil) and
     (TreeView1.Selected.Parent = TreeView1.Items[0]) and
     (TreeView1.Selected.ImageIndex in [18,20]); // version or new_version
@@ -1029,7 +1033,7 @@ end;
 
 procedure TForm1.ActionDelMirrorUpdate(Sender: TObject);
 begin
-  ActionDelMirror.Enabled := not Syncing and
+  ActionDelMirror.Enabled := not IsSyncChanges and
     (ActiveControl = ListView2) and (ListView2.Selected <> nil);
 end;
 
@@ -1102,9 +1106,9 @@ var
   TempFile: string;
   SS,SL: integer;
 begin
+  FSyncingCode := True;
   Timer1.Enabled := False;
   Timer2.Enabled := False;
-  FSyncingCode := True;
   SS := Memo1.SelStart;
   SL := Memo1.SelLength;
   Memo1.Lines.BeginUpdate;
@@ -1223,7 +1227,7 @@ end;
 
 procedure TForm1.ActionEditMirrorUpdate(Sender: TObject);
 begin
-  ActionEditMirror.Enabled := not Syncing and
+  ActionEditMirror.Enabled := not IsSyncChanges and
     ListView2.Visible and (ListView2.Selected <> nil);
 end;
 
@@ -1231,11 +1235,16 @@ procedure TForm1.ActionEditMirrorExecute(Sender: TObject);
 begin
   frmMirror.edName.Text := ListView2.Selected.Caption;
   frmMirror.mmoURL.Text := ListView2.Selected.SubItems[0];
+  frmMirror.cbDefault.Checked := ListView2.Selected.SubItems[1] = 'Yes';
   if frmMirror.ShowModal = mrOk then begin
     ListView2.Items.BeginUpdate;
     try
       ListView2.Selected.Caption := frmMirror.edName.Text;
       ListView2.Selected.SubItems[0] := frmMirror.mmoURL.Text;
+      if frmMirror.cbDefault.Checked then
+        ActionSetDefMirror.Execute
+      else
+        ActionDelDefMirror.Execute;
     finally
       ListView2.Items.EndUpdate;
       GUIChanged := True;
@@ -1245,7 +1254,7 @@ end;
 
 procedure TForm1.ActionSetDefMirrorUpdate(Sender: TObject);
 begin
-  ActionSetDefMirror.Enabled := not Syncing and
+  ActionSetDefMirror.Enabled := not IsSyncChanges and
     (ActiveControl = ListView2) and (ListView2.Selected <> nil) and
     (ListView2.Selected.SubItems[1] <> 'Yes');
 end;
@@ -1262,7 +1271,7 @@ end;
 
 procedure TForm1.ActionDelDefMirrorUpdate(Sender: TObject);
 begin
-  ActionDelDefMirror.Enabled := not Syncing and
+  ActionDelDefMirror.Enabled := not IsSyncChanges and
     (ActiveControl = ListView2) and (ListView2.Selected <> nil) and
     (ListView2.Selected.SubItems[1] = 'Yes');
 end;
@@ -1316,32 +1325,43 @@ end;
 
 procedure TForm1.ActionSaveUpdate(Sender: TObject);
 begin
-  ActionSave.Enabled := not Syncing and ScriptChanged;
+  ActionSave.Enabled := not IsSyncChanges and ScriptChanged;
 end;
 
 procedure TForm1.HomePage1Click(Sender: TObject);
 begin
-  ShellExecute(Handle,'open',PChar(ExtractFileVersionInfo(
-    Application.ExeName,'HomePage')),'','',SW_SHOWNORMAL);
+  ShellExecute(Handle,'open','http://fma.sourceforge.net/','','',SW_SHOWNORMAL);
 end;
 
 procedure TForm1.ActionAddMirrorExecute(Sender: TObject);
+var
+  Item: TListItem;
+  i: Integer;
 begin
+  { Switch to Mirrors tab }
+  MirrorServers1.Click;
+  { Create mirror }
   frmMirror.edName.Text := '';
   frmMirror.mmoURL.Text := 'http://';
+  frmMirror.cbDefault.Checked := False;
   if frmMirror.ShowModal = mrOk then begin
     ListView2.Items.BeginUpdate;
     try
-      with ListView2.Items.Add do begin
-        Caption := frmMirror.edName.Text;
-        SubItems.Add(frmMirror.mmoURL.Text);
-        ImageIndex := 6;
-      end;
+      if frmMirror.cbDefault.Checked then
+        for i := 0 to ListView2.Items.Count-1 do
+          ListView2.Items[i].SubItems[1] := '';
+      Item := ListView2.Items.Add;
+      Item.Caption := frmMirror.edName.Text;
+      Item.SubItems.Add(frmMirror.mmoURL.Text);
+      if frmMirror.cbDefault.Checked then Item.SubItems.Add('Yes')
+        else Item.SubItems.Add('');
+      Item.ImageIndex := 6;
+      Item.Focused := True;
+      ListView2.Selected := Item;
     finally
       ListView2.Items.EndUpdate;
       GUIChanged := True;
     end;
-    Notebook1.ActivePage := 'Mirrors';
   end;
 end;
 
@@ -1351,6 +1371,9 @@ var
   s: string;
   ver: TTreeNode;
 begin
+  { Switch to Versions tab }
+  TargetVersions1.Click;
+  { Create version }
   if InputQuery('Add version...','Enter version build:',s) then begin
     for i := 0 to TreeView1.Items[0].Count-1 do
       if AnsiCompareText(TreeView1.Items[0].Item[i].Text,s) = 0 then
@@ -1439,7 +1462,7 @@ end;
 
 procedure TForm1.ActionExploreUpdate(Sender: TObject);
 begin
-  ActionExplore.Enabled := not Syncing and
+  ActionExplore.Enabled := not IsSyncChanges and
     (ActiveControl = ListView1) and (ListView1.Selected <> nil) and
     (ListView1.Selected.ImageIndex in [18,29]);
 end;
@@ -1462,7 +1485,7 @@ end;
 
 procedure TForm1.ActionCloseUpdate(Sender: TObject);
 begin
-  ActionClose.Enabled := not Syncing and (OpenDialog1.FileName <> '');
+  ActionClose.Enabled := not IsSyncChanges and (OpenDialog1.FileName <> '');
 end;
 
 procedure TForm1.Options1Click(Sender: TObject);
@@ -1516,13 +1539,24 @@ begin
 end;
 
 function TForm1.Get_Syncing: boolean;
+const
+  sWorking = 'Working...';
+var
+  s: String;
 begin
-  Result := FLoadingFile or FSyncingCode;
+  s := StatusBar1.Panels[1].Text;
+  if s = sWorking then s := '';
+  Result := FLoadingFile or FSyncingCode or Timer1.Enabled or Timer2.Enabled;
+  if Result then
+    StatusBar1.Panels[1].Text := sWorking
+  else
+    StatusBar1.Panels[1].Text := s;
+  StatusBar1.Update;
 end;
 
 procedure TForm1.ActionNotSyncingUpdate(Sender: TObject);
 begin
-  (Sender as TAction).Enabled := not Syncing;
+  (Sender as TAction).Enabled := not IsSyncChanges;
 end;
 
 procedure TForm1.pmTreePopup(Sender: TObject);
@@ -1535,6 +1569,7 @@ var
   s: String;
   i: Integer;
 begin
+  OpenDialog2.Title := 'Get File MD5...';
   OpenDialog2.Filter := 'Patch file|'+ListView1.Selected.SubItems[0];
   OpenDialog2.FileName := ListView1.Selected.SubItems[2];
   if OpenDialog2.Execute then begin
@@ -1574,6 +1609,80 @@ procedure TForm1.pmExplorerPopup(Sender: TObject);
 begin
   ActionUpdateMD5.Update;
   GetMD5.Visible := GetMD5.Enabled;
+end;
+
+procedure TForm1.ActionDeployAppExecute(Sender: TObject);
+var
+  i,j,asize: integer;
+  s,d,ver: string;
+  sl: TStringList;
+  Found,InMain: boolean;
+begin
+  { Switch to Versions tab }
+  TargetVersions1.Click;
+  { Create version }
+  if InputQuery('Add full update...','Enter version build:',ver) then begin
+    for i := 0 to TreeView1.Items[0].Count-1 do
+      if AnsiCompareText(TreeView1.Items[0].Item[i].Text,ver) = 0 then
+        raise Exception.Create('This version already exists');
+    { Check filter restrictions }
+    if Pos(FFilter,ver) <> 1 then
+      MessageDlg('This version will not be visible once update is created '+
+        'due to current Filter settings.', mtWarning, [mbOk], 0);
+    OpenDialog2.Title := 'Select Application to Deploy...';
+    OpenDialog2.Filter := 'Application Files|*.exe';
+    OpenDialog2.FileName := '';
+    if OpenDialog2.Execute then begin
+      with TFileStream.Create(OpenDialog2.FileName,fmOpenRead) do
+        try
+          asize := Size;
+          if asize = 0 then
+            raise Exception.Create('Source application file is empty');
+        finally
+          Free;
+        end;
+      StatusBar1.Panels[1].Text := 'Building...';
+      StatusBar1.Update;
+      sl := TStringList.Create;
+      try
+        sl.Assign(Memo1.Lines);
+        { find 1st occurance ot any next ver }
+        j := -1; Found := False; InMain := False;
+        while not Found and (j < sl.Count-1) do begin
+          inc(j);
+          if Copy(sl[j],1,1) = ';' then continue;
+          if Pos('[main]',sl[j]) <> 0 then InMain := True
+          else begin
+            if InMain and (Copy(sl[j],1,1) = '[') then begin
+              while (j <> 0) do begin
+                if Trim(sl[j-1]) <> '' then break;
+                dec(j);
+              end;
+              break;
+            end;
+          end;
+        end;
+        { MobileAgent-*-0.1.0.99=MobileAgent-0.1.0.99.exe,2000000,null[,<md5>] }
+        s := ExtractFileName(OpenDialog2.FileName);
+        d := ChangeFileExt(s,'-'+ver+'.exe');
+        s := frmOptions.Edit3.Text + '-*-' + ver + '=' + d + ',' + IntToStr(asize) + ',null';
+        d := ExtractFilePath(OpenDialog1.FileName) + d;
+        if CopyFile(PChar(OpenDialog2.FileName),PChar(d),False) then begin
+          { MD5 update file }
+          s := s + ',' + FileMD5(OpenDialog2.FileName);
+          { insert new one }
+          sl.Insert(j,s);
+          Memo1.Lines.Assign(sl);
+        end
+        else
+          raise Exception.Create('Could not create new update file');
+      finally
+        sl.Free;
+        StatusBar1.Panels[1].Text := '';
+      end;
+      SyncGUI2Code;
+    end;
+  end;
 end;
 
 end.

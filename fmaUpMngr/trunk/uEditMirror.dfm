@@ -49,7 +49,7 @@ object frmMirror: TfrmMirror
     Height = 25
     Caption = 'OK'
     Default = True
-    TabOrder = 2
+    TabOrder = 3
     OnClick = Button1Click
   end
   object Button2: TButton
@@ -60,6 +60,14 @@ object frmMirror: TfrmMirror
     Cancel = True
     Caption = 'Cancel'
     ModalResult = 2
-    TabOrder = 3
+    TabOrder = 4
+  end
+  object cbDefault: TCheckBox
+    Left = 12
+    Top = 182
+    Width = 105
+    Height = 17
+    Caption = 'Default mirror'
+    TabOrder = 2
   end
 end

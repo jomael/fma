@@ -18,11 +18,11 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 177
     Top = 51
-    Height = 514
+    Height = 510
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 565
+    Top = 561
     Width = 829
     Height = 19
     Panels = <
@@ -40,7 +40,7 @@ object Form1: TForm1
     Left = 0
     Top = 51
     Width = 177
-    Height = 514
+    Height = 510
     Align = alLeft
     HideSelection = False
     Images = ImageList1
@@ -65,13 +65,13 @@ object Form1: TForm1
         Control = ToolBar2
         ImageIndex = -1
         MinHeight = 21
-        Width = 825
+        Width = 823
       end
       item
         Control = ToolBar1
         ImageIndex = -1
         MinHeight = 24
-        Width = 825
+        Width = 823
       end>
     object ToolBar1: TToolBar
       Left = 9
@@ -111,12 +111,12 @@ object Form1: TForm1
         Top = 0
         Action = ActionSave
       end
-      object ToolButton4: TToolButton
+      object ToolButton18: TToolButton
         Left = 83
         Top = 0
         Width = 8
-        Caption = 'ToolButton4'
-        ImageIndex = 15
+        Caption = 'ToolButton18'
+        ImageIndex = 32
         Style = tbsSeparator
       end
       object ToolButton14: TToolButton
@@ -134,13 +134,21 @@ object Form1: TForm1
         Top = 0
         Action = EditPaste1
       end
-      object ToolButton8: TToolButton
+      object ToolButton4: TToolButton
         Left = 166
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton4'
+        ImageIndex = 15
+        Style = tbsSeparator
+      end
+      object ToolButton8: TToolButton
+        Left = 174
         Top = 0
         Action = ActionDelete
       end
       object ToolButton5: TToolButton
-        Left = 191
+        Left = 199
         Top = 0
         Width = 8
         Caption = 'ToolButton5'
@@ -148,30 +156,40 @@ object Form1: TForm1
         Style = tbsSeparator
       end
       object ToolButton6: TToolButton
-        Left = 199
+        Left = 207
         Top = 0
         Action = ActionAddVersion
       end
       object ToolButton1: TToolButton
-        Left = 224
+        Left = 232
         Top = 0
         Action = ActionAddUpdate
       end
+      object ToolButton13: TToolButton
+        Left = 257
+        Top = 0
+        Action = ActionUpdateMD5
+      end
       object ToolButton11: TToolButton
-        Left = 249
+        Left = 282
         Top = 0
         Width = 8
         Caption = 'ToolButton11'
         ImageIndex = 32
         Style = tbsSeparator
       end
+      object ToolButton17: TToolButton
+        Left = 290
+        Top = 0
+        Action = ActionDeployApp
+      end
       object ToolButton12: TToolButton
-        Left = 257
+        Left = 315
         Top = 0
         Action = ActionAddMirror
       end
       object ToolButton7: TToolButton
-        Left = 282
+        Left = 340
         Top = 0
         Width = 8
         Caption = 'ToolButton7'
@@ -179,7 +197,7 @@ object Form1: TForm1
         Style = tbsSeparator
       end
       object ToolButton10: TToolButton
-        Left = 290
+        Left = 348
         Top = 0
         Action = ActionFilter
       end
@@ -205,13 +223,13 @@ object Form1: TForm1
     Left = 180
     Top = 51
     Width = 649
-    Height = 514
+    Height = 510
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 3
     object TabSet1: TTabSet
       Left = 0
-      Top = 493
+      Top = 489
       Width = 649
       Height = 21
       Align = alBottom
@@ -232,8 +250,9 @@ object Form1: TForm1
       Left = 0
       Top = 0
       Width = 649
-      Height = 493
+      Height = 489
       Align = alClient
+      PageIndex = 1
       TabOrder = 1
       OnPageChanged = Notebook1PageChanged
       object TPage
@@ -244,7 +263,7 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 649
-          Height = 493
+          Height = 489
           Align = alClient
           Columns = <
             item
@@ -283,7 +302,7 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 649
-          Height = 493
+          Height = 489
           Align = alClient
           Font.Charset = RUSSIAN_CHARSET
           Font.Color = clWindowText
@@ -306,7 +325,7 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 649
-          Height = 493
+          Height = 489
           Align = alClient
           Columns = <
             item
@@ -1845,7 +1864,7 @@ object Form1: TForm1
     object ActionAddVersion: TAction
       Category = 'Version'
       Caption = 'New Version...'
-      Hint = 'Add Version'
+      Hint = 'Add new version'
       ImageIndex = 30
       ShortCut = 118
       OnExecute = ActionAddVersionExecute
@@ -1854,7 +1873,7 @@ object Form1: TForm1
     object ActionAddUpdate: TAction
       Category = 'Update'
       Caption = 'New Update...'
-      Hint = 'Add Update'
+      Hint = 'Add new update'
       ImageIndex = 22
       ShortCut = 120
       OnExecute = ActionAddUpdateExecute
@@ -1863,7 +1882,7 @@ object Form1: TForm1
     object ActionAddMirror: TAction
       Category = 'Mirror'
       Caption = 'New Mirror...'
-      Hint = 'Add Mirror'
+      Hint = 'Add new mirror server'
       ImageIndex = 6
       ShortCut = 119
       OnExecute = ActionAddMirrorExecute
@@ -1872,7 +1891,7 @@ object Form1: TForm1
     object ActionDelete: TAction
       Category = 'Project'
       Caption = '&Delete'
-      Hint = 'Delete'
+      Hint = 'Deletes selection'
       ImageIndex = 2
       OnExecute = ActionDeleteExecute
       OnUpdate = ActionDeleteUpdate
@@ -1933,7 +1952,7 @@ object Form1: TForm1
     object ActionFilter: TAction
       Category = 'View'
       Caption = 'Filter...'
-      Hint = 'Filter View'
+      Hint = 'Filter current view'
       ImageIndex = 31
       ShortCut = 114
       OnExecute = ActionFilterExecute
@@ -1950,7 +1969,7 @@ object Form1: TForm1
     object ActionOpen: TAction
       Category = 'File'
       Caption = 'Open Project...'
-      Hint = 'Open'
+      Hint = 'Open script'
       ImageIndex = 25
       ShortCut = 16463
       OnExecute = ActionOpenExecute
@@ -1959,7 +1978,7 @@ object Form1: TForm1
     object ActionSave: TAction
       Category = 'File'
       Caption = 'Save'
-      Hint = 'Save'
+      Hint = 'Save script'
       ImageIndex = 26
       ShortCut = 16467
       OnExecute = ActionSaveExecute
@@ -2025,9 +2044,18 @@ object Form1: TForm1
     object ActionUpdateMD5: TAction
       Category = 'Update'
       Caption = 'Sign Update...'
+      Hint = 'Sign selected update'
       ImageIndex = 37
       OnExecute = ActionUpdateMD5Execute
       OnUpdate = ActionUpdateMD5Update
+    end
+    object ActionDeployApp: TAction
+      Category = 'Update'
+      Caption = 'New Deployment...'
+      Hint = 'Deploy full update'
+      ImageIndex = 23
+      OnExecute = ActionDeployAppExecute
+      OnUpdate = ActionNotSyncingUpdate
     end
   end
   object SaveDialog1: TSaveDialog
@@ -2045,7 +2073,6 @@ object Form1: TForm1
   end
   object Timer1: TTimer
     Enabled = False
-    Interval = 2000
     OnTimer = Timer1Timer
     Left = 484
     Top = 136
@@ -2076,6 +2103,7 @@ object Form1: TForm1
   end
   object Timer2: TTimer
     Enabled = False
+    Interval = 500
     OnTimer = Timer2Timer
     Left = 516
     Top = 136
@@ -2127,7 +2155,6 @@ object Form1: TForm1
   end
   object OpenDialog2: TOpenDialog
     Options = [ofHideReadOnly, ofFileMustExist, ofEnableSizing]
-    Title = 'Get File MD5...'
     Left = 548
     Top = 136
   end

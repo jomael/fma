@@ -114,8 +114,8 @@ IncludeVerInfo=1
 AutoIncBuild=0
 MajorVer=1
 MinorVer=0
-Release=6
-Build=34
+Release=7
+Build=40
 Debug=0
 PreRelease=0
 Special=0
@@ -126,9 +126,9 @@ CodePage=1251
 [Version Info Keys]
 CompanyName=5Group & Co.
 FileDescription=FMA Update Manager
-FileVersion=1.0.6.34
+FileVersion=1.0.7.40
 InternalName=UpdateManager
-LegalCopyright=(C) 1996-2005 by 5Group & Co.
+LegalCopyright=(C) 1996-2006 by 5Group & Co.
 LegalTrademarks=None
 OriginalFilename=UpdateManager.exe
 ProductName=UpdateManager
@@ -139,6 +139,3 @@ HomePage=http://fma.sourceforge.net/
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
-[HistoryLists\hlSearchPath]
-Count=1
-Item0=..\fma_2_2

@@ -30,11 +30,13 @@ type
     mmoURL: TMemo;
     Button1: TButton;
     Button2: TButton;
+    cbDefault: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
+    FEditMode: boolean;
   public
     { Public declarations }
   end;
@@ -56,6 +58,8 @@ begin
 end;
 
 procedure TfrmMirror.Button1Click(Sender: TObject);
+var
+  i: Integer;
 begin
   if Trim(edName.Text) = '' then
     raise Exception.Create('Please fill in Mirror Name');
@@ -63,11 +67,16 @@ begin
     raise Exception.Create('Please fill in Server Base URL');
   if (Pos('://',mmoURL.Text) = 0) or (Length(mmoURL.Text) < 6) then { ftp:// }
     raise Exception.Create('Invalid Server Base URL');
+  if not FEditMode then
+    for i := 0 to Form1.ListView2.Items.Count-1 do
+      if CompareStr(mmoURL.Text,Form1.ListView2.Items[i].SubItems[0]) = 0 then
+        raise Exception.Create('Server Base URL already exists');
   ModalResult := mrOk;
 end;
 
 procedure TfrmMirror.FormShow(Sender: TObject);
 begin
+  FEditMode := edName.Text <> '';
   edName.SetFocus;
 end;
 

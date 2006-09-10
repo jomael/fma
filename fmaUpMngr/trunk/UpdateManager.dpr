@@ -3,14 +3,15 @@ program UpdateManager;
 uses
   Forms,
   Unit1 in 'Unit1.pas' {Form1},
-  uVersion in '..\fma\uVersion.pas',
   uAddUpdate in 'uAddUpdate.pas' {frmAddUpdate},
   uEditMirror in 'uEditMirror.pas' {frmMirror},
   uolDiff in 'uolDiff.pas',
   uGenerate in 'uGenerate.pas' {frmBuild},
   uDiffOptions in 'uDiffOptions.pas' {frmDiffOptions},
   uPassword in 'uPassword.pas' {frmPassword},
-  uOptions in 'uOptions.pas' {frmOptions};
+  uOptions in 'uOptions.pas' {frmOptions},
+  uVersion in '..\..\fma\trunk\uVersion.pas',
+  uGlobal in '..\..\fma\trunk\uGlobal.pas';
 
 {$R *.res}
 

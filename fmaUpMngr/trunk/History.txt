@@ -1,7 +1,9 @@
 Change Log:
 
-- Fixed Right-click tree will move focused node.
-- Changed Main menu, Popup menus, Listview GUI.
-- Added Update MD5 information into Index file.
+- Fixed Disable actions until changes applied.
+- Fixed Create New Mirror index error message.
+- Added Detect duplicate URL mirrors check.
+- Added New/edit mirror is Default checkbox.
+- Added Create full Application deployment.
 
 The FMA Team
