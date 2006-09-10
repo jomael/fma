@@ -1,0 +1,29 @@
+#------------------------------------------------------------------------------
+VERSION = BWS.01
+#------------------------------------------------------------------------------
+!ifndef ROOT
+ROOT = $(MAKEDIR)\..
+!endif
+#------------------------------------------------------------------------------
+MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
+DCC = $(ROOT)\bin\dcc32.exe $**
+BRCC = $(ROOT)\bin\brcc32.exe $**
+#------------------------------------------------------------------------------
+PROJECTS = MobileAgent.exe floAtMediaCtrl.exe UpdateManager.exe WinampCOMLib.dll
+#------------------------------------------------------------------------------
+default: $(PROJECTS)
+#------------------------------------------------------------------------------
+
+MobileAgent.exe: fma\trunk\MobileAgent.dpr
+  $(DCC)
+
+floAtMediaCtrl.exe: floAtMixer\trunk\floAtMediaCtrl.dpr
+  $(DCC)
+
+UpdateManager.exe: fmaUpMngr\trunk\UpdateManager.dpr
+  $(DCC)
+
+WinampCOMLib.dll: winampCOMlib\trunk\WinampCOMLib.dpr
+  $(DCC)
+
+
