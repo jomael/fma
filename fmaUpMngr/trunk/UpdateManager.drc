@@ -8,8 +8,10 @@
   resources were bound to the produced executable.
 */
 
-#define TntSystem_SBufferOverflow 65232
-#define TntSystem_SInvalidUTF7 65233
+#define ComConst_SVarNotObject 65232
+#define ComConst_STooManyParams 65233
+#define TntSystem_SBufferOverflow 65234
+#define TntSystem_SInvalidUTF7 65235
 #define ExtCtrls_clName3DLight 65248
 #define ExtCtrls_clNameWindow 65249
 #define ExtCtrls_clNameWindowFrame 65250
@@ -19,13 +21,13 @@
 #define ComStrs_sInvalidOwner 65254
 #define ComStrs_sInvalidComCtl32 65255
 #define WinHelpViewer_hNoKeyword 65256
-#define JConsts_sChangeJPGSize 65257
-#define JConsts_sJPEGError 65258
-#define JConsts_sJPEGImageFile 65259
-#define ComConst_SOleError 65260
-#define ComConst_SNoMethod 65261
-#define ComConst_SVarNotObject 65262
-#define ComConst_STooManyParams 65263
+#define ZLibConst_sInvalidStreamOp 65257
+#define ZLibConst_sError 65258
+#define JConsts_sChangeJPGSize 65259
+#define JConsts_sJPEGError 65260
+#define JConsts_sJPEGImageFile 65261
+#define ComConst_SOleError 65262
+#define ComConst_SNoMethod 65263
 #define ExtCtrls_clNameBtnText 65264
 #define ExtCtrls_clNameCaptionText 65265
 #define ExtCtrls_clNameDefault 65266
@@ -300,6 +302,8 @@
 #define SysConst_SInvalidInput 65535
 STRINGTABLE
 BEGIN
+	ComConst_SVarNotObject,	"Variant does not reference an automation object"
+	ComConst_STooManyParams,	"Dispatch methods do not support more than 64 parameters"
 	TntSystem_SBufferOverflow,	"Buffer overflow"
 	TntSystem_SInvalidUTF7,	"Invalid UTF7"
 	ExtCtrls_clName3DLight,	"3D Light"
@@ -311,13 +315,13 @@ BEGIN
 	ComStrs_sInvalidOwner,	"Invalid owner"
 	ComStrs_sInvalidComCtl32,	"This control requires version 4.70 or greater of COMCTL32.DLL"
 	WinHelpViewer_hNoKeyword,	"No help keyword specified."
+	ZLibConst_sInvalidStreamOp,	"Invalid stream operation"
+	ZLibConst_sError,	"Error"
 	JConsts_sChangeJPGSize,	"Cannot change the size of a JPEG image"
 	JConsts_sJPEGError,	"JPEG error #%d"
 	JConsts_sJPEGImageFile,	"JPEG Image File"
 	ComConst_SOleError,	"OLE error %.8x"
 	ComConst_SNoMethod,	"Method '%s' not supported by automation object"
-	ComConst_SVarNotObject,	"Variant does not reference an automation object"
-	ComConst_STooManyParams,	"Dispatch methods do not support more than 64 parameters"
 	ExtCtrls_clNameBtnText,	"Button Text"
 	ExtCtrls_clNameCaptionText,	"Caption Text"
 	ExtCtrls_clNameDefault,	"Default"

@@ -321,8 +321,9 @@ procedure SetDefFont;
 implementation
 
 uses
-  IniFiles, DateUtils, IcsMD5,
-  uAddUpdate, uVersion, uEditMirror, uGlobal, uolDiff, uDiffOptions, uOptions;
+  IniFiles, DateUtils, IcsMD5, Zlib,
+  uAddUpdate, uVersion, uEditMirror, uGlobal, uolDiff, uDiffOptions, uOptions,
+  uGenerate;
 
 {$R *.dfm}
 {$R WinXP.res}
@@ -1613,8 +1614,8 @@ end;
 
 procedure TForm1.ActionDeployAppExecute(Sender: TObject);
 var
-  i,j,asize: integer;
-  s,d,ver: string;
+  i,j: integer;
+  s,d,z,ver: string;
   sl: TStringList;
   Found,InMain: boolean;
 begin
@@ -1633,14 +1634,6 @@ begin
     OpenDialog2.Filter := 'Application Files|*.exe';
     OpenDialog2.FileName := '';
     if OpenDialog2.Execute then begin
-      with TFileStream.Create(OpenDialog2.FileName,fmOpenRead) do
-        try
-          asize := Size;
-          if asize = 0 then
-            raise Exception.Create('Source application file is empty');
-        finally
-          Free;
-        end;
       StatusBar1.Panels[1].Text := 'Building...';
       StatusBar1.Update;
       sl := TStringList.Create;
@@ -1664,23 +1657,28 @@ begin
         end;
         { MobileAgent-*-0.1.0.99=MobileAgent-0.1.0.99.exe,2000000,null[,<md5>] }
         s := ExtractFileName(OpenDialog2.FileName);
-        d := ChangeFileExt(s,'-'+ver+'.exe');
-        s := frmOptions.Edit3.Text + '-*-' + ver + '=' + d + ',' + IntToStr(asize) + ',null';
-        d := ExtractFilePath(OpenDialog1.FileName) + d;
-        if CopyFile(PChar(OpenDialog2.FileName),PChar(d),False) then begin
+        d := ChangeFileExt(s,'-'+ver+'.z');
+        z := ExtractFilePath(OpenDialog1.FileName) + d;
+        if frmBuild.BuildZ(OpenDialog2.FileName,z) then begin
+          if frmBuild.BuildSize = 0 then Abort;
+          s := frmOptions.Edit3.Text + '-*-' + ver + '=' + d + ',' + IntToStr(frmBuild.BuildSize) + ',null';
           { MD5 update file }
-          s := s + ',' + FileMD5(OpenDialog2.FileName);
-          { insert new one }
+          s := s + ',' + FileMD5(z);
           sl.Insert(j,s);
+          { Notify user }
+          StatusBar1.Panels[1].Text := '';
+          MessageBeep(MB_ICONEXCLAMATION);
+          MessageDlg('Build successful!'+sLineBreak+sLineBreak+
+            'Update total size (deployed application) is '+
+            IntToStr(frmBuild.BuildSize div 1024)+' KB',mtInformation,[mbOK],0);
+          { Update code }
           Memo1.Lines.Assign(sl);
-        end
-        else
-          raise Exception.Create('Could not create new update file');
+          SyncGUI2Code; // save settings
+        end;
       finally
         sl.Free;
         StatusBar1.Panels[1].Text := '';
       end;
-      SyncGUI2Code;
     end;
   end;
 end;

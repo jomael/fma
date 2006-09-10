@@ -50,15 +50,19 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormHide(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
     FCanceled,FExiting,FDifAndRev,FReverse: boolean;
     FStartTime: TDateTime;
     FTotalSize: Integer;
+    FReadyUpdates: TStringList;
     procedure DoUpdateReady(Filename: string);
     procedure DoRollback;
+    function DoCreateZ(AppFile,ZFile: String): Boolean;
   public
     { Public declarations }
+    function BuildZ(AppName,ZName: String): boolean;
     function BuildUpdates: boolean;
     function BuildSize: Integer;
     procedure OnDiffCallback(CurProccesed,CurTotal: Integer; var Canceled: boolean);
@@ -69,7 +73,7 @@ var
 
 implementation
 
-uses uolDiff, uAddUpdate, Unit1, uDiffOptions;
+uses Zlib, uolDiff, uAddUpdate, Unit1, uDiffOptions;
 
 {$R *.dfm}
 
@@ -93,77 +97,79 @@ begin
     FTotalSize := 0;
     with frmAddUpdate do begin
       Enabled := False; // HACK! Do not allow focus change since Self is not modal
-      ReadyUpdates.Clear;
-      Index := 10;
-      if frmDiffOptions.rbFastBuild.Checked then Speed := dmFastest;
-      if frmDiffOptions.rbSmallBuild.Checked then Speed := dmOptimal; // Index = 10 by default
-      if frmDiffOptions.rbCustomBuild.Checked then begin
+      try
+        FReadyUpdates.Clear;
+        Index := 10;
         Speed := dmOptimal;
-        Index := frmDiffOptions.tbSpeedIndex.Position;
-      end;
-      Packm := dcNone;
-      if frmDiffOptions.rbCompressZLib.Checked then Packm := dcZlib;
-      if frmDiffOptions.rbCompressLh5.Checked then Packm := dcLh5;
-      Codec := deNone;
-      if frmDiffOptions.rbEncryptNone.Checked then Codec := deXor;
-      Passw := '';
-      if frmDiffOptions.rbPassWord.Checked then Passw := frmDiffOptions.Secret;
-      if cbDoHistory.Checked then begin
-        Notes := TFileStream.Create(edHistory.Text,fmOpenRead or fmShareDenyWrite);
-        try
-          SetLength(s,Notes.Size);
-          Notes.ReadBuffer(s[1],Notes.Size);
-          UOLReleaseNotes(@s[1],Notes.Size);
-        finally
-          Notes.Free;
-        end;
-      end
-      else
-        UOLReleaseNotes(nil,0);
-      UpdateFilename := ExtractFilePath(Form1.OpenDialog1.FileName)+
-        'update-'+edFromVer.Text+'-'+edToVer.Text;
-      if IsReverseDif then begin
-        UpdateFilename := UpdateFilename + '.rev';
-        Self.Label1.Caption := 'Building reverse update file...';
-      end
-      else begin
-        UpdateFilename := UpdateFilename + '.dif';
-        Self.Label1.Caption := 'Building forward update file...';
-      end;
-      { Start }
-      FDifAndRev := not IsReverseDif and cbDoReverse.Enabled and cbDoReverse.Checked;
-      FReverse := False;
-      StatusBar1.Panels[0].Text := UpdateFilename;
-      StatusBar1.Panels[1].Text := 'Building Update';
-      ChDir(ExtractFileDir(edFromExe.Text));
-      if UOLBuildPatch(PChar(ExtractFileName(edFromExe.Text)),PChar(edToExe.Text),PChar(UpdateFilename),
-        Speed,Index,dsFile,Packm,Codec,PChar(Passw),OnDiffCallback) and not FCanceled then begin
-        { Done }
-        DoUpdateReady(UpdateFilename);
-        { Only wen adding new version, offer a reverse update too }
-        if FDifAndRev then begin
-          UpdateFilename := ExtractFilePath(Form1.OpenDialog1.FileName)+
-            'update-'+edToVer.Text+'-'+edFromVer.Text + '.rev';
-          Self.Label1.Caption := 'Building reverse update file...';
-          { Start }
-          FReverse := True;
-          StatusBar1.Panels[0].Text := UpdateFilename;
-          ChDir(ExtractFileDir(edToExe.Text));
-          if UOLBuildPatch(PChar(ExtractFileName(edToExe.Text)),PChar(edFromExe.Text),PChar(UpdateFilename),
-            Speed,Index,dsFile,Packm,Codec,PChar(Passw),OnDiffCallback) and not FCanceled then begin
-            { Done }
-            DoUpdateReady(UpdateFilename);
-            Result := True;
-          end
-          else
-            DoRollback;
+        if frmDiffOptions.rbFastBuild.Checked then Speed := dmFastest;
+        //if frmDiffOptions.rbSmallBuild.Checked then Speed := dmOptimal; // Index = 10 by default
+        if frmDiffOptions.rbCustomBuild.Checked then Index := frmDiffOptions.tbSpeedIndex.Position;
+        Packm := dcNone;
+        if frmDiffOptions.rbCompressZLib.Checked then Packm := dcZlib;
+        if frmDiffOptions.rbCompressLh5.Checked then Packm := dcLh5;
+        Codec := deNone;
+        if frmDiffOptions.rbEncryptNone.Checked then Codec := deXor;
+        Passw := '';
+        if frmDiffOptions.rbPassWord.Checked then Passw := frmDiffOptions.Secret;
+        if cbDoHistory.Checked then begin
+          Notes := TFileStream.Create(edHistory.Text,fmOpenRead or fmShareDenyWrite);
+          try
+            SetLength(s,Notes.Size);
+            Notes.ReadBuffer(s[1],Notes.Size);
+            UOLReleaseNotes(@s[1],Notes.Size);
+          finally
+            Notes.Free;
+          end;
         end
         else
-          Result := True;
+          UOLReleaseNotes(nil,0);
+        UpdateFilename := ExtractFilePath(Form1.OpenDialog1.FileName)+
+          'update-'+edFromVer.Text+'-'+edToVer.Text;
+        if IsReverseDif then begin
+          UpdateFilename := UpdateFilename + '.rev';
+          Self.Label1.Caption := 'Building reverse update file...';
+        end
+        else begin
+          UpdateFilename := UpdateFilename + '.dif';
+          Self.Label1.Caption := 'Building forward update file...';
+        end;
+        { Start }
+        FDifAndRev := not IsReverseDif and cbDoReverse.Enabled and cbDoReverse.Checked;
+        FReverse := False;
+        StatusBar1.Panels[0].Text := UpdateFilename;
+        StatusBar1.Panels[1].Text := 'Building Update';
+        ChDir(ExtractFileDir(edFromExe.Text));
+        if UOLBuildPatch(PChar(ExtractFileName(edFromExe.Text)),PChar(edToExe.Text),PChar(UpdateFilename),
+          Speed,Index,dsFile,Packm,Codec,PChar(Passw),OnDiffCallback) and not FCanceled then begin
+          { Done }
+          DoUpdateReady(UpdateFilename);
+          { Only wen adding new version, offer a reverse update too }
+          if FDifAndRev then begin
+            UpdateFilename := ExtractFilePath(Form1.OpenDialog1.FileName)+
+              'update-'+edToVer.Text+'-'+edFromVer.Text + '.rev';
+            Self.Label1.Caption := 'Building reverse update file...';
+            { Start }
+            FReverse := True;
+            StatusBar1.Panels[0].Text := UpdateFilename;
+            ChDir(ExtractFileDir(edToExe.Text));
+            if UOLBuildPatch(PChar(ExtractFileName(edToExe.Text)),PChar(edFromExe.Text),PChar(UpdateFilename),
+              Speed,Index,dsFile,Packm,Codec,PChar(Passw),OnDiffCallback) and not FCanceled then begin
+              { Done }
+              DoUpdateReady(UpdateFilename);
+              Result := True;
+            end
+            else
+              DoRollback;
+          end
+          else
+            Result := True;
+        end;
+      finally
+        ReadyUpdates.Assign(FReadyUpdates);
+        Enabled := True;
+        StatusBar1.Panels[0].Text := '';
+        StatusBar1.Panels[1].Text := 'Completed';
       end;
-      Enabled := True;
-      StatusBar1.Panels[0].Text := '';
-      StatusBar1.Panels[1].Text := 'Completed';
     end;
   finally
     FExiting := True;
@@ -217,6 +223,7 @@ end;
 
 procedure TfrmBuild.FormCreate(Sender: TObject);
 begin
+  FReadyUpdates := TStringList.Create;
   Image1.Picture.Icon.Assign(Application.Icon);
 end;
 
@@ -260,15 +267,15 @@ begin
     FTotalSize := FTotalSize + fs.Size;
   finally
     fs.Free;
-    frmAddUpdate.ReadyUpdates.Add(Filename);
+    FReadyUpdates.Add(Filename);
   end;
 end;
 
 procedure TfrmBuild.DoRollback;
 begin
-  while frmAddUpdate.ReadyUpdates.Count <> 0 do begin
-    DeleteFile(frmAddUpdate.ReadyUpdates[0]);
-    frmAddUpdate.ReadyUpdates.Delete(0);
+  while FReadyUpdates.Count <> 0 do begin
+    DeleteFile(FReadyUpdates[0]);
+    FReadyUpdates.Delete(0);
   end;
 end;
 
@@ -303,6 +310,80 @@ begin
         lblTimeLeft.Caption := s + ' minutes';
       Timer1.Interval := 2000;
     end;
+  end;
+end;
+
+function TfrmBuild.BuildZ(AppName,ZName: String): boolean;
+begin
+  Result := False;
+  Show;
+  Update;
+  FExiting := False;
+  try
+    FTotalSize := 0;
+    with Form1 do begin
+      Enabled := False; // HACK! Do not allow focus change since Self is not modal
+      try
+        FReadyUpdates.Clear;
+        Self.Label1.Caption := 'Building deployment file...';
+        FDifAndRev := False;
+        FReverse := False;
+        Result := DoCreateZ(AppName,ZName);
+        DoUpdateReady(ZName);
+        if not Result then DoRollback;
+      finally
+        Enabled := True;
+      end;
+    end;
+  finally
+    FExiting := True;
+    Close;
+  end;
+end;
+
+procedure TfrmBuild.FormDestroy(Sender: TObject);
+begin
+  FReadyUpdates.Free;
+end;
+
+function TfrmBuild.DoCreateZ(AppFile,ZFile: String): boolean;
+var
+  str,dst: TFileStream;
+  Buffer: array[0..16383] of byte;
+  NumRead: Integer;
+  fProc,fSize: Int64;
+  isCanceled: boolean;
+begin
+  Result := False;
+  isCanceled := False;
+  str := TFileStream.Create(AppFile, fmOpenRead or fmShareDenyNone);
+  try
+    fSize := str.Size;
+    dst := TFileStream.Create(ZFile, fmCreate or fmShareExclusive); // do not localize
+    try
+      with TCompressionStream.Create(clMax,dst) do
+      try
+        fProc := 0;
+        repeat
+          OnDiffCallback(fProc,fSize,isCanceled);
+          if isCanceled then break;
+          NumRead := str.Read(Buffer[0],SizeOf(Buffer));
+          if NumRead = 0 then begin
+            { All done! }
+            Result := True;
+            break;
+          end;
+          Write(Buffer[0],NumRead);
+          inc(fProc,NumRead);
+        until False;
+      finally
+        Free;
+      end;
+    finally
+      dst.Free;
+    end;
+  finally
+    str.Free;
   end;
 end;
 

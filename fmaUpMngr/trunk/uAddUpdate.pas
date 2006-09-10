@@ -191,8 +191,10 @@ begin
   Button3.Enabled := False;
   Button4.Enabled := False;
   Button6.Enabled := False;
+  Form1.StatusBar1.Panels[1].Text := 'Building...';
   try
     if frmBuild.BuildUpdates then begin
+      Form1.StatusBar1.Panels[1].Text := '';
       MessageBeep(MB_ICONEXCLAMATION);
       MessageDlg('Build successful!'+sLineBreak+sLineBreak+
         'Update total size (all generated files) is '+
@@ -203,6 +205,7 @@ begin
       edToVerChange(nil);
     end;
   finally
+    Form1.StatusBar1.Panels[1].Text := '';
     Button3.Enabled := True;
     Button4.Enabled := True;
     Button6.Enabled := True;
