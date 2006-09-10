@@ -374,7 +374,8 @@ implementation
 
 uses
   gnugettext, gnugettexthelpers, uThreadSafe,
-  ShellAPI, Unit1, uGlobal, uDialogs, uSelectContact, uSyncPhonebook, uSIMEdit, uMEEdit, uStatusDlg, uOptionsPage,
+  ShellAPI, Unit1, uGlobal, uImg32Helper, uDialogs, uSelectContact, uSyncPhonebook,
+  uSIMEdit, uMEEdit, uStatusDlg, uOptionsPage,
   gr32_vbeffects, gr32_vbconv;
 
 {$R *.dfm}
@@ -605,7 +606,6 @@ begin
       lblNoCache.Caption := _('Not supported');
       tsFilePreview.TabVisible := False;
     end;
-    btnDownload.Enabled := True;
 
     { If corrupt or unsupported file, or not downloaded then hide Advanced tab sheet }
     if (pcFile.ActivePageIndex = -1) or not btnFindTarget.Enabled then
@@ -1059,7 +1059,7 @@ procedure TfrmFolderProps.OnConnectionChange(Online: boolean);
 begin
   btnGroupAdd.Enabled := Online;
   btnGroupDel.Enabled := Online and (lvGroupMembers.SelCount <> 0);
-  btnDownload.Enabled := Online;
+  btnDownload.Enabled := Online and (fFile.FileType <> ftDir);
   btnSaveToPhone.Enabled := Online and FImageModified;
 end;
 

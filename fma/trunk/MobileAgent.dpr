@@ -60,7 +60,7 @@ uses
   uAddToPhonebook in 'uAddToPhonebook.pas' {frmAddContact},
   uVBase in 'uVBase.pas',
   uVCalendar in 'uVCalendar.pas',
-  uCalendarView in 'uCalendarView.pas' {frmCalendarView: TTntFrame},
+  uSyncCalendar in 'uSyncCalendar.pas' {frmCalendarView: TTntFrame},
   uVpVDB in 'uVpVDB.pas',
   uEditTask in 'uEditTask.pas' {frmEditTask},
   uEditEvent in 'uEditEvent.pas' {frmEditEvent},
@@ -85,7 +85,8 @@ uses
   uDeliveryRule in 'uDeliveryRule.pas' {frmSMSRule},
   uOptionsPage in 'uOptionsPage.pas' {frmOptionsPage},
   uNewAlarm in 'uNewAlarm.pas' {frmNewAlarm},
-  uPassword in 'uPassword.pas' {frmPassword};
+  uPassword in 'uPassword.pas' {frmPassword},
+  uImg32Helper in 'uImg32Helper.pas';
 
 {$R *.TLB}
 

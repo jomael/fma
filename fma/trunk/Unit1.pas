@@ -1841,7 +1841,7 @@ uses
   LMDControl, LMDBaseControl, LMDBaseGraphicControl, LMDGraphicControl, LMDBaseMeter, LMDCustomProgressFill,
   LMDProgressFill, LMDHookComponent, LMDFMDrop, WSocket, WBluetoothSocket, WIrCOMMSocket, mmsystem, uAccessoriesMenu,
   uMissedCalls, uKeyPad, CoolTrayIcon, WebUtil, jpeg, AMixer, LMDFill, WebUpdate, aw_SCtrl, CPort, uScriptEditor,
-  uContactSync, uChatSMS, GR32_Image, uFiles, uCalendarView, PBFolderDialog, uSIMEdit, uMEEdit, uMsgView, uInfoView,
+  uContactSync, uChatSMS, GR32_Image, uFiles, uSyncCalendar, PBFolderDialog, uSIMEdit, uMEEdit, uMsgView, uInfoView,
   uXML, uSyncPhonebook, uSyncBookmarks, uVCard, uLog, uLogger, SEProgress, USBMonitor;
 
 const
@@ -2306,6 +2306,10 @@ type
     DatabaseManager1: TTntMenuItem;
     LabeledEdit1: TLabeledEdit;
     TntButton6: TTntButton;
+    ActionToolsExportCalendar: TTntAction;
+    ActionToolsImportCalendar: TTntAction;
+    ImportCalendar1: TTntMenuItem;
+    ExportCalendar1: TTntMenuItem;
     procedure ActionConnectionConnectExecute(Sender: TObject);
     procedure ActionConnectionDisconnectExecute(Sender: TObject);
     procedure ActionConnectionDownloadExecute(Sender: TObject);
@@ -2552,6 +2556,10 @@ type
     procedure ActionNotInObexUpdate(Sender: TObject);
     procedure ActionToolsPostAlarmExecute(Sender: TObject);
     procedure TntButton6Click(Sender: TObject);
+    procedure ActionToolsExportCalendarExecute(Sender: TObject);
+    procedure ActionToolsExportCalendarUpdate(Sender: TObject);
+    procedure ActionToolsImportCalendarExecute(Sender: TObject);
+    procedure ActionToolsImportCalendarUpdate(Sender: TObject);
   private
     { Private declarations }
     LastSMSSendFailure,LastSMSReceiveFailure: TDateTime;
@@ -2644,6 +2652,7 @@ type
     procedure HandleEBCA(AMsg: String);
     procedure HandleCLCK(AMsg: String);
     procedure HandleCMTI(AMsg: String);
+    procedure HandleCIND(AMsg: String);
     procedure HandleStatus(AMsg: String);
     procedure LoadOptions;
     procedure RetrieveNewSMS(AMsg: String);
@@ -2658,6 +2667,7 @@ type
     procedure ClearBuffer;
     procedure SetFrameVisible(name: String; visible: Boolean = True);
     procedure GetContactRestrict;
+    procedure GetSignalMeter;
 
     procedure ObexListFolder(Path: WideString; var Dir: TStringList; Connect: boolean = true); overload;
 
@@ -2700,6 +2710,8 @@ type
     FCalWideView,FCalRecurrence,FCalRecurrAsk: boolean;
     FFmaMutex: Cardinal;
     FShowDiagram,FShowTodayCaption,FClearPhoneMessage: Boolean;
+    FUseAlternateSignalMeter,FUseCIND: Boolean;
+    FSignalCINDidx,FSignalCINDmax: Integer;
     FOutlookConfirmed: array[TContactAction] of TConfirmation;
     FAutolinkContacts,FShowSplash,FAlwaysMinimized: Boolean;
     FamCommand: String;
@@ -2965,6 +2977,7 @@ type
     procedure SetExplorerNode(Node: PVirtualNode);
 
     function IsT610Clone(BrandName: WideString = ''): Boolean;
+    function IsK610Clone(BrandName: WideString = ''): Boolean;
     function IsK700Clone(BrandName: WideString = ''): Boolean;    // mostly compatible with T610
     function IsK750Clone(BrandName: WideString = ''): Boolean;
     function IsWalkmanClone(BrandName: WideString = ''): Boolean; // only detects if phone has MediaPlayer
@@ -3492,6 +3505,7 @@ begin
   ThreadSafe.AlreadyInUseObex := False;
   ThreadSafe.ObexConnecting := False;
   FAutoConnectionError := IsAutoConnect;
+  FUseAlternateSignalMeter := False;
   FSendingMessage := False;
   FUseMediaPlayer := False;
   FSelOperator := '';
@@ -3634,7 +3648,7 @@ begin
       Caption := WideFormat(_('floAt''s Mobile Agent %s - [%s]'),[GetBuildVersionDtl,EData.Text]);
       SetPanelText(1,model);
       CoolTrayIcon1.HideBalloonHint; // if previous 'failed' is shown, hide it
-      ShowNextProgress; 
+      ShowNextProgress;
 
       if IsAutoConnect then begin
         if PhoneChanged then begin
@@ -3668,39 +3682,7 @@ begin
         ThreadSafe.DoCharConvertion := True;
       end;
       if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
-      ShowNextProgress; 
-
-      dlg.SetDescr(_('Checking voice support'));
-
-      Log.AddCommunicationMessage('Check for special voice dialing commands (dial) (T68, T610)',lsDebug); // do not localize debug
-      try
-        TxAndWait('AT*EVD=?'); // do not localize
-        FHaveVoiceDialCommand_Dial := True;
-      except;
-        Log.AddCommunicationMessage('Voice dialing dial command not supported! Will use old style dialing commands',lsDebug); // do not localize debug
-        FHaveVoiceDialCommand_Dial := False;
-      end;
-
-      Log.AddCommunicationMessage('Check for special voice dialing commands (answer) (T68, T610)',lsDebug); // do not localize debug
-      try
-        TxAndWait('AT*EVA=?'); // do not localize
-        FHaveVoiceDialCommand_Answer := True;
-      except;
-        Log.AddCommunicationMessage('Voice dialing answer command not supported! Will use old style dialing commands',lsDebug); // do not localize debug
-        FHaveVoiceDialCommand_Answer := False;
-      end;
-
-      Log.AddCommunicationMessage('Check for special voice dialing commands (hangup) (T68, T610)',lsDebug); // do not localize debug
-      try
-        TxAndWait('AT*EVH=?'); // do not localize
-        FHaveVoiceDialCommand_Hangup := True;
-      except;
-        Log.AddCommunicationMessage('Voice dialing hangup command not supported! Will use old style dialing commands',lsDebug); // do not localize debug
-        FHaveVoiceDialCommand_Hangup := False;
-      end;
-
-      if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
-      ShowNextProgress; 
+      ShowNextProgress;
 
       dlg.SetDescr(_('Checking SIM status'));
       Log.AddCommunicationMessage('Check SIM status',lsDebug); // do not localize debug
@@ -3710,26 +3692,26 @@ begin
         TxAndWait('AT+COPS?'); // do not localize
       except; end;
       if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
-      ShowNextProgress; 
+      ShowNextProgress;
 
       dlg.SetDescr(_('Setting caller ID'));
       Log.AddCommunicationMessage('Request calling line ident',lsDebug); // do not localize debug
       try TxAndWait('AT+CLIP=1'); except; end; // do not localize
       if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
-      ShowNextProgress; 
+      ShowNextProgress;
 
       dlg.SetDescr(_('Setting presentation ID'));
       Log.AddCommunicationMessage('Request Alpha Tags',lsDebug); // do not localize debug
       try TxAndWait('AT*EIPS=1,1'); except; end; // do not localize
       try TxAndWait('AT*EIPS=2,1'); except; end; // do not localize
       if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
-      ShowNextProgress; 
+      ShowNextProgress;
 
       dlg.SetDescr(_('Setting call monitoring'));
       Log.AddCommunicationMessage('Enable Call Monitoring',lsDebug); // do not localize debug
       try TxAndWait('AT*ECAM=1'); except; end; // do not localize
       if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
-      ShowNextProgress; 
+      ShowNextProgress;
 
       // new msg indication
       dlg.SetDescr(_('Setting sms notification'));
@@ -3755,20 +3737,48 @@ begin
         end;
       except; end;
       if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
-      ShowNextProgress; 
+      ShowNextProgress;
 
       dlg.SetDescr(_('Setting mute notification'));
       Log.AddCommunicationMessage('Enable Music Mute Notification',lsDebug); // do not localize debug
       try TxAndWait('AT*EMIR=1'); except; end; // do not localize
       if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
-      ShowNextProgress; 
+      ShowNextProgress;
 
       if not IsAutoConnect then begin
+        dlg.SetDescr(_('Checking voice support'));
+        Log.AddCommunicationMessage('Check for special voice dialing commands (dial) (T68, T610)',lsDebug); // do not localize debug
+        try
+          TxAndWait('AT*EVD=?'); // do not localize
+          FHaveVoiceDialCommand_Dial := True;
+        except;
+          Log.AddCommunicationMessage('Voice dialing dial command not supported! Will use old style dialing commands',lsDebug); // do not localize debug
+          FHaveVoiceDialCommand_Dial := False;
+        end;
+        Log.AddCommunicationMessage('Check for special voice dialing commands (answer) (T68, T610)',lsDebug); // do not localize debug
+        try
+          TxAndWait('AT*EVA=?'); // do not localize
+          FHaveVoiceDialCommand_Answer := True;
+        except;
+          Log.AddCommunicationMessage('Voice dialing answer command not supported! Will use old style dialing commands',lsDebug); // do not localize debug
+          FHaveVoiceDialCommand_Answer := False;
+        end;
+        Log.AddCommunicationMessage('Check for special voice dialing commands (hangup) (T68, T610)',lsDebug); // do not localize debug
+        try
+          TxAndWait('AT*EVH=?'); // do not localize
+          FHaveVoiceDialCommand_Hangup := True;
+        except;
+          Log.AddCommunicationMessage('Voice dialing hangup command not supported! Will use old style dialing commands',lsDebug); // do not localize debug
+          FHaveVoiceDialCommand_Hangup := False;
+        end;
+        if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
+        ShowNextProgress;
+
         FUseObex := False;
         FUseObexCompat := False;
         if not FStartupOptions.NoObex then begin
           dlg.SetDescr(_('Checking Obex support'));
-          Log.AddCommunicationMessage('Checking EOBEX Capability',lsDebug); // do not localize debug
+          Log.AddCommunicationMessage('Checking OBEX Capability',lsDebug); // do not localize debug
           try
             TxAndWait('AT*EOBEX=?'); // do not localize
             FUseObex := True;
@@ -3834,7 +3844,7 @@ begin
       end
       else begin
         ExplorerNew.Expanded[FNodeObex] := True;
-        ShowNextProgress(3);
+        ShowNextProgress(4);
       end;
 
       dlg.SetDescr(_('Checking keypad support'));
@@ -3931,7 +3941,7 @@ begin
       Log.AddCommunicationMessage('Retrieve Identification Information',lsDebug); // do not localize debug
       try frmInfoView.GetIdent; except; end;
       if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
-      ShowNextProgress; 
+      ShowNextProgress;
 
       if FUseCBC then begin
         dlg.SetDescr(_('Checking battery support'));
@@ -3966,16 +3976,25 @@ begin
       if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
       ShowNextProgress; 
 
+      FUseCIND := False;
       if FUseCSQ then begin
         dlg.SetDescr(_('Checking signal support'));
         Log.AddCommunicationMessage('Checking Signal Capability',lsDebug); // do not localize debug
         try
           TxAndWait('AT+CSQ=?'); // do not localize
-          FUseCSQ := True;
           Log.AddCommunicationMessage('Signal supported', lsDebug); // do not localize debug
         except
           FUseCSQ := False;
-          Log.AddCommunicationMessage('Signal not supported',lsDebug); // do not localize debug
+          Log.AddCommunicationMessage('Signal CSQ not supported',lsDebug); // do not localize debug
+        end;
+        // checking alternate signal metering
+        try
+          TxAndWait('AT+CIND=?'); // do not localize
+          FUseCIND := True;
+          FUseCSQ := True;
+          Log.AddCommunicationMessage('Signal supported', lsDebug); // do not localize debug
+        except
+          Log.AddCommunicationMessage('Signal CIND not supported',lsDebug); // do not localize debug
         end;
       end;
       if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
@@ -3985,8 +4004,8 @@ begin
         dlg.SetDescr(_('Retrieving signal status'));
         Log.AddCommunicationMessage('Retrieve Signal Status',lsDebug); // do not localize debug
         try
-          TxAndWait('AT+CSQ'); // do not localize
-        except;
+          GetSignalMeter;
+        except
         end;
       end
       else begin
@@ -4160,6 +4179,9 @@ begin
       end
       else if pos('+CSQ', AMsg) = 1 then begin // do not localize
         HandleStatus(AMsg);
+      end
+      else if pos('+CIND', AMsg) = 1 then begin // do not localize
+        HandleCIND(AMsg);
       end
       else if pos('+CBC', AMsg) = 1 then begin // do not localize
         HandleStatus(AMsg);
@@ -6025,136 +6047,147 @@ procedure TForm1.HandleEBCA(AMsg: String);
  end;
 
 var
-   sl :TStringList;
-   vbat :integer;
-   consumption:Integer;
+  sl: TStringList;
+  vbat: Integer;
+  consumption: Int64;
 begin
-   if not FUseEBCA or (frmInfoView = nil) then exit;
-   try
-     sl := TStringList.Create;
-     try
-       sl.DelimitedText := copy(AMsg, 8, length(AMsg));
-       if sl.Count < 4 then exit;
+  if not FUseEBCA or (frmInfoView = nil) then exit;
+  {
+    *EBCA: <vbat>,<dcio>,<icharge>,<iphone>,<tempbattery>,<tempphone>,
+     <chargingmethod>,<chargestate>,<remainingcapacity>,<remcapacity>,
+     <powerdissipation>,<noccycles>,<nosostimer>,<suspensioncause>
 
-       // Check for K700i! There should be a better way?? Like taking the product Id or name into account :)
-       if sl.Count <> 14 then
-       begin
-         //battery voltage
-         vbat := strtoint(sl.Strings[1]) * 10 +
-           strtoint(sl.Strings[2]) * 10 +
-           strtoint(sl.Strings[3]) * 10 +
-           strtoint(sl.Strings[0]) * 10;
+    SE T6xx result:
+    *EBCA: 0,0,0,389,1,385,0,246,0,0,537,770,27,27,3,69,342,0,5,5,45,4,61,0,65147,0,46945
 
-         frmInfoView.lbvbat.Caption := MakeReadable(vbat, [_('mV'), _('V'), _('kV')]);
+    SE K6xx result:
+    *EBCA: 3746,4100,0,4294967100,25,27,0,7,270,30,70,15,556,0
+  }
+  try
+    sl := TStringList.Create;
+    try
+      sl.DelimitedText := copy(AMsg, 8, length(AMsg));
+      if sl.Count < 4 then exit;
 
-         //battery type
-         case strtoint(sl.Strings[4]) of
-           0: frmInfoView.lbPower.Caption := _('NiMH Battery');
-           1: frmInfoView.lbPower.Caption := _('Litium ion/Polymer Battery');
-           2: frmInfoView.lbPower.Caption := _('Unknown Battery');
-         end;
+      // Check for K700i! There should be a better way?? Like taking the product Id or name into account :)
+      //if sl.Count <> 14 then begin
+      if not (IsK610Clone or IsK700Clone or IsK750Clone or IsWalkmanClone) then begin
+        //battery voltage
+        vbat := strtoint(sl.Strings[1]) * 10 +
+          strtoint(sl.Strings[2]) * 10 +
+          strtoint(sl.Strings[3]) * 10 +
+          strtoint(sl.Strings[0]) * 10;
 
-         //battery voltage from the charge
-         frmInfoView.lbdcio.Caption := MakeReadable(strtoint(sl.Strings[5]) * 10, [_('mV'), _('V'), _('kV')]);
+        frmInfoView.lbvbat.Caption := MakeReadable(vbat, [_('mV'), _('V'), _('kV')]);
 
-         //current charge
-         if sl.Count = 27 then begin
-           frmInfoView.lbicharge.Caption := MakeReadable(strtoint(sl.Strings[6])/10, [_('mA'), _('A')]);
-           frmInfoView.Chart1.Series[1].Add(Round(strtoint(sl.Strings[6])/10));
-         end
-         else begin
-           frmInfoView.lbicharge.Caption := MakeReadable(sl.Strings[6], [_('mA'), _('A')]);
-           frmInfoView.Chart1.Series[1].Add(strtoint(sl.Strings[6]));
-         end;
+        //battery type
+        case strtoint(sl.Strings[4]) of
+          0: frmInfoView.lbPower.Caption := _('NiMH Battery');
+          1: frmInfoView.lbPower.Caption := _('Litium ion/Polymer Battery');
+          2: frmInfoView.lbPower.Caption := _('Unknown Battery');
+        end;
 
-         //phone current consumption
-         if sl.Count = 27 then begin
-           frmInfoView.lbiphone.Caption := MakeReadable(strtoint(sl.Strings[7])/10, [_('mA'), _('A')]);
-           frmInfoView.Chart1.Series[2].Add(Round(strtoint(sl.Strings[7])/10));
-         end
-         else begin
-           frmInfoView.lbiphone.Caption := MakeReadable(sl.Strings[7], [_('mA'), _('A')]);
-           frmInfoView.Chart1.Series[2].Add(strtoint(sl.Strings[7]));
-         end;
+        //battery voltage from the charge
+        frmInfoView.lbdcio.Caption := MakeReadable(strtoint(sl.Strings[5]) * 10, [_('mV'), _('V'), _('kV')]);
 
-         // scroll chart if it's full
-         if frmInfoView.Chart1.Series[0].Count > frmInfoView.Chart1.MaxPointsPerPage then begin
-           with frmInfoView.Chart1.BottomAxis do Scroll(1,False);
-           inc(ChartShiftCnt);
-         end;
+        //current charge
+        if sl.Count = 27 then begin
+          frmInfoView.lbicharge.Caption := MakeReadable(strtoint(sl.Strings[6])/10, [_('mA'), _('A')]);
+          frmInfoView.Chart1.Series[1].Add(Round(strtoint(sl.Strings[6])/10));
+        end
+        else begin
+          frmInfoView.lbicharge.Caption := MakeReadable(sl.Strings[6], [_('mA'), _('A')]);
+          frmInfoView.Chart1.Series[1].Add(strtoint(sl.Strings[6]));
+        end;
 
-         //phone and battery temperature
-         if sl.Count = 24 then begin
-           frmInfoView.lbtempbatt.Caption := inttostr(strtoint(sl.Strings[10])) + _('°C');
-           frmInfoView.lbtempphone.Caption := inttostr(strtoint(sl.Strings[11])) + _('°C');
-         end
-         else begin
-           frmInfoView.lbtempbatt.Caption := inttostr(strtoint(sl.Strings[12])) + _('°C');
-           frmInfoView.lbtempphone.Caption := inttostr(strtoint(sl.Strings[13])) + _('°C');
-         end;
-         frmInfoView.Chart1.Series[0].Add(strtoint(sl.Strings[12]));
+        //phone current consumption
+        if sl.Count = 27 then begin
+          frmInfoView.lbiphone.Caption := MakeReadable(strtoint(sl.Strings[7])/10, [_('mA'), _('A')]);
+          frmInfoView.Chart1.Series[2].Add(Round(strtoint(sl.Strings[7])/10));
+        end
+        else begin
+          frmInfoView.lbiphone.Caption := MakeReadable(sl.Strings[7], [_('mA'), _('A')]);
+          frmInfoView.Chart1.Series[2].Add(strtoint(sl.Strings[7]));
+        end;
 
-         try //ADD because not all support all EBCA's values  //this causes the error "List index out of bounds (16)"
-           //number of charge cycles
-           if sl.Count > 24 then begin
-             frmInfoView.lbcyclescharge.Caption := sl.Strings[16]; // + ' times';
-             //CalculateTimeLeft(StatusBar.Panels[1].Text,sl.Strings[16],pbPower.Position,pbPower.MaxValue);
-           end;
-         except
-           frmInfoView.lbcyclescharge.Visible := False;
-         end;
-       end
-       // SE T6xx phones support
-       else begin
-         //battery voltage
-         vbat := strtoint(sl.Strings[0]); // mV
-         frmInfoView.lbvbat.Caption := MakeReadable(vbat, [_('mV'), _('V'), _('kV')]);
+        // scroll chart if it's full
+        if frmInfoView.Chart1.Series[0].Count > frmInfoView.Chart1.MaxPointsPerPage then begin
+          with frmInfoView.Chart1.BottomAxis do Scroll(1,False);
+          inc(ChartShiftCnt);
+        end;
 
-         //battery type
-         //this has to be rechecked!! I have a polymer and it is reporting 0 ???
-         case strtoint(sl.Strings[6]) of
-           0: frmInfoView.lbPower.Caption := _('Lithium Polymer');
-           1: frmInfoView.lbPower.Caption := _('Lithium Ion');
-           2: frmInfoView.lbPower.Caption := _('NiMH');
-           else frmInfoView.lbPower.Caption := _('Unknown');
-         end;
-         //battery voltage from the charge
-         frmInfoView.lbdcio.Caption := MakeReadable(strtoint(sl.Strings[1]), [_('mV'), _('V'), _('kV')]);
+        //phone and battery temperature
+        if sl.Count = 24 then begin
+          frmInfoView.lbtempbatt.Caption := inttostr(strtoint(sl.Strings[10])) + _('°C');
+          frmInfoView.lbtempphone.Caption := inttostr(strtoint(sl.Strings[11])) + _('°C');
+        end
+        else begin
+          frmInfoView.lbtempbatt.Caption := inttostr(strtoint(sl.Strings[12])) + _('°C');
+          frmInfoView.lbtempphone.Caption := inttostr(strtoint(sl.Strings[13])) + _('°C');
+        end;
+        frmInfoView.Chart1.Series[0].Add(strtoint(sl.Strings[12]));
 
-         //current charge
-         frmInfoView.lbicharge.Caption := MakeReadable(strtoint(sl.Strings[2])/10.0, [_('mA'), _('A')]);
-         frmInfoView.Chart1.Series[1].Add(strtoint(sl.Strings[3]) div 10);
+        try //ADD because not all support all EBCA's values  //this causes the error "List index out of bounds (16)"
+          //number of charge cycles
+          if sl.Count > 24 then begin
+            frmInfoView.lbcyclescharge.Caption := sl.Strings[16]; // + ' times';
+            //CalculateTimeLeft(StatusBar.Panels[1].Text,sl.Strings[16],pbPower.Position,pbPower.MaxValue);
+          end;
+        except
+          frmInfoView.lbcyclescharge.Visible := False;
+        end;
+      end
+      else begin
+        //battery voltage
+        vbat := strtoint(sl.Strings[0]); // mV
+        frmInfoView.lbvbat.Caption := MakeReadable(vbat, [_('mV'), _('V'), _('kV')]);
 
-         consumption := abs(strtoint(sl.Strings[3]));
-         begin
-           //phone current consumption
-           frmInfoView.lbiphone.Caption := MakeReadable(consumption/10.0, ['mA', 'A']);
-           frmInfoView.Chart1.Series[2].Add(consumption DIV 10);
-         end;
+        //battery type
+        //this has to be rechecked!! I have a polymer and it is reporting 0 ???
+        case strtoint(sl.Strings[6]) of
+          0: frmInfoView.lbPower.Caption := _('Lithium Polymer');
+          1: frmInfoView.lbPower.Caption := _('Lithium Ion');
+          2: frmInfoView.lbPower.Caption := _('NiMH');
+          else frmInfoView.lbPower.Caption := _('Unknown');
+        end;
+        //battery voltage from the charge
+        frmInfoView.lbdcio.Caption := MakeReadable(strtoint(sl.Strings[1]), [_('mV'), _('V'), _('kV')]);
 
-         // scroll chart if it's full
-         if frmInfoView.Chart1.Series[0].Count > frmInfoView.Chart1.MaxPointsPerPage then begin
-           with frmInfoView.Chart1.BottomAxis do Scroll(1,False);
-           inc(ChartShiftCnt);
-         end;
+        //current charge
+        consumption := abs(strtoint64(sl.Strings[2]));
+        frmInfoView.lbicharge.Caption := MakeReadable(consumption/10.0, [_('mA'), _('A')]);
+        frmInfoView.Chart1.Series[1].Add(consumption div 10);
 
-         //phone and battery temperature
-         frmInfoView.lbtempbatt.Caption := inttostr(strtoint(sl.Strings[4])) + _('°C');
-         frmInfoView.lbtempphone.Caption := inttostr(strtoint(sl.Strings[5])) + _('°C');
-         frmInfoView.Chart1.Series[0].Add(strtoint(sl.Strings[4]));
+        //phone current consumption
+        consumption := abs(strtoint64(sl.Strings[3]));
+        if IsK610Clone then
+          consumption := abs(integer(consumption)); // just guessing here :-o
+        frmInfoView.lbiphone.Caption := MakeReadable(consumption/10.0, ['mA', 'A']);
+        frmInfoView.Chart1.Series[2].Add(consumption div 10);
 
-         try
-           frmInfoView.lbcyclescharge.Caption := sl.Strings[11]; // + ' times';
-           //CalculateTimeLeft(StatusBar.Panels[1].Text,sl.Strings[16],pbPower.Position,pbPower.MaxValue);
-         except
-           frmInfoView.lbcyclescharge.Visible := False;
-         end;
-       end;
-     finally
-       sl.Free;
-     end;
-   except
-   end;
+        // scroll chart if it's full
+        if frmInfoView.Chart1.Series[0].Count > frmInfoView.Chart1.MaxPointsPerPage then begin
+          with frmInfoView.Chart1.BottomAxis do Scroll(1,False);
+          inc(ChartShiftCnt);
+        end;
+
+        //phone and battery temperature
+        frmInfoView.lbtempbatt.Caption := inttostr(strtoint(sl.Strings[4])) + _('°C');
+        frmInfoView.lbtempphone.Caption := inttostr(strtoint(sl.Strings[5])) + _('°C');
+        frmInfoView.Chart1.Series[0].Add(strtoint(sl.Strings[4]));
+
+        try
+          frmInfoView.lbcyclescharge.Caption := sl.Strings[11]; // + ' times';
+          //CalculateTimeLeft(StatusBar.Panels[1].Text,sl.Strings[16],pbPower.Position,pbPower.MaxValue);
+        except
+          frmInfoView.lbcyclescharge.Visible := False;
+        end;
+      end;
+    finally
+      sl.Free;
+    end;
+  except
+  end;
 end;
 
 procedure TForm1.Timer1Timer(Sender: TObject);
@@ -6171,7 +6204,7 @@ begin
       try
         if Timer1.Tag = 1 then begin
           if FUseCSQ then begin
-            TxAndWait('AT+CSQ'); // do not localize
+            GetSignalMeter;
             if frmInfoView.Visible then frmInfoView.UpdateWelcomePage;
           end;
           Timer1.Tag := 0;
@@ -6263,8 +6296,12 @@ begin
   if pos('+CSQ', AMsg) = 1 then begin // do not localize
     signal := StrToInt(GetToken(str, 0));
     if signal = 99 then begin
+      FUseAlternateSignalMeter := True;
       SetPanelText(3, _('Signal N/A'));
       pbRSSI.Position := 0;
+      { Update signal using alternate method }
+      if FUseCIND then
+        ScheduleTxAndWait('AT+CIND?');
     end
     else begin
       signal := Round((signal / 31) * 100);
@@ -6801,8 +6838,9 @@ begin
       FormStorage1.StoredValue['Signal Monitor'] := FUseCSQ; // do not localize
       if FUseCSQ then begin
         if FConnected and FConnectingComplete and not FObex.Connected and
-          not ThreadSafe.Busy and not ThreadSafe.WaitingOK and not ThreadSafe.ObexConnecting then
-          TxAndWait('AT+CSQ'); // do not localize
+          not ThreadSafe.Busy and not ThreadSafe.WaitingOK and
+          not ThreadSafe.ObexConnecting then 
+          GetSignalMeter;
         //if frmInfoView.Visible then frmInfoView.UpdateWelcomePage;
       end
       else begin
@@ -7035,6 +7073,7 @@ begin
     WriteInteger('Contacts','SMMax',frmSMEdit.FMaxNumbers);  // do not localize
     WriteInteger('Contacts','MEMaxName',frmSMEdit.FMaxNameLen);  // do not localize
     WriteInteger('Contacts','MEMaxTel',frmSMEdit.FMaxTelLen);  // do not localize
+    WriteString('Connection','COM',ComPort.Port); // do not localize
   finally
     Free;
   end;
@@ -7154,6 +7193,9 @@ begin
   if FHaveVoiceDialCommand_Dial then
     TxAndWait('AT*EVD="' + number + '"') // do not localize
   else
+  if IsK610Clone then
+    TxAndWait('ATDT' + number) // do not localize
+  else
     TxAndWait('ATDT' + number + ';'); // do not localize
 end;
 
@@ -7194,12 +7236,12 @@ begin
     if FHaveVoiceDialCommand_Hangup then
       TxAndWait('AT*EVH') // do not localize
     else
-      TxAndWait('ATH'); // do not localize
-  if (frmCalling <> nil) and frmCalling.IsCreated then begin
+      ScheduleTxAndWait('ATH'); // do not localize
+  if Assigned(frmCalling) and frmCalling.IsCreated then begin
     if not SilentMode then
       frmCalling.IsCalling := False;
     frmCalling.IsTalking := False;
-    //hmmmm...? frmCalling.CloseCall;
+    frmCalling.CloseCall(True,False); // False = to avoid reccursion
   end;
 end;
 
@@ -9007,30 +9049,34 @@ begin
       REV:
       <End>
       }
-      errcnt := 0;
-      repeat
-        try
+      Form1.ObexConnect('IRMC-SYNC'); // do not localize
+      try
+        errcnt := 0;
+        repeat
           try
-            ObexGetObject('telecom/pb/info.log',sl); // do not localize
-          finally
-            FlushOK;
+            try
+              ObexGetObject('telecom/pb/info.log',sl); // do not localize
+            finally
+              FlushOK;
+            end;
+            break;
+          except
+            case FObex.LastErrorCode of
+              $00: break; // all is OK! exit loop.
+              $D3: begin
+                     inc(errcnt);
+                     { If we got exception "211 Service Unavailable" we'll have to try again later,
+                       because phone is still powering up... }
+                     Status(_('Phone is powering up. Please wait...'),False);
+                     WaitASec(5);
+                   end;
+              else raise;
+            end;
           end;
-          break;
-        except
-          case FObex.LastErrorCode of
-            $00: break; // all is OK! exit loop.
-            $D3: begin
-                   inc(errcnt);
-                   { If we got exception "211 Service Unavailable" we'll have to try again later,
-                     because phone is still powering up... }
-                   Status(_('Phone is powering up. Please wait...'),False);
-                   WaitASec(5);
-                 end;
-            else raise;
-          end;
-        end;
-      until errcnt > 3;
-
+        until errcnt > 3;
+      finally
+        Form1.ObexDisconnect;
+      end;
       with frmSyncPhonebook do begin
         // Set phonebook ME size
         FMaxRecME := GetMaxME(510);
@@ -9418,7 +9464,7 @@ end;
 procedure TForm1.CalculateTimeLeft(Model,Charge: string; Position, Max: integer);
 var
   pos,sec,secfix,PrevPos: integer;
-  key,s,PrevCharge: string;
+  key,PrevCharge: string;
   PrevTime: TDateTime;
   Reg: TRegistry;
   days: integer;
@@ -9482,9 +9528,8 @@ begin
                 else begin
                   days := sec div SecsPerDay;
                   if days > 6 then days := 6;
-                  s := ngettext('day','days',days);
-                  frmInfoView.lblTimeLeft.Caption := Format(_('%d %s, %.2d h %.2d m'),
-                    [days,s,(sec mod SecsPerDay) div 3600,(sec mod 3600) div 60]);
+                  frmInfoView.lblTimeLeft.Caption := Format(_('%dd %.2d:%.2dh'),
+                    [days,(sec mod SecsPerDay) div 3600,(sec mod 3600) div 60]);
                 end;
               end
             end
@@ -10173,6 +10218,7 @@ var
   db: TStrings;
   data: PFmaExplorerNode;
   w: WideString;
+  s: String;
   NewProfile: Boolean;
 begin
   Result := True;
@@ -10393,6 +10439,8 @@ begin
         frmSMEdit.FMaxNumbers := ReadInteger('Contacts','SMMax',frmSMEdit.FMaxNumbers);  // do not localize
         frmSMEdit.FMaxNameLen := ReadInteger('Contacts','MEMaxName',frmSMEdit.FMaxNameLen);  // do not localize
         frmSMEdit.FMaxTelLen := ReadInteger('Contacts','MEMaxTel',frmSMEdit.FMaxTelLen);  // do not localize
+        s := ReadString('Connection','COM',ComPort.Port); // do not localize
+        if not FConnected and not FConnectingStarted then ComPort.Port := s;
       finally
         Free;
       end;
@@ -10966,14 +11014,14 @@ begin
   ShellExecute(Handle,'open','http://fma.sourceforge.net/','','',SW_SHOWNORMAL); // do not localize
 end;
 
+procedure TForm1.FmaOnForums1Click(Sender: TObject);
+begin
+  ShellExecute(Handle,'open','http://fma.sourceforge.net/forums/','','',SW_SHOWNORMAL); // do not localize
+end;
+
 procedure TForm1.FmaOnSFNet1Click(Sender: TObject);
 begin
   ShellExecute(Handle,'open','http://sourceforge.net/projects/fma','','',SW_SHOWNORMAL); // do not localize
-end;
-
-procedure TForm1.FmaOnForums1Click(Sender: TObject);
-begin
-  ShellExecute(Handle,'open','http://www.mobileagent.info/forums/','','',SW_SHOWNORMAL); // do not localize
 end;
 
 procedure TForm1.ActionContactsAddContactUpdate(Sender: TObject);
@@ -12608,6 +12656,7 @@ begin
       ClearNode(FNodeAlarms);
       ClearNode(FNodeBookmarks);
       frmSyncBookmarks.ListBookmarks.Clear;
+      frmCalendarView.ClearAllData;
 
       ClearChildren(FNodeOrganizer);
       frmExplore.ListItems.Clear;
@@ -12730,7 +12779,8 @@ begin
             { load selected }
             Status(_('Loading selected profile...')); Update;
             FRelocateDBDenied := False;
-            if LoadPhoneDataFiles(SelectedProfile) then break; // leave
+            LoadPhoneDataFiles(SelectedProfile);
+            break; // leave
           end;
           mrRetry: begin
             { selected profile is already open? }
@@ -13156,7 +13206,23 @@ begin
   // do not localize - begin
   Result := (Pos('T610',model) <> 0) or // and T610 clones
             (Pos('T630',model) <> 0) or
-            (Pos('Z600',model) <> 0) or
+            (Pos('Z600',model) <> 0);
+  // do not localize - end
+end;
+
+function TForm1.IsK610Clone(BrandName: WideString): Boolean;
+var
+  model: WideString;
+begin
+  if BrandName = '' then model := FPhoneModel else model := BrandName;
+  // do not localize - begin
+  Result := (Pos('K610',model) <> 0) or // and T610 clones
+            (Pos('K618',model) <> 0) or
+            (Pos('K600',model) <> 0) or
+            (Pos('K608',model) <> 0) or
+            (Pos('K800',model) <> 0) or
+            (Pos('V600',model) <> 0) or
+            (Pos('V630',model) <> 0) or
             (Pos('Z610',model) <> 0);
   // do not localize - end
 end;
@@ -13172,11 +13238,8 @@ begin
             (Pos('K310',model) <> 0) or //?
             (Pos('K500',model) <> 0) or
             (Pos('K510',model) <> 0) or
-            (Pos('K600',model) <> 0) or
-            (Pos('K610',model) <> 0) or
             (Pos('J300',model) <> 0) or
             (Pos('S700',model) <> 0) or
-            (Pos('V600',model) <> 0) or
             (Pos('V800',model) <> 0) or
             (Pos('Z500',model) <> 0) or
             (Pos('Z800',model) <> 0) or
@@ -13193,8 +13256,7 @@ begin
   Result := (Pos('K750',model) <> 0) or // and K750 clones
             (Pos('K790',model) <> 0) or
             (Pos('D750',model) <> 0) or
-            (Pos('Z520',model) <> 0) or
-            IsWalkmanClone;             // and better... !!!
+            (Pos('Z520',model) <> 0);
   // do not localize - end
 end;
 
@@ -13206,11 +13268,15 @@ begin
   // do not localize - begin
   Result := (Pos('W800',model) <> 0) or // and W800 clones
             (Pos('W810',model) <> 0) or
+            (Pos('W850',model) <> 0) or
             (Pos('W300',model) <> 0) or
             (Pos('W550',model) <> 0) or
             (Pos('W600',model) <> 0) or
-            (Pos('K610',model) <> 0) or // K610-series have Media Player as W-series
-            (Pos('W900',model) <> 0);
+            (Pos('W700',model) <> 0) or
+            (Pos('W710',model) <> 0) or
+            (Pos('W900',model) <> 0) or
+            (Pos('W950',model) <> 0) or
+            IsK610Clone(BrandName);     // Ê600+ series also have Walkmen's MediaPlayer
   // do not localize - end
 end;
 
@@ -16469,6 +16535,97 @@ begin
     finally
       Free;
     end;
+end;
+
+procedure TForm1.ActionToolsExportCalendarExecute(Sender: TObject);
+begin
+  with frmCalendarView do begin
+    Status(_('Exporting calendar...'));
+    Log.AddSynchronizationMessage(_('Export started'));
+    try
+      if TntSaveDialog1.Execute then begin
+        SaveCalendar(TntSaveDialog1.FileName,False);
+        Log.AddSynchronizationMessage(WideFormat(_('Exported %d %s to "%s"'),
+          [DB.vCalendar.Count, ngettext('item','items',DB.vCalendar.Count),
+          WideExtractFileName(TntSaveDialog1.FileName)]), lsInformation);
+      end;
+    finally
+      Log.AddSynchronizationMessage(_('Export finished'));
+      Status(_('Export complete.'));
+    end;
+  end;
+end;
+
+procedure TForm1.ActionToolsExportCalendarUpdate(Sender: TObject);
+begin
+  ActionToolsExportCalendar.Enabled := frmCalendarView.DB.vCalendar.Count <> 0;
+end;
+
+procedure TForm1.ActionToolsImportCalendarExecute(Sender: TObject);
+begin
+  frmCalendarView.ImportCalendar1Click(nil);
+end;
+
+procedure TForm1.ActionToolsImportCalendarUpdate(Sender: TObject);
+begin
+  ActionToolsImportCalendar.Enabled := IsIrmcSyncEnabled and frmCalendarView.Visible;
+end;
+
+procedure TForm1.GetSignalMeter;
+begin
+  if FUseCSQ then begin
+    if FUseAlternateSignalMeter then begin
+      if FUseCIND then
+      TxAndWait('AT+CIND?'); // do not localize
+    end
+    else
+      TxAndWait('AT+CSQ'); // do not localize
+  end;
+end;
+
+procedure TForm1.HandleCIND(AMsg: String);
+var
+  s,str: String;
+  w: WideString;
+  signal,i: Integer;
+  function Percentage(Pos,Max: integer): string;
+  begin
+    Result := IntToStr(Round((100*Pos)/Max))+'%';
+  end;
+begin
+  str := copy(AMsg, 8, length(AMsg));
+
+  if pos('("',str) = 1 then begin
+    { +CIND: ("service",(0-1)),("callheld",(0-2)),("call",(0-1)),("callsetup",(0-3)),("signal",(0-5)),("roam",(0-1)),
+             ("battchg",(0-5)),("message",(0-1)),("batterywarning",(0-1)),("chargerconnected",(0-1))
+
+    Lot of magic follows in order to remove 'bad' chars from the result...  
+    }
+    str := StringReplace(str,'),(',',',[rfReplaceAll]);
+    str := StringReplace(str,'("','"',[rfReplaceAll]);
+    str := StringReplace(str,'))','',[rfReplaceAll]);
+    str := StringReplace(str,',(','/',[rfReplaceAll]);
+    str := StringReplace(str,'),',',',[rfReplaceAll]);
+    i := 0;
+    w := str;
+    repeat
+      s := GetFirstToken(w);
+      if pos('"signal"',s) = 1 then begin
+        Delete(s,1,Pos('/',s));
+        Delete(s,1,Pos('-',s));
+        FSignalCINDidx := i;
+        FSignalCINDmax := StrToInt(s);
+        break;
+      end;
+      inc(i);
+    until str = '';
+  end
+  else begin
+    signal := StrToInt(GetToken(str, FSignalCINDidx));
+    signal := Round((signal / FSignalCINDmax) * 100);
+    SetPanelText(3, WideFormat(_(' Signal %s '), [Percentage(signal,pbRSSI.MaxValue)]));
+    pbRSSI.Position := signal;
+  end;
 end;
 
 initialization

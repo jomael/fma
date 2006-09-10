@@ -603,21 +603,21 @@ object Form1: TForm1
         Control = tbMainMenu
         ImageIndex = -1
         MinHeight = 21
-        Width = 305
+        Width = 355
       end
       item
         Break = False
         Control = tbExplorer
         ImageIndex = -1
         MinHeight = 24
-        Width = 261
+        Width = 311
       end
       item
         Break = False
         Control = tbMessages
         ImageIndex = -1
         MinHeight = 24
-        Width = 295
+        Width = 195
       end
       item
         Break = False
@@ -631,7 +631,7 @@ object Form1: TForm1
         ImageIndex = -1
         MinHeight = 24
         Visible = False
-        Width = 277
+        Width = 327
       end
       item
         Break = False
@@ -639,7 +639,7 @@ object Form1: TForm1
         ImageIndex = -1
         MinHeight = 24
         Visible = False
-        Width = 159
+        Width = 209
       end
       item
         Break = False
@@ -647,14 +647,14 @@ object Form1: TForm1
         ImageIndex = -1
         MinHeight = 22
         Visible = False
-        Width = 436
+        Width = 336
       end>
     EdgeBorders = [ebTop, ebBottom]
     OnChange = CoolBarChange
     object tbStandard: TToolBar
       Left = 9
       Top = 26
-      Width = 266
+      Width = 316
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -747,9 +747,9 @@ object Form1: TForm1
       end
     end
     object tbProfile: TToolBar
-      Left = 453
+      Left = 553
       Top = 27
-      Width = 425
+      Width = 325
       Height = 22
       AutoSize = True
       ButtonWidth = 25
@@ -782,9 +782,9 @@ object Form1: TForm1
       end
     end
     object tbMessages: TToolBar
-      Left = 583
+      Left = 683
       Top = 0
-      Width = 284
+      Width = 278
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -913,7 +913,7 @@ object Form1: TForm1
     object tbMainMenu: TToolBar
       Left = 9
       Top = 1
-      Width = 294
+      Width = 344
       Height = 21
       AutoSize = True
       ButtonHeight = 21
@@ -930,9 +930,9 @@ object Form1: TForm1
       OnCustomDrawButton = tbMainMenuCustomDrawButton
     end
     object tbPhone: TToolBar
-      Left = 290
+      Left = 340
       Top = 26
-      Width = 148
+      Width = 198
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -967,9 +967,9 @@ object Form1: TForm1
       end
     end
     object tbExplorer: TToolBar
-      Left = 318
+      Left = 368
       Top = 0
-      Width = 250
+      Width = 300
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -1779,6 +1779,20 @@ object Form1: TForm1
       ImageIndex = 69
       OnExecute = ActionPlayerTogglePlayExecute
       OnUpdate = ActionPlayerTogglePlayUpdate
+    end
+    object ActionToolsExportCalendar: TTntAction
+      Category = 'Tools'
+      Caption = 'Export &Calendar...'
+      Hint = 'Export to file'
+      OnExecute = ActionToolsExportCalendarExecute
+      OnUpdate = ActionToolsExportCalendarUpdate
+    end
+    object ActionToolsImportCalendar: TTntAction
+      Category = 'Tools'
+      Caption = 'Imp&ort Calendar...'
+      Hint = 'Import from file'
+      OnExecute = ActionToolsImportCalendarExecute
+      OnUpdate = ActionToolsImportCalendarUpdate
     end
   end
   object ImageList1: TImageList
@@ -4529,9 +4543,14 @@ object Form1: TForm1
         object ImportBookmarks1: TTntMenuItem
           Caption = 'Import &Bookmarks...'
           Enabled = False
+          Hint = 'Import from file'
+        end
+        object ImportCalendar1: TTntMenuItem
+          Action = ActionToolsImportCalendar
         end
         object ImportRules1: TTntMenuItem
           Caption = 'Import &Rules...'
+          Hint = 'Import from file'
           OnClick = ImportRules1Click
         end
       end
@@ -4546,6 +4565,10 @@ object Form1: TForm1
         object ExportBookmarks1: TTntMenuItem
           Caption = 'Export &Bookmarks...'
           Enabled = False
+          Hint = 'Export to file'
+        end
+        object ExportCalendar1: TTntMenuItem
+          Action = ActionToolsExportCalendar
         end
         object ExportRules1: TTntMenuItem
           Action = ActionRulesExport

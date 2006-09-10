@@ -409,7 +409,7 @@ implementation
 
 uses
   gnugettext, gnugettexthelpers,
-  uGlobal, uLogger, Unit1, uFiles, uDialogs;
+  uGlobal, uLogger, Unit1, uFiles, uDialogs, uImg32Helper;
 
 {$R *.dfm}
 

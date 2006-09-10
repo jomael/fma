@@ -208,7 +208,7 @@ implementation
 
 uses
   gnugettext, gnugettexthelpers,
-  uGlobal, Unit1, uComposeSMS, uSyncPhonebook, uMissedCalls, uChatSMS, uSMS,
+  uGlobal, uImg32Helper, Unit1, uComposeSMS, uSyncPhonebook, uMissedCalls, uChatSMS, uSMS,
   uCallContact;
 
 {$R *.dfm}

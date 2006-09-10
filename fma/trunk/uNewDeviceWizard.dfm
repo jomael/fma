@@ -83,6 +83,7 @@ object frmNewDeviceWizard: TfrmNewDeviceWizard
     Width = 493
     Height = 314
     Align = alTop
+    PageIndex = 2
     TabOrder = 3
     OnPageChanged = nbWizardPageChanged
     object TPage
@@ -199,7 +200,7 @@ object frmNewDeviceWizard: TfrmNewDeviceWizard
         Left = 40
         Top = 80
         Width = 421
-        Height = 33
+        Height = 40
         AutoSize = False
         Caption = 
           'The Wizard is now ready to begin searching for your phone device' +
@@ -573,7 +574,7 @@ object frmNewDeviceWizard: TfrmNewDeviceWizard
       object cbDeviceReady: TTntCheckBox
         Left = 40
         Top = 288
-        Width = 245
+        Width = 281
         Height = 17
         Caption = 'My device is set up and ready to be found.'
         TabOrder = 1
@@ -706,6 +707,7 @@ object frmNewDeviceWizard: TfrmNewDeviceWizard
             Caption = 'Manufacturer'
             Width = 150
           end>
+        ColumnClick = False
         HideSelection = False
         LargeImages = ImageList1
         ReadOnly = True
@@ -713,11 +715,12 @@ object frmNewDeviceWizard: TfrmNewDeviceWizard
         PopupMenu = TntPopupMenu1
         SmallImages = ImageList2
         TabOrder = 1
+        ViewStyle = vsReport
         OnSelectItem = lvDevicesSelectItem
       end
       object Animate1: TAnimate
         Left = 206
-        Top = 168
+        Top = 164
         Width = 80
         Height = 50
         Color = clBtnFace
@@ -2040,7 +2043,6 @@ object frmNewDeviceWizard: TfrmNewDeviceWizard
       object AsIcons1: TTntMenuItem
         AutoCheck = True
         Caption = 'As Icons'
-        Checked = True
         GroupIndex = 1
         RadioItem = True
         OnClick = AsIcons1Click
@@ -2048,6 +2050,7 @@ object frmNewDeviceWizard: TfrmNewDeviceWizard
       object AsList1: TTntMenuItem
         AutoCheck = True
         Caption = 'As Details'
+        Checked = True
         GroupIndex = 1
         RadioItem = True
         OnClick = AsList1Click

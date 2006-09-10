@@ -1082,14 +1082,18 @@ end;
 function TfrmSyncBookmarks.GetBookmarksCapacity: Integer;
 var
   i: Integer;
-  buffer, stop: String;
+  buffer: String;
   slTmp: TStrings;
 begin
   Form1.TxAndWait('AT*EWBA=?'); // do not localize
-  // defaults
   buffer := '';
-  stop := '25'; FMaxTitleLen := 15; FMaxUrlLen := 120; 
-  // *EWBA: (0, 2-25), 120, 15
+  FMaxItems := 25; FMaxTitleLen := 15; FMaxUrlLen := 120; // defaults for T610
+  {
+    *EWBA: (list of supported <options>),<nURL>,<ntitle>,<MaxBookmarks>
+    
+    SE T610: *EWBA: (0, 2-25), 120, 15
+    SE K610: *EWBA: (0-1), 512, 15, 100
+  }
   for i := 0 to ThreadSafe.RxBuffer.Count-1 do
     if Pos('*EWBA',ThreadSafe.RxBuffer.Strings[i]) = 1 then begin // do not localize
       buffer := ThreadSafe.RxBuffer.Strings[i];
@@ -1098,22 +1102,28 @@ begin
   for i := 1 to length(buffer) do begin
     if IsDelimiter('()-,', buffer, i) then buffer[i] := ' ';
   end;
-  // *EWBA:  0  2 25   120  15
   if buffer <> '' then begin
     slTmp := TStringList.Create;
     try
       slTmp.DelimitedText := buffer;
-      stop := slTmp.Strings[slTmp.Count-3];
-      Log.AddMessage('Bookmark: max entries = '+stop, lsDebug); // do not localize debug
-      FMaxUrlLen := StrToInt(slTmp.Strings[slTmp.Count-2]);
-      Log.AddMessage('Bookmark: max url length = '+slTmp.Strings[slTmp.Count-2], lsDebug); // do not localize debug
-      FMaxTitleLen := StrToInt(slTmp.Strings[slTmp.Count-1]);
-      Log.AddMessage('Bookmark: max title length = '+slTmp.Strings[slTmp.Count-1], lsDebug); // do not localize debug
+      if Form1.IsK610Clone then begin
+        FMaxItems := StrToInt(slTmp.Strings[slTmp.Count-1]);
+        FMaxUrlLen := StrToInt(slTmp.Strings[slTmp.Count-3]);
+        FMaxTitleLen := StrToInt(slTmp.Strings[slTmp.Count-2]);
+      end
+      else begin
+        FMaxItems := StrToInt(slTmp.Strings[slTmp.Count-3]);
+        FMaxUrlLen := StrToInt(slTmp.Strings[slTmp.Count-2]);
+        FMaxTitleLen := StrToInt(slTmp.Strings[slTmp.Count-1]);
+      end;
+      Log.AddMessage('Bookmark: max entries = '+IntToStr(FMaxItems), lsDebug); // do not localize debug
+      Log.AddMessage('Bookmark: max url length = '+IntToStr(FMaxUrlLen), lsDebug); // do not localize debug
+      Log.AddMessage('Bookmark: max title length = '+IntToStr(FMaxTitleLen), lsDebug); // do not localize debug
     finally
       slTmp.Free;
     end;
   end;
-  Result := StrToInt(stop);
+  Result := FMaxItems;
 end;
 
 constructor TfrmSyncBookmarks.Create(AOwner: TComponent);

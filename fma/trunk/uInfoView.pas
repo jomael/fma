@@ -441,8 +441,9 @@ var
 begin
   { Signal and Power }
   if Form1.FConnectingComplete then begin
-    if Form1.FUseCSQ then
-      wSignal.Caption := IntToStr(Form1.pbRSSI.Position)+'%'
+    i := Form1.pbRSSI.Position;
+    if Form1.FUseCSQ and (i <> 0) then
+      wSignal.Caption := IntToStr(i)+'%'
     else
       wSignal.Caption := _('N/A');
     if Form1.FUseCBC then begin

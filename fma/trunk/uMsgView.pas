@@ -580,7 +580,7 @@ implementation
 uses
   gnugettext, gnugettexthelpers, cUnicodeCodecs,
   Unit1, uSMSDetail, uLogger, uInputQuery, uThreadSafe, uMissedCalls, uSyncPhonebook,
-  uSMS, uGlobal, uComposeSMS, uConnProgress, WebUtil, uDialogs;
+  uSMS, uGlobal, uComposeSMS, uConnProgress, WebUtil, uDialogs, uImg32Helper;
 
 {$R *.dfm}
 

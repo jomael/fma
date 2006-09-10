@@ -191,7 +191,7 @@ type
     procedure NodeProperties(Node: PVirtualNode);
   public
     { Public declarations }
-    function GetSelectedNode: PVirtualNode;
+    function GetSelectedNode: PVirtualNode; // returns Form1.ExplorerNew's node!
     property RootNode: PVirtualNode read FRootNode write Set_RootNode default nil;
   end;
 
@@ -239,39 +239,34 @@ begin
       Item := ListItems.GetNodeData(Node);
       Item.name := EData.Text;
       Item.fNode := itNode; // remember ExplorerNew corresponding node
-      case Node.Dummy of
-        1..3,5..7,19..22,30..35,39..43,46..50,56,57: begin
-          Item.descr := _('Folder');
-          Item.param := '';
-          Item.fFile := EData.Data;
-          itNode := itNode.NextSibling; // careful we have continue here
-          continue; // skip default handler
+      if Node.Dummy in idxFolders then begin
+        Item.descr := _('Folder');
+        Item.param := '';
+        Item.fFile := EData.Data;
+        itNode := itNode.NextSibling; // careful we have continue here
+        continue; // skip default handler
+      end
+      else
+      if Node.Dummy in idxFiles then begin // see uFiles TIcon definition
+        case TFiles.FindFileIcon(Item.name) of
+          iWaveFile:  Item.descr := _('Wave Sound');
+          iMidiFile:  Item.descr := _('Synthesed Sound');
+          iImageFile: Item.descr := _('Picture');
+          iThemeFile: Item.descr := _('Theme');
+          else        Item.descr := _('File');
         end;
+        Item.param := Format(_('%.1n Kb'),[EData.StateIndex / 1024]);
+        Item.fFile := EData.Data;
+        itNode := itNode.NextSibling; // careful we have continue here
+        continue; // skip default handler
+      end
+      else
+      case Node.Dummy of
         8: Item.descr := _('Contact');
         9..13: Item.descr := _('Phone number');
         24: Item.descr := _('Profile');
         26,58: Item.descr := _('Group');
         59: Item.descr := _('Bookmark');
-        27,36..38,60: begin // see uFiles TIcon definition
-          s := WideExtractFileExt(Item.name);
-          if (s = '.amr') then // do not localize
-            Item.descr := _('Speech')
-          else
-          if (s = '.mid') or (s = '.imy') or (s = '.mp3') then // do not localize
-            Item.descr := _('Sound')
-          else
-          if (s = '.gif') or (s = '.jpg') or (s = '.wbm') or (s = '.wbmp') then // do not localize
-            Item.descr := _('Picture')
-          else
-          if (s = '.thm') then // do not localize
-            Item.descr := _('Theme')
-          else
-            Item.descr := _('File');
-          Item.param := Format(_('%.1n Kb'),[EData.StateIndex / 1024]);
-          Item.fFile := EData.Data;
-          itNode := itNode.NextSibling; // careful we have continue here
-          continue; // skip default handler
-        end;
         53..55: begin // calls
           s := TStrings(rootData.Data)[EData.StateIndex-1];
           Item.descr := GetToken(s,1);
@@ -407,12 +402,14 @@ end;
 procedure TfrmExplore.ListItemsDblClick(Sender: TObject);
 var
   Child: PVirtualNode;
+  CItem: PFmaExplorerNode;
 begin
-  Child := GetSelectedNode;
+  Child := GetSelectedNode; // returns Form1.ExplorerNew's node, not ListItems's one
+  CItem := Form1.ExplorerNew.GetNodeData(Child);
   if (Child.ChildCount = 0) and (Child <> Form1.FNodeCalendar) and
     (Child <> Form1.FNodeMsgInbox) and (Child <> Form1.FNodeMsgSent) and
     (Child <> Form1.FNodeMsgOutbox) and (Child <> Form1.FNodeMsgDrafts) and
-    (Child <> Form1.FNodeMsgArchive) then
+    (Child <> Form1.FNodeMsgArchive) and not (CItem.ImageIndex in idxFolders) then
     NodeProperties(Child)
   else
     NodeExplore(Child);

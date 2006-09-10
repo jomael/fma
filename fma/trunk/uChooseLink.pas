@@ -98,8 +98,14 @@ procedure TfrmChooseLink.FormShow(Sender: TObject);
 begin
   lvContacts.SetFocus;
   if lvContacts.Items.Count <> 0 then begin
-    lvContacts.Selected := lvContacts.Items[0];
-    lvContactsSelectItem(lvContacts,lvContacts.Selected,True);
+    if WideCompareText(lblContact.Caption,FPossibleLinks[lvContacts.Items[0].Index].Contact.FullName) = 0 then begin
+      lvContacts.Selected := lvContacts.Items[0];
+      lvContactsSelectItem(lvContacts,lvContacts.Selected,True);
+    end
+    else begin
+      grpAction.ItemIndex := 1;
+      ActionClick(grpAction);
+    end;
   end;
 end;
 

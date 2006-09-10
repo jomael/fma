@@ -98,10 +98,8 @@ begin
     { Load this resource into memory }
     Resource := Resources.AddResource(-1);
 
-    if FCalendar <> nil then
-    begin
-      for I := 0 to FCalendar.Count - 1 do
-      begin
+    if FCalendar <> nil then begin
+      for I := 0 to FCalendar.Count - 1 do begin
         ACalEntity := TVCalEntity(FCalendar[I]);
 
         // TODO: Display item state

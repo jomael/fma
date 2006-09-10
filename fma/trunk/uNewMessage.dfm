@@ -27,7 +27,7 @@ object frmNewMessage: TfrmNewMessage
   OnShow = FormShow
   DesignSize = (
     329
-    137)
+    133)
   PixelsPerInch = 96
   TextHeight = 13
   object Image1: TTntImage
@@ -125,7 +125,6 @@ object frmNewMessage: TfrmNewMessage
     Top = 16
   end
   object PopupMenu1: TTntPopupMenu
-    Images = Form1.ImageList2
     OnPopup = PopupMenu1Popup
     Left = 224
     Top = 16

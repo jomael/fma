@@ -40,6 +40,9 @@ const
   EXTERNAL_PATHSEPERATOR: WideChar = '/';
   INTERNAL_PATHSEPERATOR: WideChar = '\';
 
+  idxFolders: set of byte = [1..3,5..7,19..22,30..35,39..43,46..50,56,57];
+  idxFiles: set of byte = [27,36..38,60];
+
 type TIcon = (
        iUnknown = 60,      // unknown file
        iSubDir = 33,       // normal sub dir
@@ -56,15 +59,16 @@ type TIcon = (
      end;
 
 const
-  FILEICONS: array [0..9] of RFileIcon = (
+  FILEICONS: array [0..10] of RFileIcon = (
     (FileExtension: '.thm';  Icon: iThemeFile),  // do not localize
     (FileExtension: '.amr';  Icon: iWaveFile),   // do not localize
     (FileExtension: '.mp3';  Icon: iWaveFile),   // do not localize
-    (FileExtension: '.mp4';  Icon: iWaveFile),   // do not localize
+    (FileExtension: '.m4a';  Icon: iWaveFile),   // do not localize
     (FileExtension: '.mid';  Icon: iMidiFile),   // do not localize
     (FileExtension: '.imy';  Icon: iMidiFile),   // do not localize
     (FileExtension: '.gif';  Icon: iImageFile),  // do not localize
     (FileExtension: '.jpg';  Icon: iImageFile),  // do not localize
+    (FileExtension: '.png';  Icon: iImageFile),  // do not localize
     (FileExtension: '.wbm';  Icon: iImageFile),  // do not localize
     (FileExtension: '.wbmp'; Icon: iImageFile)); // do not localize
 
@@ -193,22 +197,22 @@ begin
    if result <> '' then begin
      EData := Form1.ExplorerNew.GetNodeData(fTreeNode);
      //// a _real_ solution for this someday would be nice :) ////////////////////////
-     if (TIcon(EData.ImageIndex) in [iSoundsDir, iWaveFile, iMidiFile,          //
+     if (TIcon(EData.ImageIndex) in [iSoundsDir, iWaveFile, iMidiFile,              //
        iImagesDir, iImageFile, iThemeFile]) then                                    //
        begin                                                                        //
          Delete(result, 1, 1);                                                      //
          while (Length(result) > 0) and (result[1] <> INTERNAL_PATHSEPERATOR) do    //
          Delete(result, 1, 1);                                                      //
                                                                                     //
-         case TIcon(EData.ImageIndex) of                                        //
+         case TIcon(EData.ImageIndex) of                                            //
            iSoundsDir,                                                              //
            iWaveFile,                                                               //
-           iMidiFile: Result := INTERNAL_PATHSEPERATOR + 'snd' + result; // do not localize
+           iMidiFile: Result := INTERNAL_PATHSEPERATOR + 'snd' + result;            // do not localize
                                                                                     //
            iImagesDir,                                                              //
-           iImageFile: Result := INTERNAL_PATHSEPERATOR + 'pic' + result; // do not localize
+           iImageFile: Result := INTERNAL_PATHSEPERATOR + 'pic' + result;           // do not localize
                                                                                     //
-           iThemeFile: Result := INTERNAL_PATHSEPERATOR + 'thm' + result; // do not localize
+           iThemeFile: Result := INTERNAL_PATHSEPERATOR + 'thm' + result;           // do not localize
          end;                                                                       //
        end;                                                                         //
      /////////////////////////////////////////////////////////////////////////////////

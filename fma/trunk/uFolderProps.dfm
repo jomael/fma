@@ -75,7 +75,7 @@ object frmFolderProps: TfrmFolderProps
         Top = 60
         Width = 353
         Height = 273
-        ActivePage = tsDatabase
+        ActivePage = tsFile
         MultiLine = True
         Style = tsButtons
         TabOrder = 2
@@ -348,7 +348,6 @@ object frmFolderProps: TfrmFolderProps
             Top = 48
             Width = 133
             Height = 25
-            Action = Form1.ActionContactsNewMsg
             TabOrder = 0
           end
           object Button2: TTntButton
@@ -356,7 +355,6 @@ object frmFolderProps: TfrmFolderProps
             Top = 80
             Width = 133
             Height = 25
-            Action = Form1.ActionContactsVoiceCall
             TabOrder = 1
           end
         end

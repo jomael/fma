@@ -184,7 +184,7 @@ type
   public
     { Public declarations }
     procedure CreateCall(Number: WideString; Popup: boolean; AlphaBlend: Integer);
-    procedure CloseCall(CanClose: boolean = true);
+    procedure CloseCall(CanClose: boolean = True; CanHangUp: boolean = True);
     procedure DoExiting;
     procedure DoInCall;
     procedure DoPersonalize;
@@ -208,7 +208,7 @@ implementation
 
 uses
   gnugettext, gnugettexthelpers,
-  uGlobal, Unit1, uMissedCalls, uDialogs, uSIMEdit;
+  uImg32Helper, Unit1, uMissedCalls, uDialogs, uSIMEdit;
 
 const
   DefRingOutgoingSecs = 5;
@@ -548,20 +548,19 @@ begin
   end;
 end;
 
-procedure TfrmCalling.CloseCall(CanClose: boolean);
+procedure TfrmCalling.CloseCall(CanClose,CanHangUp: boolean);
 begin
   if FCreated then begin
     FCreated := False;
     { Cancel any call attempt. If we're in call do not hang up here! }
-    if Form1.FConnected and IsCalling and not IsTalking then
+    if CanHangUp and Form1.FConnected and IsCalling and not IsTalking then
       Form1.VoiceHangUp(IsIncoming);
     { Stop any sound }
     DoExiting;
     TimeTimer.Enabled := False;
     Image32.Bitmap.Clear;
   end;
-  if (CanClose) then
-    Close; // could cause stack overflow
+  if CanClose then Close; // could cause stack overflow
 end;
 
 end.

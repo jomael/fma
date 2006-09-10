@@ -1,27 +1,27 @@
 object frmCalendarView: TfrmCalendarView
   Left = 0
   Top = 0
-  Width = 752
-  Height = 581
+  Width = 583
+  Height = 412
   TabOrder = 0
   object SplitterVertical: TTntSplitter
     Left = 217
     Top = 0
-    Height = 544
+    Height = 412
     AutoSnap = False
   end
   object Panel: TTntPanel
     Left = 220
     Top = 0
-    Width = 532
-    Height = 544
+    Width = 363
+    Height = 412
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
     object SplitterHorizontal: TTntSplitter
       Left = 0
-      Top = 356
-      Width = 532
+      Top = 269
+      Width = 363
       Height = 3
       Cursor = crVSplit
       Align = alTop
@@ -30,8 +30,8 @@ object frmCalendarView: TfrmCalendarView
     object VpMonthView: TVpMonthView
       Left = 0
       Top = 0
-      Width = 532
-      Height = 356
+      Width = 363
+      Height = 269
       ControlLink = VpControlLink
       Color = clWindow
       Align = alTop
@@ -68,9 +68,9 @@ object frmCalendarView: TfrmCalendarView
     end
     object VpTaskList: TVpTaskList
       Left = 0
-      Top = 359
-      Width = 532
-      Height = 185
+      Top = 272
+      Width = 363
+      Height = 140
       PopupMenu = PopupMenuTaskList
       ControlLink = VpControlLink
       Color = clWindow
@@ -106,7 +106,7 @@ object frmCalendarView: TfrmCalendarView
     Left = 0
     Top = 0
     Width = 217
-    Height = 544
+    Height = 412
     PopupMenu = PopupMenuDayView
     ControlLink = VpControlLink
     Color = clWindow
@@ -186,57 +186,14 @@ object frmCalendarView: TfrmCalendarView
     OnDrawIcons = VpDayViewDrawIcons
     OnOwnerEditEvent = VpDayViewOwnerEditEvent
   end
-  object PanelDebug: TTntPanel
-    Left = 0
-    Top = 544
-    Width = 752
-    Height = 37
-    Align = alBottom
-    BevelOuter = bvLowered
-    TabOrder = 2
-    Visible = False
-    object txtLUID: TTntEdit
-      Left = 44
-      Top = 8
-      Width = 105
-      Height = 21
-      TabOrder = 0
-      Text = 'txtLUID'
-    end
-    object txtCC: TTntEdit
-      Left = 8
-      Top = 8
-      Width = 33
-      Height = 21
-      TabOrder = 1
-    end
-    object btnSYNC: TTntButton
-      Left = 156
-      Top = 8
-      Width = 49
-      Height = 21
-      Caption = 'SYNC'
-      TabOrder = 2
-      OnClick = btnSYNCClick
-    end
-    object btnLOG: TTntButton
-      Left = 208
-      Top = 8
-      Width = 49
-      Height = 21
-      Caption = 'LOG'
-      TabOrder = 3
-      OnClick = btnLOGClick
-    end
-  end
   object VpControlLink: TVpControlLink
     Printer.DayStart = h_08
     Printer.DayEnd = h_05
     Printer.Granularity = gr30Min
     Printer.MarginUnits = imAbsolutePixel
     Printer.PrintFormats = <>
-    Left = 704
-    Top = 548
+    Left = 96
+    Top = 212
   end
   object FormStorage1: TFormStorage
     IniFileName = 'Software\floAt'
@@ -247,12 +204,12 @@ object frmCalendarView: TfrmCalendarView
       'VpMonthView.Height'
       'VpDayView.Width')
     StoredValues = <>
-    Left = 672
-    Top = 548
+    Left = 128
+    Top = 180
   end
   object ImageListCalPopup: TImageList
-    Left = 640
-    Top = 548
+    Left = 96
+    Top = 180
     Bitmap = {
       494C010103000400040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
@@ -395,8 +352,8 @@ object frmCalendarView: TfrmCalendarView
   end
   object PopupMenuDayView: TTntPopupMenu
     OnPopup = PopupMenuDayViewPopup
-    Left = 576
-    Top = 548
+    Left = 96
+    Top = 148
     object ForceasNotModifieDv: TTntMenuItem
       Tag = 1
       Caption = 'Force as Not Modified'
@@ -449,6 +406,15 @@ object frmCalendarView: TfrmCalendarView
     object N5: TTntMenuItem
       Caption = '-'
     end
+    object ImportCalendar1: TTntMenuItem
+      Action = Form1.ActionToolsImportCalendar
+    end
+    object ExportCalendar1: TTntMenuItem
+      Action = Form1.ActionToolsExportCalendar
+    end
+    object N7: TTntMenuItem
+      Caption = '-'
+    end
     object Properties1: TTntMenuItem
       Caption = 'P&roperties'
       ImageIndex = 10
@@ -457,8 +423,8 @@ object frmCalendarView: TfrmCalendarView
   end
   object PopupMenuTaskList: TTntPopupMenu
     OnPopup = PopupMenuTaskListPopup
-    Left = 608
-    Top = 548
+    Left = 128
+    Top = 148
     object ForceasNotModifiedTl: TTntMenuItem
       Tag = 1
       Caption = 'Force as Not Modified'
@@ -499,10 +465,34 @@ object frmCalendarView: TfrmCalendarView
     object N6: TTntMenuItem
       Caption = '-'
     end
+    object ImportCalendar2: TTntMenuItem
+      Action = Form1.ActionToolsImportCalendar
+    end
+    object ExportCalendar2: TTntMenuItem
+      Action = Form1.ActionToolsExportCalendar
+    end
+    object N8: TTntMenuItem
+      Caption = '-'
+    end
     object Properties2: TTntMenuItem
       Caption = 'P&roperties'
       Enabled = False
       ImageIndex = 10
     end
+  end
+  object OpenDialog1: TTntOpenDialog
+    DefaultExt = '.vcs'
+    Filter = 'vCalendar Files (*.vcs)|*.vcs|All Files|*.*'
+    Title = 'Import Calendar...'
+    Left = 128
+    Top = 116
+  end
+  object TntSaveDialog1: TTntSaveDialog
+    DefaultExt = '.vcs'
+    Filter = 'vCalendar Files (*.vcs)|*.vcs'
+    Options = [ofOverwritePrompt, ofHideReadOnly, ofPathMustExist, ofEnableSizing]
+    Title = 'Export Entire Calendar...'
+    Left = 96
+    Top = 116
   end
 end

@@ -5153,7 +5153,7 @@ object frmChooseLink: TfrmChooseLink
   object cbDontAsk: TTntCheckBox
     Left = 8
     Top = 338
-    Width = 197
+    Width = 165
     Height = 17
     Caption = 'Don'#39't ask me again'
     TabOrder = 1
@@ -5167,8 +5167,8 @@ object frmChooseLink: TfrmChooseLink
     Caption = 'Resolve action:'
     ItemIndex = 0
     Items.Strings = (
-      'Link to Existing'
-      'Add as New Contact')
+      'Link to &Existing'
+      '&Add as New Contact')
     TabOrder = 4
     OnClick = ActionClick
   end

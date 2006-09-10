@@ -1,15 +1,15 @@
-unit uCalendarView;
+unit uSyncCalendar;
 
 {
 *******************************************************************************
 * Descriptions: Calendar View
-* $Source: /cvsroot/fma/fma/uCalendarView.pas,v $
+* $Source: /cvsroot/fma/fma/uSyncCalendar.pas,v $
 * $Locker:  $
 *
 * Todo:
 *
 * Change Log:
-* $Log: uCalendarView.pas,v $
+* $Log: uSyncCalendar.pas,v $
 * Revision 1.6.2.8  2006/03/15 16:45:23  z_stoichev
 * no message
 *
@@ -120,11 +120,6 @@ type
     Panel: TTntPanel;
     SplitterHorizontal: TTntSplitter;
     FormStorage1: TFormStorage;
-    PanelDebug: TTntPanel;
-    txtLUID: TTntEdit;
-    txtCC: TTntEdit;
-    btnSYNC: TTntButton;
-    btnLOG: TTntButton;
     ImageListCalPopup: TImageList;
     PopupMenuDayView: TTntPopupMenu;
     ForceasNotModifieDv: TTntMenuItem;
@@ -152,12 +147,18 @@ type
     Properties1: TTntMenuItem;
     N6: TTntMenuItem;
     Properties2: TTntMenuItem;
+    N7: TTntMenuItem;
+    ImportCalendar1: TTntMenuItem;
+    ExportCalendar1: TTntMenuItem;
+    OpenDialog1: TTntOpenDialog;
+    TntSaveDialog1: TTntSaveDialog;
+    N8: TTntMenuItem;
+    ExportCalendar2: TTntMenuItem;
+    ImportCalendar2: TTntMenuItem;
     procedure VpDayViewOwnerEditEvent(Sender: TObject; Event: TVpEvent;
       Resource: TVpResource; var AllowIt: Boolean);
     procedure VpTaskListOwnerEditTask(Sender: TObject; Task: TVpTask;
       Resource: TVpResource; var AllowIt: Boolean);
-    procedure btnLOGClick(Sender: TObject);
-    procedure btnSYNCClick(Sender: TObject);
     procedure VpDayViewDrawIcons(Sender: TObject; Event: TVpEvent;
       var Icons: TVpDVIcons);
     procedure ForceasNotModifieDvClick(Sender: TObject);
@@ -172,6 +173,8 @@ type
     procedure DownloadentireCalendar1Click(Sender: TObject);
     procedure CompletedStatusClick(Sender: TObject);
     procedure Properties1Click(Sender: TObject);
+    procedure ImportCalendar1Click(Sender: TObject);
+    procedure btnSYNCClick(Sender: TObject);
   private
     { Private declarations }
     ConflictVCalPhone,ConflictVCalPC: TVCalEntity;
@@ -196,8 +199,11 @@ type
     destructor Destroy; override;
     procedure OnConflictChanges(Sender: TObject; const TargetName, Option1Name, Option2Name: WideString);
     procedure OnConnected;
-    procedure LoadCalendar(FileName: WideString);
-    procedure SaveCalendar(FileName: WideString);
+    procedure ClearAllData; // USE WITH CARE!
+    procedure LoadCalendar(FileName: WideString; IntoCal: TVCalendar = nil);
+    procedure SaveCalendar(FileName: WideString; SaveCC: Boolean = True);
+    { Properties }
+    property DB: TVpVDataStore read VpDB;
   end;
 
 implementation
@@ -390,17 +396,11 @@ begin
   end;
 end;
 
-procedure TfrmCalendarView.btnLOGClick(Sender: TObject);
-begin
-  Form1.ActionViewLog.Execute;
-end;
-
 procedure TfrmCalendarView.btnSYNCClick(Sender: TObject);
 var
   isModified: Boolean;
   Err: WideString;
 begin
-  btnSync.Enabled := False;
   Form1.ActionSyncPhonebook.Enabled := False;
   FSyncProgressDlg := GetProgressDialog;
   try
@@ -430,7 +430,6 @@ begin
     end;
   finally
     FreeProgressDialog;
-    btnSync.Enabled := True;
     Form1.ActionSyncPhonebook.Enabled := True;
   end;
 end;
@@ -741,7 +740,6 @@ begin
     if not Form1.FConnected then begin
        ShowMessageW(_('The Sync Calendar can''t start...try to restart your phone.'));
        Log.AddSynchronizationMessage(_('The Sync Calendar can''t start...try to restart your phone.'), lsError);
-       btnSync.Enabled := True;
        Form1.ActionSyncPhonebook.Enabled := True;
        exit;
     end;
@@ -767,7 +765,7 @@ begin
     try
       VpDB.Connected := False;
       vStorage.Raw := sl;
-      Log.AddSynchronizationMessage(_('Sync Phone Calendar: Full Refresh: vStorage.Count: ' + inttostr(vStorage.Count)), lsInformation); // do not localize "vStorage.Count"
+      Log.AddSynchronizationMessage('Calendar Full Refresh: Storage = ' + inttostr(vStorage.Count), lsDebug); // do not localize debug
       if vStorage.Count = 1 then FCalendar.Raw := (vStorage[0] as TVCalendar).Raw
       else begin
         for I := 0 to vStorage.Count - 1 do begin
@@ -781,7 +779,7 @@ begin
           end;
         end;
       end;
-      Log.AddSynchronizationMessage(_('Sync Phone Calendar: Full Refresh: loaded ' + inttostr(FCalendar.count)+ ' entries') ,  lsInformation); // do not localize "FCalendar.count"
+      Log.AddSynchronizationMessage('Calendar Full Refresh: Items = ' + inttostr(FCalendar.count), lsDebug); // do not localize debug
 
     VpDB.Connected := True;
     finally
@@ -798,9 +796,9 @@ begin
   end;
 end;
 
-procedure TfrmCalendarView.SaveCalendar(FileName: WideString);
-  var
-    sl: TStrings;
+procedure TfrmCalendarView.SaveCalendar(FileName: WideString; SaveCC: Boolean);
+var
+  sl: TStrings;
 begin
   sl := TStringList.Create;
   try
@@ -813,48 +811,61 @@ begin
 
       FCalendar.Raw.SaveToFile(FileName);
 
-      sl.add('CC:' + CC); // do not localize
-      sl.SaveToFile(WideChangeFileExt(FileName,'.SYNC.dat')); // do not localize
+      if SaveCC then begin
+        sl.add('CC:' + CC); // do not localize
+        sl.SaveToFile(WideChangeFileExt(FileName,'.SYNC.dat')); // do not localize
+      end;
     end;                      
   finally
     sl.Free;
   end;
 end;
 
-procedure TfrmCalendarView.LoadCalendar(FileName: WideString);
-  var
-    sl: TStrings;
-    vStorage: TVObjStorage;
-    i : integer;
-    AEntity: TVCalEntity;
-    ANewCal: TVCalendar;
+procedure TfrmCalendarView.LoadCalendar(FileName: WideString; IntoCal: TVCalendar);
+var
+  sl: TStrings;
+  vStorage: TVObjStorage;
+  i : integer;
+  AEntity: TVCalEntity;
+  ANewCal: TVCalendar;
+  fn: WideString;
 begin
+  if IntoCal = nil then IntoCal := FCalendar;
+    
   sl := TStringList.Create;
   vStorage := TVObjStorage.Create;
   ANewCal := TVCalendar.Create;
   try
     VpDB.Connected := False;
-    vStorage.LoadFromFile(FileName);
-    Log.AddMessage('Database: Loading Calendar: Storage = ' + inttostr(vStorage.Count), lsDebug); // do not localize debug
-    if vStorage.Count = 1 then
-      FCalendar.Raw := (vStorage[0] as TVCalendar).Raw
-    else begin
-      for I := 0 to vStorage.Count - 1 do begin
-        ANewCal.Raw := (vStorage[i] as TVCalendar).Raw;
-        if ANewCal.Count = 1 then begin
-          AEntity := TVCalEntity.Create;
-          AEntity.Raw := (ANewCal[0] as TVCalEntity).Raw;
-          FCalendar.Add(AEntity);
+    try
+      vStorage.LoadFromFile(FileName);
+      Log.AddSynchronizationMessage('Loading Calendar: Storage = ' + inttostr(vStorage.Count), lsDebug); // do not localize debug
+      if vStorage.Count = 1 then
+        IntoCal.Raw := (vStorage[0] as TVCalendar).Raw
+      else begin
+        for I := 0 to vStorage.Count - 1 do begin
+          ANewCal.Raw := (vStorage[i] as TVCalendar).Raw;
+          if ANewCal.Count = 1 then begin
+            AEntity := TVCalEntity.Create;
+            AEntity.Raw := (ANewCal[0] as TVCalEntity).Raw;
+            IntoCal.Add(AEntity);
+          end;
         end;
       end;
+      Log.AddSynchronizationMessage('Loading Calendar: Items = ' + inttostr(IntoCal.count), lsDebug); // do not localize debug
+    finally
+      VpDB.Connected := True;
     end;
-    Log.AddMessage('Database: Loading Calendar: Items = ' + inttostr(FCalendar.count), lsDebug); // do not localize debug
-
-    VpDB.Connected := True;
-
-    sl.LoadFromFile(WideChangeFileExt(FileName,'.SYNC.dat')); // do not localize
-    CC := Copy(sl.Strings[0], Pos(':', sl.Strings[0]) + 1, length(sl.Strings[0]));
-    txtCC.Text := CC;
+    { Should we load Sync Index too? }
+    if IntoCal = FCalendar then begin
+      fn := WideChangeFileExt(FileName,'.SYNC.dat');
+      if WideFileExists(fn) then begin
+        sl.LoadFromFile(fn); // do not localize
+        CC := Copy(sl[0], Pos(':', sl[0]) + 1, length(sl[0]));
+      end
+      else
+        CC := '0';
+    end;
   finally
     sl.Free;
     vStorage.Free;
@@ -989,7 +1000,7 @@ begin
     VpDayView.ActiveEvent.Changed := True;
 
     // Store changes and repaint
-    VpDayView.DataStore.PostTasks;
+    VpDayView.DataStore.PostEvents;
     VpDayView.Invalidate;
   end;
 end;
@@ -1001,10 +1012,10 @@ begin
     VpTaskList.ActiveTask.UserField9 := '3';
 
     VpTaskList.ActiveTask.Deleted := False;
-    VpTaskList.ActiveTask.Changed := True;    
+    VpTaskList.ActiveTask.Changed := True;
 
     // Store changes and repaint
-    VpDayView.DataStore.PostEvents;
+    VpDayView.DataStore.PostTasks;
     VpTaskList.Invalidate;
   end;
 end;
@@ -1204,55 +1215,61 @@ end;
 procedure TfrmCalendarView.OnConnected;
 var
   I: Integer;
-  Modified: boolean;
+  Modified,Asked: boolean;
   AEntity: TVCalEntity;
 begin
   if Form1.FCalRecurrence then
     try
-      Modified := False;
+      if Visible then Update;
       VpDB.Connected := False;
       try
-        for I := 0 to FCalendar.Count-1 do begin
-          AEntity := FCalendar[I] as TVCalEntity;
+        Asked := False;
+        repeat
+          Modified := False;
+          for I := 0 to VpDB.vCalendar.Count-1 do begin
+            AEntity := VpDB.vCalendar[I] as TVCalEntity;
 
-          if AEntity.VDtStart.IsSet and (YearOf(AEntity.VDtStart.DateTime) < YearOf(Date)) then begin
-            if not Modified and Form1.FCalRecurrAsk then begin
-              if Visible then Update;
-              MessageBeep(MB_ICONQUESTION);
-              if MessageDlgW(_('You have some Calendar entities in the past year. Do you want to recurrent them to this year?'),
-                mtConfirmation,MB_YESNO) = ID_NO then break;
+            if AEntity.VDtStart.IsSet and (YearOf(AEntity.VDtStart.DateTime) < YearOf(Date)) then begin
+              if not Modified and not Asked and Form1.FCalRecurrAsk then begin
+                MessageBeep(MB_ICONQUESTION);
+                if MessageDlgW(_('You have some Calendar entities in the past year. Do you want to recurrent them to this year?'),
+                  mtConfirmation,MB_YESNO) = ID_NO then Abort;
+                Asked := True;
+              end;
+
+              AEntity.Raw.BeginUpdate;
+              try
+                AEntity.VFmaState := 1; // set to modified
+                AEntity.VDtStart.DateTime := DoShiftDate(AEntity.VDtStart.DateTime,1,0,0);
+                if AEntity.VDtEnd.IsSet and (AEntity.VDtEnd.DateTime < AEntity.VDtStart.DateTime) then
+                  AEntity.VDtEnd.DateTime := DoShiftDate(AEntity.VDtEnd.DateTime,1,0,0);
+                if AEntity.VDue.IsSet and (AEntity.VDue.DateTime < AEntity.VDtStart.DateTime) then
+                  AEntity.VDue.DateTime := DoShiftDate(AEntity.VDue.DateTime,1,0,0);
+                if AEntity.VAAlarm.IsSet and (AEntity.VAAlarm.DateTime < AEntity.VDtStart.DateTime) then
+                  AEntity.VAAlarm.DateTime := DoShiftDate(AEntity.VAAlarm.DateTime,1,0,0);
+                AEntity.VCompleted.Clear;
+                AEntity.VLastModified.DateTime := Now;
+              finally
+                AEntity.Raw.EndUpdate;
+              end;
+
+              Modified := True;
             end;
-
-            AEntity.Raw.BeginUpdate;
-            try
-              AEntity.VFmaState := 1; // set to modified
-              AEntity.VDtStart.DateTime := DoShiftDate(AEntity.VDtStart.DateTime,1,0,0);
-              if AEntity.VDtEnd.IsSet and (AEntity.VDtEnd.DateTime < AEntity.VDtStart.DateTime) then
-                AEntity.VDtEnd.DateTime := DoShiftDate(AEntity.VDtEnd.DateTime,1,0,0);
-              if AEntity.VDue.IsSet and (AEntity.VDue.DateTime < AEntity.VDtStart.DateTime) then
-                AEntity.VDue.DateTime := DoShiftDate(AEntity.VDue.DateTime,1,0,0);
-              if AEntity.VAAlarm.IsSet and (AEntity.VAAlarm.DateTime < AEntity.VDtStart.DateTime) then
-                AEntity.VAAlarm.DateTime := DoShiftDate(AEntity.VAAlarm.DateTime,1,0,0);
-              AEntity.VCompleted.Clear;
-              AEntity.VLastModified.DateTime := Now;
-            finally
-              AEntity.Raw.EndUpdate;
-            end;
-
-            Modified := True;
           end;
-        end;
+          if Modified then begin
+            // Store changes and repaint
+            VpDB.RefreshEvents;
+            VpDB.RefreshContacts;
+            VpDB.RefreshTasks;
+            VpDB.RefreshResource;
+          end;
+        until not Modified;
       finally
-        if Modified then begin
-          // Store changes and repaint
-          try VpDB.PostEvents; except end;
-          try VpDB.PostTasks; except end;
-          try VpDB.PostResources; except end;
-        end;
         VpDB.Connected := True;
         if Visible then Update;
       end;
     except
+      VpDB.Connected := True;
     end;
 end;
 
@@ -1268,13 +1285,12 @@ end;
 
 procedure TfrmCalendarView.DownloadentireCalendar1Click(Sender: TObject);
 begin
-  if MessageDlgW(_('Local Calendar will be replaced with a fresh copy from the phone.'+
-    sLinebreak+sLinebreak+
-    'Any local changes will be lost. Do you wish to continue?'),
+  if MessageDlgW(_('Local Calendar will be replaced with a fresh copy from the phone.')+
+    sLinebreak+sLinebreak+_('Any local changes will be lost. Do you wish to continue?'),
     mtConfirmation, MB_YESNO or MB_DEFBUTTON2) = ID_YES then begin
-      VpDB.vCalendar.Clear;
-      FullRefresh;
-    end;
+    VpDB.vCalendar.Clear;
+    FullRefresh;
+  end;
 end;
 
 procedure TfrmCalendarView.CompletedStatusClick(Sender: TObject);
@@ -1304,6 +1320,80 @@ end;
 procedure TfrmCalendarView.Properties1Click(Sender: TObject);
 begin
   VpDayView.EditSelectedEvent;
+end;
+
+procedure TfrmCalendarView.ImportCalendar1Click(Sender: TObject);
+var
+  j: integer;
+  dlg: TfrmConnect;
+  Modified: Integer;
+  ACalendar: TVCalendar;
+  AEntity: TVCalEntity;
+begin
+  if not OpenDialog1.Execute then exit;
+  if Visible then Update;
+  dlg := GetProgressDialog;
+  try
+    if Form1.CanShowProgress then
+      dlg.ShowProgress(Form1.FProgressLongOnly);
+    dlg.InitializeLoop('Loading calendar file...');
+
+    Form1.Status(_('Importing calendar...'));
+    Log.AddSynchronizationMessage(_('Import started'));
+
+    Modified := 0;
+    VpDB.Connected := False;
+    ACalendar := TVCalendar.Create;
+    try
+      LoadCalendar(OpenDialog1.FileName,ACalendar);
+      dlg.Initialize(ACalendar.Count,_('Importing phone calendar'));
+
+      for j := 0 to ACalendar.Count-1 do begin
+        { Object already exists? }
+        if not FindCalObj((ACalendar[j] as TVCalEntity).VIrmcLUID.PropertyValue,AEntity) then begin
+          { Nop, add it to current Calendar items... }
+          AEntity := TVCalEntity.Create;
+          AEntity.Raw := (ACalendar[j] as TVCalEntity).Raw;
+          { ...and mark this item as New }
+          AEntity.VFmaState := 0; // UserField9 := '0';
+          VpDB.vCalendar.Add(AEntity);
+          inc(Modified);
+        end;
+        dlg.IncProgress(1);
+        Application.ProcessMessages;
+      end;
+
+      Log.AddSynchronizationMessage(WideFormat(_('Imported %d %s from "%s"'),
+        [Modified, ngettext('item','items',Modified), WideExtractFileName(OpenDialog1.FileName)]),
+        lsInformation);
+    finally
+      ACalendar.Free;
+      if Modified <> 0 then begin
+        // Store changes and repaint
+        VpDB.RefreshEvents;
+        VpDB.RefreshContacts;
+        VpDB.RefreshTasks;
+        VpDB.RefreshResource;
+      end;
+      VpDB.Connected := True;
+      if Visible then Update;
+    end;
+  finally
+    FreeProgressDialog;
+    Log.AddSynchronizationMessage(_('Import finished'));
+    Form1.Status(_('Import complete.'));
+  end;
+end;
+
+procedure TfrmCalendarView.ClearAllData;
+begin
+  VpDB.Connected := False;
+  try
+    VpDB.vCalendar.Clear;
+  finally
+    VpDB.Connected := True;
+    if Visible then Update;
+  end;
 end;
 
 end.
