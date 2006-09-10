@@ -602,11 +602,14 @@ begin
               finally
                 str.Free;
               end;
-              if not MoveFile(PChar(TempFile),PChar(AppFile)) then Abort;
-              Notes := Notes + sLinebreak+_('- Application updated successfuly.')+sLinebreak;
+              if CopyFile(PChar(TempFile),PChar(AppFile),False) then
+                DeleteFile(TempFile)
+              else
+                Abort;
+              Notes := Notes + sLinebreak+_('- New application deployed successfuly.')+sLinebreak;
             except
               DeleteFile(TempFile);
-              Notes := Notes + sLinebreak+_('- Application NOT updated (decompress failed).')+sLinebreak;
+              Notes := Notes + sLinebreak+_('- Application NOT updated (unzip failed).')+sLinebreak;
               break;
             end;
           finally
