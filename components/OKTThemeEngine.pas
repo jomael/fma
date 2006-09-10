@@ -43,7 +43,7 @@ interface
 
 uses
   Consts, Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  GifImage, ExtCtrls, LibTar;
+  PngImage, GifImage, ExtCtrls, LibTar;
 
 type
   TOKTPreview = (pvNone, pvContactName, pvContactHome, pvContactMobile,
