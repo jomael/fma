@@ -133,20 +133,59 @@ end;
   
 function GetFirstToken(var str: WideString; delimiter: WideChar = ','): WideString;
 var
-  i,j,k,q: integer;
+  i,j,k,q,t: integer;
   s,d: WideString;
 begin
+  if delimiter = '"' then delimiter := ','; 
   { Left trim text }
-  j := Pos(delimiter,str)-1;
-  if j < 0 then j := Length(str);
-  if j = 0 then begin
+  i := 1;
+  j := Length(Str);
+  while (i <= j) and (str[i] = ' ') do inc(i);
+  { Find right token end }
+  t := Pos(delimiter,str)-1;
+  if t < 0 then t := j;
+  { Right trim text }
+  while (t > 0) and (str[t] = ' ') do dec(t);
+  { Get token start-end pos [i-j] }
+  if (i < j) and ((str[i] = '"') or (str[t] = '"')) then begin
+    { Probably quoted, find next single quote }
+    j := i; // find first single quote
+    while (j <= t) and (str[j] <> '"') do inc(j);
+    inc(j); // skip first quote
+    k := Length(str);
+    q := 0; // find next single quote
+    while j <= k do begin
+      if str[j] = '"' then begin
+        inc(q);
+        { check for double-quotes }
+        if q = 2 then begin
+          q := 0;
+          inc(j);
+          continue; // ignore second quote
+        end;
+      end
+      else
+        if q = 1 then
+          break // single quote found, so exit loop
+        else
+          q := 0;
+      inc(j);
+    end;
+    if q = 1 then dec(j);
+    if j > k then Abort; // not possible if text is correctly quoted!
+    if j < t then j := t;
+  end
+  else begin
+    { Not quoted }
+    j := t;
+  end;
+  { Check for empty token }
+  if (i > j) or (j = 0) then begin
+    { Update source }
+    Delete(str,1,i);
     Result := '';
-    Delete(str,1,1); // remove 1st char which is the delimiter
     exit;
   end;
-  i := 1;
-  while (i < j) and (str[i] = ' ') do inc(i);
-  while (j > 1) and (str[j] = ' ') do dec(j);
   { Extract first token }
   if (str[i] = '"') and (str[j] = '"') then begin
     { token IS quoted }
@@ -179,21 +218,18 @@ begin
       s := d
     else
       Abort; // not possible if text is correctly quoted!
-    Delete(str,1,i+j);
-    { Clear text up to next delimiter }
-    i := Pos(delimiter,str);
-    if i = 0 then i := Length(str);
-    Delete(str,1,i);
   end
   else begin
     { token is NOT quoted }
-    s := Copy(str,i,j);
-    j := Pos(delimiter,s);
-    if j = 0 then j := Length(s)+1;
-    s := Trim(Copy(s,1,j-1));
-    { Update source }
-    Delete(str,1,i+j-1);
+    s := '';
+    for i := i to j do s := s + str[i];
   end;
+  { Update source }
+  Delete(str,1,j);
+  j := Pos(delimiter,str);
+  if j = 0 then j := Length(str)+1;
+  Delete(str,1,j);
+  { Done }
   Result := s;
 end;
 
@@ -301,4 +337,44 @@ begin
   end;
 end;
 
+var
+  ww: WideString;
+
+initialization
+  { Sanity Check }
+  ww := ' first, last';
+  ww := GetFirstToken(ww);
+  if ww <> 'first' then Halt(1);
+
+  ww := '"first second" ,last';
+  ww := GetFirstToken(ww);
+  if ww <> 'first second' then Halt(1);
+
+  ww := '"first" second , last';
+  ww := GetFirstToken(ww);
+  if ww <> '"first" second' then Halt(1);
+
+  ww := ' first "second" ,last';
+  ww := GetFirstToken(ww);
+  if ww <> 'first "second"' then Halt(1);
+
+  ww := ' "first ""mr"" second",last';
+  ww := GetFirstToken(ww);
+  if ww <> 'first "mr" second' then Halt(1);
+
+  ww := ' ,last';
+  ww := GetFirstToken(ww);
+  if ww <> '' then Halt(1);
+
+  ww := '';
+  ww := GetFirstToken(ww);
+  if ww <> '' then Halt(1);
+
+  ww := ' ';
+  ww := GetFirstToken(ww);
+  if ww <> '' then Halt(1);
+
+  ww := ' first ';
+  ww := GetFirstToken(ww);
+  if ww <> 'first' then Halt(1);
 end.
