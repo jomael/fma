@@ -27,7 +27,7 @@ object frmMsgView: TfrmMsgView
     object MemoMsgBody: TTntRichEdit
       Left = 135
       Top = 22
-      Width = 331
+      Width = 267
       Height = 132
       Align = alClient
       BorderStyle = bsNone
@@ -121,9 +121,9 @@ object frmMsgView: TfrmMsgView
       end
     end
     object tbCommands: TToolBar
-      Left = 466
+      Left = 402
       Top = 22
-      Width = 45
+      Width = 109
       Height = 132
       Align = alRight
       AutoSize = True

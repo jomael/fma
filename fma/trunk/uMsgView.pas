@@ -947,9 +947,10 @@ procedure TfrmMsgView.ExportList(FileType:Integer; Filename: WideString);
 var
   node: PVirtualNode;
   item: PListData;
-  sl : TStringList;
-  wl : TTntStringList;
-  t,s,str : WideString;
+  sl: TStringList;
+  wl: TTntStringList;
+  t,s,str: WideString;
+  ss: String;
   Ref, Tot, N, i: Integer;
 begin
   if FileType <> 1 then begin
@@ -961,62 +962,65 @@ begin
     1:begin//CSV
         sl := TStringList.Create;
         try
-        str := '"Subject","Body","From: (Name)","From: (Address)","From: (Type)","To: (Name)","To: (Address)","To: (Type)",'+ // do not localize
-          '"Fma Date","Fma State","Fma PDU","Fma IsNew"'; // do not localize
-        sl.add(str);
-        with ListMsg do begin
-          node := GetFirst;
-          repeat
-             try
-               if Selected[node] then begin
-                 { Skip Long SMS entries except for the first one }
-                 GetLongMsgData(Node, Ref, Tot, N);
-                 if (Tot > 1) and (N <> 1) then begin
-                   node := GetNext(node);
-                   Continue;
-                 end;
-                 item := GetNodeData(node);
-                 wl := TTntStringList.Create;
-                 try
-                   { Break long SMS into several parts in order to keep original PDU-s.
-                     If it's regular SMS, then emulate a Long one with one member (PDU) }
-                   if Tot = -1 then
-                     wl.AddObject(item.msg,Pointer(node))
-                   else
-                     if not GetNodeLongList(node,wl) then begin
-                       node := GetNext(node);
-                       continue; // skip missing parts messages
-                     end;
-
-                   for i := 0 to wl.Count-1 do begin
-                     item := GetNodeData(PVirtualNode(wl.Objects[i]));
-
-                     str := '"SMS","' + WideStringToUTF8String(Tnt_WideStringReplace(item.msg, '"', '""', [rfReplaceAll])) + '",'; // do not localize
-                     s := item.number;
-                     t := Form1.ExtractContact(item.from);
-                     if item.StateIndex and $20000 <> 0 then begin // outgoing message
-                       str := str + '"(Outgoing)","' + WideStringToUTF8String(item.from) + '","PHONE",';  // do not localize
-                       str := str + '"' + WideStringToUTF8String(t) + '","' + s + '","PHONE",';  // do not localize
-                     end
-                     else begin
-                       str := str + '"' + WideStringToUTF8String(t) + '","' + s + '","PHONE",';  // do not localize
-                       str := str + '"(Incoming)","' + WideStringToUTF8String(item.from) + '","PHONE",';  // do not localize
-                     end;
-                     if item.date > 0 then str := str + '"' + DateTimeToStr(item.date) + '",'
-                       else str := str + '"",';
-                     str := str + '"' + IntToStr(item.stateindex) + '","' + item.pdu + '","' + IntToStr(byte(item.newmsg)) + '"';
-                     sl.add(str);
+          { Write export header }
+          ss := '"Subject","Body","From: (Name)","From: (Address)","From: (Type)",'+ // do not localize
+                '"To: (Name)","To: (Address)","To: (Type)",'+ // do not localize
+                '"Fma Date","Fma State","Fma PDU","Fma IsNew"'; // do not localize
+          sl.add(ss);
+          with ListMsg do begin
+            node := GetFirst;
+            repeat
+               try
+                 if Selected[node] then begin
+                   { Skip Long SMS entries except for the first one }
+                   GetLongMsgData(Node, Ref, Tot, N);
+                   if (Tot > 1) and (N <> 1) then begin
+                     node := GetNext(node);
+                     Continue;
                    end;
-                 finally
-                   wl.Free;
+                   item := GetNodeData(node);
+                   wl := TTntStringList.Create;
+                   try
+                     { Break long SMS into several parts in order to keep original PDU-s.
+                       If it's regular SMS, then emulate a Long one with one member (PDU) }
+                     if Tot = -1 then
+                       wl.AddObject(item.msg,Pointer(node))
+                     else
+                       if not GetNodeLongList(node,wl) then begin
+                         node := GetNext(node);
+                         continue; // skip missing parts messages
+                       end;
+
+                     for i := 0 to wl.Count-1 do begin
+                       item := GetNodeData(PVirtualNode(wl.Objects[i]));
+                       { NOTE: every item should be quoted!!! Import depends on it }
+                       ss := '"SMS","' + WideStringToUTF8String(Tnt_WideStringReplace(item.msg, '"', '""', [rfReplaceAll])) + '",'; // do not localize
+                       s := item.number;
+                       t := Form1.ExtractContact(item.from);
+                       if item.StateIndex and $20000 <> 0 then begin // outgoing message
+                         ss := ss + '"(Outgoing)","' + WideStringToUTF8String(item.from) + '","PHONE",';  // do not localize
+                         ss := ss + '"' + WideStringToUTF8String(t) + '","' + s + '","PHONE",';  // do not localize
+                       end
+                       else begin
+                         ss := ss + '"' + WideStringToUTF8String(t) + '","' + s + '","PHONE",';  // do not localize
+                         ss := ss + '"(Incoming)","' + WideStringToUTF8String(item.from) + '","PHONE",';  // do not localize
+                       end;
+                       if item.date > 0 then ss := ss + '"' + DateTimeToStr(item.date) + '",'
+                         else ss := ss + '"",';
+                       ss := ss + '"' + IntToStr(item.stateindex) + '","' + item.pdu + '","' + IntToStr(byte(item.newmsg)) + '"';
+                       sl.add(ss);
+                     end;
+                   finally
+                     wl.Free;
+                   end;
                  end;
+               except
                end;
-             except
-             end;
-             node := GetNext(node);
-          until node = nil;
-        end;
-        sl.SaveToFile(FileName);
+               node := GetNext(node);
+            until node = nil;
+          end;
+          { Write export body }
+          sl.SaveToFile(FileName);
         finally
           sl.Free;
         end;
@@ -1460,18 +1464,41 @@ end;
 procedure TfrmMsgView.ImportTextMessages1Click(Sender: TObject);
 var
   ImpList: TStringList;
-  sl: TStringList;
+  sl,dl: TStringList;
   data: PFmaExplorerNode;
-  t,str: WideString;
+  t,p,str: String;
   i,j,Added,iBody,iDate,iState,iPDU,iNew: integer;
-  function IsMultilineBody(s: WideString): boolean;
+  function IsMultilineBody(s: String): boolean;
   var
-    i,j: integer;
+    i,j,l: integer;
   begin
     j := 0;
-    for i := 1 to length(s) do
+    l := Length(s);
+    for i := 1 to l do
       if s[i] = '"' then inc(j);
-    Result := j mod 2 <> 0;
+    { Quotes not closed or not all columns present? }
+    Result := (j mod 2 <> 0) or ((l <> 0) and (s[l] = ','));
+  end;
+  function PDUExists(aPDU: string): boolean;
+  var
+    i: integer;
+    sPDU: string;
+  begin
+    Result := False;
+    for i := 0 to sl.Count-1 do begin
+      sPDU := GetToken(sl[i], 5);
+      if AnsiCompareStr(aPDU,sPDU) = 0 then begin
+        Result := True;
+        break;
+      end;
+    end;
+    for i := 0 to dl.Count-1 do begin
+      sPDU := GetToken(dl[i], 5);
+      if AnsiCompareStr(aPDU,sPDU) = 0 then begin
+        Result := True;
+        break;
+      end;
+    end;
   end;
 begin
   if (Form1.ExplorerNew.FocusedNode = nil) or not OpenDialog1.Execute then exit;
@@ -1479,6 +1506,7 @@ begin
   sl := TStringList(data.Data);
   Added := 0;
   ImpList := TStringList.Create;
+  dl := TStringList.Create;
   try
     ImpList.LoadFromFile(OpenDialog1.FileName);
     if ImpList.Count <= 1 then raise Exception.Create(_('Nothing to import'));
@@ -1493,39 +1521,49 @@ begin
         if not IsMultilineBody(str) then begin
           if iBody = 0 then begin // find fields mapping
             for j := 0 to GetTokenCount(str)-1 do begin
-              // "Subject","Body","From: (Name)","From: (Address)","From: (Type)","To: (Name)","To: (Address)","To: (Type)",
-              // "Fma Date","Fma State","Fma PDU","Fma New"
+              { Check ExportList() for details about header info:
+                "Subject","Body","From: (Name)","From: (Address)","From: (Type)","To: (Name)","To: (Address)","To: (Type)",
+                "Fma Date","Fma State","Fma PDU","Fma New" }
               t := GetToken(str,j);
-              if WideCompareText(t,'Body') = 0 then iBody := j; // do not localize
-              if WideCompareText(t,'Fma Date') = 0 then iDate := j; // do not localize
-              if WideCompareText(t,'Fma State') = 0 then iState := j; // do not localize
-              if WideCompareText(t,'Fma PDU') = 0 then iPDU := j; // do not localize
-              if WideCompareText(t,'Fma IsNew') = 0 then iNew := j; // do not localize
+              if AnsiCompareText(t,'Body') = 0 then iBody := j; // do not localize
+              if AnsiCompareText(t,'Fma Date') = 0 then iDate := j; // do not localize
+              if AnsiCompareText(t,'Fma State') = 0 then iState := j; // do not localize
+              if AnsiCompareText(t,'Fma PDU') = 0 then iPDU := j; // do not localize
+              if AnsiCompareText(t,'Fma IsNew') = 0 then iNew := j; // do not localize
+            end;
+            if (iBody = 0) or (iDate = 0) or (iState = 0) or (iPDU = 0) or (iNew = 0) then begin
+              MessageDlgW(_('Incorrect import file header!'),mtError,MB_OK);
+              Abort;
             end;
           end
           else begin
-            t := '3,' + IntToStr(sl.Count+1);
+            t := '3,' + IntToStr(sl.Count + dl.Count + 1);
             if StrToInt(GetToken(str,iState)) and $2000 <> 0 then // outgoing message
               t := t + ',3,,,'
             else
               t := t + ',1,,,';
-            t := t + '"' + GetToken(str,iPDU) + '","' + GetToken(str,iDate) + '",' + GetToken(str,iNew);
-            { TODO: Avoid duplicated messages }
-            sl.Add(t);
-            inc(Added);
+            p := GetToken(str,iPDU);
+            t := t + p + ',"' + GetToken(str,iDate) + '",' + GetToken(str,iNew);
+            if Form1.FArchiveDublicates or not PDUExists(p) then begin
+              dl.Add(t);
+              inc(Added);
+            end;
           end;
           str := '';
         end;
       end;
       inc(i);
     end;
-  finally
-    ImpList.Free;
     if Added <> 0 then begin
+      { Add changes at once }
+      sl.AddStrings(dl);
       Form1.UpdateNewMessagesCounter(Form1.ExplorerNew.FocusedNode);
       RenderListView(sl);
       Log.AddSynchronizationMessage('Imported '+IntToStr(Added)+' item(s)...'); // do not localize debug
     end;
+  finally
+    ImpList.Free;
+    dl.Free;
   end;
   Form1.Status(_('Import complete.'));
 end;
