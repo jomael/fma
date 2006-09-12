@@ -27,7 +27,7 @@ object frmMsgView: TfrmMsgView
     object MemoMsgBody: TTntRichEdit
       Left = 135
       Top = 22
-      Width = 267
+      Width = 331
       Height = 132
       Align = alClient
       BorderStyle = bsNone
@@ -121,9 +121,9 @@ object frmMsgView: TfrmMsgView
       end
     end
     object tbCommands: TToolBar
-      Left = 402
+      Left = 466
       Top = 22
-      Width = 109
+      Width = 45
       Height = 132
       Align = alRight
       AutoSize = True
@@ -1135,6 +1135,43 @@ object frmMsgView: TfrmMsgView
       C0038000000180018007800100010003800FC00F00030003901FE01F807F0007
       F83FFE3FC0FF8007FFFFFF7FFFFFC00F}
   end
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 4000
+    OnTimer = Timer1Timer
+    Left = 76
+    Top = 48
+  end
+  object FormStorage1: TFormStorage
+    IniFileName = 'Software\floAt'
+    IniSection = 'MobileAgent'
+    Options = []
+    UseRegistry = True
+    OnSavePlacement = FormStorage1SavePlacement
+    OnRestorePlacement = FormStorage1RestorePlacement
+    StoredProps.Strings = (
+      'PreviewPanel.Height')
+    StoredValues = <
+      item
+        Name = 'ListHeader'
+      end>
+    Left = 12
+    Top = 80
+  end
+  object OpenDialog1: TTntOpenDialog
+    DefaultExt = '.csv'
+    Filter = 'Comma Separated Values Files (*.csv)|*.csv|All Files|*.*'
+    Title = 'Import Messages...'
+    Left = 108
+    Top = 80
+  end
+  object Timer2: TTimer
+    Enabled = False
+    Interval = 750
+    OnTimer = Timer2Timer
+    Left = 76
+    Top = 80
+  end
   object pmListMsg: TTntPopupMenu
     Images = Form1.ImageList2
     OnPopup = pmListMsgPopup
@@ -1316,44 +1353,5 @@ object frmMsgView: TfrmMsgView
       Checked = True
       OnClick = Commands1Click
     end
-  end
-  object Timer1: TTimer
-    Enabled = False
-    Interval = 4000
-    OnTimer = Timer1Timer
-    Left = 76
-    Top = 48
-  end
-  object FormStorage1: TFormStorage
-    IniFileName = 'Software\floAt'
-    IniSection = 'MobileAgent'
-    Options = []
-    UseRegistry = True
-    OnSavePlacement = FormStorage1SavePlacement
-    OnRestorePlacement = FormStorage1RestorePlacement
-    StoredProps.Strings = (
-      'PreviewPanel.Height'
-      'Commands1.Checked'
-      'Picture1.Checked')
-    StoredValues = <
-      item
-        Name = 'ListHeader'
-      end>
-    Left = 12
-    Top = 80
-  end
-  object OpenDialog1: TTntOpenDialog
-    DefaultExt = '.csv'
-    Filter = 'Comma Separated Values Files (*.csv)|*.csv|All Files|*.*'
-    Title = 'Import Messages...'
-    Left = 108
-    Top = 80
-  end
-  object Timer2: TTimer
-    Enabled = False
-    Interval = 750
-    OnTimer = Timer2Timer
-    Left = 76
-    Top = 80
   end
 end

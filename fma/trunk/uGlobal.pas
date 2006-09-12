@@ -141,6 +141,7 @@ begin
   if j < 0 then j := Length(str);
   if j = 0 then begin
     Result := '';
+    Delete(str,1,1); // remove 1st char which is the delimiter
     exit;
   end;
   i := 1;

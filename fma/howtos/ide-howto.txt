@@ -63,6 +63,9 @@ them are free source components (if nothing else stated in their licenses):
   - Delphi Fundamentals 3.28, available from  
     http://fundementals.sourceforge.net/index.html
 
+  - Portable Network Graphics Delphi 1.56, available from
+    http://pngdelphi.sourceforge.net/
+
 4.  Those components are included in FMA SVN and our SDK packages:
     (note: First install PRE and FMA and then DT packages)
 

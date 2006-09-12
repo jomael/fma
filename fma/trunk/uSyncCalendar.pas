@@ -1214,18 +1214,21 @@ end;
 
 procedure TfrmCalendarView.OnConnected;
 var
-  I: Integer;
-  Modified,Asked: boolean;
+  I,Retry: Integer;
+  Modified,Asked,Changed: boolean;
   AEntity: TVCalEntity;
 begin
-  if Form1.FCalRecurrence then
+  if Form1.FCalRecurrence then 
     try
       if Visible then Update;
       VpDB.Connected := False;
+      Changed := False;
       try
         Asked := False;
+        Retry := 0;
         repeat
           Modified := False;
+          inc(Retry);
           for I := 0 to VpDB.vCalendar.Count-1 do begin
             AEntity := VpDB.vCalendar[I] as TVCalEntity;
 
@@ -1252,24 +1255,25 @@ begin
               finally
                 AEntity.Raw.EndUpdate;
               end;
-
+              Changed := True;
               Modified := True;
             end;
           end;
-          if Modified then begin
-            // Store changes and repaint
-            VpDB.RefreshEvents;
-            VpDB.RefreshContacts;
-            VpDB.RefreshTasks;
-            VpDB.RefreshResource;
-          end;
-        until not Modified;
-      finally
-        VpDB.Connected := True;
-        if Visible then Update;
+        until not Modified or (Retry > 10);
+      except
       end;
-    except
+      if Changed then
+      try
+        // Store changes and repaint
+        VpDB.RefreshEvents;
+        VpDB.RefreshContacts;
+        VpDB.RefreshTasks;
+        VpDB.RefreshResource;
+      except
+      end;
+    finally
       VpDB.Connected := True;
+      if Visible then Update;
     end;
 end;
 

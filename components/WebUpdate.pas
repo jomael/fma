@@ -566,14 +566,19 @@ begin
                 break;
               end;
             end;
-            { Whole application }
-            if (e = '.EXE') then begin // do not localize
-              if MoveFile(PChar(Path+sl[0]),PChar(AppFile)) then
-                Notes := Notes + sLinebreak+_('- Application updated successfuly.')+sLinebreak
-              else begin
-                Notes := Notes + sLinebreak+_('- Application NOT updated (move failed).')+sLinebreak;
-                break;
-              end;
+            { Whole application (uncompressed!) }
+            if (e = '.EXE') then // do not localize
+            try
+              TempFile := Path+sl[0];
+              if CopyFile(PChar(TempFile),PChar(AppFile),False) then
+                DeleteFile(TempFile)
+              else
+                Abort;
+              Notes := Notes + sLinebreak+_('- Application updated successfuly.')+sLinebreak;
+            except
+              DeleteFile(TempFile);
+              Notes := Notes + sLinebreak+_('- Application NOT updated (copy failed).')+sLinebreak;
+              break;
             end;
             { Whole compressed application }
             if (e = '.Z') then // do not localize
@@ -606,7 +611,7 @@ begin
                 DeleteFile(TempFile)
               else
                 Abort;
-              Notes := Notes + sLinebreak+_('- New application deployed successfuly.')+sLinebreak;
+              Notes := Notes + sLinebreak+_('- Application updated successfuly.')+sLinebreak;
             except
               DeleteFile(TempFile);
               Notes := Notes + sLinebreak+_('- Application NOT updated (unzip failed).')+sLinebreak;
