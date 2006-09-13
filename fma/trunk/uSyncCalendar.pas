@@ -639,8 +639,11 @@ begin
               AOutEntity := TVCalEntity.Create;
 
               // TODO: Check the output encoding
-              if Form1.FUseUTF8 then AOutCal.OutputCharSet := tecUtf8
-              else AOutCal.OutputCharSet := tecAscii;
+//              if Form1.FUseUTF8 then AOutCal.OutputCharSet := tecUtf8
+//              else AOutCal.OutputCharSet := tecAscii;
+
+              // TODO: Use Utf-8 and Ascii for all phones if possible.
+              AOutCal.OutputCharSet := tecUtf8Ascii;
 
               // Create copy of entity
               AOutEntity.Raw := AEntity.Raw;
@@ -1292,7 +1295,7 @@ begin
   if MessageDlgW(_('Local Calendar will be replaced with a fresh copy from the phone.')+
     sLinebreak+sLinebreak+_('Any local changes will be lost. Do you wish to continue?'),
     mtConfirmation, MB_YESNO or MB_DEFBUTTON2) = ID_YES then begin
-    VpDB.vCalendar.Clear;
+    ClearAllData;
     FullRefresh;
   end;
 end;
@@ -1394,6 +1397,11 @@ begin
   VpDB.Connected := False;
   try
     VpDB.vCalendar.Clear;
+    // Store changes and repaint
+    VpDB.RefreshEvents;
+    VpDB.RefreshContacts;
+    VpDB.RefreshTasks;
+    VpDB.RefreshResource;
   finally
     VpDB.Connected := True;
     if Visible then Update;

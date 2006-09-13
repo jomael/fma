@@ -113,7 +113,6 @@ type
     function GetRaw: TStrings;
     procedure SetRaw(const ValueRaw: TStrings);
     procedure setProperty(Value: String);
-    function FirstToken(var Text: Widestring): Widestring;
     procedure checkPropertyParams(value:String);
     procedure RemoveSoftLineBrakes(var Value: TStringList);
     function DecodePropertyValue(const PParams, PValue: String): WideString;
@@ -163,20 +162,10 @@ var
 implementation
 
 uses
-  cUnicodeCodecs,
+  cUnicodeCodecs, uGlobal,
   Unit1, TntSystem, uVBase, uLogger;
 
 { TVCard }
-
-function TVCard.FirstToken(var Text: Widestring): Widestring;
-  var
-    i: integer;
-  begin
-    i := Pos(';',Text);
-    if i = 0 then i := Length(Text)+1;
-    Result := Copy(Text,1,i-1);
-    Delete(Text,1,i);
-  end;
 
 procedure TVCard.Clear;
 begin
@@ -478,8 +467,14 @@ var
       PWValue := DecodePropertyValue(PParams,PValue);
       // PWValue should now contain decoded value (widestring)
 
-      Surname := FirstToken(PWValue);                  // last name
-      Name := FirstToken(PWValue);                     // first name
+      if WidePos(';',PWValue) <> 0 then begin
+        Surname := GetFirstToken(PWValue,';');
+        Name := PWValue;
+      end
+      else begin
+        Surname := '';
+        Name := PWValue;
+      end;
       // VCard.FullName is not really used, but to be on save side it is set up here
       FullName := Name + ';' + Surname;
     end
