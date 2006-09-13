@@ -161,7 +161,7 @@ type
 implementation
 
 uses
-  cUnicodeCodecs,
+  cUnicodeCodecs, uGlobal,
   TntSystem, SysUtils, TntSysUtils, uVCalendar, uVCard;
 
 { Returns position of searched string in array }
@@ -201,7 +201,7 @@ begin
   LABEL;ENCODING=QUOTED-PRINTABLE:123 Winding Way=0D=0A=Any Town, CA 12345=0D=0A=USA
   }
   { DO NOT use Trim here since it will remove trailing CRLF chars!
-  instr := trim(instr);
+  instr := Trim(instr);
   }
   Result := '';
   j := 0; k := Length(instr);
@@ -239,7 +239,7 @@ end;
 function QP2Str(instr: String): String;
 begin
   { Trim here since it will remove trailing CRLF chars! }
-  instr := trim(instr);
+  instr := Trim(instr);
   Result := '';
 
   while length(instr) > 0 do begin
@@ -415,53 +415,49 @@ begin
 end;
 
 procedure TVProperty.SetText(const Value: WideString);
-  var
-    PropText: String;
-    StrLen: Integer;
-    ParamStart, ParamEnd: Integer;
+var
+  PropText: WideString;
+  StrLen: Integer;
+  ParamStart, ParamEnd: Integer;
 begin
-  PropText := Trim(Value);
+  PropText := WideTrim(Value);
   StrLen := Length(PropText);
 
-  if StrLen > 0 then
-  begin
+  if StrLen > 0 then begin
     FIsSet := True;
 
-    ParamStart := Pos(';', PropText);
-    ParamEnd := Pos(':', PropText);
+    ParamStart := WidePos(';', PropText);          
+    ParamEnd := WidePos(':', PropText);
 
-    if (ParamStart = 0) or (ParamStart > ParamEnd) then
-    begin
+    if (ParamStart = 0) or (ParamStart > ParamEnd) then begin
       ParamStart := ParamEnd;
       PropertyParams.Text := '';
     end
-    else PropertyParams.DelimitedText := UpperCase(Copy(PropText, ParamStart + 1, ParamEnd - ParamStart - 1));
-
-    PropertyName := UpperCase(Copy(PropText, 1, ParamStart - 1));
-    PropertyValue := LongStringToWideString(Copy(PropText, ParamEnd + 1, StrLen - ParamEnd));
-
+    else
+      PropertyParams.DelimitedText := WideStringToLongString(WideUpperCase(WideCopy(PropText, ParamStart + 1, ParamEnd - ParamStart - 1)));
+                                      
+    PropertyName := WideUpperCase(WideCopy(PropText, 1, ParamStart - 1));
+    PropertyValue := LongStringToWideString(WideCopy(PropText, ParamEnd + 1, StrLen - ParamEnd));
   end
-  else FIsSet := False;
+  else
+    FIsSet := False;
 end;
 
 function TVProperty.GetEncodedText: WideString;
-  var
-    strTemp: WideString;
+var
+  strTemp: WideString;
 begin
   Result := '';
 
-  if FIsSet then
-  begin
+  if FIsSet then begin
     Result := PropertyName;
 
     strTemp := PropertyValue;
 
-    if Owner <> nil then
-    begin
+    if Owner <> nil then begin
       if Owner.OutputCharSet <> tecNone then
       begin
-        if (GetParamIndex('UTF-8') < 0) and (GetParamIndex('QUOTED-PRINTABLE') < 0) then
-        begin
+        if (GetParamIndex('UTF-8') < 0) and (GetParamIndex('QUOTED-PRINTABLE') < 0) then begin
           strTemp := LongStringToWideString(WideStringToUTF8(PropertyValue));
           if (Owner.OutputCharSet <> tecUtf8) or (strTemp = PropertyValue) then
           begin
@@ -519,16 +515,14 @@ procedure TVProperty.CheckUTFs;
     Index: Integer;
 begin
   Index := GetParamIndex('UTF-7');
-  if Index >= 0 then
-  begin
+  if Index >= 0 then begin
     PropertyValue := UTF7ToWideString(WideStringToLongString(PropertyValue));
     PropertyParams.Delete(Index);
     Exit;
   end;
 
   Index := GetParamIndex('UTF-8');
-  if Index >= 0 then
-  begin
+  if Index >= 0 then begin
     PropertyValue := UTF8StringToWideString(WideStringToLongString(PropertyValue));
     PropertyParams.Delete(Index);
     Exit;
@@ -536,15 +530,14 @@ begin
 end;
 
 function TVProperty.GetParamIndex(const Value: WideString): Integer;
-  var
-    I: Integer;
+var
+  I: Integer;
+  s: String;
 begin
   Result := -1;
-
-  for I := Pred(PropertyParams.Count) downto 0 do
-  begin
-    if Pos(Value, PropertyParams[I]) <> 0 then
-    begin
+  s := WideStringToLongString(Value);
+  for I := Pred(PropertyParams.Count) downto 0 do begin
+    if Pos(s, PropertyParams[I]) <> 0 then begin
       Result := I;
       Break;
     end
@@ -675,13 +668,13 @@ begin
 end;
 
 procedure TVBaseObj.SetRaw(const Value: TStrings);
-  var
-    CurrPos: Integer;
-    EmbeddedStrList: TStrings;
-    Prop: TVProperty;
-    AItem: TVBaseObj;
-    isEmbedded: Boolean;
-    QPData: String;
+var
+  i,CurrPos: Integer;
+  EmbeddedStrList: TStrings;
+  Prop: TVProperty;
+  AItem: TVBaseObj;
+  isEmbedded: Boolean;
+  QPData,strTemp: String;
 begin
   Clear;
 
@@ -689,39 +682,33 @@ begin
   Prop := TVProperty.Create(Self);
 
   CurrPos := 0;
-  while CurrPos < Value.Count do
-  begin
-    Prop.Text := Value[CurrPos];
+  while CurrPos < Value.Count do begin
+    Prop.Text := LongStringToWideString(Value[CurrPos]);
 
     // Decode QP
-    if Pos('QUOTED-PRINTABLE', Prop.PropertyParams.Text) > 0 then
-    begin
+    if Pos('QUOTED-PRINTABLE', Prop.PropertyParams.Text) > 0 then begin
       // remove of SoftLineBreakes if any
       QPData := RemoveSoftLineBreakes(Prop.PropertyValue, Value, CurrPos);
 
       // Convert QP to Str
-      Prop.PropertyValue := QP2Str(QPData);
+      strTemp := QP2Str(QPData);
+      Prop.PropertyValue := LongStringToWideString(strTemp);
 
       // Remove QP param
-      try
-        Prop.PropertyParams.Delete(Prop.GetParamIndex('QUOTED-PRINTABLE'))
-      except
-      end;
+      i := Prop.GetParamIndex('QUOTED-PRINTABLE');
+      if i <> -1 then Prop.PropertyParams.Delete(i);
     end;
 
-    if pos('BEGIN', Prop.PropertyName) = 1 then
-    begin
+    if WidePos('BEGIN', Prop.PropertyName) = 1 then begin
       // Is embedded
-      if CurrPos > 0 then
-      begin
+      if CurrPos > 0 then begin
         EmbeddedStrList.Clear;
 
         isEmbedded := True;
-        while isEmbedded and (CurrPos < Value.Count) do
-        begin
+        while isEmbedded and (CurrPos < Value.Count) do begin
           EmbeddedStrList.Add(Value[CurrPos]);
 
-          if Pos('END:' + Prop.PropertyValue, Value[CurrPos]) = 1 then isEmbedded := False;
+          if WidePos('END:' + Prop.PropertyValue, Value[CurrPos]) = 1 then isEmbedded := False;
 
           Inc(CurrPos);
         end;
@@ -729,22 +716,20 @@ begin
         Dec(CurrPos);
 
         AItem := CreateVObject(Prop.PropertyValue);
-        if AItem <> nil then
-        begin
+        if AItem <> nil then begin
           AItem.Raw := EmbeddedStrList;
 
           Add(AItem);
         end;
       end
-      else begin
+      else
         VType.Text := Prop.Text;
-      end;
     end
     else begin
       // If end is found, break loop
-      if (pos('END', Prop.PropertyName) = 1) and (Prop.PropertyValue = VType.PropertyValue) then break;
+      if (WidePos('END', Prop.PropertyName) = 1) and (Prop.PropertyValue = VType.PropertyValue) then break;
 
-      Prop.PropertyValue := Prop.PropertyValue + UnfoldLines(Value, CurrPos);
+      Prop.PropertyValue := Prop.PropertyValue + LongStringToWideString(UnfoldLines(Value, CurrPos));
       Prop.CheckUTFs;
       SetProperty(Prop);
     end;
@@ -759,10 +744,9 @@ end;
 function TVBaseObj.UnfoldLines(Value: TStrings; var CurrPos: Integer): String;
 begin
   Result := '';
-  Inc ( CurrPos );
+  Inc(CurrPos);
   while (CurrPos < Value.Count) and ((Length(Value[CurrPos] ) > 0) and
-    (Value[CurrPos][1] = ' ' )) do
-  begin
+    (Value[CurrPos][1] = ' ' )) do begin
     Result := Result + ' ' + Trim(Value[CurrPos]);
     Inc(CurrPos);
   end;
@@ -889,12 +873,10 @@ begin
   Prop := TVProperty.Create(nil);
 
   CurrPos := 0;
-  while CurrPos < Value.Count do
-  begin
+  while CurrPos < Value.Count do begin
     Prop.Text := Value[CurrPos];
 
-    if pos('BEGIN', Prop.PropertyName) = 1 then
-    begin
+    if WidePos('BEGIN', Prop.PropertyName) = 1 then begin
       // Is embedded
       isEmbedded := True;
       EmbeddedStrList.Clear;
@@ -902,7 +884,7 @@ begin
       begin
         EmbeddedStrList.Add(Value[CurrPos]);
 
-        if Pos('END:' + Prop.PropertyValue, Value[CurrPos]) = 1 then isEmbedded := False;
+        if WidePos('END:' + Prop.PropertyValue, Value[CurrPos]) = 1 then isEmbedded := False;
 
         Inc(CurrPos);
       end;

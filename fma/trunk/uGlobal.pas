@@ -97,6 +97,8 @@ function WideTrim(str: WideString): WideString;
 function WideLeftTrim(str: WideString): WideString;
 function WideRightTrim(str: WideString): WideString;
 
+function WidePos(substr,str: WideString; startpos: Integer = 1): Integer;
+function WidePosRight(substr,str: WideString): Integer;
 function WideCopy(str: WideString; Index,Count: Integer): WideString;
 function WideDelete(var str: WideString; Index,Count: Integer): WideString;
 
@@ -120,6 +122,54 @@ uses
   Classes, TntClasses, Registry, SysUtils, TntSysUtils;
 
 (* Unicode *)
+
+function WidePos(substr,str: WideString; startpos: Integer): Integer;
+var
+  i,j,k,m: Integer;
+  found: Boolean;
+begin
+  Result := 0;
+  k := Length(substr);
+  m := Length(str);
+  if Length(substr) <> 0 then
+    for i := startpos to m-k+1 do
+      if str[i] = substr[1] then begin
+        found := True;
+        for j := 2 to k do 
+          if str[i+j-1] <> substr[j] then begin
+            found := False;
+            break;
+          end;
+        if found then begin
+          Result := i;
+          break;
+        end;
+      end;
+end;
+
+function WidePosRight(substr,str: WideString): Integer;
+var
+  i,j,k,m: Integer;
+  found: Boolean;
+begin
+  Result := 0;
+  k := Length(substr);
+  m := Length(str);
+  if Length(substr) <> 0 then
+    for i := m-k+1 downto 1 do
+      if str[i] = substr[1] then begin
+        found := True;
+        for j := 2 to k do 
+          if str[i+j-1] <> substr[j] then begin
+            found := False;
+            break;
+          end;
+        if found then begin
+          Result := i;
+          break;
+        end;
+      end;
+end;
 
 function WideCopy(str: WideString; Index,Count: Integer): WideString;
 var
@@ -220,7 +270,7 @@ begin
   j := Length(Str);
   while (i <= j) and (str[i] = ' ') do inc(i);
   { Find right token end }
-  t := Pos(delimiter,str)-1;
+  t := WidePos(delimiter,str)-1;
   if t < 0 then t := j;
   { Right trim text }
   while (t > 0) and (str[t] = ' ') do dec(t);
@@ -260,14 +310,14 @@ begin
   { Check for empty token }
   if (i > j) or (j = 0) then begin
     { Update source }
-    Delete(str,1,i);
+    WideDelete(str,1,i);
     Result := '';
     exit;
   end;
   { Extract first token }
   if (str[i] = '"') and (str[j] = '"') then begin
     { token IS quoted }
-    s := Copy(str,i+1,j);
+    s := WideCopy(str,i+1,j);
     k := Length(s);
     j := 1; d := ''; q := 0;
     while (j <= k) do begin
@@ -290,7 +340,7 @@ begin
     end;
     if q = 1 then begin // remove last single quote
       dec(j);
-      Delete(d,Length(d),1);
+      WideDelete(d,Length(d),1);
     end;
     if j <= k then
       s := d
@@ -303,10 +353,10 @@ begin
     for i := i to j do s := s + str[i];
   end;
   { Update source }
-  Delete(str,1,j);
-  j := Pos(delimiter,str);
+  WideDelete(str,1,j);
+  j := WidePos(delimiter,str);
   if j = 0 then j := Length(str)+1;
-  Delete(str,1,j);
+  WideDelete(str,1,j);
   { Done }
   Result := s;
 end;
@@ -317,7 +367,7 @@ var
 begin
   Result := '';
   s := str;
-  while Trim(s) <> '' do begin
+  while WideTrim(s) <> '' do begin
     d := GetFirstToken(s,delimiter);
     if index = 0 then begin
       Result := d;
@@ -350,7 +400,7 @@ var
 begin
   Result := 0;
   s := str;
-  while Trim(s) <> '' do begin
+  while WideTrim(s) <> '' do begin
     Inc(Result);
     GetFirstToken(s,delimiter);
   end;
