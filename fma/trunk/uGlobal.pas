@@ -93,6 +93,13 @@ unit uGlobal;
 
 interface
 
+function WideTrim(str: WideString): WideString;
+function WideLeftTrim(str: WideString): WideString;
+function WideRightTrim(str: WideString): WideString;
+
+function WideCopy(str: WideString; Index,Count: Integer): WideString;
+function WideDelete(var str: WideString; Index,Count: Integer): WideString;
+
 function WideQuoteStr(str: WideString; ForceQuote: boolean = False; delimiter: WideChar = ','): WideString;
 
 function GetFirstToken(var str: WideString; delimiter: WideChar = ','): WideString;
@@ -113,6 +120,87 @@ uses
   Classes, TntClasses, Registry, SysUtils, TntSysUtils;
 
 (* Unicode *)
+
+function WideCopy(str: WideString; Index,Count: Integer): WideString;
+var
+  i,j,k: Integer;
+begin
+  Result := '';
+  j := Length(str);
+  if (Count > 0) and (Index <= j) then begin
+    k := Index+Count-1;
+    i := Index;
+    if k < j then j := k;
+    while i <= j do begin
+      Result := Result + str[i];
+      inc(i);
+    end;
+  end;
+end;
+
+function WideDelete(var str: WideString; Index,Count: Integer): WideString;
+var
+  i,j,k,m: Integer;
+begin
+  j := Length(str);
+  if (Count > 0) and (Index <= j) then begin
+    Result := '';
+    k := Index+Count-1;
+    i := Index;
+    if k < j then j := k;
+    m := 1;
+    while (m < i) or (m > j) do begin
+      Result := Result + str[m];
+      inc(m);
+    end;
+    str := Result;
+  end
+  else
+    Result := str;
+end;
+
+function WideLeftTrim(str: WideString): WideString;
+var
+  i,j: Integer;
+begin
+  Result := '';
+  j := Length(str);
+  i := 1;
+  while (i <= j) and (str[i] = ' ') do inc(i);
+  while i <= j do begin
+    Result := Result + str[i];
+    inc(i);
+  end;
+end;
+
+function WideRightTrim(str: WideString): WideString;
+var
+  i,j: Integer;
+begin
+  Result := '';
+  j := Length(str);
+  while (j > 0) and (str[j] = ' ') do dec(j);
+  i := 1;
+  while i <= j do begin
+    Result := Result + str[i];
+    inc(i);
+  end;
+end;
+
+function WideTrim(str: WideString): WideString;
+var
+  i,j: Integer;
+begin
+  Result := '';
+  j := Length(str);
+  while (j > 0) and (str[j] = ' ') do dec(j);
+  i := 1;
+  while (i < j) and (str[i] = ' ') do inc(i);
+  while i <= j do begin
+    Result := Result + str[i];
+    inc(i);
+  end;
+end;
 
 function WideQuoteStr(str: WideString; ForceQuote: boolean; delimiter: WideChar): WideString;
 var
