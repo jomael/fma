@@ -131,10 +131,8 @@ begin
     k := Index+Count-1;
     i := Index;
     if k < j then j := k;
-    while i <= j do begin
+    for i := i to j do
       Result := Result + str[i];
-      inc(i);
-    end;
   end;
 end;
 
@@ -147,12 +145,9 @@ begin
     Result := '';
     k := Index+Count-1;
     i := Index;
-    if k < j then j := k;
-    m := 1;
-    while (m < i) or (m > j) do begin
-      Result := Result + str[m];
-      inc(m);
-    end;
+    for m := 1 to j do
+      if (m < i) or (m > k) then
+        Result := Result + str[m];
     str := Result;
   end
   else
@@ -167,10 +162,8 @@ begin
   j := Length(str);
   i := 1;
   while (i <= j) and (str[i] = ' ') do inc(i);
-  while i <= j do begin
+  for i := i to j do
     Result := Result + str[i];
-    inc(i);
-  end;
 end;
 
 function WideRightTrim(str: WideString): WideString;
@@ -180,11 +173,8 @@ begin
   Result := '';
   j := Length(str);
   while (j > 0) and (str[j] = ' ') do dec(j);
-  i := 1;
-  while i <= j do begin
+  for i := 1 to j do
     Result := Result + str[i];
-    inc(i);
-  end;
 end;
 
 function WideTrim(str: WideString): WideString;
@@ -465,4 +455,21 @@ initialization
   ww := ' first ';
   ww := GetFirstToken(ww);
   if ww <> 'first' then Halt(1);
+
+  ww := WideCopy('floats',3,2);
+  if ww <> 'oa' then Halt(1);
+
+  ww := 'floats';
+  ww := WideDelete(ww,3,2);
+  if ww <> 'flts' then Halt(1);
+
+  ww := WideTrim(' floats ');
+  if ww <> 'floats' then Halt(1);
+
+  ww := WideLeftTrim(' floats');
+  if ww <> 'floats' then Halt(1);
+
+  ww := WideRightTrim('floats ');
+  if ww <> 'floats' then Halt(1);
+  {}
 end.
