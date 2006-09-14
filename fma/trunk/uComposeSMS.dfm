@@ -36,13 +36,13 @@ object frmMessageContact: TfrmMessageContact
         Control = ToolBar1
         ImageIndex = -1
         MinHeight = 36
-        Width = 352
+        Width = 350
       end
       item
         Control = ToolBar2
         ImageIndex = -1
         MinHeight = 22
-        Width = 352
+        Width = 350
       end>
     object ToolBar1: TToolBar
       Left = 9
@@ -211,7 +211,7 @@ object frmMessageContact: TfrmMessageContact
   end
   object StatusBar: TTntStatusBar
     Left = 0
-    Top = 229
+    Top = 225
     Width = 356
     Height = 18
     Panels = <
@@ -235,7 +235,7 @@ object frmMessageContact: TfrmMessageContact
     Left = 0
     Top = 85
     Width = 356
-    Height = 144
+    Height = 140
     Align = alClient
     ScrollBars = ssVertical
     TabOrder = 2

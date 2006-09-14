@@ -1,17 +1,17 @@
 object frmSyncPhonebook: TfrmSyncPhonebook
   Left = 0
   Top = 0
-  Width = 468
+  Width = 587
   Height = 221
   TabOrder = 0
   Visible = False
   DesignSize = (
-    468
+    587
     221)
   object ListContacts: TVirtualStringTree
     Left = 0
     Top = 0
-    Width = 468
+    Width = 587
     Height = 221
     Align = alClient
     DefaultNodeHeight = 17
@@ -191,11 +191,13 @@ object frmSyncPhonebook: TfrmSyncPhonebook
   object NoItemsPanel: TTntPanel
     Left = 8
     Top = 28
-    Width = 435
+    Width = 554
     Height = 22
     Anchors = [akLeft, akTop, akRight]
     BevelOuter = bvNone
-    Caption = 'There are no items to display in this view.'
+    Caption = 
+      'There are no items to display in this view. To begin, select Syn' +
+      'c | Address Book from main menu.'
     Color = clWindow
     PopupMenu = PopupMenu1
     TabOrder = 1

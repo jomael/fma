@@ -1239,7 +1239,11 @@ begin
               if not Modified and not Asked and Form1.FCalRecurrAsk then begin
                 MessageBeep(MB_ICONQUESTION);
                 if MessageDlgW(_('You have some Calendar entities in the past year. Do you want to recurrent them to this year?'),
-                  mtConfirmation,MB_YESNO) = ID_NO then Abort;
+                  mtConfirmation,MB_YESNO) = ID_NO then begin
+                  if not Form1.FStartupOptions.NoBaloons then
+                    Form1.ShowBaloonInfo(_('You can disable Calendar Reccurence in Tools | Options | Synchronization | Events and  Tasks.'));
+                  Abort;
+                end;
                 Asked := True;
               end;
 

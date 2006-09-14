@@ -333,7 +333,7 @@ type
     procedure TntEdit1Change(Sender: TObject);
     procedure btnFindTargetClick(Sender: TObject);
     procedure btnSaveImageClick(Sender: TObject);
-    procedure TntFormDestroy(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure btnUndoChangesClick(Sender: TObject);
     procedure btnFiltersClick(Sender: TObject);
     procedure ApplyFilterClick(Sender: TObject);
@@ -801,12 +801,13 @@ begin
   end;
 end;
 
-procedure TfrmFolderProps.TntFormDestroy(Sender: TObject);
+procedure TfrmFolderProps.FormDestroy(Sender: TObject);
 begin
   if Assigned(pcGeneral.ActivePage) then
     pcGeneral.ActivePage.Parent := pcGeneral;
   if Assigned(pcFile.ActivePage) then
     pcFile.ActivePage.Parent := pcFile;
+  if Assigned(fFile) then fFile.Free;
 end;
 
 procedure TfrmFolderProps.SetTab(Control: TTntPageControl; Tab: TTntTabSheet;
@@ -1061,7 +1062,7 @@ procedure TfrmFolderProps.OnConnectionChange(Online: boolean);
 begin
   btnGroupAdd.Enabled := Online;
   btnGroupDel.Enabled := Online and (lvGroupMembers.SelCount <> 0);
-  btnDownload.Enabled := Online and (fFile.FileType <> ftDir);
+  btnDownload.Enabled := Online and Assigned(fFile) and (fFile.FileType <> ftDir);
   btnSaveToPhone.Enabled := Online and FImageModified;
 end;
 

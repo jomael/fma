@@ -10,7 +10,7 @@ object frmFolderProps: TfrmFolderProps
   OldCreateOrder = False
   Position = poMainFormCenter
   OnCreate = FormCreate
-  OnDestroy = TntFormDestroy
+  OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13

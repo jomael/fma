@@ -179,7 +179,7 @@ object frmSelContact: TfrmSelContact
   end
   object NoItemsPanel: TTntPanel
     Left = 16
-    Top = 100
+    Top = 104
     Width = 317
     Height = 22
     Anchors = [akLeft, akTop, akRight]
@@ -204,7 +204,7 @@ object frmSelContact: TfrmSelContact
   end
   object ImageList1: TImageList
     Left = 48
-    Top = 116
+    Top = 184
     Bitmap = {
       494C010104000900040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
@@ -481,7 +481,7 @@ object frmSelContact: TfrmSelContact
     Images = Form1.ImageList2
     OnPopup = PopupMenu1Popup
     Left = 80
-    Top = 116
+    Top = 184
     object NewContact1: TTntMenuItem
       Caption = '&New Person...'
       Hint = 'New Person'
@@ -509,13 +509,13 @@ object frmSelContact: TfrmSelContact
       'CheckBox1.Enabled')
     StoredValues = <>
     Left = 16
-    Top = 116
+    Top = 184
   end
   object Timer1: TTimer
     Enabled = False
     Interval = 200
     OnTimer = Timer1Timer
     Left = 112
-    Top = 116
+    Top = 184
   end
 end

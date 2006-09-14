@@ -1,14 +1,14 @@
 object frmMsgView: TfrmMsgView
   Left = 0
   Top = 0
-  Width = 515
+  Width = 569
   Height = 376
   TabOrder = 0
   Visible = False
   object Splitter2: TTntSplitter
     Left = 0
     Top = 216
-    Width = 515
+    Width = 569
     Height = 2
     Cursor = crVSplit
     Align = alBottom
@@ -18,7 +18,7 @@ object frmMsgView: TfrmMsgView
   object PreviewPanel: TTntPanel
     Left = 0
     Top = 218
-    Width = 515
+    Width = 569
     Height = 158
     Align = alBottom
     BevelOuter = bvNone
@@ -27,7 +27,7 @@ object frmMsgView: TfrmMsgView
     object MemoMsgBody: TTntRichEdit
       Left = 135
       Top = 22
-      Width = 267
+      Width = 321
       Height = 132
       Align = alClient
       BorderStyle = bsNone
@@ -83,16 +83,16 @@ object frmMsgView: TfrmMsgView
     object DetailsPanel: TTntPanel
       Left = 0
       Top = 0
-      Width = 511
+      Width = 565
       Height = 22
       Align = alTop
       Alignment = taLeftJustify
       TabOrder = 2
       DesignSize = (
-        511
+        565
         22)
       object SpeedButton1: TTntSpeedButton
-        Left = 491
+        Left = 545
         Top = 3
         Width = 18
         Height = 17
@@ -121,7 +121,7 @@ object frmMsgView: TfrmMsgView
       end
     end
     object tbCommands: TToolBar
-      Left = 402
+      Left = 456
       Top = 22
       Width = 109
       Height = 132
@@ -176,17 +176,17 @@ object frmMsgView: TfrmMsgView
   object SearchPanel: TTntPanel
     Left = 0
     Top = 0
-    Width = 515
+    Width = 569
     Height = 22
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
     Visible = False
     DesignSize = (
-      515
+      569
       22)
     object sbClearSearch: TTntSpeedButton
-      Left = 495
+      Left = 549
       Top = 3
       Width = 18
       Height = 17
@@ -206,7 +206,7 @@ object frmMsgView: TfrmMsgView
       OnClick = sbSearchClick
     end
     object TntLabel1: TTntLabel
-      Left = 300
+      Left = 354
       Top = 4
       Width = 37
       Height = 13
@@ -216,7 +216,7 @@ object frmMsgView: TfrmMsgView
       Transparent = True
     end
     object edSearchFor: TTntEdit
-      Left = 340
+      Left = 394
       Top = 1
       Width = 153
       Height = 21
@@ -232,18 +232,18 @@ object frmMsgView: TfrmMsgView
   object ListPanel: TTntPanel
     Left = 0
     Top = 22
-    Width = 515
+    Width = 569
     Height = 194
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
     DesignSize = (
-      515
+      569
       194)
     object ListMsg: TVirtualStringTree
       Left = 0
       Top = 0
-      Width = 515
+      Width = 569
       Height = 194
       Align = alClient
       DefaultNodeHeight = 17
@@ -292,7 +292,7 @@ object frmMsgView: TfrmMsgView
         end
         item
           Position = 1
-          Width = 191
+          Width = 245
           WideText = 'Message'
         end
         item
@@ -311,17 +311,19 @@ object frmMsgView: TfrmMsgView
     object NoItemsPanel: TTntPanel
       Left = 8
       Top = 28
-      Width = 499
+      Width = 553
       Height = 22
       Anchors = [akLeft, akTop, akRight]
       BevelOuter = bvNone
-      Caption = 'There are no items to display in this view.'
+      Caption = 
+        'There are no items to display in this view. To begin, select Syn' +
+        'c | Text Messages from main menu.'
       Color = clWindow
       PopupMenu = pmListMsg
       TabOrder = 0
     end
     object Animate1: TAnimate
-      Left = 218
+      Left = 245
       Top = 79
       Width = 80
       Height = 50
@@ -334,8 +336,8 @@ object frmMsgView: TfrmMsgView
     end
   end
   object ImageList: TImageList
-    Left = 12
-    Top = 48
+    Left = 16
+    Top = 84
     Bitmap = {
       494C010116001800040010001000FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
@@ -1139,8 +1141,8 @@ object frmMsgView: TfrmMsgView
     Enabled = False
     Interval = 4000
     OnTimer = Timer1Timer
-    Left = 76
-    Top = 48
+    Left = 80
+    Top = 84
   end
   object FormStorage1: TFormStorage
     IniFileName = 'Software\floAt'
@@ -1155,28 +1157,28 @@ object frmMsgView: TfrmMsgView
       item
         Name = 'ListHeader'
       end>
-    Left = 12
-    Top = 80
+    Left = 16
+    Top = 116
   end
   object OpenDialog1: TTntOpenDialog
     DefaultExt = '.csv'
     Filter = 'Comma Separated Values Files (*.csv)|*.csv|All Files|*.*'
     Title = 'Import Messages...'
-    Left = 108
-    Top = 80
+    Left = 112
+    Top = 116
   end
   object Timer2: TTimer
     Enabled = False
     Interval = 750
     OnTimer = Timer2Timer
-    Left = 76
-    Top = 80
+    Left = 80
+    Top = 116
   end
   object pmListMsg: TTntPopupMenu
     Images = Form1.ImageList2
     OnPopup = pmListMsgPopup
-    Left = 44
-    Top = 48
+    Left = 48
+    Top = 84
     object Newmessage1: TTntMenuItem
       Action = Form1.ActionSMSNewMsg
     end
@@ -1324,8 +1326,8 @@ object frmMsgView: TfrmMsgView
   end
   object pmRich: TTntPopupMenu
     Images = Form1.ImageList2
-    Left = 44
-    Top = 80
+    Left = 48
+    Top = 116
     object MovetoFolder2: TTntMenuItem
       Action = Form1.ActionSMSToFolder
     end

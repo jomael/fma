@@ -1909,6 +1909,8 @@ type
     NoPopup,NoBaloon: boolean;
   end;
 
+  TProfileLoadCallback = procedure (Pos,Max: Integer);
+
   TForm1 = class(TTntForm)
     StatusBar: TTntStatusBar;
     CoolBar: TCoolBar;
@@ -2653,7 +2655,7 @@ type
     procedure HandleCLCK(AMsg: String);
     procedure HandleCMTI(AMsg: String);
     procedure HandleCIND(AMsg: String);
-    procedure HandleStatus(AMsg: String);
+    procedure HandleStatus(AMsg: String; OverrideBatteryLow: Integer = -1);
     procedure LoadOptions;
     procedure RetrieveNewSMS(AMsg: String);
     procedure ParsePhonebookList(const buffer: String; var sl: TStrings);
@@ -2668,6 +2670,7 @@ type
     procedure SetFrameVisible(name: String; visible: Boolean = True);
     procedure GetContactRestrict;
     procedure GetSignalMeter;
+    procedure GetBatteryMeter;
 
     procedure ObexListFolder(Path: WideString; var Dir: TStringList; Connect: boolean = true); overload;
 
@@ -2710,8 +2713,7 @@ type
     FCalWideView,FCalRecurrence,FCalRecurrAsk: boolean;
     FFmaMutex: Cardinal;
     FShowDiagram,FShowTodayCaption,FClearPhoneMessage: Boolean;
-    FUseAlternateSignalMeter,FUseCIND: Boolean;
-    FSignalCINDidx,FSignalCINDmax: Integer;
+    FUseCIND,FUseAlternateSignalMeter,FUseAlternateBatteryMeter: Boolean;
     FOutlookConfirmed: array[TContactAction] of TConfirmation;
     FAutolinkContacts,FShowSplash,FAlwaysMinimized: Boolean;
     FamCommand: String;
@@ -2811,11 +2813,11 @@ type
     function PhoneExists(AName: WideString): boolean;
     function PhoneUnique(AName,AIdentity: WideString): boolean;
 
-    function LoadPhoneDataFiles(ID: string = ''): boolean;
+    function LoadPhoneDataFiles(ID: string = ''; ShowStatus: Boolean = True): boolean;
     function OpenPhoneDataFiles(ID: string = ''): boolean;
     procedure DeletePhoneDataFiles(ID: string; Wnd: THandle = 0);
     procedure RepairPhoneDataFiles(ID: string);
-    procedure SavePhoneDataFiles;
+    procedure SavePhoneDataFiles(ShowStatus: Boolean = False);
 
     procedure LoadUserFoldersData(DBPath: string; ShowUnreadFolders: Boolean = True);
     procedure SaveUserFoldersData(DBPath: string);
@@ -2843,9 +2845,10 @@ type
     function DeleteSMS(index: Integer; memType: String; CheckPDU: String = ''): Boolean;
 
     function GetNextLongSMSRefference: string;
-    procedure SentMessage(UDHI: String; msg: WideString; destNo: WideString; reqReply: Boolean = False;
+    procedure SendTextMessage(UDHI: String; msg: WideString; destNo: WideString; reqReply: Boolean = False;
       Flash: Boolean = False; StatusReq: Boolean = False; dcs: TGSMCodingScheme = gcsUnknown; SaveDraft: Boolean = False);
 
+    function GetStatus: WideString;
     procedure Status(str: WideString; AddToLog: Boolean = True);
 
     procedure TxAndWait(Data: string; WaitStr: String = 'OK'); // do not localize
@@ -3029,7 +3032,7 @@ procedure ShowHelpPopup(Where: TPoint; ShowText: string); overload;
 implementation
 
 uses
-  gnugettext, gnugettexthelpers, cUnicodeCodecs, uNewAlarm,
+  gnugettext, gnugettexthelpers, cUnicodeCodecs, cPortCtl, uNewAlarm,
   uThreadSafe, JclSysInfo, ShlObj, uCalling, uAbout, uOptions, uOptionsPage, uNewMessage, uMobileAgentUI,
   uPostNote, uGlobal, uEditProfile, uPostURL, uConnProgress, uComposeSMS, uVersion, uStatusDlg, TeEngine,
   uFolderProps, Types, uOfflineProfile, uFMASync, uOutlookSync, uPromptConflict, uChooseLink, uLogObserverWriter,
@@ -3506,6 +3509,7 @@ begin
   ThreadSafe.ObexConnecting := False;
   FAutoConnectionError := IsAutoConnect;
   FUseAlternateSignalMeter := False;
+  FUseAlternateBatteryMeter := False;
   FSendingMessage := False;
   FUseMediaPlayer := False;
   FSelOperator := '';
@@ -3531,7 +3535,7 @@ begin
       { Show progress if not auto-connecting and if enabled in options }
       if not IsAutoConnect and CanShowProgress then begin
         { If so, always do it, ignore delay option, since we have to see all connect steps }
-        dlg.Initialize(31, // for total, count IncProgress calls below - 1!
+        dlg.Initialize(32, // for total, count [ShowNextProgress] calls below - 1!
           _('Searching Device...'));
         dlg.ShowProgress;
       end;
@@ -3628,7 +3632,7 @@ begin
           FRelocateDBDenied := False;
           FAutoConnectionError := False;
         end;
-        LoadPhoneDataFiles(CurrentIdentity);
+        LoadPhoneDataFiles(CurrentIdentity,False);
       except
       end;
       EData := ExplorerNew.GetNodeData(ExplorerNew.GetFirst);
@@ -3859,7 +3863,7 @@ begin
       try
         TxAndWait('AT+CKPD=?'); // do not localize
         ActionToolsKeyPad.Visible := True;
-        frmKeyPad.SetKeysMode(IsT610Clone or IsK700Clone or IsK750Clone);
+        frmKeyPad.SetKeysMode(IsT610Clone or IsK700Clone or IsK750Clone or IsK610Clone or IsWalkmanClone);
       except
         Log.AddCommunicationMessage('Send key (keypad) not supported',lsDebug); // do not localize debug
       end;
@@ -3943,29 +3947,68 @@ begin
       if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
       ShowNextProgress;
 
+      // checking alternate metering
+      FUseCIND := False;
+      dlg.SetDescr(_('Checking indication support'));
+      Log.AddCommunicationMessage('Checking Indication Capability',lsDebug); // do not localize debug
+      try
+        TxAndWait('AT+CIND=?'); // do not localize
+        FUseCIND := True;
+        Log.AddCommunicationMessage('Indication CIND supported', lsDebug); // do not localize debug
+      except
+        Log.AddCommunicationMessage('Indication CIND not supported',lsDebug); // do not localize debug
+      end;
+      if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
+      ShowNextProgress;
+
       if FUseCBC then begin
         dlg.SetDescr(_('Checking battery support'));
         Log.AddCommunicationMessage('Checking Battery Capability',lsDebug); // do not localize debug
         try
-          FUseCBC := True;
-          TxAndWait('AT+CBC=?'); // will set back FUseCBC to False if status is not supported by phone // do not localize
-          if FUseCBC then
-            Log.AddCommunicationMessage('Battery connected and supported.', lsDebug) // do not localize debug
-          else
-            Log.AddCommunicationMessage('Battery not connected or not supported.',lsDebug); // do not localize debug
+          TxAndWait('AT+CBC=?'); // do not localize
+          Log.AddCommunicationMessage('Battery CBC supported', lsDebug) // do not localize debug
         except
           FUseCBC := False;
-          Log.AddCommunicationMessage('Battery not supported',lsDebug); // do not localize debug
+          Log.AddCommunicationMessage('Battery CBC not supported',lsDebug); // do not localize debug
         end;
       end;
       if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
-      ShowNextProgress; 
+      ShowNextProgress;
+
+      if FUseCSQ then begin
+        dlg.SetDescr(_('Checking signal support'));
+        Log.AddCommunicationMessage('Checking Signal Capability',lsDebug); // do not localize debug
+        try
+          TxAndWait('AT+CSQ=?'); // do not localize
+          Log.AddCommunicationMessage('Signal CSQ supported', lsDebug); // do not localize debug
+        except
+          FUseCSQ := False;
+          Log.AddCommunicationMessage('Signal CSQ not supported',lsDebug); // do not localize debug
+        end;
+      end;
+      if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
+      ShowNextProgress;
+
+      { Testing 
+      FUseCBC := False;
+      FUseCSQ := False;
+      { Can we use alternate mettering? }
+      if FUseCIND then begin
+        if not FUseCBC then begin
+          FUseAlternateBatteryMeter := True;
+          FUseCBC := True;
+        end;
+        if not FUseCSQ then begin
+          FUseAlternateSignalMeter := True;
+          FUseCSQ := True;
+        end;
+      end;
 
       if FUseCBC then begin
         dlg.SetDescr(_('Retrieving battery status'));
         Log.AddCommunicationMessage('Retrieve Battery Status',lsDebug); // do not localize debug
         try
-          TxAndWait('AT+CBC'); // do not localize
+          GetBatteryMeter;
         except;
         end;
       end
@@ -3976,34 +4019,11 @@ begin
       if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
       ShowNextProgress; 
 
-      FUseCIND := False;
-      if FUseCSQ then begin
-        dlg.SetDescr(_('Checking signal support'));
-        Log.AddCommunicationMessage('Checking Signal Capability',lsDebug); // do not localize debug
-        try
-          TxAndWait('AT+CSQ=?'); // do not localize
-          Log.AddCommunicationMessage('Signal supported', lsDebug); // do not localize debug
-        except
-          FUseCSQ := False;
-          Log.AddCommunicationMessage('Signal CSQ not supported',lsDebug); // do not localize debug
-        end;
-        // checking alternate signal metering
-        try
-          TxAndWait('AT+CIND=?'); // do not localize
-          FUseCIND := True;
-          FUseCSQ := True;
-          Log.AddCommunicationMessage('Signal supported', lsDebug); // do not localize debug
-        except
-          Log.AddCommunicationMessage('Signal CIND not supported',lsDebug); // do not localize debug
-        end;
-      end;
-      if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
-      ShowNextProgress; 
-
       if FUseCSQ then begin
         dlg.SetDescr(_('Retrieving signal status'));
         Log.AddCommunicationMessage('Retrieve Signal Status',lsDebug); // do not localize debug
         try
+          if FUseAlternateBatteryMeter and FUseAlternateSignalMeter then Abort; // ignore double +CIND ATs
           GetSignalMeter;
         except
         end;
@@ -4012,7 +4032,6 @@ begin
         SetPanelText(3, _('Signal N/A'));
         pbRSSI.Position := 0;
       end;
-
       if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
       ShowNextProgress; 
 
@@ -4113,6 +4132,8 @@ begin
   FConnectingComplete := False;
   FConnected := False;
   FSendingMessage := False;
+  FUseAlternateSignalMeter := False;
+  FUseAlternateBatteryMeter := False;
   ThreadSafe.AlreadyInUseObex := False;
   ThreadSafe.ObexConnecting := False;
   FObex.Connected := False;
@@ -4711,7 +4732,7 @@ begin
         FLookupList.Clear;
       end;
       { Update database }
-      SavePhoneDataFiles;
+      SavePhoneDataFiles(True);
     except
       Status(_('Error downloading phonebook'));
     end;
@@ -5135,8 +5156,9 @@ begin
   ExplorerNewChange(ExplorerNew,ExplorerNew.FocusedNode);
   // Update database
   // Only if not Messages, Calls or Groups since they will do it anyway
-  if not ((id and $F00000 shr 20) in [2,4,8]) then
-    SavePhoneDataFiles;
+  if not ((id and $F00000 shr 20) in [2,4,8]) then begin
+    SavePhoneDataFiles(True);
+  end;
 end;
 
 procedure TForm1.Status(str: WideString; AddToLog: boolean);
@@ -5254,15 +5276,21 @@ begin
 end;
 
 procedure TForm1.ActionSMSMoveMsgToArchiveExecute(Sender: TObject);
+var
+  PhoneSource: Boolean;
 begin
-  if (ExplorerNew.FocusedNode = FNodeMsgInbox) or (ExplorerNew.FocusedNode = FNodeMsgSent) then
-    AskRequestConnection;
+  PhoneSource := (ExplorerNew.FocusedNode = FNodeMsgInbox) or (ExplorerNew.FocusedNode = FNodeMsgSent);
+  { frmMsgView.DeleteSelected() will ask for connection if needed
+  if PhoneSource then AskRequestConnection; }
 
   ActionSMSArchiveMsg.Execute;
   frmMsgView.DeleteSelected(False);
+
+  if not FStartupOptions.NoBaloons and not IsMoveToArchiveEnabled and PhoneSource then
+    ShowBaloonInfo(_('You can enable auto-move in Options | Behaviour | Message Arrived | Move message to FMA.'));
 end;
 
-procedure TForm1.SentMessage(UDHI: String; msg, destNo: WideString; reqReply,
+procedure TForm1.SendTextMessage(UDHI: String; msg, destNo: WideString; reqReply,
   Flash: Boolean; StatusReq: Boolean; dcs: TGSMCodingScheme; SaveDraft: Boolean);
 var
   sms: TSMS;
@@ -6202,19 +6230,27 @@ begin
       Assigned(ThreadSafe) and not ThreadSafe.Busy and (ThreadSafe.ActiveThread = nil) and not ThreadSafe.ObexConnecting and
       (not Assigned(frmCalling) or (not frmCalling.IsCalling and not frmCalling.IsTalking)) then
       try
-        if Timer1.Tag = 1 then begin
-          if FUseCSQ then begin
-            GetSignalMeter;
-            if frmInfoView.Visible then frmInfoView.UpdateWelcomePage;
+        if not FUseAlternateSignalMeter or not FUseAlternateBatteryMeter then begin
+          if Timer1.Tag = 1 then begin
+            if FUseCSQ then begin
+              GetSignalMeter;
+              if frmInfoView.Visible then frmInfoView.UpdateWelcomePage;
+            end;
+            Timer1.Tag := 0;
+          end
+          else begin
+            if FUseCBC then begin
+              GetBatteryMeter;
+              if frmInfoView.Visible then frmInfoView.UpdateWelcomePage;
+            end;
+            Timer1.Tag := 1;
           end;
-          Timer1.Tag := 0;
         end
         else begin
-          if FUseCBC then begin
-            TxAndWait('AT+CBC'); // do not localize
-            if frmInfoView.Visible then frmInfoView.UpdateWelcomePage;
-          end;
-          Timer1.Tag := 1;
+          { We will use alternate mettering for both battery and signal }
+          if Timer1.Tag = 1 then Timer1.Tag := 0 else Timer1.Tag := 1;
+          if (Timer1.Tag = 1) and (FUseCSQ or FUseCBC) then
+            TxAndWait('AT+CIND?'); // do not localize
         end;
       except
       end;
@@ -6223,7 +6259,7 @@ begin
   end;
 end;
 
-procedure TForm1.HandleStatus(AMsg: String);
+procedure TForm1.HandleStatus(AMsg: String; OverrideBatteryLow: Integer);
 var
   s,str: String;
   w: WideString;
@@ -6236,6 +6272,18 @@ begin
   str := copy(AMsg, 7, length(AMsg));
   { Ignore command support responces }
   if (Pos('(',str) <> 0) or (Pos(')',str) <> 0) then exit;
+
+  {
+  +CBC: <bsc>,<bcl>
+  <bcs> Description
+        0 Phone powered by the battery. No charger connected.
+        1 Phone has a battery connected, but it is powered by the charger.
+        2 Phone does not have a battery connected.
+  <bcl> Description
+        0 Battery exhausted.
+        1-99 Battery charging level; the battery has 1-99 percent of capacity remaining.
+        100 Battery fully charged.
+  }
 
   if pos('+CBC', AMsg) = 1 then begin // do not localize
     bstate := StrToInt(GetToken(str, 0));
@@ -6266,16 +6314,19 @@ begin
          end;
       2: begin // Phone does not have a battery connected.
            SetPanelText(2, _('Battery N/A'));
-           FUseCBC := False;
            FBatteryLow := False;
            signal := 0;
          end;
       3: begin // Recorgnized power fault, calls inhibited (reported by SHARP phones).
            SetPanelText(2, _('Battery Err'));
+           FUseAlternateBatteryMeter := True;
            FBatteryLow := True;
+           signal := 0;
          end;
     end;
-
+    if OverrideBatteryLow <> -1 then begin
+      FBatteryLow := OverrideBatteryLow <> 0;
+    end;
     pbPower.Position := signal;
     s := frmInfoView.lbcyclescharge.Caption;
     if (s <> '') and not (s[1] in ['0'..'9']) then s := '';
@@ -6293,22 +6344,37 @@ begin
     end;
   end;
 
+  {
+  +CSQ: <rssi>,<ber>
+  <rssi> Description
+         0    -113 dBm or less
+         1    -111 dBm
+         2-30 -109 dBm to -53 dBm
+         31   -51 dBm or greater
+         99    Not known or not detectable.
+  <ber>  Description
+         0-7   RXQUAL values
+         99    Not known or not detectable.
+  }
+
   if pos('+CSQ', AMsg) = 1 then begin // do not localize
     signal := StrToInt(GetToken(str, 0));
     if signal = 99 then begin
       FUseAlternateSignalMeter := True;
       SetPanelText(3, _('Signal N/A'));
       pbRSSI.Position := 0;
-      { Update signal using alternate method }
-      if FUseCIND then
-        ScheduleTxAndWait('AT+CIND?');
     end
     else begin
-      signal := Round((signal / 31) * 100);
+      signal := Round((signal / 31) * pbRSSI.MaxValue);
       SetPanelText(3, WideFormat(_(' Signal %s '), [Percentage(signal,pbRSSI.MaxValue)]));
       pbRSSI.Position := signal;
     end;
   end;
+
+  { Update signal using alternate method }
+  if FUseCIND then
+    if FUseAlternateSignalMeter or FUseAlternateBatteryMeter then
+      ScheduleTxAndWait('AT+CIND?');
 end;
 
 procedure TForm1.RetrieveNewSMS(AMsg: String);
@@ -6827,7 +6893,7 @@ begin
       if FUseCBC then begin
         if FConnected and FConnectingComplete and not FObex.Connected and
           not ThreadSafe.Busy and not ThreadSafe.WaitingOK and not ThreadSafe.ObexConnecting then
-          TxAndWait('AT+CBC'); // do not localize
+          GetBatteryMeter;
         //if frmInfoView.Visible then frmInfoView.UpdateWelcomePage;
       end
       else begin
@@ -6991,6 +7057,9 @@ begin
       end;
       if not FUseScript and ScriptCheck then
         ScriptingDisable;
+
+      // Remember changes
+      SavePhoneDataFiles(True);
     end;
   finally
     RunWizard := frmOptions.RunGettingStarted;
@@ -7007,15 +7076,23 @@ begin
   if RunWizard then GettingStarted1.Click;
 end;
 
-procedure TForm1.SavePhoneDataFiles;
+procedure TForm1.SavePhoneDataFiles(ShowStatus: Boolean);
 var
   Fullpath: string;
+  OldStat: WideString;
   i: integer;
   EData: PFmaExplorerNode;
 begin
   { Is there a database loaded at all? }
   if not FDatabaseLoaded then
     exit;
+
+  if ShowStatus and Visible then begin
+    OldStat := GetStatus;
+    Status(_('Saving current profile...'));
+    Update;
+  end;
+
   { Get Database dir path, i.e. "...\ID\dat\" }
   Fullpath := GetDatabasePath; // do not localize
   { Create profile dir if needed }
@@ -7130,6 +7207,9 @@ begin
     except
     end;
   end;
+
+  if ShowStatus and Visible then
+    Status(OldStat,False);
 end;
 
 procedure TForm1.ScriptControlError(Sender: TObject;
@@ -7610,7 +7690,7 @@ begin
   if not ThreadSafe.AbortDetected and not ThreadSafe.Timedout then
     while ThreadSafe.Busy do Application.ProcessMessages;
   { Save phone database }
-  SavePhoneDataFiles;
+  SavePhoneDataFiles(True);
 
   { Proximity detection... }
   if not FExiting and ThreadSafe.Timedout and not FAutoConnectionError then
@@ -8279,6 +8359,14 @@ var
         (dlg as TfrmStatusDlg).Status(Msg);
     end;
   end;
+  procedure IncProgress;
+  begin
+    if Assigned(dlg) then begin
+      if FShowSplash then
+        with (dlg as TfrmSplash) do
+          SEProgress1.Position := SEProgress1.Position + 1;
+    end;
+  end;
 begin
   { Are we the first instance? }
   if IsStartCanceled or FAppInitialized then exit;
@@ -8292,6 +8380,8 @@ begin
       { ShowSplashDlg will create an instance object, and HideDelayed
         below will free it automaticaly. }
       frmSplash := ShowSplashDlg(_('Initializing...'));
+      frmSplash.SEProgress1.Max := 4 + 13;
+      // Above: 4 = The count of IncProgress() calls bellow; 13 = The steps count from LoadPhoneDataFiles()
       dlg := frmSplash;
     end
     else
@@ -8303,6 +8393,7 @@ begin
   else
     dlg := nil;
   try
+    { Initialize }
     Log.AddMessage(_('Starting...'));
     ComPortAfterClose(ComPort);
 
@@ -8327,40 +8418,45 @@ begin
 
     { Create phone files support object }
     fFiles := TFiles.Create(nil, FNodeObex);
-
     SetFrameVisible(''); // hide all frames
+    IncProgress;
 
     { Load database files }
     ShowStatus(_('Loading Profile Database...'));
     try
-      if not LoadPhoneDataFiles then
+      if not LoadPhoneDataFiles('',False) then
         Log.AddMessage(_('ERROR: Could not initialize phone database (load failed)'), lsError);
     except
       PhoneIdentity := '';
     end;
+    // LoadPhoneDataFiles will call IncProgress
 
     ShowStatus(_('Building Contact Lists...'));
     RenderContactLists;
+    IncProgress;
 
     { Set startup folder, if specified, load welcome tips, etc }
     ViewInitialize;
+    IncProgress;
 
     { Load script, if any }
     ShowStatus(_('Initializing Script Engine...'));
     ScriptInitialize;
+    IncProgress;
   finally
     { Restore application in Taskbar }
     if Application.ShowMainForm then
       ShowWindow(Application.Handle,SW_SHOW);
     { Close splash }
     if Assigned(dlg) then begin
-      if FShowSplash then with dlg as TfrmSplash do begin
-        Status(_('Ready'));
-        { Hide splash form in few seconds }
-        HideDelayed(2);
-      end
-      else
-        dlg.Free;
+      if FShowSplash then
+        with dlg as TfrmSplash do begin
+          Status(_('Ready'));
+          { Hide splash form in few seconds }
+          HideDelayed(2);
+        end
+        else
+          dlg.Free;
     end;
     CoolTrayIcon1.IconVisible := True;
     Timer1.Enabled := True;
@@ -8663,20 +8759,6 @@ begin
         Status(_('Loading groups...'));
       ExplorerNew.DeleteChildren(FNodeGroups);
       ExplorerNew.Update; 
-      (* TODO: Fix this! 
-      { Check if phonebook is empty }
-      if (FNodeContactsME || frmSyncPhonebook).ChildCount = 0 then begin
-        if MessageDlgW(_('The Phonebook is empty. Should we download it now?'),
-          mtConfirmation, MB_YESNO) = ID_YES then begin
-          { TODO: Check is phonebook is saved in DB here }
-          if IsIrmcSyncEnabled then
-            frmSyncPhonebook.btnSYNCClick(nil)
-          else
-            RefreshPhoneBook;
-          SavePhoneDataFiles; // Doesn't work! Why?
-        end;
-      end;
-      *)
       { Retrieve groups now }
       sl := TStringList.Create;
       it := TStringList.Create;
@@ -10207,7 +10289,7 @@ begin
   end;
 end;
 
-function TForm1.LoadPhoneDataFiles(ID: string): boolean;
+function TForm1.LoadPhoneDataFiles(ID: string; ShowStatus: Boolean): boolean;
 var
   Fullpath: string;
   FDirID: TItemIDList;
@@ -10217,13 +10299,24 @@ var
   sl: TStringList;
   db: TStrings;
   data: PFmaExplorerNode;
-  w: WideString;
+  w,OldStat: WideString;
   s: String;
   NewProfile: Boolean;
+  procedure ProgressNotify;
+  begin
+    if Assigned(frmSplash) then
+      frmSplash.SEProgress1.Position := frmSplash.SEProgress1.Position + 1; 
+  end;
 begin
   Result := True;
   { First, save any local changes, if any }
-  SavePhoneDataFiles;
+  SavePhoneDataFiles(ShowStatus);
+
+  if ShowStatus and Visible then begin
+    OldStat := GetStatus;
+    Status(_('Clearing current views...'));
+    Update;
+  end;
 
   { Second, clear all FMA views if profile changed }
   NewProfile := AnsiCompareStr(ID,PhoneIdentity) <> 0;
@@ -10360,7 +10453,10 @@ begin
 
   { Loading data files...
     Fullpath contains the right database path now }
-  Status(_('Loading phone profile database...'));
+  if ShowStatus and Visible then begin
+    Status(_('Loading phone profile...'));
+    Update;
+  end;
   Log.AddMessage('Database: '+Fullpath, lsDebug); // do not localize debug
   LoadingDBFiles := True;
   try
@@ -10440,13 +10536,34 @@ begin
         frmSMEdit.FMaxNameLen := ReadInteger('Contacts','MEMaxName',frmSMEdit.FMaxNameLen);  // do not localize
         frmSMEdit.FMaxTelLen := ReadInteger('Contacts','MEMaxTel',frmSMEdit.FMaxTelLen);  // do not localize
         s := ReadString('Connection','COM',ComPort.Port); // do not localize
-        if not FConnected and not FConnectingStarted then ComPort.Port := s;
+        if not FConnected and not FConnectingStarted then begin
+          with TComComboBox.Create(nil) do
+          try
+            Visible := False;
+            Parent := Self;
+            ComPort := Self.ComPort;
+            ComProperty := cpPort;
+            if (Items.Count <> 0) and (Items.IndexOf(s) = -1) then begin
+              { Ignore obsolete com ports stored in profile DB }
+              w := WideFormat(_('Please select a COM port in Options | Connectivity prior connecting to %s.'),[FSelPhone]);
+              if FAppInitialized then
+                ShowBaloonError(w)
+              else
+                MessageDlgW(w,mtError,MB_OK);
+            end
+            else
+              ComPort.Port := s;
+          finally
+            Free;
+          end;
+        end;
       finally
         Free;
       end;
   except
     Result := False;
   end;
+  ProgressNotify;
   try
     Log.AddMessage('Database: Loading Incoming Messages', lsDebug); // do not localize debug
     FNewPDUList.LoadFromFile(Fullpath + 'SMSIncoming.dat'); // do not localize
@@ -10454,6 +10571,7 @@ begin
   except
     Result := False;
   end;
+  ProgressNotify;
   try
     Log.AddMessage('Database: Loading Phone Book', lsDebug); // do not localize debug
     data := ExplorerNew.GetNodeData(FNodeContactsME);
@@ -10468,6 +10586,7 @@ begin
   except
     Result := False;
   end;
+  ProgressNotify;
   try
     Log.AddMessage('Database: Loading SIM Card Book', lsDebug); // do not localize debug
     data := ExplorerNew.GetNodeData(FNodeContactsSM);
@@ -10482,6 +10601,7 @@ begin
   except
     Result := False;
   end;
+  ProgressNotify;
   try
     Log.AddMessage('Database: Loading Bookmarks', lsDebug); // do not localize debug
     frmSyncBookmarks.LoadBookmarks(Fullpath + 'Bookmarks.dat'); // do not localize
@@ -10489,6 +10609,7 @@ begin
   except
     Result := False;
   end;
+  ProgressNotify;
   try
     Log.AddMessage('Database: Loading Phone Contacts', lsDebug); // do not localize debug
     frmSyncPhonebook.LoadContacts(Fullpath + 'Contacts.SYNC.dat'); // do not localize
@@ -10502,12 +10623,14 @@ begin
   except
     Result := False;
   end;
+  ProgressNotify;
   try
     Log.AddMessage('Database: Loading Phone Calendar', lsDebug); // do not localize debug
     frmCalendarView.LoadCalendar(Fullpath + 'Calendar.vcs'); // do not localize
   except
     Result := False;
   end;
+  ProgressNotify;
   { Text Message Folders should be loaded after Contacts, because they do
     lookups to find senders name in Contacts. }
   try
@@ -10519,6 +10642,7 @@ begin
   except
     Result := False;
   end;
+  ProgressNotify;
   try
     Log.AddMessage('Database: Loading SMS Outbox', lsDebug); // do not localize debug
     data := ExplorerNew.GetNodeData(FNodeMsgOutbox);
@@ -10529,6 +10653,7 @@ begin
   except
     Result := False;
   end;
+  ProgressNotify;
   try
     Log.AddMessage('Database: Loading SMS Sent Items', lsDebug); // do not localize debug
     data := ExplorerNew.GetNodeData(FNodeMsgSent);
@@ -10538,6 +10663,7 @@ begin
   except
     Result := False;
   end;
+  ProgressNotify;
   try
     Log.AddMessage('Database: Loading SMS Archive', lsDebug); // do not localize debug
     data := ExplorerNew.GetNodeData(FNodeMsgArchive);
@@ -10547,6 +10673,7 @@ begin
   except
     Result := False;
   end;
+  ProgressNotify;
   try
     Log.AddMessage('Database: Loading SMS Drafts', lsDebug); // do not localize debug
     data := ExplorerNew.GetNodeData(FNodeMsgDrafts);
@@ -10556,12 +10683,14 @@ begin
   except
     Result := False;
   end;
+  ProgressNotify;
   try
     Log.AddMessage('Database: Loading User Folders', lsDebug); // do not localize debug
     LoadUserFoldersData(Fullpath);
   except
     Result := False;
   end;
+  ProgressNotify;
   { Database files loaded }
   LoadingDBFiles := False;
   FDatabaseLoaded := True;
@@ -10578,8 +10707,9 @@ begin
     Caption := WideFormat(_('floAt''s Mobile Agent %s - [%s]'),[GetBuildVersionDtl,data.Text]);
   end;
   ExplorerNewChange(ExplorerNew,ExplorerNew.FocusedNode);
-  if not CoolTrayIcon1.CycleIcons then Status('')
-    else Status(_('Connecting...'),False);
+
+  if ShowStatus and Visible then
+    Status(OldStat,False);
 end;
 
 function TForm1.CanShowProgress: boolean;
@@ -11430,8 +11560,9 @@ begin
           { Update tray icon if phone is renamed }
           if FConnected then
             CoolTrayIcon1.Hint := WideFormat(_('Connected to %s'),[FSelPhone]);
+            
           { Save changes }
-          SavePhoneDataFiles;
+          SavePhoneDataFiles(True);
         end;
       end;
     finally
@@ -12091,8 +12222,9 @@ begin
   else
     ParsePhonebookListFromEditor(FNodeContactsME);
   RenderContactList(FNodeContactsME);
+
   { Update database }
-  SavePhoneDataFiles;
+  SavePhoneDataFiles(True);
   { clear contact lookup cache }
   FLookupList.Clear;
 end;
@@ -12101,8 +12233,9 @@ procedure TForm1.UpdateSMPhonebook;
 begin
   ParsePhonebookListFromEditor(FNodeContactsSM);
   RenderContactList(FNodeContactsSM);
+
   { Update database }
-  SavePhoneDataFiles;
+  SavePhoneDataFiles(True);
   { clear contact lookup cache }
   FLookupList.Clear;
 end;
@@ -12774,10 +12907,11 @@ begin
         case ShowModal of
           mrOk: begin
             { save current }
-            Status(_('Saving current profile...')); Update;
-            SavePhoneDataFiles;
+            if AnsiCompareStr(PhoneIdentity,SelectedProfile) <> 0 then begin
+              SavePhoneDataFiles(True);
+              ClearExplorerViews;
+            end;
             { load selected }
-            Status(_('Loading selected profile...')); Update;
             FRelocateDBDenied := False;
             LoadPhoneDataFiles(SelectedProfile);
             break; // leave
@@ -12786,10 +12920,8 @@ begin
             { selected profile is already open? }
             if AnsiCompareStr(PhoneIdentity,SelectedProfile) <> 0 then begin
               { no, save current }
-              Status(_('Saving current profile...')); Update;
-              SavePhoneDataFiles;
+              SavePhoneDataFiles(True);
               { load in order to relocate if needed }
-              Status(_('Loading selected profile...')); Update;
               FRelocateDBDenied := False;
               LoadPhoneDataFiles(SelectedProfile);
               ID := SelectedProfile;
@@ -12972,8 +13104,9 @@ begin
     { Update view }
     if frmMsgView.Visible and (ExplorerNew.FocusedNode = Node) then
       frmMsgView.RenderListView(sl);
+
     { Update database }
-    SavePhoneDataFiles;
+    SavePhoneDataFiles(True);
   finally
     FreeProgressDialog;
     nl.Free;
@@ -13371,8 +13504,9 @@ begin
     try
       frmCalendarView.OnConnected;
       frmCalendarView.btnSYNCClick(nil);
+
       { Update database }
-      SavePhoneDataFiles;
+      SavePhoneDataFiles(True);
     except
       Status(_('Error downloading calendar'));
     end;
@@ -14611,7 +14745,7 @@ begin
           fl.Free;
           if DBModified then begin
             { Update database }
-            SavePhoneDataFiles;
+            SavePhoneDataFiles(True);
             { Update view }
             ExplorerNewChange(ExplorerNew, ExplorerNew.FocusedNode);
           end;
@@ -15056,17 +15190,6 @@ begin
             item := frmMsgView.ListMsg.GetNodeData(curr);
             SaveMsgToFolder(FolderNode,item.pdu,True,item.newmsg,False,-1,item.date,FArchiveDublicates); // -1 = no index in PC folders
           end;
-          { obsolete!!!
-          //index := item.StateIndex and $FFFF;
-          //location := ((item.StateIndex and $0C0000) shr 18) + 1;
-          for i := 0 to sl.Count - 1 do begin
-            pdu := GetToken(sl[i],5);
-            if AnsiCompareText(pdu,item.pdu) = 0 then begin
-              SaveMsgToFolder(FolderNode,pdu,True,item.newmsg,False,-1,item.date,FArchiveDublicates); // -1 = no index in PC folders
-              break;
-            end;
-          end;
-          }
         end;
       finally
         wl.Free;
@@ -15075,10 +15198,11 @@ begin
     node := frmMsgView.ListMsg.GetNext(node);
   end;
   data := ExplorerNew.GetNodeData(FolderNode);
-  Status(WideFormat(_('%0:d %1:s stored in %2:s'),[total,ngettext('message','messages',total),data.Text]),False);
   UpdateNewMessagesCounter(FolderNode);
+
   { Update database }
-  SavePhoneDataFiles;
+  SavePhoneDataFiles(True);
+  Status(WideFormat(_('%0:d %1:s stored in %2:s'),[total,ngettext('message','messages',total),data.Text]),False);
 end;
 
 function TForm1.SMSNewFolder(ParentNode: PVirtualNode; AName: WideString): PVirtualNode;
@@ -15397,7 +15521,7 @@ begin
       end;
     finally
       Free;
-      SavePhoneDataFiles;
+      SavePhoneDataFiles(True);
     end;
     Status(_('Import complete.'));
     MessageDlgW(WideFormat(_('%d %s imported successfully.'),[c,ngettext('delivery rule','delivery rules',c)]),
@@ -15424,7 +15548,9 @@ begin
         MoveToArchive := cbMsgToArchive.Checked;
         FormStorage1.StoredValue['MsgAutoArchive'] := MoveToArchive; // do not localize
       end;
-      SavePhoneDataFiles;
+
+      { Save changes }
+      SavePhoneDataFiles(True);
     end;
   finally
     Free;
@@ -15562,7 +15688,9 @@ begin
           MoveToArchive := cbMsgToArchive.Checked;
           FormStorage1.StoredValue['MsgAutoArchive'] := MoveToArchive; // do not localize
         end;
-        SavePhoneDataFiles;
+
+        { Save changes }
+        SavePhoneDataFiles(True);
       end;
     finally
       dl.Free;
@@ -15679,7 +15807,7 @@ begin
       end;
       { Save changes to Database }
       dlg.SetDescr(_('Saving...'));
-      SavePhoneDataFiles;
+      SavePhoneDataFiles(True);
       FreeProgressDialog;
     end;
     Status(WideFormat(_('Delivery completed (%d %s)'),[MoveCount,ngettext('message moved','messages moved',MoveCount)]));
@@ -16450,7 +16578,7 @@ begin
             Caption := WideFormat(_('floAt''s Mobile Agent %s - [%s]'),[GetBuildVersionDtl,EData.Text]);
           end;
           { Save changes and update explorer }
-          SavePhoneDataFiles;
+          SavePhoneDataFiles(True);
           ExplorerNewChange(ExplorerNew,ExplorerNew.FocusedNode);
           { Update tray icon if phone is renamed }
           if FConnected then
@@ -16571,23 +16699,21 @@ begin
   ActionToolsImportCalendar.Enabled := IsIrmcSyncEnabled and frmCalendarView.Visible;
 end;
 
-procedure TForm1.GetSignalMeter;
-begin
-  if FUseCSQ then begin
-    if FUseAlternateSignalMeter then begin
-      if FUseCIND then
-      TxAndWait('AT+CIND?'); // do not localize
-    end
-    else
-      TxAndWait('AT+CSQ'); // do not localize
-  end;
-end;
-
 procedure TForm1.HandleCIND(AMsg: String);
+const
+  FSignalCINDidx  : Integer = 0;
+  FSignalCINDmax  : Integer = 0;
+  FBatteryCINDidx : Integer = 0;
+  FBatteryCINDmax : Integer = 0;
+  FBattWarCINDidx : Integer = 0;
+  FBattWarCINDmax : Integer = 0;
+  FChargerCINDidx : Integer = 0;
+  FChargerCINDmax : Integer = 0;
 var
   s,str: String;
   w: WideString;
-  signal,i: Integer;
+  save: Boolean;
+  battlow,bstate,signal,i: Integer;
   function Percentage(Pos,Max: integer): string;
   begin
     Result := IntToStr(Round((100*Pos)/Max))+'%';
@@ -16596,6 +16722,10 @@ begin
   str := copy(AMsg, 8, length(AMsg));
 
   if pos('("',str) = 1 then begin
+    FSignalCINDidx  := -1;
+    FBatteryCINDidx := -1;
+    FBattWarCINDidx := -1;
+    FChargerCINDidx := -1;
     { +CIND: ("service",(0-1)),("callheld",(0-2)),("call",(0-1)),("callsetup",(0-3)),("signal",(0-5)),("roam",(0-1)),
              ("battchg",(0-5)),("message",(0-1)),("batterywarning",(0-1)),("chargerconnected",(0-1))
 
@@ -16615,17 +16745,87 @@ begin
         Delete(s,1,Pos('-',s));
         FSignalCINDidx := i;
         FSignalCINDmax := StrToInt(s);
-        break;
+      end;
+      if pos('"battchg"',s) = 1 then begin
+        Delete(s,1,Pos('/',s));
+        Delete(s,1,Pos('-',s));
+        FBatteryCINDidx := i;
+        FBatteryCINDmax := StrToInt(s);
+      end;
+      if pos('"batterywarning"',s) = 1 then begin
+        Delete(s,1,Pos('/',s));
+        Delete(s,1,Pos('-',s));
+        FBattWarCINDidx := i;
+        FBattWarCINDmax := StrToInt(s);
+      end;
+      if pos('"chargerconnected"',s) = 1 then begin
+        Delete(s,1,Pos('/',s));
+        Delete(s,1,Pos('-',s));
+        FChargerCINDidx := i;
+        FChargerCINDmax := StrToInt(s);
       end;
       inc(i);
-    until str = '';
-  end
-  else begin
-    signal := StrToInt(GetToken(str, FSignalCINDidx));
-    signal := Round((signal / FSignalCINDmax) * 100);
-    SetPanelText(3, WideFormat(_(' Signal %s '), [Percentage(signal,pbRSSI.MaxValue)]));
-    pbRSSI.Position := signal;
+    until w = '';
+    exit;
   end;
+
+  save := FUseCIND;
+  FUseCIND := False; // avoid reccursion in HandleStatus()
+  try
+    if FUseAlternateSignalMeter then begin
+      if FSignalCINDidx <> -1 then begin
+        signal := StrToInt(GetToken(str, FSignalCINDidx));
+        signal := Round((signal / FSignalCINDmax) * 31);
+        HandleStatus(Format('+CSQ: %d,99',[signal])); // 99 = RXQUAL Not known or not detectable.
+      end;
+    end;
+    if FUseAlternateBatteryMeter then begin
+      if FBatteryCINDidx <> -1 then begin
+        signal := StrToInt(GetToken(str, FBatteryCINDidx));
+        signal := Round((signal / FBatteryCINDmax) * 100);
+        bstate  := 0; // Phone powered by the battery. No charger connected.
+        battlow := 0; // Battery is OK
+        if FChargerCINDidx <> -1 then
+          if StrToInt(GetToken(str, FChargerCINDidx)) = FChargerCINDmax then
+            bstate := 1;  // Phone has a battery connected, but it is powered by the charger.
+        if FBattWarCINDidx <> -1 then
+          if StrToInt(GetToken(str, FBattWarCINDidx)) = FBattWarCINDmax then
+            battlow := 1; // Battery low warning
+        HandleStatus(Format('+CBC: %d,%d',[bstate,signal]),battlow);
+      end;
+    end;
+  finally
+    FUseCIND := save;
+  end;
+end;
+
+procedure TForm1.GetSignalMeter;
+begin
+  if FUseCSQ then begin
+    if FUseAlternateSignalMeter then begin
+      if FUseCIND then
+      TxAndWait('AT+CIND?'); // do not localize
+    end
+    else
+      TxAndWait('AT+CSQ'); // do not localize
+  end;
+end;
+
+procedure TForm1.GetBatteryMeter;
+begin
+  if FUseCBC then begin
+    if FUseAlternateBatteryMeter then begin
+      if FUseCIND then
+      TxAndWait('AT+CIND?'); // do not localize
+    end
+    else
+      TxAndWait('AT+CBC'); // do not localize
+  end;
+end;
+
+function TForm1.GetStatus: WideString;
+begin
+  Result := StatusBar.Panels[4].Text;
 end;
 
 initialization

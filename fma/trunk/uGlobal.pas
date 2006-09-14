@@ -258,6 +258,8 @@ begin
     str := '"' + Tnt_WideStringReplace(str, '"', '""', [rfReplaceAll]) + '"';
   Result := str;
 end;
+
+{ Token routines }
   
 function GetFirstToken(var str: WideString; delimiter: WideChar = ','): WideString;
 var
@@ -399,8 +401,10 @@ var
   s: WideString;
 begin
   Result := 0;
-  s := str;
-  while WideTrim(s) <> '' do begin
+  s := WideTrim(str);
+  if (s <> '') and (s[Length(s)] = delimiter) then
+    Result := 1; // case "aaa,bbb," 
+  while s <> '' do begin
     Inc(Result);
     GetFirstToken(s,delimiter);
   end;
@@ -469,7 +473,7 @@ var
   ww: WideString;
 
 initialization
-  { Sanity Check }
+  { Sanity Check - REMOVE in production builds!!! }
   ww := ' first, last';
   ww := GetFirstToken(ww);
   if ww <> 'first' then Halt(1);

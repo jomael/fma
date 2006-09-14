@@ -343,7 +343,7 @@ begin
   else AStatusReq := True;
 
   // TODO: fix for sending long messages
-  Form1.SentMessage('', Msg, DestNo, AReqReply, AFlash, AStatusReq);
+  Form1.SendTextMessage('', Msg, DestNo, AReqReply, AFlash, AStatusReq);
 end;
 
 procedure TMobileAgentApp.ObexPut(const filename: WideString);

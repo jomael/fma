@@ -1,16 +1,16 @@
 object frmSyncBookmarks: TfrmSyncBookmarks
   Left = 0
   Top = 0
-  Width = 466
+  Width = 607
   Height = 262
   TabOrder = 0
   DesignSize = (
-    466
+    607
     262)
   object ListBookmarks: TVirtualStringTree
     Left = 0
     Top = 0
-    Width = 466
+    Width = 607
     Height = 262
     Align = alClient
     DefaultNodeHeight = 17
@@ -65,18 +65,20 @@ object frmSyncBookmarks: TfrmSyncBookmarks
       end
       item
         Position = 3
-        Width = 10
+        Width = 53
         WideText = 'Status'
       end>
   end
   object NoItemsPanel: TTntPanel
     Left = 8
     Top = 28
-    Width = 449
+    Width = 590
     Height = 22
     Anchors = [akLeft, akTop, akRight]
     BevelOuter = bvNone
-    Caption = 'There are no items to display in this view.'
+    Caption = 
+      'There are no items to display in this view. To begin, select Syn' +
+      'c | Bookmarks from main menu.'
     Color = clWindow
     PopupMenu = PopupMenu1
     TabOrder = 1

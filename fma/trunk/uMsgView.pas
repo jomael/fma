@@ -739,7 +739,7 @@ begin
   edSearchFor.Text := '';
   try
     if sl.Count <> 0 then NoItemsPanel.Visible := False;
-    if sl.Count > 300 then begin // show a message to user on large folder
+    if sl.Count > 20 then begin // show a message to user on large folder
       Form1.Status(_('Building messages list, please wait...'),False);
       Animate1.Top := ListMsg.Top + (ListMsg.Height - Animate1.Height) div 2 + 32;
       Animate1.Color := ColorToRGB(clWindow);
@@ -834,7 +834,7 @@ begin
             sms.Free;
           end;
           inc(i);
-          if i mod 32 = 0 then begin
+          if i mod 8 = 0 then begin
             Application.ProcessMessages;
             if Application.Terminated then break;
           end;
@@ -1245,7 +1245,7 @@ begin
   MarkasRead1.Enabled := HasUnread;
   MarkasUnread1.Enabled := HasRead;
   MarkAllRead1.Enabled := CanModifyReadStatus;
-  DownloadSMS1.Enabled := Form1.FConnected and not Form1.FObex.Connected and
+  DownloadSMS1.Enabled := (not Form1.FConnected or not Form1.FObex.Connected) and 
     ((Form1.ExplorerNew.FocusedNode = Form1.FNodeMsgInbox) or (Form1.ExplorerNew.FocusedNode = Form1.FNodeMsgSent));
   data := Form1.ExplorerNew.GetNodeData(Form1.ExplorerNew.FocusedNode);
   SendToPhone1.Enabled := not SendMessage1.Visible and Form1.FConnected and not Form1.FObex.Connected and
@@ -1792,11 +1792,13 @@ end;
 
 procedure TfrmMsgView.DownloadSMS1Click(Sender: TObject);
 begin
+  { Obsolete
   if MessageDlgW(_('Local messages will be replaced with a fresh copy from the phone.'+
     sLinebreak+sLinebreak+
     'Any local changes will be lost. Do you wish to continue?'),
     mtConfirmation, MB_YESNO or MB_DEFBUTTON2) = ID_YES then
-    Form1.ActionConnectionDownload.Execute;
+  }
+  Form1.ActionConnectionDownload.Execute;
 end;
 
 procedure TfrmMsgView.ListMsgIncrementalSearch(Sender: TBaseVirtualTree;

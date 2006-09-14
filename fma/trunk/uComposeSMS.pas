@@ -589,7 +589,7 @@ begin
           Text := Memo.Text;
           for m := 1 to (length(Text) div packetL) + 1 do begin
             Temp := Copy(Text, (m-1)*packetL + 1, packetL);
-            Form1.SentMessage(udhi + IntToHex(m,2), Temp, sl.Strings[i], btnRequestReply.Down, btnFlashSMS.Down,
+            Form1.SendTextMessage(udhi + IntToHex(m,2), Temp, sl.Strings[i], btnRequestReply.Down, btnFlashSMS.Down,
               btnStatusReport.Down, FDCS, AsDraft);
           end;
        end;
@@ -598,7 +598,7 @@ begin
        //normal SMS...
        for i := 0 to sl.Count - 1 do begin
           StatusBar.Panels[2].Text := Format(_('Sending message to %s...'), [sl.Strings[i]]);
-          Form1.SentMessage('', Text, sl.Strings[i], btnRequestReply.Down, btnFlashSMS.Down, btnStatusReport.Down,
+          Form1.SendTextMessage('', Text, sl.Strings[i], btnRequestReply.Down, btnFlashSMS.Down, btnStatusReport.Down,
             FDCS, AsDraft);
        end;
     end;

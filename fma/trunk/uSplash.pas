@@ -55,7 +55,8 @@ interface
 
 uses
   Windows, TntWindows, Messages, SysUtils, TntSysUtils, Variants, Classes, TntClasses, Graphics, TntGraphics, Controls, TntControls, Forms, TntForms,
-  Dialogs, TntDialogs, jpeg, ExtCtrls, TntExtCtrls, StdCtrls, TntStdCtrls;
+  Dialogs, TntDialogs, jpeg, ExtCtrls, TntExtCtrls, StdCtrls, TntStdCtrls,
+  ComCtrls, SEProgress;
 
 type
   TfrmSplash = class(TTntForm)
@@ -64,6 +65,7 @@ type
     Timer1: TTimer;
     Label2: TTntLabel;
     Timer2: TTimer;
+    SEProgress1: TSEProgress;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Timer1Timer(Sender: TObject);
     procedure OnMouseUp(Sender: TObject; Button: TMouseButton;
@@ -146,8 +148,17 @@ var
 begin
   ClientHeight := Image1.Picture.Height;
   ClientWidth := Image1.Picture.Width;
-
+  {
+  SEProgress1.Left := 2;
+  SEProgress1.Height := 4;
+  SEProgress1.ShowBorder := False;
+  SEProgress1.Width := ClientWidth - 4;
+  SEProgress1.Top := ClientHeight - 5;
+  }
   gghTranslateComponent(self);
+
+  SEProgress1.Top := Label1.Top + 1;
+  SEProgress1.Left := Label1.Left + Label1.Width;
 
   Label1.Font.Color := $00489449;
   Label2.Font.Color := clRed;

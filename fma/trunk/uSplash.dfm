@@ -1188,17 +1188,6 @@ object frmSplash: TfrmSplash
       48A3FF00DDCFFF00573FD9FF00E62AD1F2FC3F6FFE26A3FFD9}
     OnMouseUp = OnMouseUp
   end
-  object Label1: TTntLabel
-    Left = 183
-    Top = 229
-    Width = 264
-    Height = 13
-    Anchors = []
-    AutoSize = False
-    Caption = ' Starting...'
-    Transparent = True
-    OnMouseUp = OnMouseUp
-  end
   object Label2: TTntLabel
     Left = 431
     Top = 48
@@ -1209,6 +1198,32 @@ object frmSplash: TfrmSplash
     Caption = '...'
     Transparent = True
     Visible = False
+  end
+  object Label1: TTntLabel
+    Left = 183
+    Top = 229
+    Width = 182
+    Height = 13
+    Anchors = []
+    AutoSize = False
+    Caption = ' Starting...'
+    Transparent = True
+    OnMouseUp = OnMouseUp
+  end
+  object SEProgress1: TSEProgress
+    Left = 365
+    Top = 230
+    Width = 81
+    Height = 13
+    BevelOuter = bvLowered
+    Position = 0
+    Max = 100
+    Min = 0
+    Frame = 0
+    ShowBorder = True
+    UnknownMax = False
+    UnknownWidth = 0
+    BarColor = 4756553
   end
   object Timer1: TTimer
     Enabled = False

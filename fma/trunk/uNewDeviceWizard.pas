@@ -76,6 +76,10 @@ const
   WM_PREVWPAGE = WM_USER + 102;
   WM_HANDLEMESSAGE = WM_USER + 103;
 
+  ndcBluetooth   = 0;
+  ndcInfrared    = 1;
+  ndcSerial      = 2;
+
 type
   TSearchHandleMessage = record
     Msg: Cardinal;
@@ -159,6 +163,7 @@ type
     Timer1: TTimer;
     cbDontShow: TTntCheckBox;
     cbCheckObex: TTntCheckBox;
+    NoItemsPanel: TTntPanel;
     procedure NextButtonClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure PreviousButtonClick(Sender: TObject);
@@ -178,6 +183,7 @@ type
     procedure OnUSBDeviceChange(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure cbDontShowClick(Sender: TObject);
+    procedure lvDevicesInsert(Sender: TObject; Item: TListItem);
   private
     { Private declarations }
     FConnectionType: byte;
@@ -216,7 +222,7 @@ implementation
 {$R *.dfm}
 
 uses
-  gnugettext, WinSock, TntClasses, Unit1,
+  gnugettext, WinSock, TntClasses, Unit1, uGlobal,
   uolSelectPatchPath, uDialogs, uStatusDlg, uThreadSafe, uSMS;
 
 const
@@ -256,6 +262,7 @@ begin
   TopPanel2.ParentBackground := False;
   TopPanel3.ParentBackground := False;
   FinishedPanel.ParentBackground := False;
+  NoItemsPanel.ParentBackground := False;
 {$ENDIF}
 end;
 
@@ -290,7 +297,7 @@ begin
       if cbCheckObex.Checked then DoCheckObex;
       Update;
       { Fill selected device data }
-      FSelected.ConnectionType := lvDevices.Selected.StateIndex;
+      FSelected.ConnectionType := Integer(lvDevices.Selected.Data);
       FSelected.DeviceName := lvDevices.Selected.Caption;
       FSelected.FriendlyName := edFriendlyName.Text;
       FSelected.MaxSpeed := LocalComPort.BaudRate;
@@ -352,7 +359,7 @@ begin
       //CancelButton.Enabled := False;
       { setup tasks on finish }
       cbCalibrate.Checked := False;
-      cbCalibrate.Visible := lvDevices.Selected.StateIndex = 2; // only for serial
+      cbCalibrate.Visible := Integer(lvDevices.Selected.Data) = ndcSerial; // only for serial
       cbCheckObex.Checked := False;
       cbCheckObex.Visible := cbCalibrate.Visible;
 
@@ -370,10 +377,10 @@ begin
           Add(sTab + _(edFriendlyName.Text));
         Add('');
         Add(_('Connection Type:'));
-        case lvDevices.Selected.StateIndex of
-          0: s := 'Bluetooth';
-          1: s := 'Infrared';
-          2: s := 'Data Cable or Virtual Bluetooth Port';
+        case Integer(lvDevices.Selected.Data) of
+          ndcBluetooth:  s := 'Bluetooth';
+          ndcInfrared:   s := 'Infrared';
+          ndcSerial:     s := 'Data Cable or Virtual Bluetooth Port';
         end;
         Add(sTab + _(s));
         Add(sTab + _(lvDevices.Selected.SubItems[0]));
@@ -384,7 +391,7 @@ begin
           Add(sTab + _('Not all of the features might work as expected.'));
         end
         else
-        if lvDevices.Selected.StateIndex = 1 then begin
+        if Integer(lvDevices.Selected.Data) = ndcInfrared then begin
           { Infrared, so no OBEX }
           Add(sTab + _('File Browseing is not supported over Infrared.'));
           Add(sTab + _('Phonebook Sync is not supported (requires above).'));
@@ -486,6 +493,7 @@ begin
   BtDevices := nil;
   try
     lvDevices.Items.Clear;
+    NoItemsPanel.Visible := True;
     FCanceled := False;
 
     lblSearchInfo.Caption := _('Preparing Search...');
@@ -581,6 +589,7 @@ begin
     if Assigned(IrDevices) then IrDevices.Free;
     if Assigned(BtDevices) then BtDevices.Free;
     lblSearchInfo.Caption := _('Select prefered phone device and click Next to continue.');
+    NoItemsPanel.Visible := lvDevices.Items.Count = 0;
     Animate1.Active := False;
     Animate1.Visible := False;
     PreviousButton.Visible := True;
@@ -717,26 +726,24 @@ end;
 procedure TfrmNewDeviceWizard.AddDevice(Text: WideString; Address: string;
   FriendlyName, Manufacturer: WideString);
 begin
-  if Text <> '' then
+  { for modems: ImageIndex := 3 }
+  if (Text <> '') and (WidePos('MODEM',WideUpperCase(Text)) = 0) then
     with lvDevices.Items.Add do begin
       Caption := Text;        // Device name
       SubItems.Add(Address);  // Peer Bluetooth address or COM port name
       SubItems.Add(FriendlyName);
       SubItems.Add(Manufacturer);
-      if Address = '' then
-        ImageIndex := 4       // No address, so it is a warning message
-      else
+      if Address <> '' then begin
         case FConnectionType of
           0: ImageIndex := 0;
           1: ImageIndex := 1;
-          2: begin
-            ImageIndex := 2;
-            { Check if we have a modem instead of phone device }
-            if Pos('MODEM',UpperCase(Text)) <> 0 then // do not localize
-              ImageIndex := 3;
-          end;
+          2: ImageIndex := 2;
         end;
-      StateIndex := FConnectionType; // Connection type
+        StateIndex := 5;      // Phone found!
+      end
+      else 
+        ImageIndex := 4;      // No address, so it is a warning message
+      Data := Pointer(FConnectionType); // Connection type
     end;
 end;
 
@@ -745,7 +752,7 @@ var
   i: integer;
   dlg: TfrmStatusDlg;
 begin
-  if lvDevices.Selected.StateIndex = 2 then // serial?
+  if Integer(lvDevices.Selected.Data) = ndcSerial then // serial?
     try
       dlg := ShowStatusDlg(_('Calibrating Port Speed...'),poMainFormCenter);
       try
@@ -799,7 +806,7 @@ procedure TfrmNewDeviceWizard.lvDevicesSelectItem(Sender: TObject;
   Item: TListItem; Selected: Boolean);
 begin
   { Allow selection of devices which have Manufacturer field set, i.e. support AT+CGMI }
-  NextButton.Enabled := Assigned(lvDevices.Selected) and (lvDevices.Selected.SubItems[2] <> '');
+  NextButton.Enabled := Assigned(lvDevices.Selected) and (lvDevices.Selected.StateIndex = 5);
   NextButton.Default := NextButton.Enabled;
 end;
 
@@ -854,7 +861,7 @@ procedure TfrmNewDeviceWizard.DoCheckObex;
 var
   dlg: TfrmStatusDlg;
 begin
-  if lvDevices.Selected.StateIndex = 2 then // serial?
+  if Integer(lvDevices.Selected.Data) = ndcSerial then // serial?
     try
       dlg := ShowStatusDlg(_('Checking OBEX support...'),poMainFormCenter);
       try
@@ -892,6 +899,12 @@ begin
     except
       // be silent
     end;
+end;
+
+procedure TfrmNewDeviceWizard.lvDevicesInsert(Sender: TObject;
+  Item: TListItem);
+begin
+  NoItemsPanel.Visible := False;
 end;
 
 end.

@@ -109,7 +109,7 @@ object frmOptions: TfrmOptions
     Top = 40
     Width = 413
     Height = 317
-    ActivePage = tabLanguage
+    ActivePage = tabStartup
     Anchors = [akTop, akRight, akBottom]
     MultiLine = True
     Style = tsButtons
@@ -401,7 +401,7 @@ object frmOptions: TfrmOptions
               Text = 'COM4'
               Style = csDropDownList
               ItemHeight = 13
-              ItemIndex = 2
+              ItemIndex = 3
               TabOrder = 0
             end
             object cbBaudrate: TComComboBox
@@ -1633,7 +1633,7 @@ object frmOptions: TfrmOptions
           Width = 40
           Height = 21
           TabOrder = 0
-          Text = '10'
+          Text = '15'
         end
         object seCommTimeoutSpin: TTntUpDown
           Left = 51
@@ -1643,7 +1643,7 @@ object frmOptions: TfrmOptions
           Associate = seCommTimeout
           Min = 5
           Max = 60
-          Position = 10
+          Position = 15
           TabOrder = 1
         end
       end
@@ -1673,7 +1673,7 @@ object frmOptions: TfrmOptions
           Width = 41
           Height = 21
           TabOrder = 0
-          Text = '30'
+          Text = '15'
         end
         object sePollingSpin: TTntUpDown
           Left = 51
@@ -1683,7 +1683,7 @@ object frmOptions: TfrmOptions
           Associate = sePolling
           Min = 5
           Max = 60
-          Position = 30
+          Position = 15
           TabOrder = 1
         end
       end
@@ -1701,8 +1701,8 @@ object frmOptions: TfrmOptions
           Height = 22
           AutoSize = False
           Caption = 
-            'Note: Keypad Lock option is available only if Proximity Monitori' +
-            'ng is disabled.'
+            '* This option is editable only if Proximity Monitoring is turned' +
+            ' Off.'
         end
         object cbDiagram: TTntCheckBox
           Left = 28
@@ -1779,7 +1779,7 @@ object frmOptions: TfrmOptions
           Top = 158
           Width = 375
           Height = 17
-          Caption = 'Enable Keypad Lock Monitor'
+          Caption = 'Enable Keypad Lock Monitor*'
           Checked = True
           State = cbChecked
           TabOrder = 7

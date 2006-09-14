@@ -175,7 +175,7 @@ var
             end;
             SubItems.Add(Caption);
             if Selected then
-              Caption := WideFormat('%s (active)',[Caption]);
+              Caption := WideFormat(_('%s (current)'),[Caption]);
           end;
         end;
       until FindNext(R) <> 0;

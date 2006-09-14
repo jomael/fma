@@ -120,7 +120,9 @@ object frmContactsMEEdit: TfrmContactsMEEdit
     Height = 22
     Anchors = [akLeft, akTop, akRight]
     BevelOuter = bvNone
-    Caption = 'There are no items to display in this view.'
+    Caption = 
+      'There are no items to display in this view. To begin, select Vie' +
+      'w | Refresh from main menu.'
     Color = clWindow
     PopupMenu = PopupMenu1
     TabOrder = 2
