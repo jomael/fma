@@ -478,6 +478,7 @@ object frmCalendarView: TfrmCalendarView
       Caption = 'P&roperties'
       Enabled = False
       ImageIndex = 10
+      OnClick = Properties2Click
     end
   end
   object OpenDialog1: TTntOpenDialog

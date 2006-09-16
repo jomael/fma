@@ -32,7 +32,7 @@ object frmEditTask: TfrmEditTask
       object Label2: TTntLabel
         Left = 8
         Top = 76
-        Width = 40
+        Width = 39
         Height = 13
         Caption = 'Subject:'
       end
@@ -46,7 +46,7 @@ object frmEditTask: TfrmEditTask
       object Label1: TTntLabel
         Left = 8
         Top = 220
-        Width = 70
+        Width = 68
         Height = 13
         Caption = 'Completed on:'
       end
@@ -196,7 +196,7 @@ object frmEditTask: TfrmEditTask
       object Label4: TTntLabel
         Left = 8
         Top = 300
-        Width = 27
+        Width = 26
         Height = 13
         Caption = 'Date:'
       end
@@ -210,7 +210,7 @@ object frmEditTask: TfrmEditTask
       object Label5: TTntLabel
         Left = 8
         Top = 108
-        Width = 73
+        Width = 72
         Height = 13
         Caption = 'Phone number:'
       end
@@ -239,7 +239,7 @@ object frmEditTask: TfrmEditTask
       object chbCompleted: TTntCheckBox
         Left = 8
         Top = 187
-        Width = 73
+        Width = 89
         Height = 17
         Caption = 'Completed'
         TabOrder = 3
@@ -257,7 +257,7 @@ object frmEditTask: TfrmEditTask
       object chbReminder: TTntCheckBox
         Left = 8
         Top = 268
-        Width = 97
+        Width = 89
         Height = 17
         Caption = 'Reminder'
         TabOrder = 5
@@ -309,14 +309,14 @@ object frmEditTask: TfrmEditTask
       object Label3: TTntLabel
         Left = 8
         Top = 76
-        Width = 29
+        Width = 30
         Height = 13
         Caption = 'GUID:'
       end
       object Label25: TTntLabel
         Left = 8
         Top = 108
-        Width = 35
+        Width = 34
         Height = 13
         Caption = 'File As:'
       end

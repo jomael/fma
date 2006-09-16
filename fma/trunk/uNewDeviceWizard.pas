@@ -164,6 +164,11 @@ type
     cbDontShow: TTntCheckBox;
     cbCheckObex: TTntCheckBox;
     NoItemsPanel: TTntPanel;
+    TntLabel14: TTntLabel;
+    cbSearchBT: TTntCheckBox;
+    cbSearchIR: TTntCheckBox;
+    cbSearchCOM: TTntCheckBox;
+    cbSearchAll: TTntCheckBox;
     procedure NextButtonClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure PreviousButtonClick(Sender: TObject);
@@ -184,6 +189,7 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure cbDontShowClick(Sender: TObject);
     procedure lvDevicesInsert(Sender: TObject; Item: TListItem);
+    procedure cbSearchAllClick(Sender: TObject);
   private
     { Private declarations }
     FConnectionType: byte;
@@ -342,6 +348,7 @@ begin
       cbDeviceReadyClick(cbDeviceReady);
     end;
     piSearch: begin
+      if NextButton.Enabled then NextButton.SetFocus;
       NextButton.Caption := _('&Next >');
       lvDevicesSelectItem(lvDevices,nil,False);
       if lvDevices.Items.Count = 0 then DoSearch;
@@ -493,77 +500,83 @@ begin
   BtDevices := nil;
   try
     lvDevices.Items.Clear;
+    lvDevices.SetFocus;
     NoItemsPanel.Visible := True;
     FCanceled := False;
 
     lblSearchInfo.Caption := _('Preparing Search...');
     Application.ProcessMessages;
     if FCanceled then exit;
-    try
-      BtDevices := LocalWBtSocket.GetConnectedDevices;
-    except
-      AddDevice(_('Native Bluetooth is not supported!'));
-    end;
-    try
-      IrDevices := LocalWIrSocket.GetConnectedDevices;
-    except
-      AddDevice(_('Native Infrared is not supported!'));
-    end;
 
     // bluetooth
-    lblSearchInfo.Caption := _('Searching Bluetooth...') + Reason;
-    Application.ProcessMessages;
-    if FCanceled then exit;
-    try
-      FConnectionType := 0;
-      if Assigned(BtDevices) then
-        for i := 0 to BtDevices.Count-1 do begin
-          if FCanceled or Application.Terminated then break;
-          DevName := BtDevices[i].btDeviceName;
-          DevAddr := IntToHex(BtDevices[i].btDeviceAddr,12);
-          LocalWBtSocket.Addr := DevAddr;
-          LocalWBtSocket.Port := '0';
-          LocalWBtSocket.Connect;
-          try
-            while LocalWBtSocket.State = wsConnecting do WaitASec(50,True);
-            ProbeDevice;
-          finally
-            if LocalWBtSocket.State = wsConnected then LocalWBtSocket.Close;
+    if cbSearchBT.Checked then begin
+      try
+        BtDevices := LocalWBtSocket.GetConnectedDevices;
+      except
+        AddDevice(_('Native Bluetooth is not supported!'));
+      end;
+      lblSearchInfo.Caption := _('Searching Bluetooth...') + Reason;
+      Application.ProcessMessages;
+      if FCanceled then exit;
+      try
+        FConnectionType := 0;
+        if Assigned(BtDevices) then
+          for i := 0 to BtDevices.Count-1 do begin
+            if FCanceled or Application.Terminated then break;
+            DevName := BtDevices[i].btDeviceName;
+            DevAddr := IntToHex(BtDevices[i].btDeviceAddr,12);
+            LocalWBtSocket.Addr := DevAddr;
+            LocalWBtSocket.Port := '0';
+            LocalWBtSocket.Connect;
+            try
+              while LocalWBtSocket.State = wsConnecting do WaitASec(50,True);
+              ProbeDevice;
+            finally
+              if LocalWBtSocket.State = wsConnected then LocalWBtSocket.Close;
+            end;
           end;
-        end;
-    except
+      except
+      end;
     end;
 
     // infrared
-    lblSearchInfo.Caption := _('Searching Infrared...') + Reason;
-    Application.ProcessMessages;
-    if FCanceled then exit;
-    try
-      FConnectionType := 1;
-      if Assigned(IrDevices) then
-        for i := 0 to IrDevices.Count-1 do begin
-          if FCanceled or Application.Terminated then break;
-          DevName := IrDevices.Items[i].irdaDeviceName;
-          DevAddr := IntToHex(DWORD(IrDevices.Items[i].irdaDeviceID[1]),8);
-          LocalWIrSocket.DeviceID := IrDevices.Items[i].irdaDeviceID;
-          LocalWIrSocket.Connect;
-          try
-            while LocalWIrSocket.State = wsConnecting do WaitASec(50,True);
-            ProbeDevice;
-          finally
-            if LocalWIrSocket.State = wsConnected then LocalWIrSocket.Close;
+    if cbSearchIR.Checked then begin
+      try
+        IrDevices := LocalWIrSocket.GetConnectedDevices;
+      except
+        AddDevice(_('Native Infrared is not supported!'));
+      end;
+      lblSearchInfo.Caption := _('Searching Infrared...') + Reason;
+      Application.ProcessMessages;
+      if FCanceled then exit;
+      try
+        FConnectionType := 1;
+        if Assigned(IrDevices) then
+          for i := 0 to IrDevices.Count-1 do begin
+            if FCanceled or Application.Terminated then break;
+            DevName := IrDevices.Items[i].irdaDeviceName;
+            DevAddr := IntToHex(DWORD(IrDevices.Items[i].irdaDeviceID[1]),8);
+            LocalWIrSocket.DeviceID := IrDevices.Items[i].irdaDeviceID;
+            LocalWIrSocket.Connect;
+            try
+              while LocalWIrSocket.State = wsConnecting do WaitASec(50,True);
+              ProbeDevice;
+            finally
+              if LocalWIrSocket.State = wsConnected then LocalWIrSocket.Close;
+            end;
           end;
-        end;
-    except
+      except
+      end;
     end;
 
     // serial cable
-    lblSearchInfo.Caption := _('Searching Ports...') + Reason;
-    Application.ProcessMessages;
-    if FCanceled then exit;
-    FConnectionType := 2;
-    DevName := '';
-    for i := 0 to cbCOM.Items.Count-1 do
+    if cbSearchCOM.Checked then begin
+      lblSearchInfo.Caption := _('Searching Ports...') + Reason;
+      Application.ProcessMessages;
+      if FCanceled then exit;
+      FConnectionType := 2;
+      DevName := '';
+      for i := 0 to cbCOM.Items.Count-1 do
       try
         if FCanceled or Application.Terminated then break;
         cbCOM.ItemIndex := i;
@@ -585,6 +598,7 @@ begin
         end;
       except
       end;
+    end;
   finally
     if Assigned(IrDevices) then IrDevices.Free;
     if Assigned(BtDevices) then BtDevices.Free;
@@ -798,8 +812,15 @@ end;
 
 procedure TfrmNewDeviceWizard.cbDeviceReadyClick(Sender: TObject);
 begin
-  NextButton.Enabled := cbDeviceReady.Checked;
+  NextButton.Enabled := cbDeviceReady.Checked and
+    (cbSearchBT.Checked or cbSearchIR.Checked or cbSearchCOM.Checked);
   NextButton.Default := NextButton.Enabled;
+  if cbDeviceReady.Checked then begin
+    cbSearchBT.Enabled := True;
+    cbSearchIR.Enabled := True;
+    cbSearchCOM.Enabled := True;
+    cbSearchAll.Enabled := True;
+  end;
 end;
 
 procedure TfrmNewDeviceWizard.lvDevicesSelectItem(Sender: TObject;
@@ -905,6 +926,14 @@ procedure TfrmNewDeviceWizard.lvDevicesInsert(Sender: TObject;
   Item: TListItem);
 begin
   NoItemsPanel.Visible := False;
+end;
+
+procedure TfrmNewDeviceWizard.cbSearchAllClick(Sender: TObject);
+begin
+  cbSearchBT.Checked := cbSearchAll.Checked;
+  cbSearchIR.Checked := cbSearchAll.Checked;
+  cbSearchCOM.Checked := cbSearchAll.Checked;
+  cbDeviceReadyClick(nil);
 end;
 
 end.

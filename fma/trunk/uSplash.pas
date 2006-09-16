@@ -73,7 +73,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
-    procedure TntFormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
     FUseAlphaEffects: boolean;
@@ -157,11 +157,13 @@ begin
   }
   gghTranslateComponent(self);
 
-  SEProgress1.Top := Label1.Top + 1;
-  SEProgress1.Left := Label1.Left + Label1.Width;
-
-  Label1.Font.Color := $00489449;
+  Label1.Font.Color := $00458946;
   Label2.Font.Color := clRed;
+
+  SEProgress1.Top := Label1.Top + Label1.Height + 4;
+  SEProgress1.Left := Label1.Left + 3;
+  SEProgress1.Width := Label1.Width - 7;
+  SEProgress1.BarColor := Label1.Font.Color;
 
   VerInfo.dwOSVersionInfoSize := SizeOf(VerInfo);
   GetVersionEx(VerInfo);
@@ -191,7 +193,7 @@ begin
     end;
 end;
 
-procedure TfrmSplash.TntFormCloseQuery(Sender: TObject;
+procedure TfrmSplash.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 var
   i: Integer;

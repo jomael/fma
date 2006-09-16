@@ -221,7 +221,7 @@ object frmNewDeviceWizard: TfrmNewDeviceWizard
       end
       object TntImage2: TTntImage
         Left = 40
-        Top = 172
+        Top = 168
         Width = 32
         Height = 32
         AutoSize = True
@@ -361,7 +361,7 @@ object frmNewDeviceWizard: TfrmNewDeviceWizard
       end
       object TntLabel3: TTntLabel
         Left = 80
-        Top = 172
+        Top = 168
         Width = 381
         Height = 45
         AutoSize = False
@@ -373,7 +373,7 @@ object frmNewDeviceWizard: TfrmNewDeviceWizard
       end
       object TntImage3: TTntImage
         Left = 40
-        Top = 224
+        Top = 216
         Width = 32
         Height = 32
         AutoSize = True
@@ -513,7 +513,7 @@ object frmNewDeviceWizard: TfrmNewDeviceWizard
       end
       object TntLabel4: TTntLabel
         Left = 80
-        Top = 224
+        Top = 216
         Width = 381
         Height = 45
         AutoSize = False
@@ -522,6 +522,13 @@ object frmNewDeviceWizard: TfrmNewDeviceWizard
           'one. Some cables require additional software drivers to be insta' +
           'lled. Check your cable manual for more information.'
         WordWrap = True
+      end
+      object TntLabel14: TTntLabel
+        Left = 40
+        Top = 268
+        Width = 54
+        Height = 13
+        Caption = 'You ready?'
       end
       object TopPanel1: TTntPanel
         Left = -2
@@ -571,13 +578,53 @@ object frmNewDeviceWizard: TfrmNewDeviceWizard
         end
       end
       object cbDeviceReady: TTntCheckBox
-        Left = 40
-        Top = 288
-        Width = 281
+        Left = 116
+        Top = 266
+        Width = 345
         Height = 17
-        Caption = 'My device is set up and ready to be found.'
+        Caption = 'Yes, my device is set up and ready to be connected via:'
         TabOrder = 1
         OnClick = cbDeviceReadyClick
+      end
+      object cbSearchBT: TTntCheckBox
+        Left = 116
+        Top = 288
+        Width = 80
+        Height = 17
+        Caption = '&Bluetooth'
+        Enabled = False
+        TabOrder = 2
+        OnClick = cbDeviceReadyClick
+      end
+      object cbSearchIR: TTntCheckBox
+        Left = 200
+        Top = 288
+        Width = 80
+        Height = 17
+        Caption = '&Infra-red'
+        Enabled = False
+        TabOrder = 3
+        OnClick = cbDeviceReadyClick
+      end
+      object cbSearchCOM: TTntCheckBox
+        Left = 284
+        Top = 288
+        Width = 88
+        Height = 17
+        Caption = '&Serial Ports'
+        Enabled = False
+        TabOrder = 4
+        OnClick = cbDeviceReadyClick
+      end
+      object cbSearchAll: TTntCheckBox
+        Left = 380
+        Top = 288
+        Width = 81
+        Height = 17
+        Caption = '&Don'#39't know'
+        Enabled = False
+        TabOrder = 5
+        OnClick = cbSearchAllClick
       end
     end
     object TPage

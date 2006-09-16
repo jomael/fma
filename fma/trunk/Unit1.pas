@@ -2813,7 +2813,7 @@ type
     function PhoneExists(AName: WideString): boolean;
     function PhoneUnique(AName,AIdentity: WideString): boolean;
 
-    function LoadPhoneDataFiles(ID: string = ''; ShowStatus: Boolean = True): boolean;
+    function LoadPhoneDataFiles(ID: string = ''; ShowStatus: Boolean = True; ShowProgress: Boolean = False): boolean;
     function OpenPhoneDataFiles(ID: string = ''): boolean;
     procedure DeletePhoneDataFiles(ID: string; Wnd: THandle = 0);
     procedure RepairPhoneDataFiles(ID: string);
@@ -2968,6 +2968,7 @@ type
     procedure ViewInitialize;
     procedure ScriptInitialize;
 
+    procedure SetTaskPercentageInc;
     procedure SetTaskPercentage(Pos: Integer; Max: Integer = 100; Loop: Boolean = False);
     procedure FloatingRectangles(Minimizing, OverrideUserSettings: Boolean);
     procedure ShowBaloonInfo(Text: WideString; Timeout: TBalloonHintTimeOut = 10; Where: TCoolTrayIcon = nil; IconT: TBalloonHintIcon = bitInfo);
@@ -10289,7 +10290,7 @@ begin
   end;
 end;
 
-function TForm1.LoadPhoneDataFiles(ID: string; ShowStatus: Boolean): boolean;
+function TForm1.LoadPhoneDataFiles(ID: string; ShowStatus,ShowProgress: Boolean): boolean;
 var
   Fullpath: string;
   FDirID: TItemIDList;
@@ -10305,7 +10306,9 @@ var
   procedure ProgressNotify;
   begin
     if Assigned(frmSplash) then
-      frmSplash.SEProgress1.Position := frmSplash.SEProgress1.Position + 1; 
+      frmSplash.SEProgress1.Position := frmSplash.SEProgress1.Position + 1;
+    if ShowProgress and Visible then
+      SetTaskPercentageInc;
   end;
 begin
   Result := True;
@@ -10317,6 +10320,8 @@ begin
     Status(_('Clearing current views...'));
     Update;
   end;
+  if ShowProgress and Visible then
+    SetTaskPercentage(0,13);
 
   { Second, clear all FMA views if profile changed }
   NewProfile := AnsiCompareStr(ID,PhoneIdentity) <> 0;
@@ -10708,6 +10713,8 @@ begin
   end;
   ExplorerNewChange(ExplorerNew,ExplorerNew.FocusedNode);
 
+  if ShowProgress and Visible then
+    SetTaskPercentage(-1);
   if ShowStatus and Visible then
     Status(OldStat,False);
 end;
@@ -12913,7 +12920,7 @@ begin
             end;
             { load selected }
             FRelocateDBDenied := False;
-            LoadPhoneDataFiles(SelectedProfile);
+            LoadPhoneDataFiles(SelectedProfile,True,True);
             break; // leave
           end;
           mrRetry: begin
@@ -12923,7 +12930,7 @@ begin
               SavePhoneDataFiles(True);
               { load in order to relocate if needed }
               FRelocateDBDenied := False;
-              LoadPhoneDataFiles(SelectedProfile);
+              LoadPhoneDataFiles(SelectedProfile,True,True);
               ID := SelectedProfile;
             end
             else
@@ -14392,6 +14399,12 @@ begin
   end
   else
     DefaultProps;
+end;
+
+procedure TForm1.SetTaskPercentageInc;
+begin
+  pbTask.StepForward;
+  StatusBarResize(nil);
 end;
 
 procedure TForm1.SetTaskPercentage(Pos, Max: Integer; Loop: Boolean);

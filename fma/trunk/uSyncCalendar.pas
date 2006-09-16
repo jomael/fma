@@ -175,6 +175,7 @@ type
     procedure Properties1Click(Sender: TObject);
     procedure ImportCalendar1Click(Sender: TObject);
     procedure btnSYNCClick(Sender: TObject);
+    procedure Properties2Click(Sender: TObject);
   private
     { Private declarations }
     ConflictVCalPhone,ConflictVCalPC: TVCalEntity;
@@ -1291,7 +1292,7 @@ begin
   ForceasModifiedTl.Enabled := ForceasNotModifiedTl.Enabled;
   ForceasNewEventTl.Enabled := ForceasNotModifiedTl.Enabled;
   CompletedStatus1.Enabled := ForceasNotModifiedTl.Enabled;
-  Properties2.Enabled := False; //ForceasNotModifiedTl.Enabled;
+  Properties2.Enabled := ForceasNotModifiedTl.Enabled;
 end;
 
 procedure TfrmCalendarView.DownloadentireCalendar1Click(Sender: TObject);
@@ -1410,6 +1411,12 @@ begin
     VpDB.Connected := True;
     if Visible then Update;
   end;
+end;
+
+procedure TfrmCalendarView.Properties2Click(Sender: TObject);
+begin
+  if PopupMenuTaskList.Items.Count > 12 then
+    PopupMenuTaskList.Items[1].Click; // HACK! Second popup menu item is "Edit Task..."
 end;
 
 end.
