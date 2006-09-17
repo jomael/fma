@@ -119,7 +119,7 @@ implementation
 
 uses
   gnugettext,
-  Classes, TntClasses, Registry, SysUtils, TntSysUtils;
+  Classes, TntClasses, Registry, SysUtils, TntSysUtils, TntWideStrings;
 
 (* Unicode *)
 
@@ -260,7 +260,44 @@ begin
 end;
 
 { Token routines }
-  
+
+(*
+function GetFirstToken(var str: WideString; delimiter: WideChar = ','): WideString;
+var
+  wl: TTntStringList;
+begin
+  Result := '';
+  wl := TTntStringList.Create;
+  try
+    wl.Delimiter := delimiter;
+    wl.DelimitedText := str;
+    if wl.Count <> 0 then begin
+      Result := wl[0];
+      wl.Delete(0);
+      str := wl.DelimitedText;
+    end;
+  finally
+    wl.Free;
+  end;
+end;
+
+function GetToken(str: WideString; index: Integer; delimiter: WideChar): WideString;
+var
+  wl: TTntStringList;
+begin
+  Result := '';
+  wl := TTntStringList.Create;
+  try
+    wl.Delimiter := delimiter;
+    wl.DelimitedText := str;
+    if (index >= 0) and (index < wl.Count) then
+      Result := wl[index];
+  finally
+    wl.Free;
+  end;
+end;
+*)
+
 function GetFirstToken(var str: WideString; delimiter: WideChar = ','): WideString;
 var
   i,j,k,q,t: integer;
@@ -368,8 +405,8 @@ var
   s,d: WideString;
 begin
   Result := '';
-  s := str;
-  while WideTrim(s) <> '' do begin
+  s := WideTrim(str);
+  while s <> '' do begin
     d := GetFirstToken(s,delimiter);
     if index = 0 then begin
       Result := d;
@@ -470,52 +507,52 @@ begin
 end;
 
 var
-  ww: WideString;
+  ww,qq: WideString;
 
 initialization
   { Sanity Check - REMOVE in production builds!!! }
   ww := ' first, last';
-  ww := GetFirstToken(ww);
-  if ww <> 'first' then Halt(1);
+  qq := GetFirstToken(ww);
+  if qq <> 'first' then Halt(1);
 
   ww := '"first second" ,last';
-  ww := GetFirstToken(ww);
-  if ww <> 'first second' then Halt(1);
+  qq := GetFirstToken(ww);
+  if qq <> 'first second' then Halt(1);
 
   ww := '"first" second , last';
-  ww := GetFirstToken(ww);
-  if ww <> '"first" second' then Halt(1);
+  qq := GetFirstToken(ww);
+  if qq <> '"first" second' then Halt(1);
 
   ww := ' first "second" ,last';
-  ww := GetFirstToken(ww);
-  if ww <> 'first "second"' then Halt(1);
+  qq := GetFirstToken(ww);
+  if qq <> 'first "second"' then Halt(1);
 
   ww := ' "first ""mr"" second",last';
-  ww := GetFirstToken(ww);
-  if ww <> 'first "mr" second' then Halt(1);
+  qq := GetFirstToken(ww);
+  if qq <> 'first "mr" second' then Halt(1);
 
   ww := ' ,last';
-  ww := GetFirstToken(ww);
-  if ww <> '' then Halt(1);
+  qq := GetFirstToken(ww);
+  if qq <> '' then Halt(1);
 
   ww := '';
-  ww := GetFirstToken(ww);
-  if ww <> '' then Halt(1);
+  qq := GetFirstToken(ww);
+  if qq <> '' then Halt(1);
 
   ww := ' ';
-  ww := GetFirstToken(ww);
-  if ww <> '' then Halt(1);
+  qq := GetFirstToken(ww);
+  if qq <> '' then Halt(1);
 
   ww := ' first ';
-  ww := GetFirstToken(ww);
-  if ww <> 'first' then Halt(1);
+  qq := GetFirstToken(ww);
+  if qq <> 'first' then Halt(1);
 
   ww := WideCopy('floats',3,2);
   if ww <> 'oa' then Halt(1);
 
   ww := 'floats';
-  ww := WideDelete(ww,3,2);
-  if ww <> 'flts' then Halt(1);
+  qq := WideDelete(ww,3,2);
+  if qq <> 'flts' then Halt(1);
 
   ww := WideTrim(' floats ');
   if ww <> 'floats' then Halt(1);

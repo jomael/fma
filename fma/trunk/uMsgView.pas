@@ -784,7 +784,10 @@ begin
 
             item.number := sms.Number;
             item.from := Form1.ContactNumberByTel(item.number);
-            item.date := sms.TimeStamp;
+            if sms.IsOutgoing then
+              item.date := 0 
+            else
+              item.date := sms.TimeStamp;
             item.msg := sms.Text;
 
             item.stateindex := StrToInt(GetToken(sl[i], 1)) and $FFFF; // index
@@ -833,7 +836,6 @@ begin
           finally
             sms.Free;
           end;
-          inc(i);
           if i mod 8 = 0 then begin
             Application.ProcessMessages;
             if Application.Terminated then break;
@@ -842,12 +844,12 @@ begin
           ListMsg.DeleteNode(Node);
           Log.AddMessageFmt(_('Database: Error loading data (DB Index %d)'), [i], lsError);
           if FindCmdLineSwitch('FIXDB') then begin
-            //sl[i] := '';
-            sl.Delete(i);
+            sl[i] := '';
             Log.AddMessageFmt(_('Database: Removed incorrect data (DB Index: %d)'), [i], lsInformation);
             dbfixed := True;
           end;
         end;
+        Inc(i);
       end;
       FRendered := sl;
     finally
@@ -2235,6 +2237,7 @@ var
   APDU,flag: string;
   WasEnabled: Boolean;
   w: WideString;
+  sms: TSMS;
 begin
   if FRendered = nil then exit;
   if removeDuplicates then
@@ -2247,6 +2250,7 @@ begin
   sl := FRendered;
   WasEnabled := Form1.Enabled;
   frmConnect := GetProgressDialog;
+  sms := TSMS.Create;
   try
     if Form1.CanShowProgress then
       frmConnect.ShowProgress(Form1.FProgressLongOnly);
@@ -2286,8 +2290,13 @@ begin
       Log.AddMessage('Fix DB: Clearing redundant unread flags...', lsDebug); // do not localize debug
       DelCount := 0;
       for i := 0 to sl.Count-1 do begin
-        GSMLongMsgData(GetToken(sl[i],5), ARef, ATot, An);
-        if (ATot > 1) and (An > 1) then begin
+        APDU := GetToken(sl[i],5);
+        GSMLongMsgData(APDU, ARef, ATot, An);
+        try
+          if (ATot > 1) and (An > 1) then Abort;
+          sms.PDU := APDU;
+          if not sms.IsOutgoing then sms.TimeStamp;
+        except
           flag := GetToken(sl[i],7);
           if flag <> '0' then begin
             sl[i] := SetToken(sl[i],'0',7); // clear new message flag
@@ -2305,6 +2314,7 @@ begin
     end;
     Log.AddMessage('Fix DB: Cleanup finished', lsDebug); // do not localize debug
   finally
+    sms.Free;
     FreeProgressDialog;
     Form1.Enabled := WasEnabled;
   end;
