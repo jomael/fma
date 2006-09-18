@@ -741,7 +741,7 @@ procedure TfrmNewDeviceWizard.AddDevice(Text: WideString; Address: string;
   FriendlyName, Manufacturer: WideString);
 begin
   { for modems: ImageIndex := 3 }
-  if (Text <> '') and (WidePos('MODEM',WideUpperCase(Text)) = 0) then
+  if (Text <> '') and (Pos('MODEM',WideUpperCase(Text)) = 0) then
     with lvDevices.Items.Add do begin
       Caption := Text;        // Device name
       SubItems.Add(Address);  // Peer Bluetooth address or COM port name

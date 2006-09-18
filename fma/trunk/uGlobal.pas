@@ -93,6 +93,9 @@ unit uGlobal;
 
 interface
 
+uses
+  Classes, TntClasses;
+
 function WideTrim(str: WideString): WideString;
 function WideLeftTrim(str: WideString): WideString;
 function WideRightTrim(str: WideString): WideString;
@@ -112,6 +115,11 @@ function GetToken(str: WideString; index: Integer; delimiter: WideChar = ','): W
 { Replace token number 0..n-1 in str with NewToken value, where n is taken from GetTokenCount.
   This function could be used to append a new token to the list }
 function SetToken(str,NewToken: WideString; index: Integer; delimiter: WideChar = ','): WideString;
+{ Extract all tokens from str and place them in Strings List.
+  Caller should Free Result manually! Assume that Result.count equals to GetTokenCount }
+function GetTokenList(str: WideString; delimiter: WideChar = ','): TTntStringList;
+{ Returns all tokens in wl List as a flat-wide-string, and quotes them if needed }
+function GetTokenListText(wl: TTntStringList; delimiter: WideChar = ','): WideString;
 
 procedure InitRegistry;
 
@@ -119,7 +127,7 @@ implementation
 
 uses
   gnugettext,
-  Classes, TntClasses, Registry, SysUtils, TntSysUtils, TntWideStrings;
+  Registry, SysUtils, TntSysUtils, TntWideStrings;
 
 (* Unicode *)
 
@@ -309,7 +317,7 @@ begin
   j := Length(Str);
   while (i <= j) and (str[i] = ' ') do inc(i);
   { Find right token end }
-  t := WidePos(delimiter,str)-1;
+  t := Pos(delimiter,str)-1;
   if t < 0 then t := j;
   { Right trim text }
   while (t > 0) and (str[t] = ' ') do dec(t);
@@ -349,14 +357,14 @@ begin
   { Check for empty token }
   if (i > j) or (j = 0) then begin
     { Update source }
-    WideDelete(str,1,i);
+    Delete(str,1,i);
     Result := '';
     exit;
   end;
   { Extract first token }
   if (str[i] = '"') and (str[j] = '"') then begin
     { token IS quoted }
-    s := WideCopy(str,i+1,j);
+    s := Copy(str,i+1,j);
     k := Length(s);
     j := 1; d := ''; q := 0;
     while (j <= k) do begin
@@ -379,7 +387,7 @@ begin
     end;
     if q = 1 then begin // remove last single quote
       dec(j);
-      WideDelete(d,Length(d),1);
+      Delete(d,Length(d),1);
     end;
     if j <= k then
       s := d
@@ -392,10 +400,10 @@ begin
     for i := i to j do s := s + str[i];
   end;
   { Update source }
-  WideDelete(str,1,j);
-  j := WidePos(delimiter,str);
+  Delete(str,1,j);
+  j := Pos(delimiter,str);
   if j = 0 then j := Length(str)+1;
-  WideDelete(str,1,j);
+  Delete(str,1,j);
   { Done }
   Result := s;
 end;
@@ -405,7 +413,7 @@ var
   s,d: WideString;
 begin
   Result := '';
-  s := WideTrim(str);
+  s := Trim(str);
   while s <> '' do begin
     d := GetFirstToken(s,delimiter);
     if index = 0 then begin
@@ -414,6 +422,34 @@ begin
     end;
     Dec(index);
   end;
+end;
+
+function GetTokenList(str: WideString; delimiter: WideChar): TTntStringList;
+var
+  LastEmpty: Boolean;
+  w: WideString;
+begin
+  Result := TTntStringList.Create;
+  w := Trim(str);
+  if (w <> '') and (w[Length(w)] = delimiter) then
+    LastEmpty := True
+  else
+    LastEmpty := False;
+  while w <> '' do Result.Add(GetFirstToken(w));
+  if LastEmpty then Result.Add('');
+end;
+
+function GetTokenListText(wl: TTntStringList; delimiter: WideChar = ','): WideString;
+var
+  w: WideString;
+  i: Integer;
+begin
+  w := '';
+  for i := 0 to wl.Count-1 do begin
+    if i <> 0 then w := w + delimiter;
+    w := w + WideQuoteStr(wl[i],False,delimiter);
+  end;
+  Result := w;
 end;
 
 function SetToken(str,NewToken: WideString; index: Integer; delimiter: WideChar): WideString;
@@ -438,7 +474,7 @@ var
   s: WideString;
 begin
   Result := 0;
-  s := WideTrim(str);
+  s := Trim(str);
   if (s <> '') and (s[Length(s)] = delimiter) then
     Result := 1; // case "aaa,bbb," 
   while s <> '' do begin
@@ -453,54 +489,54 @@ var
 begin
   reg := TRegistry.Create;
   try
-    reg.OpenKey('\AppEvents\EventLabels\FMA_SMSReceived', True); // do not localize
+    reg.OpenKey('\AppEvents\EventLabels\SMSReceived', True); // do not localize
     reg.WriteString('', 'SMS Received'); // do not localize
     reg.CloseKey;
 
-    reg.OpenKey('\AppEvents\EventLabels\FMA_SMSSent', True); // do not localize
+    reg.OpenKey('\AppEvents\EventLabels\SMSSent', True); // do not localize
     reg.WriteString('', 'SMS Sent'); // do not localize
     reg.CloseKey;
 
-    reg.OpenKey('\AppEvents\EventLabels\FMA_Calling', True); // do not localize
+    reg.OpenKey('\AppEvents\EventLabels\Calling', True); // do not localize
     reg.WriteString('', 'Calling Contact'); // do not localize
     reg.CloseKey;
 
-    reg.OpenKey('\AppEvents\EventLabels\FMA_CallReceived', True); // do not localize
+    reg.OpenKey('\AppEvents\EventLabels\CallReceived', True); // do not localize
     reg.WriteString('', 'Call Received'); // do not localize
     reg.CloseKey;
 
-    reg.OpenKey('\AppEvents\EventLabels\FMA_MEConnected', True); // do not localize
+    reg.OpenKey('\AppEvents\EventLabels\MEConnected', True); // do not localize
     reg.WriteString('', 'Connected to Mobile Equipment'); // do not localize
     reg.CloseKey;
 
-    reg.OpenKey('\AppEvents\EventLabels\FMA_MEDisconnected', True); // do not localize
+    reg.OpenKey('\AppEvents\EventLabels\MEDisconnected', True); // do not localize
     reg.WriteString('', 'Disconnected from Mobile Equipment'); // do not localize
     reg.CloseKey;
 
-    reg.OpenKey('\AppEvents\EventLabels\FMA_Away', True); // do not localize
+    reg.OpenKey('\AppEvents\EventLabels\Away', True); // do not localize
     reg.WriteString('', 'Proximity Away'); // do not localize
     reg.CloseKey;
 
-    reg.OpenKey('\AppEvents\EventLabels\FMA_Near', True); // do not localize
+    reg.OpenKey('\AppEvents\EventLabels\Near', True); // do not localize
     reg.WriteString('', 'Proximity Near'); // do not localize
     reg.CloseKey;
 
-    reg.OpenKey('\AppEvents\EventLabels\FMA_Alarm', True); // do not localize
+    reg.OpenKey('\AppEvents\EventLabels\Alarm', True); // do not localize
     reg.WriteString('', 'Alarm Activated'); // do not localize
     reg.CloseKey;
 
     reg.OpenKey('\AppEvents\Schemes\Apps\MobileAgent', True); // do not localize
     reg.WriteString('', 'floAt''s Mobile Agent'); // do not localize
     reg.CloseKey;
-    reg.CreateKey('\AppEvents\Schemes\Apps\MobileAgent\FMA_Calling'); // do not localize
-    reg.CreateKey('\AppEvents\Schemes\Apps\MobileAgent\FMA_CallReceived'); // do not localize
-    reg.CreateKey('\AppEvents\Schemes\Apps\MobileAgent\FMA_SMSReceived'); // do not localize
-    reg.CreateKey('\AppEvents\Schemes\Apps\MobileAgent\FMA_SMSSent'); // do not localize
-    reg.CreateKey('\AppEvents\Schemes\Apps\MobileAgent\FMA_Away'); // do not localize
-    reg.CreateKey('\AppEvents\Schemes\Apps\MobileAgent\FMA_Near'); // do not localize
-    reg.CreateKey('\AppEvents\Schemes\Apps\MobileAgent\FMA_MEConnected'); // do not localize
-    reg.CreateKey('\AppEvents\Schemes\Apps\MobileAgent\FMA_MEDisconnected'); // do not localize
-    reg.CreateKey('\AppEvents\Schemes\Apps\MobileAgent\FMA_Alarm'); // do not localize
+    reg.CreateKey('\AppEvents\Schemes\Apps\MobileAgent\Calling'); // do not localize
+    reg.CreateKey('\AppEvents\Schemes\Apps\MobileAgent\CallReceived'); // do not localize
+    reg.CreateKey('\AppEvents\Schemes\Apps\MobileAgent\SMSReceived'); // do not localize
+    reg.CreateKey('\AppEvents\Schemes\Apps\MobileAgent\SMSSent'); // do not localize
+    reg.CreateKey('\AppEvents\Schemes\Apps\MobileAgent\Away'); // do not localize
+    reg.CreateKey('\AppEvents\Schemes\Apps\MobileAgent\Near'); // do not localize
+    reg.CreateKey('\AppEvents\Schemes\Apps\MobileAgent\MEConnected'); // do not localize
+    reg.CreateKey('\AppEvents\Schemes\Apps\MobileAgent\MEDisconnected'); // do not localize
+    reg.CreateKey('\AppEvents\Schemes\Apps\MobileAgent\Alarm'); // do not localize
   finally
     reg.Free;
   end;
@@ -522,6 +558,10 @@ initialization
   ww := '"first" second , last';
   qq := GetFirstToken(ww);
   if qq <> '"first" second' then Halt(1);
+
+  ww := '"first, second" , last';
+  qq := GetFirstToken(ww);
+  if qq <> 'first, second' then Halt(1);
 
   ww := ' first "second" ,last';
   qq := GetFirstToken(ww);

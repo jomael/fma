@@ -11376,8 +11376,9 @@ var
   cnt,i,stat: integer;
   sl: TStrings;
   flag: string;
-  s: WideString;
   data: PFmaExplorerNode;
+  wl: TTntStringList;
+  s: WideString;
 begin
   Result := 0;
   data := ExplorerNew.GetNodeData(rootNode);
@@ -11387,55 +11388,49 @@ begin
   cnt := 0;
   sl := TStrings(data.data);
   for i := 0 to sl.Count-1 do begin
-    s := sl[i];
-    if Trim(s) = '' then continue;
-
-    { DB upgrade 0.10.29 build, where count is changed from 6 to 8 }
-    if GetTokenCount(s) = 6 then
-      s := s + ',';  // set date field as empty (unknown)
-    if GetTokenCount(s) = 7 then begin
-      s := s + ',';
-      if MarkAsRead then s := s + '0' // clear new message flag
-      else begin
-        s := s + '1'; // set the new message flag
-        inc(cnt);
-      end;
-      sl[i] := s;
+    wl := GetTokenList(sl[i]);
+    if wl.Count < 6 then begin
+      wl.Free;
       continue;
     end;
     try
-      flag := GetToken(s,7);
-      stat := StrToInt(flag);
-      if stat <> byte(not MarkAsRead) then begin
-        if ModifyPDU = GetToken(s,5) then begin // should we modify the item?
-          s := Copy(s,1,Length(s)-Length(flag));
-          if MarkAsRead then s := s + '0' // clear new message flag
-          else begin
-            s := s + '1'; // set the new message flag
-            inc(cnt);
+      { Should we upgrade DB? }
+      if wl.Count < 8 then begin
+        if wl.Count = 6 then begin
+          { DB upgrade 0.10.29 build, where count is changed from 6 to 8 }
+          wl.Add(''); // set date field as empty (unknown)
+        end;
+        if wl.Count = 7 then begin
+          wl.Add(IntToStr(byte(not MarkAsRead))); // set the new message flag
+        end;
+        sl[i] := GetTokenListText(wl); // save DB changes
+      end;
+      { Counts new messages }
+      try
+        flag := wl[7];
+        stat := StrToInt(flag);
+        if stat <> byte(not MarkAsRead) then begin
+          if AnsiCompareStr(ModifyPDU,wl[5]) = 0 then begin // should we modify the item?
+            wl[7] := IntToStr(byte(not MarkAsRead)); // set the new message flag
+            if not MarkAsRead then inc(cnt);
+            sl[i] := GetTokenListText(wl); // save DB changes
+            continue;
           end;
-          sl[i] := s;
-          continue;
+        end;
+        if stat <> 0 then inc(cnt);
+      except
+        Log.AddMessageFmt(_('Database: Error loading data (DB Index %d)'), [i], lsError);
+        if FindCmdLineSwitch('FIXDB') then begin
+          sl[i] := '';
+          Log.AddMessageFmt(_('Database: Removed incorrect data (DB Index: %d)'), [i], lsInformation);
         end;
       end;
-      if stat <> 0 then inc(cnt);
-    except
-      Log.AddMessageFmt(_('Database: Error loading data (DB Index %d)'), [i], lsError);
-      if FindCmdLineSwitch('FIXDB') then begin
-        sl[i] := '';
-        Log.AddMessageFmt(_('Database: Removed incorrect data (DB Index: %d)'), [i], lsInformation);
-      end;
+    finally
+      wl.Free;
     end;
   end;
   { Update explorer data }
   s := data.Text;
-  {
-  i := Pos(' (',s); // remove tail ' (num)' string
-  if i <> 0 then
-    data.Text := Copy(s,1,i-1);
-  if cnt <> 0 then
-    data.Text := data.Text + ' (' + IntToStr(cnt) + ')';
-  }
   if data.SpecialImagesFlags and $80 <> 0 then begin
     data.SpecialImages := cnt;
     if cnt > 0 then

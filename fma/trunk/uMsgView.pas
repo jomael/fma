@@ -732,6 +732,7 @@ var
   dt: string;
   Ref, Tot, N: Integer;
   dbfixed: boolean;
+  wl: TTntStringList;
 begin
   if Sem then exit;
   Sem := True;
@@ -768,88 +769,95 @@ begin
       i := 0;
       while i < sl.Count do begin
         if FRenderCanceled then break;
-        if Trim(sl[i]) = '' then begin
-          sl.Delete(i);
+
+        wl := GetTokenList(sl[i]);
+        if wl.Count < 6 then begin
+          wl.Free;
+          Inc(i);
           continue;
         end;
-        Node := ListMsg.AddChild(nil);
         try
-          item := ListMsg.GetNodeData(Node);
-          item.pdu := GetToken(sl[i], 5);
-          item.ownerindex := i;
-
-          sms := Tsms.Create;
+          Node := ListMsg.AddChild(nil);
           try
-            sms.PDU := item.pdu;
+            item := ListMsg.GetNodeData(Node);
+            item.pdu := wl[5];
+            item.ownerindex := i;
 
-            item.number := sms.Number;
-            item.from := Form1.ContactNumberByTel(item.number);
-            if sms.IsOutgoing then
-              item.date := 0 
-            else
-              item.date := sms.TimeStamp;
-            item.msg := sms.Text;
-
-            item.stateindex := StrToInt(GetToken(sl[i], 1)) and $FFFF; // index
-
-            dt := GetToken(sl[i], 0);
-            if StrToInt(dt) = 1 then begin // ME
-              item.ImageIndex := 14;
-              item.StateIndex := item.StateIndex or $600000; // set to 0 shl 16
-            end
-            else if StrToInt(dt) = 2 then begin // SM
-              item.ImageIndex := 15;
-              item.StateIndex := item.StateIndex or $640000; // set to 4 shl 16
-            end
-            else {3} begin // PC
-              if sms.IsOutgoing then item.ImageIndex := 17
-              else item.ImageIndex := 16;
-              item.StateIndex := item.StateIndex or $680000; // set to 8 shl 16
-            end;
-
-            // Direction Bit
-            if sms.IsOutgoing then item.StateIndex := item.StateIndex or $020000
-              else item.StateIndex := item.StateIndex or $010000;
-
-            // New fields in 0.10.29a build
+            sms := Tsms.Create;
             try
-              dt := GetToken(sl[i], 6);
-              if dt <> '' then item.date := StrToDateTime(dt);
-              item.newmsg := StrToInt(GetToken(sl[i], 7)) <> 0;
-            except
-            end;
+              sms.PDU := item.pdu;
 
-            // Long SMS? - show only first SMS message
-            GetLongMsgData(Node, Ref, Tot, N);
-            if (Tot > 1) and (N > 1) then begin
-              ListMsg.IsVisible[Node] := False;
-              if item.newmsg then begin
-                { Don't set non-first Long SMS part as new flag }
-                item.newmsg := False;
-                if FindCmdLineSwitch('FIXDB') then begin
-                  sl[i] := SetToken(sl[i],'0',7);
-                  Log.AddMessageFmt(_('Database: Removed new message flag (DB Index: %d)'), [i], lsInformation);
-                  dbfixed := True;
+              item.number := sms.Number;
+              item.from := Form1.ContactNumberByTel(item.number);
+              if sms.IsOutgoing then
+                item.date := 0 
+              else
+                item.date := sms.TimeStamp;
+              item.msg := sms.Text;
+
+              item.stateindex := StrToInt(wl[1]) and $FFFF; // index
+
+              dt := wl[0];
+              if StrToInt(dt) = 1 then begin // ME
+                item.ImageIndex := 14;
+                item.StateIndex := item.StateIndex or $600000; // set to 0 shl 16
+              end
+              else if StrToInt(dt) = 2 then begin // SM
+                item.ImageIndex := 15;
+                item.StateIndex := item.StateIndex or $640000; // set to 4 shl 16
+              end
+              else {3} begin // PC
+                if sms.IsOutgoing then item.ImageIndex := 17
+                else item.ImageIndex := 16;
+                item.StateIndex := item.StateIndex or $680000; // set to 8 shl 16
+              end;
+
+              // Direction Bit
+              if sms.IsOutgoing then item.StateIndex := item.StateIndex or $020000
+                else item.StateIndex := item.StateIndex or $010000;
+
+              // New fields in 0.10.29a build
+              try
+                dt := wl[6];
+                if dt <> '' then item.date := StrToDateTime(dt);
+                item.newmsg := StrToInt(wl[7]) <> 0;
+              except
+              end;
+
+              // Long SMS? - show only first SMS message
+              GetLongMsgData(Node, Ref, Tot, N);
+              if (Tot > 1) and (N > 1) then begin
+                ListMsg.IsVisible[Node] := False;
+                if item.newmsg then begin
+                  { Don't set non-first Long SMS part as new flag }
+                  item.newmsg := False;
+                  if FindCmdLineSwitch('FIXDB') then begin
+                    sl[i] := SetToken(sl[i],'0',7);
+                    Log.AddMessageFmt(_('Database: Removed new message flag (DB Index: %d)'), [i], lsInformation);
+                    dbfixed := True;
+                  end;
                 end;
               end;
+            finally
+              sms.Free;
             end;
-          finally
-            sms.Free;
+            if i mod 8 = 0 then begin
+              Application.ProcessMessages;
+              if Application.Terminated then break;
+            end;
+          except
+            ListMsg.DeleteNode(Node);
+            Log.AddMessageFmt(_('Database: Error loading data (DB Index %d)'), [i], lsError);
+            if FindCmdLineSwitch('FIXDB') then begin
+              sl[i] := '';
+              Log.AddMessageFmt(_('Database: Removed incorrect data (DB Index: %d)'), [i], lsInformation);
+              dbfixed := True;
+            end;
           end;
-          if i mod 8 = 0 then begin
-            Application.ProcessMessages;
-            if Application.Terminated then break;
-          end;
-        except
-          ListMsg.DeleteNode(Node);
-          Log.AddMessageFmt(_('Database: Error loading data (DB Index %d)'), [i], lsError);
-          if FindCmdLineSwitch('FIXDB') then begin
-            sl[i] := '';
-            Log.AddMessageFmt(_('Database: Removed incorrect data (DB Index: %d)'), [i], lsInformation);
-            dbfixed := True;
-          end;
+        finally
+          wl.Free;
+          Inc(i);
         end;
-        Inc(i);
       end;
       FRendered := sl;
     finally

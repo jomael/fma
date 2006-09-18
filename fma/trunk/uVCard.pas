@@ -467,7 +467,7 @@ var
       PWValue := DecodePropertyValue(PParams,PValue);
       // PWValue should now contain decoded value (widestring)
 
-      if WidePos(';',PWValue) <> 0 then begin
+      if Pos(';',PWValue) <> 0 then begin
         Surname := GetFirstToken(PWValue,';');
         Name := PWValue;
       end
