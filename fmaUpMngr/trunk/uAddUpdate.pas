@@ -62,7 +62,7 @@ type
     btnTo: TButton;
     edToVer: TComboBox;
     Button3: TButton;
-    Button4: TButton;
+    btnClose: TButton;
     ActionList1: TActionList;
     ActionDiffBuild: TAction;
     OpenDialog1: TOpenDialog;
@@ -73,7 +73,7 @@ type
     StatusBar1: TStatusBar;
     cbDoHistory: TCheckBox;
     Button6: TButton;
-    procedure Button4Click(Sender: TObject);
+    procedure btnCloseClick(Sender: TObject);
     procedure ActionDiffBuildUpdate(Sender: TObject);
     procedure btnFromClick(Sender: TObject);
     procedure btnToClick(Sender: TObject);
@@ -104,7 +104,7 @@ uses Unit1, uGenerate, uDiffOptions;
 
 { TfrmAddUpdate }
 
-procedure TfrmAddUpdate.Button4Click(Sender: TObject);
+procedure TfrmAddUpdate.btnCloseClick(Sender: TObject);
 begin
   Close;
 end;
@@ -138,6 +138,7 @@ end;
 
 procedure TfrmAddUpdate.FormShow(Sender: TObject);
 begin
+  btnClose.Caption := '&Cancel';
   frmDiffOptions.Secret := '';
   ReadyUpdates.Clear;
   edToVer.SetFocus;
@@ -189,8 +190,8 @@ begin
     mtConfirmation,[mbYes,mbNo],0) <> ID_YES then
     exit;
   Button3.Enabled := False;
-  Button4.Enabled := False;
   Button6.Enabled := False;
+  btnClose.Enabled := False;
   Form1.StatusBar1.Panels[1].Text := 'Building...';
   try
     if frmBuild.BuildUpdates then begin
@@ -201,14 +202,14 @@ begin
         IntToStr(frmBuild.BuildSize div 1024)+' KB',mtInformation,[mbOK],0);
       ModalResult := mrOk;
     end
-    else begin
+    else
       edToVerChange(nil);
-    end;
   finally
     Form1.StatusBar1.Panels[1].Text := '';
     Button3.Enabled := True;
-    Button4.Enabled := True;
     Button6.Enabled := True;
+    btnClose.Enabled := True;
+    btnClose.Caption := 'OK';
   end;
 end;
 

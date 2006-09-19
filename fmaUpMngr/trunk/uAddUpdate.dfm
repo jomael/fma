@@ -65,7 +65,7 @@ object frmAddUpdate: TfrmAddUpdate
     Width = 297
     Height = 21
     TabOrder = 1
-    Text = 'C:\Program Files\Fma\MobileAgent.exe'
+    Text = 'C:\Program Files\FMA 2\MobileAgent.exe'
   end
   object btnFrom: TButton
     Left = 360
@@ -82,7 +82,7 @@ object frmAddUpdate: TfrmAddUpdate
     Width = 297
     Height = 21
     TabOrder = 4
-    Text = 'C:\Projects\cvsroot\fma\MobileAgent.exe'
+    Text = 'C:\Projects\FMA\fma\trunk\MobileAgent.exe'
   end
   object btnTo: TButton
     Left = 360
@@ -104,22 +104,22 @@ object frmAddUpdate: TfrmAddUpdate
     OnChange = edToVerChange
   end
   object Button3: TButton
-    Left = 128
+    Left = 268
     Top = 252
-    Width = 101
+    Width = 77
     Height = 25
     Action = ActionDiffBuild
     TabOrder = 11
   end
-  object Button4: TButton
+  object btnClose: TButton
     Left = 360
     Top = 252
     Width = 77
     Height = 25
     Cancel = True
-    Caption = 'OK'
+    Caption = '&Cancel'
     TabOrder = 12
-    OnClick = Button4Click
+    OnClick = btnCloseClick
   end
   object cbDoReverse: TCheckBox
     Left = 12
@@ -185,7 +185,7 @@ object frmAddUpdate: TfrmAddUpdate
     Left = 260
     Top = 200
     object ActionDiffBuild: TAction
-      Caption = '&Build Files...'
+      Caption = '&Build...'
       OnExecute = ActionDiffBuildExecute
       OnUpdate = ActionDiffBuildUpdate
     end

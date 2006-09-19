@@ -11,7 +11,9 @@ uses
   uPassword in 'uPassword.pas' {frmPassword},
   uOptions in 'uOptions.pas' {frmOptions},
   uVersion in '..\..\fma\trunk\uVersion.pas',
-  uGlobal in '..\..\fma\trunk\uGlobal.pas';
+  uGlobal in '..\..\fma\trunk\uGlobal.pas',
+  uAddVersion in 'uAddVersion.pas' {frmAddVersion},
+  uDeployOptions in 'uDeployOptions.pas' {frmDeployOptions};
 
 {$R *.res}
 
@@ -26,5 +28,7 @@ begin
   Application.CreateForm(TfrmDiffOptions, frmDiffOptions);
   Application.CreateForm(TfrmPassword, frmPassword);
   Application.CreateForm(TfrmOptions, frmOptions);
+  Application.CreateForm(TfrmAddVersion, frmAddVersion);
+  Application.CreateForm(TfrmDeployOptions, frmDeployOptions);
   Application.Run;
 end.

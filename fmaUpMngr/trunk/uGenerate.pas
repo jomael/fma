@@ -73,7 +73,7 @@ var
 
 implementation
 
-uses Zlib, uolDiff, uAddUpdate, Unit1, uDiffOptions;
+uses Zlib, uolDiff, uAddUpdate, Unit1, uDiffOptions, uAddVersion;
 
 {$R *.dfm}
 
@@ -90,6 +90,7 @@ var
   Passw: string;
 begin
   Result := False;
+  Timer1.Interval := 7000;
   Show;
   Update;
   FExiting := False;
@@ -243,7 +244,6 @@ begin
   ProgressBar1.Position := 0;
   Label1.Caption := 'Initializing engine...';
   lblTimeLeft.Caption := 'Calculating';
-  Timer1.Interval := 7000;
   Timer1.Enabled := True;
   FStartTime := Now;
 end;
@@ -316,13 +316,15 @@ end;
 function TfrmBuild.BuildZ(AppName,ZName: String): boolean;
 begin
   Result := False;
+  Timer1.Interval := 500;
   Show;
   Update;
   FExiting := False;
   try
     FTotalSize := 0;
     with Form1 do begin
-      Enabled := False; // HACK! Do not allow focus change since Self is not modal
+      frmAddVersion.Enabled := False; // HACK! Do not allow focus change since Self is not modal
+      frmAddVersion.StatusBar1.Panels[1].Text := 'Building...';
       try
         FReadyUpdates.Clear;
         Self.Label1.Caption := 'Building deployment file...';
@@ -332,7 +334,9 @@ begin
         DoUpdateReady(ZName);
         if not Result then DoRollback;
       finally
-        Enabled := True;
+        frmAddVersion.StatusBar1.Panels[0].Text := '';
+        frmAddVersion.StatusBar1.Panels[1].Text := 'Completed';
+        frmAddVersion.Enabled := True;
       end;
     end;
   finally
@@ -359,7 +363,7 @@ begin
   str := TFileStream.Create(AppFile, fmOpenRead or fmShareDenyNone);
   try
     fSize := str.Size;
-    dst := TFileStream.Create(ZFile, fmCreate or fmShareExclusive); // do not localize
+    dst := TFileStream.Create(ZFile, fmCreate or fmShareExclusive); 
     try
       with TCompressionStream.Create(clMax,dst) do
       try

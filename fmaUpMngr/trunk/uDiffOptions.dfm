@@ -42,9 +42,9 @@ object frmDiffOptions: TfrmDiffOptions
       Caption = 'Details:'
     end
     object lblOptimize: TLabel
-      Left = 56
+      Left = 64
       Top = 108
-      Width = 253
+      Width = 245
       Height = 33
       AutoSize = False
       WordWrap = True
@@ -70,7 +70,7 @@ object frmDiffOptions: TfrmDiffOptions
     object rbCustomBuild: TRadioButton
       Left = 12
       Top = 60
-      Width = 100
+      Width = 109
       Height = 17
       Caption = 'Custom setting:'
       Checked = True
@@ -176,7 +176,7 @@ object frmDiffOptions: TfrmDiffOptions
     object rbPassNone: TRadioButton
       Left = 12
       Top = 20
-      Width = 84
+      Width = 85
       Height = 17
       Caption = 'None'
       Checked = True
@@ -186,7 +186,7 @@ object frmDiffOptions: TfrmDiffOptions
     object rbPassWord: TRadioButton
       Left = 12
       Top = 40
-      Width = 84
+      Width = 85
       Height = 17
       Caption = 'Password:'
       TabOrder = 1

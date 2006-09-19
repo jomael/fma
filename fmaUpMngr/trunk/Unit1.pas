@@ -200,17 +200,20 @@ type
     ToolButton15: TToolButton;
     ToolButton16: TToolButton;
     ClearDefault1: TMenuItem;
-    N3: TMenuItem;
-    Delete3: TMenuItem;
     GetMD5: TMenuItem;
     OpenDialog2: TOpenDialog;
     ActionUpdateMD5: TAction;
     MD5Update1: TMenuItem;
-    Mirror1: TMenuItem;
-    ToolButton13: TToolButton;
     ActionDeployApp: TAction;
     ToolButton17: TToolButton;
     ToolButton18: TToolButton;
+    NewVersion1: TMenuItem;
+    ActionRefresh: TAction;
+    ToolButton13: TToolButton;
+    ToolButton19: TToolButton;
+    N6: TMenuItem;
+    RefreshView1: TMenuItem;
+    ools1: TMenuItem;
     procedure TreeView1Change(Sender: TObject; Node: TTreeNode);
     procedure Exit1Click(Sender: TObject);
     procedure ActionAddUpdateUpdate(Sender: TObject);
@@ -271,6 +274,7 @@ type
     procedure ActionUpdateMD5Update(Sender: TObject);
     procedure pmExplorerPopup(Sender: TObject);
     procedure ActionDeployAppExecute(Sender: TObject);
+    procedure ActionRefreshExecute(Sender: TObject);
   private
     { Private declarations }
     FSyncingCode,FLoadingFile,FModified,FInitialized: boolean;
@@ -295,19 +299,21 @@ type
     procedure UpdateDetails;
     procedure UpdateRecentFiles;
     procedure ExplorerOpenItem(ActivateTree: boolean = False);
-    procedure SyncGUI2Code(ReloadFile: boolean = False);
-    procedure SyncCode2GUI;
     procedure NewView(ClearScript: boolean = True);
     procedure LoadSettings;
     procedure SaveSettings;
     function Get_Syncing: boolean;
+    procedure DoAddNewVersion(ALabel: string; DoUpdates: Boolean = True);
   public
     { Public declarations }
 {$IFNDEF VER150}
     ThemeManager1: TThemeManager;
 {$ENDIF}
+    procedure SyncGUI2Code(ReloadFile: boolean = False);
+    procedure SyncCode2GUI;
     procedure ClearRecentHistory;
   published
+    property ViewFilter: string read FFilter;
     property IsSyncChanges: boolean read Get_Syncing;
     property ScriptChanged: boolean read Get_Changed write Set_Changed;
     property GUIChanged: boolean read Get_ChangedGUI write Set_ChangedGUI;
@@ -323,7 +329,7 @@ implementation
 uses
   IniFiles, DateUtils, IcsMD5, Zlib,
   uAddUpdate, uVersion, uEditMirror, uGlobal, uolDiff, uDiffOptions, uOptions,
-  uGenerate;
+  uGenerate, uAddVersion;
 
 {$R *.dfm}
 {$R WinXP.res}
@@ -1368,41 +1374,14 @@ end;
 
 procedure TForm1.ActionAddVersionExecute(Sender: TObject);
 var
-  i: integer;
-  s: string;
-  ver: TTreeNode;
+  s: String;
 begin
   { Switch to Versions tab }
   TargetVersions1.Click;
   { Create version }
-  if InputQuery('Add version...','Enter version build:',s) then begin
-    for i := 0 to TreeView1.Items[0].Count-1 do
-      if AnsiCompareText(TreeView1.Items[0].Item[i].Text,s) = 0 then
-        raise Exception.Create('This version already exists'); 
-    { Create new 'dummy' version }
-    ver := TreeView1.Items.AddChild(TreeView1.Items[0],s);
-    with ver do begin
-      ImageIndex := 20;
-      SelectedIndex := 20;
-      { indicate new version }
-      inc(NewVerCounter);
-      StateIndex := MAXWORD + NewVerCounter;
-    end;
-    if not TreeView1.Items[0].Expanded then TreeView1.Items[0].Expand(False);
-    { Find last 'real' version before just created }
-    i := ver.Index;
-    while i <> -1 do begin
-      if (i = 0) or (TreeView1.Items[0].Item[i].ImageIndex <> 20) then begin
-        TreeView1.Selected := TreeView1.Items[0].Item[i];
-        break;
-      end;
-      dec(i);
-    end;
-    { Check filter restrictions }
-    if Pos(FFilter,s) <> 1 then
-      MessageDlg('This version will not be visible once update is created '+
-        'due to current Filter settings.', mtWarning, [mbOk], 0);
-  end;
+  s := '';
+  if InputQuery('Create Folder','Enter new version name:',s) and (Trim(s) <> '') then
+    DoAddNewVersion(s,False);
 end;
 
 procedure TForm1.ExplorerOpenItem(ActivateTree: boolean);
@@ -1613,74 +1592,57 @@ begin
 end;
 
 procedure TForm1.ActionDeployAppExecute(Sender: TObject);
-var
-  i,j: integer;
-  s,d,z,ver: string;
-  sl: TStringList;
-  Found,InMain: boolean;
 begin
   { Switch to Versions tab }
   TargetVersions1.Click;
   { Create version }
-  if InputQuery('Add full update...','Enter version build:',ver) then begin
-    for i := 0 to TreeView1.Items[0].Count-1 do
-      if AnsiCompareText(TreeView1.Items[0].Item[i].Text,ver) = 0 then
-        raise Exception.Create('This version already exists');
-    { Check filter restrictions }
-    if Pos(FFilter,ver) <> 1 then
-      MessageDlg('This version will not be visible once update is created '+
-        'due to current Filter settings.', mtWarning, [mbOk], 0);
-    OpenDialog2.Title := 'Select Application to Deploy...';
-    OpenDialog2.Filter := 'Application Files|*.exe';
-    OpenDialog2.FileName := '';
-    if OpenDialog2.Execute then begin
-      StatusBar1.Panels[1].Text := 'Building...';
-      StatusBar1.Update;
-      sl := TStringList.Create;
-      try
-        sl.Assign(Memo1.Lines);
-        { find 1st occurance ot any next ver }
-        j := -1; Found := False; InMain := False;
-        while not Found and (j < sl.Count-1) do begin
-          inc(j);
-          if Copy(sl[j],1,1) = ';' then continue;
-          if Pos('[main]',sl[j]) <> 0 then InMain := True
-          else begin
-            if InMain and (Copy(sl[j],1,1) = '[') then begin
-              while (j <> 0) do begin
-                if Trim(sl[j-1]) <> '' then break;
-                dec(j);
-              end;
-              break;
-            end;
-          end;
-        end;
-        { MobileAgent-*-0.1.0.99=MobileAgent-0.1.0.99.exe,2000000,null[,<md5>] }
-        s := ExtractFileName(OpenDialog2.FileName);
-        d := ChangeFileExt(s,'-'+ver+'.z');
-        z := ExtractFilePath(OpenDialog1.FileName) + d;
-        if frmBuild.BuildZ(OpenDialog2.FileName,z) then begin
-          if frmBuild.BuildSize = 0 then Abort;
-          s := frmOptions.Edit3.Text + '-*-' + ver + '=' + d + ',' + IntToStr(frmBuild.BuildSize) + ',null';
-          { MD5 update file }
-          s := s + ',' + FileMD5(z);
-          sl.Insert(j,s);
-          { Notify user }
-          StatusBar1.Panels[1].Text := '';
-          MessageBeep(MB_ICONEXCLAMATION);
-          MessageDlg('Build successful!'+sLineBreak+sLineBreak+
-            'Update total size (deployed application) is '+
-            IntToStr(frmBuild.BuildSize div 1024)+' KB',mtInformation,[mbOK],0);
-          { Update code }
-          Memo1.Lines.Assign(sl);
-          SyncGUI2Code; // save settings
-        end;
-      finally
-        sl.Free;
-        StatusBar1.Panels[1].Text := '';
-      end;
-    end;
+  frmAddVersion.ForceDeployment(mrNone);
+  if frmAddVersion.ShowModal = mrOk then
+    DoAddNewVersion(frmAddVersion.GetVersionLabel);
+end;
+
+procedure TForm1.DoAddNewVersion(ALabel: string; DoUpdates: boolean);
+var
+  vnode: TTreeNode;
+  i: integer;
+  s: string;
+begin
+  s := ALabel;
+  for i := 0 to TreeView1.Items[0].Count-1 do
+    if AnsiCompareText(TreeView1.Items[0].Item[i].Text,s) = 0 then
+      raise Exception.Create('This version already exists');
+  { Create new 'dummy' version }
+  vnode := TreeView1.Items.AddChild(TreeView1.Items[0],s);
+  with vnode do begin
+    ImageIndex := 20;
+    SelectedIndex := 20;
+    { indicate new version }
+    inc(NewVerCounter);
+    StateIndex := MAXWORD + NewVerCounter;
   end;
+  if not TreeView1.Items[0].Expanded then TreeView1.Items[0].Expand(False);
+  { Find last 'real' version before just created }
+  i := vnode.Index;
+  while i <> -1 do begin
+    if (i = 0) or (TreeView1.Items[0].Item[i].ImageIndex <> 20) then begin
+      TreeView1.Selected := TreeView1.Items[0].Item[i];
+      break;
+    end;
+    dec(i);
+  end;
+  { Check filter restrictions }
+  if Pos(FFilter,s) <> 1 then
+    MessageDlg('This version will not be visible once update is created '+
+      'due to current Filter settings.', mtWarning, [mbOk], 0);
+  if DoUpdates then begin
+    ActionAddUpdate.Update;
+    ActionAddUpdate.Execute;
+  end;
+end;
+
+procedure TForm1.ActionRefreshExecute(Sender: TObject);
+begin
+  SyncGUI2Code(True);
 end;
 
 end.
