@@ -105,6 +105,7 @@ type
     FTitle: WideString;
     FMenuList: TTntStrings;
     FUIOpen: Boolean;
+    function UseSEcommands: Boolean;
   protected
     { Protected declarations }
     procedure Init; safecall;
@@ -162,7 +163,7 @@ var
 begin
   FUIOpen:=False;
   if Form1.FConnected then begin
-    if Form1.IsK750Clone then begin
+    if UseSEcommands then begin
       Form1.TxAndWait('AT*SEAM="FMA",13'); // do not localize
       sl := TTntStringList.Create;
       try
@@ -243,7 +244,7 @@ begin
   FType := DLG_SUBMENU;
   Log.AddScriptMessage('AccessoriesMenu.Update', lsDebug); // do not localize debug
 
-  if Form1.IsK750Clone then begin
+  if UseSEcommands then begin
     Com := 'AT*SELIST="' + WideStringToUTF8String(FTitle) + '",3,'; // do not localize
     If FSelected>0 Then
       Com := Com + IntToStr(FSelected-1) + ',' // do not localize
@@ -269,13 +270,13 @@ begin
       // Remove last char in W. In next iteration this will remove last UTF-8 encoded char in TempBuf (from 1 to 3 bytes)
       SetLength(W, Length(W)-1);
     until false;
-    if Form1.IsK750Clone then
+    if UseSEcommands then
       TempBuf := ',"' + TempBuf + '",0,0,0,0'
     else
       TempBuf := ',"' + TempBuf + '"';
 
     // Check if AT command is not too long
-    if ((ComLen + Length(Buf) + Length(TempBuf)) > 200) and not Form1.IsK750Clone then begin
+    if ((ComLen + Length(Buf) + Length(TempBuf)) > 200) and not UseSEcommands then begin
       // It is too long, set final_flag to 0, we will continue
       Buf := Com + IntToStr(ComCount) + Buf + ',0';
       // Send AT command
@@ -293,7 +294,7 @@ begin
   end;
 
   // Send rest of menu to phone with final_flag set to 1
-  if Form1.IsK750Clone then
+  if UseSEcommands then
     Buf := Com + IntToStr(ComCount) + ',1,1' + Buf 
   else
     Buf := Com + IntToStr(ComCount) + Buf + ',1'; 
@@ -341,7 +342,7 @@ begin
   FType := DLG_OPTION;
   Log.AddScriptMessage('AccessoriesMenu.DlgOption'); // do not localize debug
 
-  if Form1.IsK750Clone then begin
+  if UseSEcommands then begin
     buf := 'AT*SELIST="' + WideStringToUTF8String(Copy(FTitle,1,15)) + '",3,'; // do not localize
     If FSelected > 0 Then
       buf := buf + IntToStr(FSelected-1) + ',' // do not localize
@@ -353,7 +354,7 @@ begin
     buf := 'AT*EAID=5,' + IntToStr(FNextState) + ',' + '"' +  WideStringToUTF8String(Copy(FTitle,1,15)) + '",' + IntToStr(FSelected) + ',' + IntToStr(FMenuList.Count);
 
   for i := 0 to FMenuList.Count - 1 do begin
-    if Form1.IsK750Clone then
+    if UseSEcommands then
       buf := buf + ',"' + WideStringToUTF8String(Copy(FMenuList.Strings[i],1,15)) + '",0,0,0,0'
     else
       buf := buf + ',"' + WideStringToUTF8String(Copy(FMenuList.Strings[i],1,15)) + '"';
@@ -381,7 +382,7 @@ begin
 
   if TimeoutS > 0 then begin
     if TimeoutS > 10 then Exception.Create(_('TimeoutS out of range (0-10)'));
-    if Form1.IsK750Clone then 
+    if UseSEcommands then 
       buf := ',' + IntToStr(TimeoutS * 1000)
     else
       buf := ',' + IntToStr(TimeoutS * 10);
@@ -389,7 +390,7 @@ begin
   else
     buf := '';
 
-  if Form1.IsK750Clone then 
+  if UseSEcommands then 
     Form1.ScheduleTxAndWait('AT*SELERT="'+WideStringToUTF8String(Copy(Msg,1,160))+'",6,1'+buf) // do not localize
   else 
     Form1.ScheduleTxAndWait('AT*EAID=1,' + IntToStr(FNextState) + ',"' + WideStringToUTF8String(Copy(Msg,1,160)) + '"' + buf); // do not localize
@@ -414,7 +415,7 @@ begin
   FGeneralEvent := Event;
   Log.AddScriptMessage('AccessoriesMenu.DlgYesNo', lsDebug); // do not localize debug
 
-  if Form1.IsK750Clone then begin
+  if UseSEcommands then begin
     Form1.ScheduleTxAndWait('AT*SEYNQ="","'+WideStringToUTF8String(Copy(Msg,1,160))+'",1'); // do not localize
   end
   else begin
@@ -443,7 +444,7 @@ begin
   FGeneralEvent := Event;
   Log.AddScriptMessage('AccessoriesMenu.DlgOnOff', lsDebug); // do not localize debug
 
-  if Form1.IsK750Clone then begin
+  if UseSEcommands then begin
     Form1.ScheduleTxAndWait('AT*SEONO="'+WideStringToUTF8String(Copy(Title,1,15))+'",'+IntToStr(Default)+',1'); // do not localize
   end
   else begin
@@ -471,7 +472,7 @@ begin
   FGeneralEvent := Event;
   Log.AddScriptMessage('AccessoriesMenu.DlgPercent: Title="'+Title+'" Event="'+Event+'" Steps='+IntToStr(Steps)+' Pos='+IntToStr(Pos), lsDebug); // do not localize debug
 
-  if Form1.IsK750Clone then begin
+  if UseSEcommands then begin
     Form1.ScheduleTxAndWait('AT*SEGAUGE="'+WideStringToUTF8String(Copy(Title,1,15))+'",2,1,0,'+IntToStr(pos)+','+IntToStr(Steps)); // do not localize
   end
   else begin
@@ -498,7 +499,7 @@ begin
   FInputMax := MaxLen;
   Log.AddScriptMessage('AccessoriesMenu.DlgInputStr: Title="'+Title+'" Prompt="'+Prompt+'" MaxLen='+IntToStr(MaxLen), lsDebug); // do not localize debug
 
-  if Form1.IsK750Clone then begin
+  if UseSEcommands then begin
     Form1.ScheduleTxAndWait('AT*SESTRI="'+WideStringToUTF8String(Copy(Title,1,15))+'","'+WideStringToUTF8String(Copy(Prompt,1,15))+'","'+WideStringToUTF8String(Copy(Copy(DefaultStr,1,MaxLen),1,100))+'",0,0,1'); // do not localize
   end
   else begin
@@ -527,7 +528,7 @@ begin
   FInputMax := MaxVal;
   Log.AddScriptMessage('AccessoriesMenu.DlgInputInt: Title="'+Title+'" Prompt="'+Prompt+'" MinVal='+IntToStr(MinVal)+' MaxVal='+IntToStr(MaxVal)+' DefaultVal='+IntToStr(DefaultVal), lsDebug); // do not localize debug
 
-  if Form1.IsK750Clone then begin
+  if UseSEcommands then begin
     Form1.ScheduleTxAndWait('AT*SESTRI="'+WideStringToUTF8String(Copy(Title,1,15))+'","'+WideStringToUTF8String(Copy(Prompt,1,15))+'","'+IntToStr(DefaultVal)+'",0,2,1'); // do not localize
   end
   else begin
@@ -547,7 +548,7 @@ begin
   FType := DLG_INFORMATION;
   Log.AddScriptMessage('AccessoriesMenu.DlgInformation: Title="'+Title+'" Msg="'+Msg+'"', lsDebug); // do not localize debug
 
-  if Form1.IsK750Clone then begin
+  if UseSEcommands then begin
     Form1.ScheduleTxAndWait('AT*SELERT="'+WideStringToUTF8String(Copy(Msg,1,160))+'",4,1,"'+WideStringToUTF8String(Copy(Title,1,15))+'"'); // do not localize
   end
   else begin
@@ -570,7 +571,7 @@ begin
   FGeneralEvent := Event;
   Log.AddScriptMessage('AccessoriesMenu.DlgFeedback: Title="'+Title+'" Event="'+event+'"', lsDebug); // do not localize debug
 
-  if Form1.IsK750Clone then begin
+  if UseSEcommands then begin
     Form1.ScheduleTxAndWait('AT*SELERT="'+WideStringToUTF8String(Copy(Title,1,15))+'",6,1'); // do not localize
   end
   else begin
@@ -583,7 +584,7 @@ OpenUI()  [Opens an UI session]
 *******************************************************************************}
 procedure TAccessoriesMenu.OpenUI;
 begin
-  if Form1.IsK750Clone and not FUIOpen and Form1.FConnected then
+  if UseSEcommands and not FUIOpen and Form1.FConnected then
     Form1.TxAndWait('AT*SEUIS=1'); // do not localize
   FUIOpen:=True;
 end;
@@ -593,7 +594,7 @@ CloseUI() [Closes an UI session]
 *******************************************************************************}
 procedure TAccessoriesMenu.CloseUI;
 begin
-  if Form1.IsK750Clone and FUIOpen and Form1.FConnected then
+  if UseSEcommands and FUIOpen and Form1.FConnected then
     Form1.TxAndWait('AT*SEUIS=0'); // do not localize
   FUIOpen:=False;
 end;
@@ -612,6 +613,11 @@ begin
   Log.AddScriptMessage('AccessoriesMenu.Initialize', lsDebug); // do not localize debug
   FMenuList := TTntStringList.Create;
   FEventList := TTntStringList.Create;
+end;
+
+function TAccessoriesMenu.UseSEcommands: Boolean;
+begin
+  Result := Form1.IsK750Clone or Form1.IsK610Clone or Form1.IsWalkmanClone; // K750 or better
 end;
 
 initialization
