@@ -1,9 +1,10 @@
 object frmAddVersion: TfrmAddVersion
-  Left = 435
-  Top = 265
-  Width = 458
-  Height = 343
+  Left = 425
+  Top = 264
+  BorderStyle = bsDialog
   Caption = 'Add Version'
+  ClientHeight = 312
+  ClientWidth = 450
   Color = clBtnFace
   ParentFont = True
   OldCreateOrder = False
@@ -66,13 +67,13 @@ object frmAddVersion: TfrmAddVersion
     TabOrder = 1
     OnClick = btnFromClick
   end
-  object Button3: TButton
+  object btnOK: TButton
     Left = 268
     Top = 252
     Width = 77
     Height = 25
     Action = ActionVerBuild
-    TabOrder = 9
+    TabOrder = 11
   end
   object btnClose: TButton
     Left = 360
@@ -81,7 +82,7 @@ object frmAddVersion: TfrmAddVersion
     Height = 25
     Cancel = True
     Caption = '&Cancel'
-    TabOrder = 10
+    TabOrder = 12
     OnClick = btnCloseClick
   end
   object edPatchChar: TEdit
@@ -98,9 +99,9 @@ object frmAddVersion: TfrmAddVersion
   object cbUsePatchChar: TCheckBox
     Left = 12
     Top = 128
-    Width = 200
+    Width = 253
     Height = 17
-    Caption = 'Add patch letter to version'
+    Caption = 'Add patch letter to version number'
     TabOrder = 6
     OnClick = cbUsePatchCharClick
   end
@@ -121,14 +122,14 @@ object frmAddVersion: TfrmAddVersion
     Width = 101
     Height = 25
     Caption = '&Set Options...'
-    Enabled = False
-    TabOrder = 8
+    TabOrder = 10
+    Visible = False
     OnClick = btnOptionsClick
   end
   object cbUseAppDeployment: TCheckBox
     Left = 12
-    Top = 156
-    Width = 300
+    Top = 152
+    Width = 253
     Height = 17
     Caption = 'Deploy application as a full single update'
     TabOrder = 7
@@ -148,7 +149,7 @@ object frmAddVersion: TfrmAddVersion
     Width = 409
     Height = 61
     Caption = 'Details'
-    TabOrder = 11
+    TabOrder = 8
     object lblDetails: TLabel
       Left = 12
       Top = 20
@@ -173,15 +174,25 @@ object frmAddVersion: TfrmAddVersion
       end>
     SizeGrip = False
   end
+  object cbDoIncUpdates: TCheckBox
+    Left = 12
+    Top = 255
+    Width = 253
+    Height = 17
+    Caption = 'Generate incremental updates now'
+    Checked = True
+    State = cbChecked
+    TabOrder = 9
+  end
   object OpenDialog1: TOpenDialog
     Filter = 'Executale Files|*.exe|All Files|*.*'
     Title = 'Select...'
-    Left = 188
-    Top = 252
+    Left = 408
+    Top = 136
   end
   object ActionList1: TActionList
-    Left = 156
-    Top = 252
+    Left = 376
+    Top = 136
     object ActionVerBuild: TAction
       Caption = '&Next...'
       OnExecute = ActionVerBuildExecute

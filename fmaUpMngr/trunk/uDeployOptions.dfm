@@ -35,7 +35,6 @@ object frmDeployOptions: TfrmDeployOptions
       Width = 113
       Height = 17
       Caption = 'None'
-      Enabled = False
       TabOrder = 0
     end
     object rbCompressZLib: TRadioButton

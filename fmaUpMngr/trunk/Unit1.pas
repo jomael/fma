@@ -1592,13 +1592,59 @@ begin
 end;
 
 procedure TForm1.ActionDeployAppExecute(Sender: TObject);
+var
+  j: integer;
+  s,d,z,ver: string;
+  sl: TStringList;
+  Found,InMain: boolean;
 begin
   { Switch to Versions tab }
   TargetVersions1.Click;
   { Create version }
   frmAddVersion.ForceDeployment(mrNone);
-  if frmAddVersion.ShowModal = mrOk then
-    DoAddNewVersion(frmAddVersion.GetVersionLabel);
+  case frmAddVersion.ShowModal of
+    mrAll: begin // do full update
+      ver := frmAddVersion.GetVersionLabel;
+      sl := TStringList.Create;
+      try
+        sl.Assign(Form1.Memo1.Lines);
+        { find 1st occurance ot any next ver }
+        j := -1; Found := False; InMain := False;
+        while not Found and (j < sl.Count-1) do begin
+          inc(j);
+          if Copy(sl[j],1,1) = ';' then continue;
+          if Pos('[main]',sl[j]) <> 0 then InMain := True
+          else begin
+            if InMain and (Copy(sl[j],1,1) = '[') then begin
+              while (j <> 0) do begin
+                if Trim(sl[j-1]) <> '' then break;
+                dec(j);
+              end;
+              break;
+            end;
+          end;
+        end;
+        { MobileAgent-*-0.1.0.99=MobileAgent-0.1.0.99.exe,2000000,null[,<md5>] }
+        z := frmAddVersion.GetUpdateFileName;
+        s := ExtractFileName(frmAddVersion.GetAppFileName);
+        d := ExtractFileName(z);
+        s := frmOptions.Edit3.Text + '-*-' + ver + '=' + d + ',' + IntToStr(frmBuild.BuildSize) + ',null';
+        { MD5 update file }
+        s := s + ',' + FileMD5(z);
+        { Update code }
+        sl.Insert(j,s);
+        Form1.Memo1.Lines.Assign(sl);
+        Form1.SyncGUI2Code; // save settings
+      finally
+        sl.Free;
+      end;
+    end;
+    mrOk: begin // do incremental updates
+      DoAddNewVersion(frmAddVersion.GetVersionLabel,frmAddVersion.cbDoIncUpdates.Checked);
+    end;
+    else
+      SyncCode2GUI;
+  end;
 end;
 
 procedure TForm1.DoAddNewVersion(ALabel: string; DoUpdates: boolean);
@@ -1626,6 +1672,7 @@ begin
   while i <> -1 do begin
     if (i = 0) or (TreeView1.Items[0].Item[i].ImageIndex <> 20) then begin
       TreeView1.Selected := TreeView1.Items[0].Item[i];
+      TreeView1.SetFocus;
       break;
     end;
     dec(i);

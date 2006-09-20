@@ -1,5 +1,18 @@
 unit uAddVersion;
 
+{
+*******************************************************************************
+* Descriptions: Create new version
+* $Source: /cvsroot/fma/fmaUpdmngr/uAddVersion.pas,v $
+* $Locker:  $
+*
+* Todo:
+*
+* Change Log:
+* $Log: uAddVersion.pas,v $
+*
+}
+
 interface
 
 uses
@@ -14,7 +27,7 @@ type
     edFromExe: TEdit;
     btnFrom: TButton;
     OpenDialog1: TOpenDialog;
-    Button3: TButton;
+    btnOK: TButton;
     btnClose: TButton;
     Label3: TLabel;
     edPatchChar: TEdit;
@@ -29,6 +42,7 @@ type
     GroupBox1: TGroupBox;
     StatusBar1: TStatusBar;
     lblDetails: TLabel;
+    cbDoIncUpdates: TCheckBox;
     procedure btnFromClick(Sender: TObject);
     procedure ActionVerBuildUpdate(Sender: TObject);
     procedure cbUsePatchCharClick(Sender: TObject);
@@ -42,11 +56,12 @@ type
       NewValue: Smallint; Direction: TUpDownDirection);
   private
     { Private declarations }
-    procedure DoBuild;
   public
     { Public declarations }
     procedure ForceDeployment(AType: TModalResult);
     function GetVersionLabel: string;
+    function GetAppFileName: string;
+    function GetUpdateFileName: string;
   end;
 
 var
@@ -79,12 +94,19 @@ begin
       '(Not Recommended).';
     ActionVerBuild.Caption := '&Build...';
   end
-  else begin
-    lblDetails.Caption := 'Will generate incremental patches from previous application versions to this '+
-      'one (click Next).';
-    ActionVerBuild.Caption := '&Next...';
-  end;
-  btnOptions.Enabled := cbUseAppDeployment.Checked;
+  else
+    if cbDoIncUpdates.Checked then begin
+      lblDetails.Caption := 'Will generate incremental patches from previous application versions to this '+
+        'one (click Next).';
+      ActionVerBuild.Caption := '&Next...';
+    end
+    else begin
+      lblDetails.Caption := 'Will create an empty version folder. Later incremental updates could be '+
+        'generated from or to it.';
+      ActionVerBuild.Caption := 'OK';
+    end;
+  btnOptions.Visible := cbUseAppDeployment.Checked;
+  cbDoIncUpdates.Visible := not cbUseAppDeployment.Checked;
 end;
 
 procedure TfrmAddVersion.cbUsePatchCharClick(Sender: TObject);
@@ -101,6 +123,7 @@ begin
   StatusBar1.Panels[1].Text := '';
   btnClose.Caption := '&Cancel';
   UpDown1.Position := 0;
+  cbDoIncUpdates.Checked := True;
   cbUsePatchChar.Checked := False;
   if cbUseAppDeployment.Enabled then
     cbUseAppDeployment.Checked := False;
@@ -124,23 +147,51 @@ begin
 end;
 
 procedure TfrmAddVersion.ActionVerBuildExecute(Sender: TObject);
+var
+  i: Integer;
+  ver: string;
 begin
   if cbUseAppDeployment.Checked then begin
-    Button3.Enabled := False;
+    ver := GetVersionLabel;
+    for i := 0 to Form1.TreeView1.Items[0].Count-1 do
+      if AnsiCompareText(Form1.TreeView1.Items[0].Item[i].Text,ver) = 0 then
+        raise Exception.Create('This version already exists');
+    if frmDeployOptions.rbCompressNone.Checked and
+      (MessageDlg('Update compression is off, increasing size. Cancel build?',
+      mtConfirmation,[mbYes,mbNo],0) = ID_YES) then
+      exit;
+    if MessageDlg('Start building update files now (Might take few minutes)?',
+      mtConfirmation,[mbYes,mbNo],0) <> ID_YES then
+      Abort;
+    { Check filter restrictions }
+    if Pos(Form1.ViewFilter,ver) <> 1 then
+      MessageDlg('This version will not be visible once update is created '+
+        'due to current Filter settings.', mtWarning, [mbOk], 0);
+    btnOK.Enabled := False;
     btnClose.Enabled := False;
     btnOptions.Enabled := False;
+    Form1.StatusBar1.Panels[1].Text := 'Building...';
     try
-      DoBuild;
-      ModalResult := mrAll; // full application deployment
+      if frmBuild.BuildDeployment then begin
+        Form1.StatusBar1.Panels[1].Text := '';
+        MessageBeep(MB_ICONEXCLAMATION);
+        MessageDlg('Build successful!'+sLineBreak+sLineBreak+
+          'Update total size (deployed application) is '+
+          IntToStr(frmBuild.BuildSize div 1024)+' KB',mtInformation,[mbOK],0);
+        ModalResult := mrAll; // full application deployment done
+      end
+      else
+        ActionVerBuild.Update;
     finally
-      Button3.Enabled := True;
+      Form1.StatusBar1.Panels[1].Text := '';
+      btnOK.Enabled := True;
+      btnOptions.Enabled := True;
       btnClose.Enabled := True;
       btnClose.Caption := 'OK';
-      ActionVerBuild.Update;
     end;
   end
   else
-    ModalResult := mrOk;
+    ModalResult := mrOk; // go to Add Updates dialog
 end;
 
 procedure TfrmAddVersion.ForceDeployment(AType: TModalResult);
@@ -184,69 +235,22 @@ begin
     AllowChange := (NewValue >= UpDown1.Min) and (NewValue <= UpDown1.Max);
 end;
 
-procedure TfrmAddVersion.DoBuild;
+function TfrmAddVersion.GetUpdateFileName: string;
 var
-  i,j: integer;
-  s,d,z,ver: string;
-  sl: TStringList;
-  Found,InMain: boolean;
+  s,d,v: string;
 begin
-  ver := GetVersionLabel;
-  for i := 0 to Form1.TreeView1.Items[0].Count-1 do
-    if AnsiCompareText(Form1.TreeView1.Items[0].Item[i].Text,ver) = 0 then
-      raise Exception.Create('This version already exists');
-  if MessageDlg('Start building update files now (Might take few minutes)?',
-    mtConfirmation,[mbYes,mbNo],0) <> ID_YES then
-    Abort;
-  { Check filter restrictions }
-  if Pos(Form1.ViewFilter,ver) <> 1 then
-    MessageDlg('This version will not be visible once update is created '+
-      'due to current Filter settings.', mtWarning, [mbOk], 0);
-  Form1.StatusBar1.Panels[1].Text := 'Building...';
-  Form1.StatusBar1.Update;
-  sl := TStringList.Create;
-  try
-    sl.Assign(Form1.Memo1.Lines);
-    { find 1st occurance ot any next ver }
-    j := -1; Found := False; InMain := False;
-    while not Found and (j < sl.Count-1) do begin
-      inc(j);
-      if Copy(sl[j],1,1) = ';' then continue;
-      if Pos('[main]',sl[j]) <> 0 then InMain := True
-      else begin
-        if InMain and (Copy(sl[j],1,1) = '[') then begin
-          while (j <> 0) do begin
-            if Trim(sl[j-1]) <> '' then break;
-            dec(j);
-          end;
-          break;
-        end;
-      end;
-    end;
-    { MobileAgent-*-0.1.0.99=MobileAgent-0.1.0.99.exe,2000000,null[,<md5>] }
-    s := ExtractFileName(edFromExe.Text);
-    d := ChangeFileExt(s,'-'+ver+'.z');
-    z := ExtractFilePath(OpenDialog1.FileName) + d;
-    if frmBuild.BuildZ(edFromExe.Text,z) then begin
-      if frmBuild.BuildSize = 0 then Abort;
-      s := frmOptions.Edit3.Text + '-*-' + ver + '=' + d + ',' + IntToStr(frmBuild.BuildSize) + ',null';
-      { MD5 update file }
-      s := s + ',' + FileMD5(z);
-      sl.Insert(j,s);
-      { Notify user }
-      Form1.StatusBar1.Panels[1].Text := '';
-      MessageBeep(MB_ICONEXCLAMATION);
-      MessageDlg('Build successful!'+sLineBreak+sLineBreak+
-        'Update total size (deployed application) is '+
-        IntToStr(frmBuild.BuildSize div 1024)+' KB',mtInformation,[mbOK],0);
-      { Update code }
-      Form1.Memo1.Lines.Assign(sl);
-      Form1.SyncGUI2Code; // save settings
-    end;
-  finally
-    sl.Free;
-    Form1.StatusBar1.Panels[1].Text := '';
-  end;
+  v := GetVersionLabel;
+  s := ExtractFileName(GetAppFileName);
+  if frmDeployOptions.rbCompressZLib.Checked then
+    d := ChangeFileExt(s,'-' + v + '.z');
+  if frmDeployOptions.rbCompressNone.Checked then
+    d := ChangeFileExt(s,'-' + v + ExtractFileExt(s)); // .EXE
+  Result := ExtractFilePath(Form1.OpenDialog1.FileName) + d;
+end;
+
+function TfrmAddVersion.GetAppFileName: string;
+begin
+  Result := edFromExe.Text;
 end;
 
 end.

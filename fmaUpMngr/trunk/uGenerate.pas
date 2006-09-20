@@ -59,10 +59,11 @@ type
     FReadyUpdates: TStringList;
     procedure DoUpdateReady(Filename: string);
     procedure DoRollback;
-    function DoCreateZ(AppFile,ZFile: String): Boolean;
+    function DoCreateDeployment(AppFile,UpdFile: String;
+      UseZlib: Boolean = True; UseCrypt: Boolean = False): Boolean;
   public
     { Public declarations }
-    function BuildZ(AppName,ZName: String): boolean;
+    function BuildDeployment: boolean;
     function BuildUpdates: boolean;
     function BuildSize: Integer;
     procedure OnDiffCallback(CurProccesed,CurTotal: Integer; var Canceled: boolean);
@@ -73,7 +74,8 @@ var
 
 implementation
 
-uses Zlib, uolDiff, uAddUpdate, Unit1, uDiffOptions, uAddVersion;
+uses Zlib, uolDiff, uAddUpdate, Unit1, uDiffOptions, uAddVersion,
+  uDeployOptions;
 
 {$R *.dfm}
 
@@ -176,6 +178,7 @@ begin
     FExiting := True;
     Close;
   end;
+  if Result and (BuildSize = 0) then Result := False;
 end;
 
 procedure TfrmBuild.OnDiffCallback(CurProccesed, CurTotal: Integer;
@@ -313,9 +316,67 @@ begin
   end;
 end;
 
-function TfrmBuild.BuildZ(AppName,ZName: String): boolean;
+procedure TfrmBuild.FormDestroy(Sender: TObject);
+begin
+  FReadyUpdates.Free;
+end;
+
+function TfrmBuild.DoCreateDeployment(AppFile,UpdFile: String; UseZlib,UseCrypt: Boolean): boolean;
+var
+  str,dst: TFileStream;
+  Buffer: array[0..16383] of byte;
+  NumRead,NumWritten: Integer;
+  fProc,fSize: Int64;
+  isCanceled: boolean;
+  work: TStream;
 begin
   Result := False;
+  { TODO: implement UseCrypt }
+  str := TFileStream.Create(AppFile, fmOpenRead or fmShareDenyNone);
+  try
+    fSize := str.Size;
+    dst := TFileStream.Create(UpdFile, fmCreate or fmShareExclusive);
+    try
+      if UseZlib then
+        work := TCompressionStream.Create(clMax,dst)
+      else
+        work := dst;
+      try
+        fProc := 0;
+        isCanceled := False;
+        repeat
+          OnDiffCallback(fProc,fSize,isCanceled);
+          if isCanceled then break;
+          NumRead := str.Read(Buffer[0],SizeOf(Buffer));
+          if NumRead = 0 then begin
+            { All done! }
+            Result := True;
+            break;
+          end;
+          NumWritten := work.Write(Buffer[0],NumRead);
+          if not UseZlib and (NumWritten <> NumRead) then
+            raise EInOutError.CreateFmt('Write to update file "%s" failed',[UpdFile]);
+          inc(fProc,NumRead);
+        until False;
+      finally
+        if UseZlib then
+          (work as TCompressionStream).Free;
+      end;
+    finally
+      dst.Free;
+    end;
+  finally
+    str.Free;
+  end;
+end;
+
+function TfrmBuild.BuildDeployment: boolean;
+var
+  AppName,UpdName: string;
+begin
+  Result := False;
+  AppName := frmAddVersion.GetAppFileName;
+  UpdName := frmAddVersion.GetUpdateFileName;
   Timer1.Interval := 500;
   Show;
   Update;
@@ -330,9 +391,12 @@ begin
         Self.Label1.Caption := 'Building deployment file...';
         FDifAndRev := False;
         FReverse := False;
-        Result := DoCreateZ(AppName,ZName);
-        DoUpdateReady(ZName);
-        if not Result then DoRollback;
+        if DoCreateDeployment(AppName,UpdName,frmDeployOptions.rbCompressZLib.Checked) then begin
+          DoUpdateReady(UpdName);
+          Result := True;
+        end
+        else
+          DoRollback;
       finally
         frmAddVersion.StatusBar1.Panels[0].Text := '';
         frmAddVersion.StatusBar1.Panels[1].Text := 'Completed';
@@ -343,52 +407,7 @@ begin
     FExiting := True;
     Close;
   end;
-end;
-
-procedure TfrmBuild.FormDestroy(Sender: TObject);
-begin
-  FReadyUpdates.Free;
-end;
-
-function TfrmBuild.DoCreateZ(AppFile,ZFile: String): boolean;
-var
-  str,dst: TFileStream;
-  Buffer: array[0..16383] of byte;
-  NumRead: Integer;
-  fProc,fSize: Int64;
-  isCanceled: boolean;
-begin
-  Result := False;
-  isCanceled := False;
-  str := TFileStream.Create(AppFile, fmOpenRead or fmShareDenyNone);
-  try
-    fSize := str.Size;
-    dst := TFileStream.Create(ZFile, fmCreate or fmShareExclusive); 
-    try
-      with TCompressionStream.Create(clMax,dst) do
-      try
-        fProc := 0;
-        repeat
-          OnDiffCallback(fProc,fSize,isCanceled);
-          if isCanceled then break;
-          NumRead := str.Read(Buffer[0],SizeOf(Buffer));
-          if NumRead = 0 then begin
-            { All done! }
-            Result := True;
-            break;
-          end;
-          Write(Buffer[0],NumRead);
-          inc(fProc,NumRead);
-        until False;
-      finally
-        Free;
-      end;
-    finally
-      dst.Free;
-    end;
-  finally
-    str.Free;
-  end;
+  if Result and (BuildSize = 0) then Result := False;
 end;
 
 end.
