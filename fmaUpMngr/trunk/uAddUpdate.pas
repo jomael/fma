@@ -138,7 +138,6 @@ end;
 
 procedure TfrmAddUpdate.FormShow(Sender: TObject);
 begin
-  btnClose.Caption := '&Cancel';
   frmDiffOptions.Secret := '';
   ReadyUpdates.Clear;
   edToVer.SetFocus;
@@ -209,7 +208,6 @@ begin
     Button3.Enabled := True;
     Button6.Enabled := True;
     btnClose.Enabled := True;
-    btnClose.Caption := 'OK';
   end;
 end;
 

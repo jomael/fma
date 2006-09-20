@@ -8,11 +8,11 @@
   resources were bound to the produced executable.
 */
 
-#define TntSystem_SInvalidUTF7 65232
-#define ComConst_SOleError 65233
-#define ComConst_SNoMethod 65234
-#define ComConst_SVarNotObject 65235
-#define ComConst_STooManyParams 65236
+#define ComConst_SNoMethod 65232
+#define ComConst_SVarNotObject 65233
+#define ComConst_STooManyParams 65234
+#define TntSystem_SBufferOverflow 65235
+#define TntSystem_SInvalidUTF7 65236
 #define ExtCtrls_clName3DLight 65248
 #define ExtCtrls_clNameWindow 65249
 #define ExtCtrls_clNameWindowFrame 65250
@@ -28,7 +28,7 @@
 #define JConsts_sChangeJPGSize 65260
 #define JConsts_sJPEGError 65261
 #define JConsts_sJPEGImageFile 65262
-#define TntSystem_SBufferOverflow 65263
+#define ComConst_SOleError 65263
 #define ExtCtrls_clNameBtnText 65264
 #define ExtCtrls_clNameCaptionText 65265
 #define ExtCtrls_clNameDefault 65266
@@ -303,11 +303,11 @@
 #define SysConst_SInvalidInput 65535
 STRINGTABLE
 BEGIN
-	TntSystem_SInvalidUTF7,	"Invalid UTF7"
-	ComConst_SOleError,	"OLE error %.8x"
 	ComConst_SNoMethod,	"Method '%s' not supported by automation object"
 	ComConst_SVarNotObject,	"Variant does not reference an automation object"
 	ComConst_STooManyParams,	"Dispatch methods do not support more than 64 parameters"
+	TntSystem_SBufferOverflow,	"Buffer overflow"
+	TntSystem_SInvalidUTF7,	"Invalid UTF7"
 	ExtCtrls_clName3DLight,	"3D Light"
 	ExtCtrls_clNameWindow,	"Window Background"
 	ExtCtrls_clNameWindowFrame,	"Window Frame"
@@ -323,7 +323,7 @@ BEGIN
 	JConsts_sChangeJPGSize,	"Cannot change the size of a JPEG image"
 	JConsts_sJPEGError,	"JPEG error #%d"
 	JConsts_sJPEGImageFile,	"JPEG Image File"
-	TntSystem_SBufferOverflow,	"Buffer overflow"
+	ComConst_SOleError,	"OLE error %.8x"
 	ExtCtrls_clNameBtnText,	"Button Text"
 	ExtCtrls_clNameCaptionText,	"Caption Text"
 	ExtCtrls_clNameDefault,	"Default"

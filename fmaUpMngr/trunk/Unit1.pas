@@ -286,6 +286,7 @@ type
     procedure Set_Changed(const Value: boolean);
     function Get_ChangedGUI: boolean;
     procedure Set_ChangedGUI(const Value: boolean);
+    function Get_Syncing: boolean;
     function IsDirectPatched(fromver,tover: string): boolean;
     function CheckScriptName(ForceNewName: boolean = False): boolean;
     procedure CheckScriptSave;
@@ -302,7 +303,6 @@ type
     procedure NewView(ClearScript: boolean = True);
     procedure LoadSettings;
     procedure SaveSettings;
-    function Get_Syncing: boolean;
     procedure DoAddNewVersion(ALabel: string; DoUpdates: Boolean = True);
   public
     { Public declarations }
@@ -329,7 +329,7 @@ implementation
 uses
   IniFiles, DateUtils, IcsMD5, Zlib,
   uAddUpdate, uVersion, uEditMirror, uGlobal, uolDiff, uDiffOptions, uOptions,
-  uGenerate, uAddVersion;
+  uGenerate, uAddVersion, uDeployOptions;
 
 {$R *.dfm}
 {$R WinXP.res}
@@ -528,10 +528,9 @@ end;
 procedure TForm1.ActionAddUpdateUpdate(Sender: TObject);
 begin
   ActionAddUpdate.Enabled := not IsSyncChanges and
-   ((ActiveControl = ListView1) and (ListView1.Selected <> nil) and
-    (ListView1.Selected.ImageIndex = 18)) or ((ActiveControl = TreeView1) and
-    (TreeView1.Selected <> nil) and (TreeView1.Selected.Parent = TreeView1.Items[0]) and
-    (TreeView1.Selected.ImageIndex in [18,20]) and (TreeView1.Items[0].Count > 1));
+   (((ActiveControl = ListView1) and (ListView1.Selected <> nil) and (ListView1.Selected.ImageIndex = 18)) or
+    ((ActiveControl = TreeView1) and (TreeView1.Selected <> nil) and (TreeView1.Selected.Parent = TreeView1.Items[0]) and
+     (TreeView1.Selected.ImageIndex in [18,20]) and (TreeView1.Items[0].Count > 1)));
 end;
 
 procedure TForm1.ActionAddUpdateExecute(Sender: TObject);
@@ -541,7 +540,9 @@ var
   sl: TStringList;
   Found,InMain: boolean;
 begin
-  if not CheckScriptName then exit;
+  if not CheckScriptName or IsSyncChanges then
+    exit;
+    
   if not IsUOLDiffAvailable then begin
     MessageDlg('In order to use Update Manager, you have to download '+sLineBreak+'a small library '+
       'UOLDIFF.DLL from FMA web site'+sLinebreak+sLinebreak+'http://fma.sourceforge.net/'+sLinebreak+sLinebreak+
@@ -644,7 +645,7 @@ begin
       SyncGUI2Code;
     end;
   end
-  else
+  else 
     SyncCode2GUI; // save settings
 end;
 
@@ -947,14 +948,26 @@ begin
   if Assigned(frmAddUpdate) and Assigned(frmDiffOptions) then
   with TIniFile.Create(Filename) do
   try
-    frmAddUpdate.edFromExe.Text := ReadString('manager','From Dir',
-      'C:\Program Files\Fma\MobileAgent.exe');
-    frmAddUpdate.edToExe.Text := ReadString('manager','To Dir',
-      'C:\Projects\cvsroot\fma\MobileAgent.exe');
-    frmAddUpdate.edHistory.Text := ReadString('manager','History File',
-      'C:\Projects\cvsroot\fma\history.txt');
+    { updates }
+    frmAddUpdate.edFromExe.Text := ReadString('manager','From Dir','C:\Program Files\FMA 2\MobileAgent.exe');
+    frmAddUpdate.edToExe.Text := ReadString('manager','To Dir','C:\Projects\FMA\fma\trunk\MobileAgent.exe');
+    frmAddUpdate.edHistory.Text := ReadString('manager','History File','C:\Projects\FMA\fma\trunk\history.txt');
     frmAddUpdate.cbDoReverse.Checked := ReadBool('manager','Add Reverse',True);
     frmAddUpdate.cbDoHistory.Checked := ReadBool('manager','Add History',True);
+
+    { versions }
+    frmAddVersion.edFromExe.Text := ReadString('manager','Version Dir','C:\Projects\FMA\fma\trunk\MobileAgent.exe');
+    frmAddVersion.cbUseAppDeployment.Checked := ReadBool('manager','Full Update',False);
+    frmAddVersion.cbDoIncUpdates.Checked := ReadBool('manager','Do Updates',True);
+
+    { default to ZLib }
+    frmDeployOptions.rbCompressNone.Checked := ReadInteger('manager','Version Compression',1) = 0;
+    frmDeployOptions.rbCompressZLib.Checked := ReadInteger('manager','Version Compression',1) = 1;
+    frmDeployOptions.rbCompressLh5.Checked := ReadInteger('manager','Version Compression',1) = 2;
+    { default to None }
+    frmDeployOptions.rbEncryptNone.Checked := ReadInteger('manager','Version Encryption',0) = 0;
+    frmDeployOptions.rbEncryptXor.Checked := ReadInteger('manager','Version Encryption',0) = 1;
+    //frmDeployOptions.rbEncryptMore.Checked := ReadInteger('manager','Version Encryption',0) = 2;
 
     { default to Size Optimize }
     frmDiffOptions.rbFastBuild.Checked := ReadInteger('manager','Max Compress',1) = 0;
@@ -973,6 +986,7 @@ begin
     frmDiffOptions.rbPassWord.Checked := ReadInteger('manager','Protection',0) = 1;
 
     FFilter := ReadString('manager','Filter','');
+    TreeView1.Width := ReadInteger('manager','Tree Width',177);
   finally
     Free;
   end;
@@ -982,16 +996,32 @@ procedure TForm1.SaveCustomData(Filename: string);
 var
   i: Integer;
 begin
+  { Update manager settings (do not modify manually) }
   with TIniFile.Create(Filename) do
   try
-    { update manager settings (do not modify manually) }
+    { updates }
     WriteString('manager','From Dir',frmAddUpdate.edFromExe.Text);
     WriteString('manager','To Dir',frmAddUpdate.edToExe.Text);
     WriteString('manager','History File',frmAddUpdate.edHistory.Text);
     WriteBool('manager','Add Reverse',frmAddUpdate.cbDoReverse.Checked);
     WriteBool('manager','Add History',frmAddUpdate.cbDoHistory.Checked);
 
+    { versions }
+    WriteString('manager','Version Dir',frmAddVersion.edFromExe.Text);
+    WriteBool('manager','Full Update',frmAddVersion.cbUseAppDeployment.Checked);
+    WriteBool('manager','Do Updates',frmAddVersion.cbDoIncUpdates.Checked);
+
     i := 0; // HACK!
+
+    if frmDeployOptions.rbCompressNone.Checked then i := 0;
+    if frmDeployOptions.rbCompressZLib.Checked then i := 1;
+    if frmDeployOptions.rbCompressLh5.Checked then i := 2;
+    WriteInteger('manager','Version Compression',i);
+    if frmDeployOptions.rbEncryptNone.Checked then i := 0;
+    if frmDeployOptions.rbEncryptXor.Checked then i := 1;
+    //if frmDeployOptions.rbEncryptMore.Checked then i := 2; // not implemented
+    WriteInteger('manager','Version Encryption',i);
+
     if frmDiffOptions.rbFastBuild.Checked then i := 0;
     if frmDiffOptions.rbSmallBuild.Checked then i := 1;
     if frmDiffOptions.rbCustomBuild.Checked then i := 2;
@@ -1002,13 +1032,14 @@ begin
     WriteInteger('manager','Compression',i);
     if frmDiffOptions.rbEncryptNone.Checked then i := 0;
     if frmDiffOptions.rbEncryptXor.Checked then i := 1;
-    //if frmDiffOptions.rbEncryptMore.Checked then i := 2;
+    //if frmDiffOptions.rbEncryptMore.Checked then i := 2; // not implemented 
     WriteInteger('manager','Encryption',i);
     if frmDiffOptions.rbPassNone.Checked then i := 0;
     if frmDiffOptions.rbPassWord.Checked then i := 1;
     WriteInteger('manager','Protection',i);
 
     WriteString('manager','Filter',FFilter);
+    WriteInteger('manager','Tree Width',TreeView1.Width);
   finally
     Free;
   end;

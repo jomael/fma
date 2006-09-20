@@ -103,7 +103,7 @@ begin
     else begin
       lblDetails.Caption := 'Will create an empty version folder. Later incremental updates could be '+
         'generated from or to it.';
-      ActionVerBuild.Caption := 'OK';
+      ActionVerBuild.Caption := 'Create';
     end;
   btnOptions.Visible := cbUseAppDeployment.Checked;
   cbDoIncUpdates.Visible := not cbUseAppDeployment.Checked;
@@ -121,12 +121,13 @@ procedure TfrmAddVersion.FormShow(Sender: TObject);
 begin
   StatusBar1.Panels[0].Text := 'Deploy a full update on every 10 incremental ones';
   StatusBar1.Panels[1].Text := '';
-  btnClose.Caption := '&Cancel';
   UpDown1.Position := 0;
+  {
   cbDoIncUpdates.Checked := True;
-  cbUsePatchChar.Checked := False;
   if cbUseAppDeployment.Enabled then
     cbUseAppDeployment.Checked := False;
+  } 
+  cbUsePatchChar.Checked := False;
   edPatchChar.Text := '';
   if FileExists(edFromExe.Text) then
     edVersion.Text := ExtractFileVersionInfo(edFromExe.Text,'FileVersion') // do not localize
@@ -187,7 +188,6 @@ begin
       btnOK.Enabled := True;
       btnOptions.Enabled := True;
       btnClose.Enabled := True;
-      btnClose.Caption := 'OK';
     end;
   end
   else
