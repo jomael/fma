@@ -3033,7 +3033,7 @@ procedure ShowHelpPopup(Where: TPoint; ShowText: string); overload;
 implementation
 
 uses
-  gnugettext, gnugettexthelpers, cUnicodeCodecs, cPortCtl, uNewAlarm,
+  gnugettext, gnugettexthelpers, cUnicodeCodecs, cPortCtl, uNewAlarm, uRegistry,
   uThreadSafe, JclSysInfo, ShlObj, uCalling, uAbout, uOptions, uOptionsPage, uNewMessage, uMobileAgentUI,
   uPostNote, uGlobal, uEditProfile, uPostURL, uConnProgress, uComposeSMS, uVersion, uStatusDlg, TeEngine,
   uFolderProps, Types, uOfflineProfile, uFMASync, uOutlookSync, uPromptConflict, uChooseLink, uLogObserverWriter,

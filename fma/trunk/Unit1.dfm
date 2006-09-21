@@ -1,6 +1,6 @@
 object Form1: TForm1
   Left = 288
-  Top = 157
+  Top = 152
   Width = 890
   Height = 680
   Cursor = crArrow
@@ -603,7 +603,7 @@ object Form1: TForm1
         Control = tbMainMenu
         ImageIndex = -1
         MinHeight = 21
-        Width = 487
+        Width = 499
       end
       item
         Break = False
@@ -611,7 +611,7 @@ object Form1: TForm1
         ImageIndex = -1
         MinHeight = 22
         Visible = False
-        Width = 170
+        Width = 182
       end
       item
         Break = False
@@ -619,42 +619,42 @@ object Form1: TForm1
         ImageIndex = -1
         MinHeight = 24
         Visible = False
-        Width = 215
+        Width = 191
       end
       item
         Control = tbStandard
         ImageIndex = -1
         MinHeight = 24
         Visible = False
-        Width = 231
+        Width = 245
       end
       item
         Break = False
         Control = tbExplorer
         ImageIndex = -1
         MinHeight = 24
-        Width = 215
+        Width = 229
       end
       item
         Break = False
         Control = tbMessages
         ImageIndex = -1
         MinHeight = 24
-        Width = 292
+        Width = 304
       end
       item
         Break = False
         Control = tbCalls
         ImageIndex = -1
         MinHeight = 24
-        Width = 130
+        Width = 90
       end>
     EdgeBorders = [ebTop, ebBottom]
     OnChange = CoolBarChange
     object tbStandard: TToolBar
       Left = 9
       Top = 26
-      Width = 222
+      Width = 234
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -747,9 +747,9 @@ object Form1: TForm1
       end
     end
     object tbProfile: TToolBar
-      Left = 500
+      Left = 512
       Top = 1
-      Width = 159
+      Width = 171
       Height = 22
       AutoSize = True
       ButtonWidth = 25
@@ -782,9 +782,9 @@ object Form1: TForm1
       end
     end
     object tbMessages: TToolBar
-      Left = 463
+      Left = 491
       Top = 26
-      Width = 281
+      Width = 293
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -872,9 +872,9 @@ object Form1: TForm1
       end
     end
     object tbCalls: TToolBar
-      Left = 759
+      Left = 799
       Top = 26
-      Width = 119
+      Width = 90
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -913,7 +913,7 @@ object Form1: TForm1
     object tbMainMenu: TToolBar
       Left = 9
       Top = 1
-      Width = 476
+      Width = 488
       Height = 21
       AutoSize = True
       ButtonHeight = 21
@@ -930,9 +930,9 @@ object Form1: TForm1
       OnCustomDrawButton = tbMainMenuCustomDrawButton
     end
     object tbPhone: TToolBar
-      Left = 674
+      Left = 698
       Top = 0
-      Width = 204
+      Width = 180
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -967,9 +967,9 @@ object Form1: TForm1
       end
     end
     object tbExplorer: TToolBar
-      Left = 244
+      Left = 258
       Top = 26
-      Width = 206
+      Width = 218
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -8384,7 +8384,7 @@ object Form1: TForm1
   end
   object FmaWebUpdate1: TFmaWebUpdate
     UpdatesURL = 'http://fma.sourceforge.net/updates'
-    SupportURL = 'http://www.mobileagent.info/'
+    SupportURL = 'http://fma.sourceforge.net/'
     AppName = 'FMA'
     ReadyText = 
       'Warning:'#13#10'Please note that any open connection will be closed an' +
@@ -8796,6 +8796,7 @@ object Form1: TForm1
     CurrentBuild = '(unknown)'
     LogFilename = 'update.txt'
     LogVerbose = True
+    UseLocales = True
     OnError = FmaWebUpdate1Error
     OnBeforeUpdate = FmaWebUpdate1BeforeUpdate
     OnAfterUpdate = FmaWebUpdate1AfterUpdate

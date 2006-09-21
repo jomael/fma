@@ -86,7 +86,8 @@ uses
   uOptionsPage in 'uOptionsPage.pas' {frmOptionsPage},
   uNewAlarm in 'uNewAlarm.pas' {frmNewAlarm},
   uPassword in 'uPassword.pas' {frmPassword},
-  uImg32Helper in 'uImg32Helper.pas';
+  uImg32Helper in 'uImg32Helper.pas',
+  uRegistry in 'uRegistry.pas';
 
 {$R *.TLB}
 
