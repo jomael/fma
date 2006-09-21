@@ -33,7 +33,7 @@ type
     Label2: TLabel;
     Edit2: TEdit;
     Label3: TLabel;
-    Edit3: TEdit;
+    edFullUpdateName: TEdit;
     Label4: TLabel;
     Edit4: TEdit;
     Button2: TButton;

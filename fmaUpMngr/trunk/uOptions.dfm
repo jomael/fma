@@ -101,13 +101,11 @@ object frmOptions: TfrmOptions
       TabOrder = 1
       Text = 'bin+null'
     end
-    object Edit3: TEdit
+    object edFullUpdateName: TEdit
       Left = 136
       Top = 104
       Width = 105
       Height = 21
-      Color = clBtnFace
-      ReadOnly = True
       TabOrder = 2
       Text = 'MobileAgent'
     end

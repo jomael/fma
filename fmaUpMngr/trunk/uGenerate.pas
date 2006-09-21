@@ -55,7 +55,7 @@ type
     { Private declarations }
     FCanceled,FExiting,FDifAndRev,FReverse: boolean;
     FStartTime: TDateTime;
-    FTotalSize: Integer;
+    FTotalSize,FUpdateStep: Integer;
     FReadyUpdates: TStringList;
     procedure DoUpdateReady(Filename: string);
     procedure DoRollback;
@@ -66,6 +66,7 @@ type
     function BuildDeployment: boolean;
     function BuildUpdates: boolean;
     function BuildSize: Integer;
+    procedure SetUpdateStep(AStep: Integer);
     procedure OnDiffCallback(CurProccesed,CurTotal: Integer; var Canceled: boolean);
   end;
 
@@ -191,7 +192,7 @@ var
 begin
   if not FCanceled then begin
     i := CurProccesed - LastPos;
-    if (i < 0) or (i > 32768) then begin
+    if (i < 0) or (i >= FUpdateStep) then begin
       LastPos := CurProccesed;
       if FDifAndRev then begin
         { Doing both forward AND reverse updates }
@@ -227,13 +228,14 @@ end;
 
 procedure TfrmBuild.FormCreate(Sender: TObject);
 begin
+  FUpdateStep := 32000;
   FReadyUpdates := TStringList.Create;
   Image1.Picture.Icon.Assign(Application.Icon);
 end;
 
 procedure TfrmBuild.Button1Click(Sender: TObject);
 begin
-  if MessageDlg('Aborting the Build Process?',
+  if MessageDlg('Abort current operation?',
     mtConfirmation,[mbYes,mbNo],0) = ID_YES then begin
     FCanceled := True;
     lblTimeLeft.Caption := 'Aborting';
@@ -247,6 +249,7 @@ begin
   ProgressBar1.Position := 0;
   Label1.Caption := 'Initializing engine...';
   lblTimeLeft.Caption := 'Calculating';
+  Timer1.Interval := 1000;
   Timer1.Enabled := True;
   FStartTime := Now;
 end;
@@ -408,6 +411,11 @@ begin
     Close;
   end;
   if Result and (BuildSize = 0) then Result := False;
+end;
+
+procedure TfrmBuild.SetUpdateStep(AStep: Integer);
+begin
+  FUpdateStep := AStep;
 end;
 
 end.

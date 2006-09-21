@@ -103,7 +103,7 @@ begin
     else begin
       lblDetails.Caption := 'Will create an empty version folder. Later incremental updates could be '+
         'generated from or to it.';
-      ActionVerBuild.Caption := 'Create';
+      ActionVerBuild.Caption := 'OK';
     end;
   btnOptions.Visible := cbUseAppDeployment.Checked;
   cbDoIncUpdates.Visible := not cbUseAppDeployment.Checked;
@@ -121,12 +121,8 @@ procedure TfrmAddVersion.FormShow(Sender: TObject);
 begin
   StatusBar1.Panels[0].Text := 'Deploy a full update on every 10 incremental ones';
   StatusBar1.Panels[1].Text := '';
+  btnClose.Caption := '&Cancel';
   UpDown1.Position := 0;
-  {
-  cbDoIncUpdates.Checked := True;
-  if cbUseAppDeployment.Enabled then
-    cbUseAppDeployment.Checked := False;
-  } 
   cbUsePatchChar.Checked := False;
   edPatchChar.Text := '';
   if FileExists(edFromExe.Text) then
@@ -168,6 +164,7 @@ begin
     if Pos(Form1.ViewFilter,ver) <> 1 then
       MessageDlg('This version will not be visible once update is created '+
         'due to current Filter settings.', mtWarning, [mbOk], 0);
+    { Build }
     btnOK.Enabled := False;
     btnClose.Enabled := False;
     btnOptions.Enabled := False;
@@ -188,10 +185,13 @@ begin
       btnOK.Enabled := True;
       btnOptions.Enabled := True;
       btnClose.Enabled := True;
+      btnClose.Caption := 'Close';
     end;
   end
-  else
+  else begin
+    Form1.CheckNewVersionLabel(GetVersionLabel);
     ModalResult := mrOk; // go to Add Updates dialog
+  end;
 end;
 
 procedure TfrmAddVersion.ForceDeployment(AType: TModalResult);

@@ -117,7 +117,7 @@ object frmAddUpdate: TfrmAddUpdate
     Width = 77
     Height = 25
     Cancel = True
-    Caption = '&Close'
+    Caption = '&Cancel'
     TabOrder = 12
     OnClick = btnCloseClick
   end

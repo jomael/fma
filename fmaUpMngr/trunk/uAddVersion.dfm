@@ -81,7 +81,7 @@ object frmAddVersion: TfrmAddVersion
     Width = 77
     Height = 25
     Cancel = True
-    Caption = '&Close'
+    Caption = '&Cancel'
     TabOrder = 12
     OnClick = btnCloseClick
   end
@@ -94,6 +94,7 @@ object frmAddVersion: TfrmAddVersion
     ReadOnly = True
     ShowHint = True
     TabOrder = 3
+    Text = '0'
   end
   object cbUsePatchChar: TCheckBox
     Left = 12

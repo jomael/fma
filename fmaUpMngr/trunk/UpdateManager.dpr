@@ -13,7 +13,8 @@ uses
   uVersion in '..\..\fma\trunk\uVersion.pas',
   uGlobal in '..\..\fma\trunk\uGlobal.pas',
   uAddVersion in 'uAddVersion.pas' {frmAddVersion},
-  uDeployOptions in 'uDeployOptions.pas' {frmDeployOptions};
+  uDeployOptions in 'uDeployOptions.pas' {frmDeployOptions},
+  uDialogs in '..\..\fma\trunk\uDialogs.pas';
 
 {$R *.res}
 

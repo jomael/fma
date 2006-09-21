@@ -79,7 +79,8 @@ uses
 {$IFNDEF VER150}
   ThemeMgr,
 {$ENDIF}
-  uolSelectPatchPath, ActnList, StdCtrls, Tabs, AppEvnts, StdActns;
+  uolSelectPatchPath, ActnList, StdCtrls, Tabs, AppEvnts, StdActns, jpeg,
+  WebUpdate, TntMenus;
 
 type
   TForm1 = class(TForm)
@@ -123,7 +124,6 @@ type
     ActionDelete: TAction;
     ToolBar2: TToolBar;
     Help1: TMenuItem;
-    About1: TMenuItem;
     ApplicationEvents1: TApplicationEvents;
     ToolButton7: TToolButton;
     ToolButton10: TToolButton;
@@ -161,8 +161,6 @@ type
     ActionFilter: TAction;
     ActionSave: TAction;
     N4: TMenuItem;
-    N1: TMenuItem;
-    HomePage1: TMenuItem;
     N12: TMenuItem;
     AddMirror3: TMenuItem;
     ActionAddMirror: TAction;
@@ -214,6 +212,13 @@ type
     N6: TMenuItem;
     RefreshView1: TMenuItem;
     ools1: TMenuItem;
+    UmWebUpdate1: TFmaWebUpdate;
+    About1: TTntMenuItem;
+    N1: TTntMenuItem;
+    CheckforUpdates1: TTntMenuItem;
+    N3: TTntMenuItem;
+    HomePage1: TTntMenuItem;
+    NoItemsPanel: TPanel;
     procedure TreeView1Change(Sender: TObject; Node: TTreeNode);
     procedure Exit1Click(Sender: TObject);
     procedure ActionAddUpdateUpdate(Sender: TObject);
@@ -275,6 +280,9 @@ type
     procedure pmExplorerPopup(Sender: TObject);
     procedure ActionDeployAppExecute(Sender: TObject);
     procedure ActionRefreshExecute(Sender: TObject);
+    procedure CheckforUpdates1Click(Sender: TObject);
+    procedure ListViewAfterDraw(Sender: TCustomListView;
+      const ARect: TRect; var DefaultDraw: Boolean);
   private
     { Private declarations }
     FSyncingCode,FLoadingFile,FModified,FInitialized: boolean;
@@ -291,6 +299,7 @@ type
     function CheckScriptName(ForceNewName: boolean = False): boolean;
     procedure CheckScriptSave;
     function CreateTempName: string;
+    function GetUpdateInfo(APath: string): TuolPatchInfo;
     procedure LoadScript(Filename: string);
     procedure ReleaseMainMenuButton;
     procedure LoadMirrors(Filename: string);
@@ -311,7 +320,9 @@ type
 {$ENDIF}
     procedure SyncGUI2Code(ReloadFile: boolean = False);
     procedure SyncCode2GUI;
+    procedure SyncCode2CustomData;
     procedure ClearRecentHistory;
+    procedure CheckNewVersionLabel(ALabel: string);
   published
     property ViewFilter: string read FFilter;
     property IsSyncChanges: boolean read Get_Syncing;
@@ -356,9 +367,10 @@ end;
 
 procedure TForm1.UpdateDetails;
 var
-  i,k,j: integer;
+  i,k: integer;
   sl: TStringList;
   tover: string;
+  pinfo: TuolPatchInfo;
 begin
   ListView1.Items.BeginUpdate;
   ListView1.Items.Clear;
@@ -389,19 +401,19 @@ begin
       try
         tover := TreeView1.Selected.Text;
         FUpdates.FindBestPath(TreeView1.Selected.Parent.Text,tover,sl);
-        for i := 0 to sl.Count-1 do
-          for k := 0 to FUpdates.Graph.Count-1 do
-            for j := 0 to TuolVersionInfo(FUpdates.Graph.Objects[k]).Patches.Count - 1 do begin
-              with TuolPatchInfo(TuolVersionInfo(FUpdates.Graph.Objects[k]).Patches.Objects[j]) do
-                if PatchURL = sl[i] then
-                  with ListView1.Items.Add do begin
-                    ImageIndex := 28;
-                    Caption := NeedPatchEngines;
-                    SubItems.Add(PatchURL);
-                    SubItems.Add(Format('%.0n',[1.0*PatchSize]));
-                    SubItems.Add(PatchMD5);
-                  end;
+        for i := 0 to sl.Count-1 do begin
+          pinfo := GetUpdateInfo(sl[i]);
+          if Assigned(pinfo) then begin
+            with ListView1.Items.Add do begin
+              ImageIndex := 28;
+              Caption := pinfo.NeedPatchEngines;
+              SubItems.Add(pinfo.PatchURL);
+              SubItems.Add(Format('%.0n',[1.0*pinfo.PatchSize]));
+              SubItems.Add(pinfo.PatchMD5);
             end;
+            break;
+          end;
+        end;
         StatusBar1.Panels[1].Text := IntToStr(sl.Count)+' updates';
       finally
         sl.Free;
@@ -411,10 +423,12 @@ end;
 
 procedure TForm1.SyncGUI2Code(ReloadFile: boolean);
 var
-  i,j: integer;
+  i,j,k,m: integer;
+  isCanceled: boolean;
   tover: string;
   sl: TStringList;
   ver,script: string;
+  frmBuild: TfrmBuild;
 begin
   FLoadingFile := True;
   Timer1.Enabled := False;
@@ -465,38 +479,61 @@ begin
 
     if Assigned(FUpdates) then begin
       StatusBar1.Panels[1].Text := 'Analyzing...';
-      StatusBar1.Update;
-      for i := 0 to FUpdates.Graph.Count - 1 do begin
-        ver := TuolVersionInfo(FUpdates.Graph.Objects[i]).VersionSignature;
-        if ver <> '*' then
-          if (FFilter = '') or (Pos(FFilter,ver) = 1) then
-          with TreeView1.Items.AddChild(TreeView1.Items[0],ver) do begin
-            ImageIndex := 18;
-            SelectedIndex := 18;
-            { remember version index }
-            StateIndex := i;
-          end;
-      end;
-      sl := TStringList.Create;
+      Update;
+      Enabled := False; // HACK!
+      frmBuild := TfrmBuild.Create(nil);
+      frmBuild.SetUpdateStep(15);
       try
-        for j := 0 to TreeView1.Items[0].Count-1 do
-          for i := 0 to TreeView1.Items[0].Count-1 do
-            if i <> j then begin
-              { use stored version index to retrieve version name }
-              tover := TreeView1.Items[0].Item[i].Text;
-              sl.Clear;
-              FUpdates.FindBestPath(TreeView1.Items[0].Item[j].Text,tover,sl);
-              if sl.Count <> 0 then begin
-                with TreeView1.Items.AddChild(TreeView1.Items[0].Item[j],tover) do begin
-                  ImageIndex := 29;
-                  SelectedIndex := 29;
-                  { remember version index }
-                  StateIndex := TreeView1.Items[0].Item[i].StateIndex;
+        for i := 0 to FUpdates.Graph.Count - 1 do begin
+          ver := TuolVersionInfo(FUpdates.Graph.Objects[i]).VersionSignature;
+          if ver <> '*' then
+            if (FFilter = '') or (Pos(FFilter,ver) = 1) then
+            with TreeView1.Items.AddChild(TreeView1.Items[0],ver) do begin
+              ImageIndex := 18;
+              SelectedIndex := 18;
+              { remember version index }
+              StateIndex := i;
+            end;
+        end;
+        sl := TStringList.Create;
+        try
+          isCanceled := False;
+          k := TreeView1.Items[0].Count-1;
+          m := k*(k-1);
+          if FInitialized and Visible and (k > 30) then begin
+            frmBuild.Show;
+            frmBuild.Label1.Caption := 'Analyzing script code...';
+            frmBuild.Update;
+          end;
+          for j := 0 to k do begin
+            for i := 0 to k do begin
+              frmBuild.OnDiffCallback(j*k + i,m,isCanceled);
+              if isCanceled then break;
+              if i <> j then begin
+                { use stored version index to retrieve version name }
+                tover := TreeView1.Items[0].Item[i].Text;
+                sl.Clear;
+                FUpdates.FindBestPath(TreeView1.Items[0].Item[j].Text,tover,sl);
+                if sl.Count <> 0 then begin
+                  with TreeView1.Items.AddChild(TreeView1.Items[0].Item[j],tover) do begin
+                    ImageIndex := 29;
+                    SelectedIndex := 29;
+                    { remember version index }
+                    StateIndex := TreeView1.Items[0].Item[i].StateIndex;
+                  end;
                 end;
               end;
             end;
+            if isCanceled then break;
+          end;
+        finally
+          sl.Free;
+        end;
       finally
-        sl.Free;
+        frmBuild.Close;
+        frmBuild.Free;
+        Enabled := True;
+        if isCanceled then NewView(False); // remove any partially rendered script
       end;
       TreeView1.Items[0].Expand(False);
       if ReloadFile then
@@ -540,15 +577,15 @@ var
   sl: TStringList;
   Found,InMain: boolean;
 begin
-  if not CheckScriptName or IsSyncChanges then
-    exit;
-    
   if not IsUOLDiffAvailable then begin
-    MessageDlg('In order to use Update Manager, you have to download '+sLineBreak+'a small library '+
+    MessageDlg('In order to use Update Manager, you have to download '+sLinebreak+'a small library '+
       'UOLDIFF.DLL from FMA web site'+sLinebreak+sLinebreak+'http://fma.sourceforge.net/'+sLinebreak+sLinebreak+
       'Place it in Update Manager folder and restart application.',mtInformation, [mbOK], 0);
     exit;
   end;
+  { Script must be saved first }
+  if not CheckScriptName then
+    exit;
   if ActiveControl = ListView1 then ExplorerOpenItem(True);
 
   frmAddUpdate.edFromVer.Text := TreeView1.Selected.Text;
@@ -566,12 +603,12 @@ begin
       if j <> -1 then frmAddUpdate.edToVer.Items.Delete(j);
     end;
   if frmAddUpdate.edToVer.Items.Count = 0 then
-    raise ERangeError.Create('No target versions are found or all updates are generated!'+sLineBreak+sLineBreak+
+    raise ERangeError.Create('No target versions are found or all updates are generated!'+sLinebreak+sLinebreak+
       'If Display Filter is applied then some target versions might be hidden');  
   frmAddUpdate.edToVer.ItemIndex := frmAddUpdate.edToVer.Items.Count-1;
   frmAddUpdate.edToVerChange(nil);
   if frmAddUpdate.ShowModal = mrOk then begin
-    SyncCode2GUI; // save settings
+    SyncCode2CustomData; // save settings
     sl := TStringList.Create;
     try
       sl.Assign(Memo1.Lines);
@@ -579,7 +616,7 @@ begin
         { update name }
         s := ExtractFileName(ChangeFileExt(frmAddUpdate.ReadyUpdates[i],''));
         Delete(s,1,Pos('-',s));
-        s := 'MobileAgent-'+s+'='+ExtractFileName(frmAddUpdate.ReadyUpdates[i])+',';
+        s := frmOptions.edFullUpdateName.Text + '-' + s + '=' + ExtractFileName(frmAddUpdate.ReadyUpdates[i]) + ',';
         { update size }
         with TFileStream.Create(frmAddUpdate.ReadyUpdates[i],fmOpenRead) do
           try
@@ -644,9 +681,7 @@ begin
       sl.Free;
       SyncGUI2Code;
     end;
-  end
-  else 
-    SyncCode2GUI; // save settings
+  end;
 end;
 
 procedure TForm1.NewView(ClearScript: boolean);
@@ -665,6 +700,8 @@ begin
   ListView1.Items.BeginUpdate;
   ListView1.Items.Clear;
   ListView1.Items.EndUpdate;
+
+  Update;
 
   with TreeView1.Items.Add(nil,'main') do begin
     if FFilter <> '' then Text := Format('main (filtered by %s*)',[FFilter]);
@@ -741,23 +778,37 @@ end;
 procedure TForm1.Notebook1PageChanged(Sender: TObject);
 begin
   TabSet1.TabIndex := Notebook1.Pages.IndexOf(Notebook1.ActivePage);
-  if Notebook1.ActivePage = 'Script' then Memo1.SetFocus;
   { Update Main Menu's View submenu }
   case TabSet1.TabIndex of
-    0: TargetVersions1.Checked := True;
-    1: ScriptCode1.Checked := True;
-    2: MirrorServers1.Checked := True;
+    0: begin
+         TargetVersions1.Checked := True;
+         NoItemsPanel.Visible := ListView1.Items.Count = 0;
+       end;
+    1: begin
+         ScriptCode1.Checked := True;
+         NoItemsPanel.Visible := False;
+         Memo1.SetFocus;
+       end;
+    2: begin
+         MirrorServers1.Checked := True;
+         NoItemsPanel.Visible := ListView2.Items.Count = 0;
+       end;
   end;
 end;
 
 function TForm1.IsDirectPatched(fromver, tover: string): boolean;
 var
   sl: TStringList;
+  pi: TuolPatchInfo;
 begin
+  Result := False;
   sl := TStringList.Create;
   try
     FUpdates.FindBestPath(fromver,tover,sl);
-    Result := sl.Count = 1;
+    if sl.Count = 1 then begin
+      pi := GetUpdateInfo(sl[0]);
+      Result := Pos('null',pi.NeedPatchEngines) = 0; // skip full updates ("appname-*-2.1.0.0.z/exe")
+    end;
   finally
     sl.Free;
   end;
@@ -838,6 +889,8 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin  
 {$IFNDEF VER150}
   ThemeManager1 := TThemeManager.Create(Self);
+{$ELSE}
+  NoItemsPanel.ParentBackground := False;
 {$ENDIF}
   Caption := Caption + ' ' + ExtractFileVersionInfo(Application.ExeName,'FileVersion');
   Notebook1.ActivePage := 'Explorer';
@@ -948,6 +1001,8 @@ begin
   if Assigned(frmAddUpdate) and Assigned(frmDiffOptions) then
   with TIniFile.Create(Filename) do
   try
+    frmOptions.edFullUpdateName.Text := ReadString('manager','Update Prefix','MobileAgent');
+
     { updates }
     frmAddUpdate.edFromExe.Text := ReadString('manager','From Dir','C:\Program Files\FMA 2\MobileAgent.exe');
     frmAddUpdate.edToExe.Text := ReadString('manager','To Dir','C:\Projects\FMA\fma\trunk\MobileAgent.exe');
@@ -986,7 +1041,7 @@ begin
     frmDiffOptions.rbPassWord.Checked := ReadInteger('manager','Protection',0) = 1;
 
     FFilter := ReadString('manager','Filter','');
-    TreeView1.Width := ReadInteger('manager','Tree Width',177);
+    TreeView1.Width := ReadInteger('manager','Tree Width',200);
   finally
     Free;
   end;
@@ -999,6 +1054,8 @@ begin
   { Update manager settings (do not modify manually) }
   with TIniFile.Create(Filename) do
   try
+    WriteString('manager','Update Prefix',frmOptions.edFullUpdateName.Text);
+
     { updates }
     WriteString('manager','From Dir',frmAddUpdate.edFromExe.Text);
     WriteString('manager','To Dir',frmAddUpdate.edToExe.Text);
@@ -1259,7 +1316,7 @@ begin
   end
   else begin
     MessageBeep(MB_ICONASTERISK);
-    MessageDlg(Application.Title+' could not open the script file:'+sLineBreak+sLineBreak+Filename, mtError, [mbOk], 0);
+    MessageDlg(Application.Title+' could not open the script file:'+sLinebreak+sLinebreak+Filename, mtError, [mbOk], 0);
   end;
 end;
 
@@ -1438,33 +1495,42 @@ procedure TForm1.ActionNewExecute(Sender: TObject);
 begin
   NewView;
   Memo1.Lines.Add(
-    '[main]'+SLinebreak+
-    '; format: update_name-from_version_signature-to_version_signature=patch_file_name,patch_file_size,update_engine1+pdate_engine2+...'+SLinebreak+
-    '; mandatory (incremental)'+SLinebreak+
-    '; MobileAgent-0.1.0.31-0.1.0.32=update-0.1.0.31-0.1.0.32.dif,203768,bin'+SLinebreak+
-    ';'+SLinebreak+
-    '; optional (fast - skip some middle versions)'+SLinebreak+
-    '; MobileAgent-0.1.0.31-0.1.0.99=update-0.1.0.31-0.1.0.99.dif,125500,bin'+SLinebreak+
-    ';'+SLinebreak+
-    '; optional (back)'+SLinebreak+
-    '; MobileAgent-0.1.0.32-0.1.0.31=update-0.1.0.32-0.1.0.31.rev,202636,bin'+SLinebreak+
-    ';'+SLinebreak+
-    '; optional (full - by using a * char as source version)'+SLinebreak+
-    '; MobileAgent-*-0.1.0.99=MobileAgent-0.1.0.99.exe,2000000,null'+SLinebreak+
-    ''+SLinebreak+
-    '[manager]'+SLinebreak+
-    '; update manager settings (do not modify manually)'+SLinebreak+
-    'From Dir='+SLinebreak+
-    'To Dir='+SLinebreak+
-    'History File='+SLinebreak+
-    'Max Compress=1'+SLinebreak+
-    'Add Reverse=1'+SLinebreak+
-    'Add History=1'+SLinebreak+
-    'Filter='+SLinebreak+
-    ''+SLinebreak+
-    '[mirrors]'+SLinebreak+
-    '; format: miror_id=miror_name,base_url'+SLinebreak+
-    '; optional'+SLinebreak+
+    '[main]'+sLinebreak+
+    '; format: update_name-from_version_signature-to_version_signature=patch_file_name,patch_file_size,update_engine1+pdate_engine2+...'+sLinebreak+
+    '; mandatory (incremental)'+sLinebreak+
+    '; MobileAgent-0.1.0.31-0.1.0.32=update-0.1.0.31-0.1.0.32.dif,203768,bin'+sLinebreak+
+    ';'+sLinebreak+
+    '; optional (fast - skip some middle versions)'+sLinebreak+
+    '; MobileAgent-0.1.0.31-0.1.0.99=update-0.1.0.31-0.1.0.99.dif,125500,bin'+sLinebreak+
+    ';'+sLinebreak+
+    '; optional (back)'+sLinebreak+
+    '; MobileAgent-0.1.0.32-0.1.0.31=update-0.1.0.32-0.1.0.31.rev,202636,bin'+sLinebreak+
+    ';'+sLinebreak+
+    '; optional (full - by using a * char as source version)'+sLinebreak+
+    '; MobileAgent-*-0.1.0.99=MobileAgent-0.1.0.99.exe,2000000,null'+sLinebreak+
+    sLinebreak+
+    '[manager]'+sLinebreak+
+    '; update manager settings (do not modify manually)'+sLinebreak+
+    'From Dir='+sLinebreak+
+    'To Dir='+sLinebreak+
+    'History File='+sLinebreak+
+    'Max Compress=1'+sLinebreak+
+    'Add Reverse=1'+sLinebreak+
+    'Add History=1'+sLinebreak+
+    'Filter='+sLinebreak+
+    'Version Dir='+sLinebreak+
+    'Full Update=0'+sLinebreak+
+    'Do Updates=1'+sLinebreak+
+    'Version Compression=1'+sLinebreak+
+    'Version Encryption=0'+sLinebreak+
+    'Compression=1'+sLinebreak+
+    'Encryption=0'+sLinebreak+
+    'Protection=0'+sLinebreak+
+    'Tree Width=177'+sLinebreak+
+    sLinebreak+
+    '[mirrors]'+sLinebreak+
+    '; format: miror_id=miror_name,base_url'+sLinebreak+
+    '; optional'+sLinebreak+
     'miror_0="SourceForge.net",http://fma.sourceforge.net/updates/');
   ScriptChanged := False;
   SyncGUI2Code;
@@ -1487,10 +1553,10 @@ procedure TForm1.FormShow(Sender: TObject);
 begin
   if not FInitialized and not ScriptChanged and (OpenDialog1.FileName = '') then begin
     LoadSettings;
-    FInitialized := True;
     { Reopen last used script on startup }
     if frmOptions.cbReloadRecent.Checked and OpenRecent1.Enabled then
       OpenRecent1.Items[0].Click;
+    FInitialized := True;
   end;
 end;
 
@@ -1502,6 +1568,7 @@ end;
 procedure TForm1.Options1Click(Sender: TObject);
 begin
   frmOptions.ShowModal;
+  SyncCode2GUI; // save changes
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -1629,12 +1696,16 @@ var
   sl: TStringList;
   Found,InMain: boolean;
 begin
+  { Script must be saved first }
+  if not CheckScriptName then
+    exit;
   { Switch to Versions tab }
   TargetVersions1.Click;
   { Create version }
   frmAddVersion.ForceDeployment(mrNone);
   case frmAddVersion.ShowModal of
     mrAll: begin // do full update
+      SyncCode2CustomData; // save settings
       ver := frmAddVersion.GetVersionLabel;
       sl := TStringList.Create;
       try
@@ -1659,7 +1730,7 @@ begin
         z := frmAddVersion.GetUpdateFileName;
         s := ExtractFileName(frmAddVersion.GetAppFileName);
         d := ExtractFileName(z);
-        s := frmOptions.Edit3.Text + '-*-' + ver + '=' + d + ',' + IntToStr(frmBuild.BuildSize) + ',null';
+        s := frmOptions.edFullUpdateName.Text + '-*-' + ver + '=' + d + ',' + IntToStr(frmBuild.BuildSize) + ',null';
         { MD5 update file }
         s := s + ',' + FileMD5(z);
         { Update code }
@@ -1671,10 +1742,9 @@ begin
       end;
     end;
     mrOk: begin // do incremental updates
+      SyncCode2CustomData; // save settings
       DoAddNewVersion(frmAddVersion.GetVersionLabel,frmAddVersion.cbDoIncUpdates.Checked);
     end;
-    else
-      SyncCode2GUI;
   end;
 end;
 
@@ -1685,9 +1755,7 @@ var
   s: string;
 begin
   s := ALabel;
-  for i := 0 to TreeView1.Items[0].Count-1 do
-    if AnsiCompareText(TreeView1.Items[0].Item[i].Text,s) = 0 then
-      raise Exception.Create('This version already exists');
+  CheckNewVersionLabel(s);
   { Create new 'dummy' version }
   vnode := TreeView1.Items.AddChild(TreeView1.Items[0],s);
   with vnode do begin
@@ -1720,7 +1788,49 @@ end;
 
 procedure TForm1.ActionRefreshExecute(Sender: TObject);
 begin
-  SyncGUI2Code(True);
+  SyncGUI2Code((GetKeyState(VK_CONTROL) <> 0) and (OpenDialog1.FileName <> ''));
+end;
+
+function TForm1.GetUpdateInfo(APath: string): TuolPatchInfo;
+var
+  k,j: integer;
+begin
+  Result := nil;
+  for k := 0 to FUpdates.Graph.Count-1 do
+    for j := 0 to TuolVersionInfo(FUpdates.Graph.Objects[k]).Patches.Count - 1 do
+      with TuolPatchInfo(TuolVersionInfo(FUpdates.Graph.Objects[k]).Patches.Objects[j]) do
+        if PatchURL = APath then begin
+          Result := TuolPatchInfo(TuolVersionInfo(FUpdates.Graph.Objects[k]).Patches.Objects[j]);
+          break;
+        end;
+end;
+
+procedure TForm1.CheckNewVersionLabel(ALabel: string);
+var
+  s: string;
+  i: Integer;
+begin
+  s := ALabel;
+  for i := 0 to TreeView1.Items[0].Count-1 do
+    if AnsiCompareText(TreeView1.Items[0].Item[i].Text,s) = 0 then
+      raise Exception.Create('This version already exists');
+end;
+
+procedure TForm1.SyncCode2CustomData;
+begin
+  SyncCode2GUI;
+  while IsSyncChanges do Application.ProcessMessages;
+end;
+
+procedure TForm1.CheckforUpdates1Click(Sender: TObject);
+begin
+  UmWebUpdate1.CheckforUpdate(ExtractFileVersionInfo(Application.ExeName,'FileVersion'));
+end;
+
+procedure TForm1.ListViewAfterDraw(Sender: TCustomListView;
+  const ARect: TRect; var DefaultDraw: Boolean);
+begin
+  NoItemsPanel.Visible := (Sender as TListView).Items.Count = 0;
 end;
 
 end.

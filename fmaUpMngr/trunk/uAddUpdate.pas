@@ -138,6 +138,7 @@ end;
 
 procedure TfrmAddUpdate.FormShow(Sender: TObject);
 begin
+  btnClose.Caption := '&Cancel';
   frmDiffOptions.Secret := '';
   ReadyUpdates.Clear;
   edToVer.SetFocus;
@@ -188,6 +189,7 @@ begin
   if MessageDlg('Start building update files now (Might take few minutes)?',
     mtConfirmation,[mbYes,mbNo],0) <> ID_YES then
     exit;
+  { Build }
   Button3.Enabled := False;
   Button6.Enabled := False;
   btnClose.Enabled := False;
@@ -208,6 +210,7 @@ begin
     Button3.Enabled := True;
     Button6.Enabled := True;
     btnClose.Enabled := True;
+    btnClose.Caption := 'Close';
   end;
 end;
 
