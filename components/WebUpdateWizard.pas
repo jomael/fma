@@ -217,7 +217,7 @@ type
     procedure TntFormShow(Sender: TObject);
   private
     { Private declarations }
-    FCanceled,FExiting: boolean;
+    FLocalize,FCanceled,FExiting: boolean;
     FUpdateState: TWebUpdateHintState;
     FOnGetDetails: TWebUpdateGetDetails;
     FOnReadyToDownload: TNotifyEvent;
@@ -230,7 +230,7 @@ type
     function Get_CleanupNeeded: boolean;
   public
     { Public declarations }
-    constructor CreateImg(AOwner: TComponent; AImage,AImageSmall: TPicture; AStatus: string = '');
+    constructor CreateImg(AOwner: TComponent; AImage,AImageSmall: TPicture; AStatus: string = ''; UseLocales: Boolean = True);
     procedure ShowWarning(AText: string; AType: TWebUpdateHintState);
     procedure ShowStatus(AText: string; HideProgress: boolean = True);
     procedure ShowProgress(Percents: integer);
@@ -334,8 +334,10 @@ begin
   if OpenDialog1.Execute then edLocal.Text := OpenDialog1.FileName;
 end;
 
-constructor TfrmWebUpdate.CreateImg(AOwner: TComponent; AImage,AImageSmall: TPicture; AStatus: string);
+constructor TfrmWebUpdate.CreateImg(AOwner: TComponent; AImage,AImageSmall: TPicture; AStatus: string;
+  UseLocales: Boolean);
 begin
+  FLocalize := UseLocales;
   Create(AOwner);
   if Assigned(AImage) and Assigned(AImage.Graphic) and not AImage.Graphic.Empty then
     imgWizard.Picture.Assign(AImage);
@@ -469,7 +471,8 @@ end;
 
 procedure TfrmWebUpdate.FormCreate(Sender: TObject);
 begin
-  TranslateComponent(Self);
+  if FLocalize then
+    TranslateComponent(Self);
   FUpdateState := noOK;
   FCanceled := False;
 {$IFDEF VER150}

@@ -127,6 +127,7 @@ type
     FAppName: string;
     FLogName: string;
     FLogVerbose: boolean;
+    FUseLocales: boolean;
     procedure Set_Image(const Value: TPicture);
     procedure Set_ImageSmall(const Value: TPicture);
     function Get_Build: string;
@@ -171,6 +172,7 @@ type
     property CurrentBuild: string read Get_Build write Set_Build;
     property LogFilename: string read FLogName write Set_LogName;
     property LogVerbose: boolean read FLogVerbose write FLogVerbose;
+    property UseLocales: boolean read FUseLocales write FUseLocales;
     property OnError: TWebUpdateError read FOnError write FOnError;
     property OnBeforeUpdate: TWebRestartEvent read FOnBeforeRestart write FOnBeforeRestart;
     property OnAfterUpdate: TWebUpdateNotes read FOnAfterRestart write FOnAfterRestart;
@@ -250,7 +252,7 @@ begin
   if Assigned(Updates) then UpdateIndex := Updates
     else UpdateIndex := DoRetrieveUpdateIndex;
   { Process updates }
-  with TfrmWebUpdate.CreateImg(nil,FImage,FImageSmall) do
+  with TfrmWebUpdate.CreateImg(nil,FImage,FImageSmall,'',FUseLocales) do
     try
       lblNameVer.Caption := CurBuild;
       lbDescription.Caption := Format(_('This wizard will help you update the %s via Internet or '+
@@ -715,6 +717,7 @@ end;
 constructor TFmaWebUpdate.Create(AOwner: TComponent);
 begin
   inherited;
+  FUseLocales := True;
   FRestarting := False;
   FImage := TPicture.Create;
   FImageSmall := TPicture.Create;

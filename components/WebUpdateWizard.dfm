@@ -509,7 +509,7 @@ object frmWebUpdate: TfrmWebUpdate
         Width = 413
         Height = 197
         Color = clBtnFace
-        Lines.WideStrings = (
+        Lines.Strings = (
           '<what>')
         ReadOnly = True
         ScrollBars = ssVertical
@@ -855,7 +855,7 @@ object frmWebUpdate: TfrmWebUpdate
         Top = 80
         Width = 413
         Height = 197
-        Lines.WideStrings = (
+        Lines.Strings = (
           '<what>')
         ReadOnly = True
         ScrollBars = ssVertical
