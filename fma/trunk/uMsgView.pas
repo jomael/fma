@@ -769,14 +769,13 @@ begin
       i := 0;
       while i < sl.Count do begin
         if FRenderCanceled then break;
-
-        wl := GetTokenList(sl[i]);
-        if wl.Count < 6 then begin
-          wl.Free;
-          Inc(i);
-          continue;
-        end;
+        wl := TTntStringList.Create;
         try
+          GetTokenList(wl, sl[i]);
+          if wl.Count < 6 then begin
+            Inc(i);
+            continue;
+          end;
           Node := ListMsg.AddChild(nil);
           try
             item := ListMsg.GetNodeData(Node);
@@ -790,7 +789,7 @@ begin
               item.number := sms.Number;
               item.from := Form1.ContactNumberByTel(item.number);
               if sms.IsOutgoing then
-                item.date := 0 
+                item.date := 0
               else
                 item.date := sms.TimeStamp;
               item.msg := sms.Text;

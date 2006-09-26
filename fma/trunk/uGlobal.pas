@@ -116,8 +116,8 @@ function GetToken(str: WideString; index: Integer; delimiter: WideChar = ','): W
   This function could be used to append a new token to the list }
 function SetToken(str,NewToken: WideString; index: Integer; delimiter: WideChar = ','): WideString;
 { Extract all tokens from str and place them in Strings List.
-  Caller should Free Result manually! Assume that Result.count equals to GetTokenCount }
-function GetTokenList(str: WideString; delimiter: WideChar = ','): TTntStringList;
+  Caller has to Create and Free AList manually! Assume that Result.count equals to GetTokenCount }
+procedure GetTokenList(AList: TTntStrings; str: WideString; delimiter: WideChar = ',');
 { Returns all tokens in wl List as a flat-wide-string, and quotes them if needed }
 function GetTokenListText(wl: TTntStringList; delimiter: WideChar = ','): WideString;
 
@@ -422,19 +422,18 @@ begin
   end;
 end;
 
-function GetTokenList(str: WideString; delimiter: WideChar): TTntStringList;
+procedure GetTokenList(AList: TTntStrings; str: WideString; delimiter: WideChar);
 var
   LastEmpty: Boolean;
   w: WideString;
 begin
-  Result := TTntStringList.Create;
   w := Trim(str);
   if (w <> '') and (w[Length(w)] = delimiter) then
     LastEmpty := True
   else
     LastEmpty := False;
-  while w <> '' do Result.Add(GetFirstToken(w));
-  if LastEmpty then Result.Add('');
+  while w <> '' do AList.Add(GetFirstToken(w));
+  if LastEmpty then AList.Add('');
 end;
 
 function GetTokenListText(wl: TTntStringList; delimiter: WideChar = ','): WideString;

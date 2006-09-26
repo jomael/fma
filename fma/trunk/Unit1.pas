@@ -11388,12 +11388,11 @@ begin
   cnt := 0;
   sl := TStrings(data.data);
   for i := 0 to sl.Count-1 do begin
-    wl := GetTokenList(sl[i]);
-    if wl.Count < 6 then begin
-      wl.Free;
-      continue;
-    end;
+    wl := TTntStringList.Create;
     try
+      GetTokenList(wl, sl[i]);
+      if wl.Count < 6 then
+        continue;
       { Should we upgrade DB? }
       if wl.Count < 8 then begin
         if wl.Count = 6 then begin
@@ -13019,10 +13018,11 @@ var
   begin
     Result := -1;
     for i := 0 to AList.Count-1 do begin
-      optimizer := GetTokenList(AList[i]);
+      optimizer := TTntStringList.Create;
       try
-      { compare pdu data, if equal compare message type,
-        will be considered as found if message type equals AType OR '3'}
+        GetTokenList(optimizer, AList[i]);
+        { compare pdu data, if equal compare message type,
+          will be considered as found if message type equals AType OR '3'}
         if (AnsiCompareStr(APDU, optimizer[5]) = 0) then
           if (optimizer[0] = AType) or (optimizer[0] = '3') then begin
             Result := i;
