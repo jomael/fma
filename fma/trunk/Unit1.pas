@@ -10548,7 +10548,7 @@ begin
             Parent := Self;
             ComPort := Self.ComPort;
             ComProperty := cpPort;
-            if (Items.Count <> 0) and (Items.IndexOf(s) = -1) then begin
+            if (Items.Count <> 0) and (Items.IndexOf(s) = -1) and (ThreadSafe.ConnectionType = 2) then begin
               { Ignore obsolete com ports stored in profile DB }
               w := WideFormat(_('Please select a COM port in Options | Connectivity prior connecting to %s.'),[FSelPhone]);
               if FAppInitialized then
@@ -13015,20 +13015,27 @@ var
   function FindPDUinList(var AList: TStringList; AType, APDU: String; correctType: boolean): integer;
   var
     i: Integer;
+    optimizer: TTntStringList;
   begin
     Result := -1;
-    for i := 0 to AList.Count-1 do
+    for i := 0 to AList.Count-1 do begin
+      optimizer := GetTokenList(AList[i]);
+      try
       { compare pdu data, if equal compare message type,
         will be considered as found if message type equals AType OR '3'}
-      if (AnsiCompareStr(APDU,GetToken(AList[i],5)) = 0) then
-        if (GetToken(AList[i],0) = AType) or (GetToken(AList[i],0) = '3') then begin
-          Result := i;
-          if correctType then begin
-            AList[i] := SetToken(AList[i],AType,0);
-            inc(ModCount);
+        if (AnsiCompareStr(APDU, optimizer[5]) = 0) then
+          if (optimizer[0] = AType) or (optimizer[0] = '3') then begin
+            Result := i;
+            if (correctType) and (optimizer[0] <> AType) then begin
+              AList[i] := SetToken(AList[i],AType,0);
+              inc(ModCount);
+            end;
+            break;
           end;
-          break;
-        end;
+      finally
+        optimizer.Free;
+      end;
+    end;
   end;
 begin
   AskRequestConnection;
@@ -13044,7 +13051,7 @@ begin
     if CanShowProgress then
       dlg.ShowProgress(FProgressLongOnly);
     EData := ExplorerNew.GetNodeData(Node);
-    
+
     Log.AddSynchronizationMessageFmt('Processing folder: %s', [EData.Text], lsDebug); // do not localize debug
     { Information for nl.strings[] - the format is:
         header := trim(copy(ml[i], 8, length(ml[i])));
@@ -13084,24 +13091,26 @@ begin
     end;
     dlg.SetDescr(_('Saving messages data'));
     Log.AddMessage('Saving messages data', lsDebug); // do not localize debug
+    { mark old sl messages as 'in PC only' }
+    for i := 0 to sl.Count-1 do
+      if FindPDUinList(nl, GetToken(sl[i],0), GetToken(sl[i],5), False) = -1 then begin
+        if GetToken(sl[i],0) <> '3' then begin
+          sl[i] := SetToken(sl[i],'3',0); // 3 = in PC
+          inc(ModCount); // count of SMS messages no longer in ME/SM
+        end;
+      end;
     { add new messages to sl }
     for i := 0 to nl.Count-1 do
       if FindPDUinList(sl, GetToken(nl[i],0), GetToken(nl[i],5), True) = -1 then begin
         sl.Add(nl[i]);
         inc(NewCount);
       end;
-    { mark old sl messages as 'in PC only' }
-    for i := 0 to sl.Count-1 do
-      if FindPDUinList(nl, GetToken(sl[i],0), GetToken(sl[i],5), False) = -1 then begin
-        sl[i] := SetToken(sl[i],'3',0); // 3 = in PC
-        inc(ModCount);
-      end;
     { done }
-    i := NewCount + ModCount;
     Log.AddSynchronizationMessageFmt(_('%d new and %d modified messages added to FMA by Phone.'),
       [NewCount, ModCount], lsInformation);
+    i := NewCount + ModCount;
     Log.AddSynchronizationMessageFmt('Processing folder %s: %d changed, %d skipped messages',
-      [EData.Text, i, nl.Count - i], lsDebug); // do not localize debug
+      [EData.Text, i, sl.Count - ModCount], lsDebug); // do not localize debug
     UpdateNewMessagesCounter(Node);
     { Update view }
     if frmMsgView.Visible and (ExplorerNew.FocusedNode = Node) then
@@ -16541,7 +16550,7 @@ begin
         { Drop any current connection }
         if FConnected then
           ActionConnectionDisconnect.Execute;
-          
+
         { Apply new phone settings }
         with frmNewDeviceWizard.SelectedDevice do begin
           ThreadSafe.ConnectionType := ConnectionType;
