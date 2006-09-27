@@ -766,11 +766,11 @@ begin
       if sl <> FRendered then
         FRendered := nil;
       FRenderCanceled := False;
-      i := 0;
-      while i < sl.Count do begin
-        if FRenderCanceled then break;
-        wl := TTntStringList.Create;
-        try
+      wl := TTntStringList.Create;
+      try
+        i := 0;
+        while i < sl.Count do begin
+          if FRenderCanceled then break;
           GetTokenList(wl, sl[i]);
           if wl.Count < 6 then begin
             Inc(i);
@@ -853,10 +853,10 @@ begin
               dbfixed := True;
             end;
           end;
-        finally
-          wl.Free;
           Inc(i);
         end;
+      finally
+        wl.Free;
       end;
       FRendered := sl;
     finally

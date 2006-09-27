@@ -427,6 +427,7 @@ var
   LastEmpty: Boolean;
   w: WideString;
 begin
+  AList.Clear;
   w := Trim(str);
   if (w <> '') and (w[Length(w)] = delimiter) then
     LastEmpty := True
