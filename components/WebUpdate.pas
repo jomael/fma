@@ -104,7 +104,7 @@ unit WebUpdate;
 interface
 
 uses
-  Windows, Messages, SysUtils, Controls, Classes, Graphics, uolSelectPatchPath,
+  Windows, Messages, SysUtils, Controls, Classes, Graphics, Forms, uolSelectPatchPath,
   WebUpdateWizard;
 
 type
@@ -128,6 +128,7 @@ type
     FLogName: string;
     FLogVerbose: boolean;
     FUseLocales: boolean;
+    FPosition: TPosition;
     procedure Set_Image(const Value: TPicture);
     procedure Set_ImageSmall(const Value: TPicture);
     function Get_Build: string;
@@ -176,6 +177,7 @@ type
     property OnError: TWebUpdateError read FOnError write FOnError;
     property OnBeforeUpdate: TWebRestartEvent read FOnBeforeRestart write FOnBeforeRestart;
     property OnAfterUpdate: TWebUpdateNotes read FOnAfterRestart write FOnAfterRestart;
+    property Position: TPosition read FPosition write FPosition default poMainFormCenter;
   end;
 
 procedure Register;
@@ -186,7 +188,7 @@ implementation
 
 uses
   gnugettext,
-  Dialogs, uDialogs, Forms, ShellAPI, uolInetGet, uolPatch, zlib, TntCheckLst, IcsMD5;
+  Dialogs, uDialogs, ShellAPI, uolInetGet, uolPatch, zlib, TntCheckLst, IcsMD5;
 
 procedure Register;
 begin
@@ -252,7 +254,7 @@ begin
   if Assigned(Updates) then UpdateIndex := Updates
     else UpdateIndex := DoRetrieveUpdateIndex;
   { Process updates }
-  with TfrmWebUpdate.CreateImg(nil,FImage,FImageSmall,'',FUseLocales) do
+  with TfrmWebUpdate.CreateImg(nil,FImage,FImageSmall,'',FUseLocales,FPosition) do
     try
       lblNameVer.Caption := CurBuild;
       lbDescription.Caption := Format(_('This wizard will help you update the %s via Internet or '+
@@ -338,7 +340,7 @@ begin
   { Apply the patch, if any (patch file names should be stored in Filename) }
   if UsePatch then begin
     { First ask user about this }
-    with TfrmWebUpdate.CreateImg(nil,FImage,FImageSmall) do
+    with TfrmWebUpdate.CreateImg(nil,FImage,FImageSmall,'',FUseLocales,FPosition) do
       try
         UsePatch := ReadyToInstall(FReady); // modal
       finally
@@ -530,7 +532,7 @@ begin
   Path := ExtractFilePath(AppFile);
   UpdateFile := ParamStr(3);
   if (UpperCase(ParamStr(1)) = '-U') and FileExists(UpdateFile) then begin // do not localize
-    dlg := TfrmWebUpdate.CreateImg(nil,FImage,FImageSmall,_('Preparing Installation...'));
+    dlg := TfrmWebUpdate.CreateImg(nil,FImage,FImageSmall,_('Preparing Installation...'),FUseLocales,FPosition);
     try
       dlg.BringToFront;
       { Wait for calling application to terminate }
@@ -646,7 +648,7 @@ begin
     end;
   end;
   if (UpperCase(ParamStr(1)) = '+U') then begin // do not localize
-    dlg := TfrmWebUpdate.CreateImg(nil,FImage,FImageSmall,_('Finishing Installation...'));
+    dlg := TfrmWebUpdate.CreateImg(nil,FImage,FImageSmall,_('Finishing Installation...'),FUseLocales,FPosition);
     try
       dlg.BringToFront;
       { Wait for calling application to terminate }

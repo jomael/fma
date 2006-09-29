@@ -230,7 +230,8 @@ type
     function Get_CleanupNeeded: boolean;
   public
     { Public declarations }
-    constructor CreateImg(AOwner: TComponent; AImage,AImageSmall: TPicture; AStatus: string = ''; UseLocales: Boolean = True);
+    constructor CreateImg(AOwner: TComponent; AImage,AImageSmall: TPicture; AStatus: string = '';
+      UseLocales: Boolean = True; UsePosition: TPosition = poMainFormCenter);
     procedure ShowWarning(AText: string; AType: TWebUpdateHintState);
     procedure ShowStatus(AText: string; HideProgress: boolean = True);
     procedure ShowProgress(Percents: integer);
@@ -335,10 +336,11 @@ begin
 end;
 
 constructor TfrmWebUpdate.CreateImg(AOwner: TComponent; AImage,AImageSmall: TPicture; AStatus: string;
-  UseLocales: Boolean);
+  UseLocales: Boolean; UsePosition: TPosition);
 begin
   FLocalize := UseLocales;
   Create(AOwner);
+  Position := UsePosition;
   if Assigned(AImage) and Assigned(AImage.Graphic) and not AImage.Graphic.Empty then
     imgWizard.Picture.Assign(AImage);
   if Assigned(AImageSmall) and Assigned(AImageSmall.Graphic) and not AImageSmall.Graphic.Empty then
