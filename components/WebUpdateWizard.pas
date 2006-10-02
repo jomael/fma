@@ -217,7 +217,7 @@ type
     procedure TntFormShow(Sender: TObject);
   private
     { Private declarations }
-    FLocalize,FCanceled,FExiting: boolean;
+    FCreated,FLocalize,FCanceled,FExiting: boolean;
     FUpdateState: TWebUpdateHintState;
     FOnGetDetails: TWebUpdateGetDetails;
     FOnReadyToDownload: TNotifyEvent;
@@ -347,8 +347,9 @@ begin
     imgWizardSmall1.Picture.Assign(AImageSmall);
   { Populate dublicate images }
   if not imgWarning.Picture.Graphic.Empty then imgReady.Picture.Assign(imgWarning.Picture);
-  if not imgWizard.Picture.Graphic.Empty then imgFinished.Picture.Assign(imgWizard.Picture);
-  if not imgWizardSmall1.Picture.Graphic.Empty then begin
+  if Assigned(imgWizard.Picture.Graphic) and not imgWizard.Picture.Graphic.Empty then
+    imgFinished.Picture.Assign(imgWizard.Picture);
+  if Assigned(imgWizardSmall1.Picture.Graphic) and not imgWizardSmall1.Picture.Graphic.Empty then begin
     imgWizardSmall2.Picture.Assign(imgWizardSmall1.Picture);
     imgWizardSmall3.Picture.Assign(imgWizardSmall1.Picture);
     imgWizardSmall4.Picture.Assign(imgWizardSmall1.Picture);
@@ -473,8 +474,6 @@ end;
 
 procedure TfrmWebUpdate.FormCreate(Sender: TObject);
 begin
-  if FLocalize then
-    TranslateComponent(Self);
   FUpdateState := noOK;
   FCanceled := False;
 {$IFDEF VER150}
@@ -487,6 +486,9 @@ begin
   TopPanel6.ParentBackground := False;
   FinishedPanel.ParentBackground := False;
 {$ENDIF}
+  if FLocalize then
+    TranslateComponent(Self);
+  FCreated := True;
 end;
 
 procedure TfrmWebUpdate.WizardPageNext(var Msg: TMessage);
@@ -511,7 +513,6 @@ begin
        end;
     piMirrors: begin { mirrors }
          if rbMirrorCustom.Checked and (SelectedCustomMirrors = []) then begin
-           MessageBeep(MB_ICONERROR);
            MessageDlgW(_('You have to select at least one mirror.'),mtError, MB_OK);
            Abort;
          end;
@@ -519,7 +520,6 @@ begin
        end;
     piUpdates: begin { updates }
          if RadioButton1.Checked and not FileExists(edLocal.Text) then begin
-           MessageBeep(MB_ICONERROR);
            MessageDlgW(_('You have to select update file first.'),mtError, MB_OK);
            Abort;
          end;
@@ -529,7 +529,6 @@ begin
            clNumbersClickCheck(nil);
          end;
          if CheckedCount <> 1 then begin
-           MessageBeep(MB_ICONERROR);
            MessageDlgW(_('You have to select one target version.'),mtError, MB_OK);
            Abort;
          end;
@@ -580,12 +579,18 @@ var
   s: String;
   i: Integer;
 begin
+  if not FCreated then exit;
   case nbWizard.PageIndex of
     piWelcome: begin { welcome }
+         if RadioButton3.Visible then
+           CancelButton.Caption := _('&Cancel')
+         else
+           CancelButton.Caption := _('&Finish');
          PreviousButton.Enabled := False;
        end;
     piMirrors: begin { mirrors }
          PreviousButton.Enabled := True;
+         CancelButton.Caption := _('&Cancel');
        end;
     piUpdates: begin { updates }
          NextButton.Caption := _('&Next >');
@@ -722,13 +727,21 @@ begin
          Close;
     end;
     else begin { all other pages }
-         MessageBeep(MB_ICONQUESTION);
-         if MessageDlgW(_('The Wizard is not complete. Do you realy want to exit it?'+
-           sLinebreak+sLinebreak+'You can run this wizard at a later time to complete it.'+
-           sLinebreak+sLinebreak+'To exit Wizard right now click Yes. To continue click No.'),
-           mtConfirmation, MB_YESNO) = ID_YES then begin
+         if (nbWizard.PageIndex = piWelcome) and not RadioButton3.Visible then begin
+           { exit Wizard when using latest version }
            FExiting := True;
            ModalResult := mrCancel;
+           { In case window is not shown as modal }
+           Close;
+         end
+         else begin
+           if MessageDlgW(_('The Wizard is not complete. Do you realy want to exit it?'+
+             sLinebreak+sLinebreak+'You can run this wizard at a later time to complete it.'+
+             sLinebreak+sLinebreak+'To exit Wizard right now click Yes. To continue click No.'),
+             mtConfirmation, MB_YESNO) = ID_YES then begin
+             FExiting := True;
+             ModalResult := mrCancel;
+           end;
          end;
     end;
   end;
@@ -788,6 +801,7 @@ procedure TfrmWebUpdate.TntFormShow(Sender: TObject);
 begin
   if nbWizard.PageIndex > piReadyInstall then
     ShowWindow(Application.Handle,SW_HIDE);
+  nbWizardPageChanged(nbWizard);
 end;
 
 end.

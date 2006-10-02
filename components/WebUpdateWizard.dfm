@@ -1,6 +1,6 @@
 object frmWebUpdate: TfrmWebUpdate
-  Left = 357
-  Top = 199
+  Left = 588
+  Top = 191
   BorderIcons = [biSystemMenu, biHelp]
   BorderStyle = bsSingle
   Caption = 'Web Update Wizard'

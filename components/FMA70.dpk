@@ -10,6 +10,7 @@ package FMA70;
 {$R 'WBluetoothSocket.dcr'}
 {$R 'WIrCOMMSocket.dcr'}
 {$R 'USBMonitor.dcr'}
+{$R 'SECalendar.dcr'}
 {$ALIGN 8}
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
@@ -66,6 +67,7 @@ contains
   WBluetoothSocket in 'WBluetoothSocket.pas',
   WIrCOMMSocket in 'WIrCOMMSocket.pas',
   USBMonitor in 'USBMonitor.pas',
-  uDialogs in '..\fma\trunk\uDialogs.pas';
+  uDialogs in '..\fma\trunk\uDialogs.pas',
+  SECalendar in 'SECalendar.pas';
 
 end.
