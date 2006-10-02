@@ -19,24 +19,31 @@ type
     FUseCurrentDate: Boolean;
     FDateInfo: TStringList;
     FOnSelChange: TNotifyEvent;
+    FSelColor,FObjColor,FMixColor: TColor;
+    FOwnObjects: boolean;
     function GetCellText(ACol, ARow: Integer): string;
     function GetDateElement(Index: Integer): Integer;
     procedure SetCalendarDate(Value: TDateTime);
     procedure SetDateElement(Index: Integer; Value: Integer);
     procedure SetStartOfWeek(Value: TDayOfWeek);
     procedure SetUseCurrentDate(Value: Boolean);
+    procedure SetMixColor;
     function StoreCalendarDate: Boolean;
     function GetSelection: TCalSelection;
     procedure SetSelection(const Value: TCalSelection);
     function GetDateObjects(ADate: TDateTime): TObject;
     procedure SetDateObjects(ADate: TDateTime; const Value: TObject);
+    function GetColor(const Index: Integer): TColor;
+    procedure SetColor(const Index: Integer; const Value: TColor);
   protected
     procedure Change; dynamic;
     procedure ChangeMonth(Delta: Integer);
     procedure Click; override;
     function DaysPerMonth(AYear, AMonth: Integer): Integer; virtual;
     function DaysThisMonth: Integer; virtual;
+    {}
     procedure DrawCell(ACol, ARow: Longint; ARect: TRect; AState: TGridDrawState); override;
+    {}
     function IsLeapYear(AYear: Integer): Boolean; virtual;
     function SelectCell(ACol, ARow: Longint): Boolean; override;
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
@@ -54,16 +61,22 @@ type
     procedure PrevYear;
     procedure SelectAll;
     procedure ClearSelection;
+    procedure ClearObjects;
     procedure UpdateCalendar; virtual;
+    function DayToDate(ADay: integer): TDateTime;
     function ObjectsCount: integer;
+    function ObjectDateByIndex(Index: integer): TDateTime;
     function DateObjectByIndex(Index: integer): TObject;
     property DateObjects[ADate: TDateTime]: TObject read GetDateObjects write SetDateObjects;
     property Selection: TCalSelection read GetSelection write SetSelection;
+    property OwnObjects: boolean read FOwnObjects write FOwnObjects;
   published
     property Align;
     property Anchors;
     property BorderStyle;
     property Color;
+    property ColorObject: TColor index 1 read GetColor write SetColor;
+    property ColorSelect: TColor index 2 read GetColor write SetColor;
     property Constraints;
     property Ctl3D;
     property Day: Integer index 3  read GetDateElement write SetDateElement stored False;
@@ -121,6 +134,9 @@ begin
   inherited Create(AOwner);
   FDateInfo := TStringList.Create;
   { defaults }
+  FObjColor := clSkyBlue;
+  FSelColor := clInfoBk;
+  SetMixColor;
   FUseCurrentDate := True;
   FixedCols := 0;
   FixedRows := 1;
@@ -168,44 +184,55 @@ end;
 procedure TSECalendar.DrawCell(ACol, ARow: Longint; ARect: TRect; AState: TGridDrawState);
 var
   TheText: string;
+  HasObject: boolean;
   FontCol,PenCol: TColor;
+  FontStyle: TFontStyles;
   PenStyle: TPenStyle;
+  CRect: TRect;
   i: integer;
 begin
   TheText := CellText[ACol, ARow];
   with ARect, Canvas do begin
+    CRect := ARect;
     FontCol := Font.Color;
+    FontStyle := Font.Style;
     Brush.Color := Color;
-    if (ARow > 0) and (TheText <> '') then begin
+    if gdFixed in AState then begin
+      Brush.Color := ColorToRGB(clBtnFace);
+      Font.Color := ColorToRGB(clBtnText);
+    end
+    else
+    if TheText <> '' then begin
+      HasObject := Assigned(DateObjects[CalendarDate + StrToInt(TheText) - DayOf(CalendarDate)]);
+      if HasObject then Brush.Color := FObjColor;
       i := StrToInt(TheText);
       if FSelecting then begin
         if ((FSelStart <= i) and (i <= FSelMove)) or
           ((FSelMove <= i) and (i <= FSelStart)) then
-          Brush.Color := ColorToRGB(clInactiveCaption);
+          Brush.Color := ColorToRGB(clHighlight);
       end
       else
         if (FSelStart <= i) and (i <= FSelEnd) then
-          Brush.Color := ColorToRGB(clInfoBk);
-      Font.Color := ColorToRGB(clInfoText);
-    end;
-    if gdSelected in AState then begin
-      Brush.Color := ColorToRGB(clHighlight);
-      Font.Color := ColorToRGB(clHighlightText);
-    end;
-    if gdFixed in AState then begin
-      Brush.Color := ColorToRGB(clBtnFace);
-      Font.Color := ColorToRGB(clBtnText);
+          if HasObject then
+            Brush.Color := FMixColor
+          else
+            Brush.Color := FSelColor;
     end;
     FillRect(ARect);
-    Font.Color := FontCol;
-    TextRect(ARect, Left + (Right - Left - TextWidth(TheText)) div 2,
+    if gdSelected in AState then begin
+      Font.Style := Font.Style + [fsBold]; 
+    end;
+    TextOut(Left + (Right - Left - TextWidth(TheText)) div 2,
       Top + (Bottom - Top - TextHeight(TheText)) div 2, TheText);
+    Font.Color := FontCol;
+    Font.Style := FontStyle;
     if gdFocused in AState then begin
       PenCol := Pen.Color;
       PenStyle := Pen.Style;
       Pen.Color := ColorToRGB(clBlack);
       Pen.Style := psDot;
-      Polyline([Point(Left+1,Top+1),Point(Left+1,Bottom-2),Point(Right-2,Bottom-2),
+      with CRect do
+        Polyline([Point(Left+1,Top+1),Point(Left+1,Bottom-2),Point(Right-2,Bottom-2),
         Point(Right-2,Top+1),Point(Left+1,Top+1)]);
       Pen.Color := PenCol;
       Pen.Style := PenStyle;
@@ -376,17 +403,19 @@ var
   s: string;
 begin
   inherited;
-  FSelStart := 0;
-  FSelEnd := 0;
-  Cell := MouseCoord(X,Y);
-  if (Cell.X >= 0) and (Cell.Y >= 0) then begin
-    s := GetCellText(Cell.X,Cell.Y);
-    if s <> '' then begin
-      FSelStart := StrToInt(s);
-      FSelMove := FSelStart;
-      FSelecting := True;
+  if Button = mbLeft then begin
+    Cell := MouseCoord(X,Y);
+    if (Cell.X >= 0) and (Cell.Y > 0) then begin { skip Row 0 }
+      s := GetCellText(Cell.X,Cell.Y);
+      if s <> '' then begin
+        FSelStart := StrToInt(s);
+        FSelMove := FSelStart;
+        FSelEnd := 0;
+        FSelecting := True;
+      end;
     end;
   end;
+  Repaint;
 end;
 
 procedure TSECalendar.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -394,19 +423,20 @@ var
   i: integer;
 begin
   inherited;
-  if FSelStart > 0 then begin
-    FSelEnd := FSelMove;
-    if FSelEnd < FSelStart then begin
-      i := FSelStart;
-      FSelStart := FSelEnd;
-      FSelEnd := i;
+  if Button = mbLeft then begin
+    if (FSelStart > 0) and FSelecting then begin
+      FSelEnd := FSelMove;
+      if FSelEnd < FSelStart then begin
+        i := FSelStart;
+        FSelStart := FSelEnd;
+        FSelEnd := i;
+      end;
+      FSelMove := 0;
+      FSelecting := False;
+      Repaint;
+      if Assigned(FOnSelChange) then FOnSelChange(Self);
     end;
-    FSelMove := 0;
-    FSelecting := False;
   end;
-  if FSelEnd = 0 then FSelStart := 0;
-  Repaint;
-  if Assigned(FOnSelChange) then FOnSelChange(Self);
 end;
 
 procedure TSECalendar.MouseMove(Shift: TShiftState; X, Y: Integer);
@@ -418,7 +448,7 @@ begin
   inherited;
   if (FSelStart > 0) and FSelecting then begin
     Cell := MouseCoord(X,Y);
-    if (Cell.X >= 0) and (Cell.Y > 0) then begin
+    if (Cell.X >= 0) and (Cell.Y > 0) then begin { skip Row 0 }
       s := GetCellText(Cell.X,Cell.Y);
       if s <> '' then begin
         i := StrToInt(s);
@@ -447,22 +477,33 @@ end;
 procedure TSECalendar.SetSelection(const Value: TCalSelection);
 var
   i: integer;
+  c: TCalSelection;
 begin
-  { ONLY first consecutive set members will be selected }
   FSelStart := 0;
   FSelEnd := 0;
-  if Value <> [] then
+  if Value <> [] then begin
+    c := Value;
     for i := 1 to DaysInMonth(CalendarDate) do begin
       if FSelStart = 0 then begin
         if i in Value then begin
           FSelStart := i;
           FSelEnd := i;
+          c := c - [i];
         end;
       end
       else
-        if i in Value then FSelEnd := i
-        else break;
+        if i in Value then begin
+          FSelEnd := i;
+          c := c - [i];
+        end
+        else
+          break;
     end;
+    if c <> [] then begin
+      FSelStart := DayOf(CalendarDate);
+      FSelEnd := FSelStart;
+    end;
+  end;
   Repaint;
   if Assigned(FOnSelChange) then FOnSelChange(Self);
 end;
@@ -473,13 +514,8 @@ begin
 end;
 
 destructor TSECalendar.Destroy;
-var
-  i: integer;
 begin
-  for i := 0 to FDateInfo.Count-1 do begin
-    FDateInfo.Objects[i].Free;
-    FDateInfo.Objects[i] := nil;
-  end;
+  ClearObjects;
   FDateInfo.Free;
   inherited;
 end;
@@ -503,8 +539,10 @@ begin
   s := IntToStr(Trunc(ADate));
   i := FDateInfo.IndexOf(s);
   if i <> -1 then begin
-    FDateInfo.Objects[i].Free;
-    FDateInfo.Objects[i] := nil;
+    if FOwnObjects then begin
+      FDateInfo.Objects[i].Free;
+      FDateInfo.Objects[i] := nil;
+    end;
     if Assigned(Value) then
       FDateInfo.Objects[i] := Value
     else
@@ -525,6 +563,68 @@ begin
     Result := FDateInfo.Objects[Index]
   else
     Result := nil;
+end;
+
+function TSECalendar.DayToDate(ADay: integer): TDateTime;
+begin
+  Result := CalendarDate + ADay - DayOf(CalendarDate);
+end;
+
+function TSECalendar.ObjectDateByIndex(Index: integer): TDateTime;
+begin
+  if (Index >= 0) and (Index < FDateInfo.Count) then
+    Result := FloatToDateTime(StrToInt(FDateInfo[Index])) 
+  else
+    Result := 0;
+end;
+
+procedure TSECalendar.ClearObjects;
+var
+  i: integer;
+begin
+  if FOwnObjects then
+    for i := 0 to FDateInfo.Count-1 do begin
+      FDateInfo.Objects[i].Free;
+      FDateInfo.Objects[i] := nil;
+    end;
+  FDateInfo.Clear;
+end;
+
+function TSECalendar.GetColor(const Index: Integer): TColor;
+begin
+  case Index of
+    1: Result := FObjColor;
+    2: Result := FSelStart;
+  else Result := 0;
+  end;
+end;
+
+procedure TSECalendar.SetColor(const Index: Integer; const Value: TColor);
+begin
+  case Index of
+    1: FObjColor := Value;
+    2: FSelStart := Value;
+  end;
+  SetMixColor;
+end;
+
+procedure TSECalendar.SetMixColor;
+  function MixColors(Value,Shift: integer): Byte;
+  begin
+    Value := (Value + Shift);
+    if Value < 0 then Value := 0;
+    if Value > 255 then Value := 255;
+    Result := Value;
+  end;
+  function AddColors(A,B: TColor): TColor;
+  begin
+    { Ignore Alpha channel }
+    Result := (MixColors(A and $FF0000 shr 16, B and $FF0000 shr 16) shl 16) or
+              (MixColors(A and $00FF00 shr 8, B and $00FF00 shr 8) shl 8) or
+              (MixColors(A and $0000FF, B and $0000FF));
+  end;
+begin
+  FMixColor := AddColors(FObjColor,FSelStart);
 end;
 
 end.
