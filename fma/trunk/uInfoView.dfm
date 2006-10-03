@@ -408,6 +408,7 @@ object frmInfoView: TfrmInfoView
       Constraints.MinHeight = 257
       ParentColor = True
       TabOrder = 2
+      OnResize = BatteryPanelResize
       DesignSize = (
         413
         257)
@@ -449,227 +450,6 @@ object frmInfoView: TfrmInfoView
         Anchors = [akLeft, akTop, akRight]
         Shape = bsTopLine
       end
-      object Image7: TTntImage
-        Left = 8
-        Top = 52
-        Width = 16
-        Height = 16
-        AutoSize = True
-        Picture.Data = {
-          07544269746D617036030000424D360300000000000036000000280000001000
-          000010000000010018000000000000030000120B0000120B0000000000000000
-          0000D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FC
-          D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1
-          FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FC6A6A6A717171717171808080919191D9
-          D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FC5593A8
-          5593A848484846879B4F5056534D4D797979D9D1FCD9D1FCD9D1FCD9D1FCD9D1
-          FCD9D1FCD9D1FCD9D1FC94989A7BE1FF5593A86849487BE1FF74889A734E4D53
-          5353D9D1FCD9D1FCD9D1FCD9D1FCD9D1FC7F7F7F5858585352526550517BE1FF
-          7E7074DC807F7BE1FFA49D9EA16767545454D9D1FCD9D1FCD9D1FCD9D1FC7A7A
-          7A9C8A899C8A89A28A8AAE7372A18586A79091D19090DB9D9CDF9D9CA77D7D80
-          8080D9D1FCD9D1FCD9D1FC9C8A89F2F2F2FEFFFFDFD6D6D9B3B3BF8585DEBFBF
-          F9DEDEF4CECEF5BEBEF3B9B9806767D9D1FCD9D1FCD9D1FCA5A5A59C8A89EAEA
-          EAF6F7F7DAD1D1D1B0B0D19393BF9494DFD3D3F1D7D7E0B9B97E6565605D5DD9
-          D1FCD9D1FC868686808182878787EDEDEDF8F6F6DED3D0D3AFADE6B0AF7A6363
-          656161A69F9FAFAAAA9C8A896C6C6CD9D1FCA2A3A3959597787878979DA0EDEB
-          E9EFF5F7C7C9D5C2A5AEE8B1AE8070704949496C6B6B9C8A899C8A89D9D1FCD9
-          D1FC9C9D9E8D8E8E818181979DA0BDDFEC8AE2FF348AF11B37B88E61A0C5A3A1
-          9C8A899C8A899C8A89D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FC979DA098D6
-          F77BE1FF2686F50121BA5629978E6A69707170D9D1FCD9D1FCD9D1FCD9D1FCD9
-          D1FCD9D1FCD9D1FCD9D1FC979DA0B0DCF5C9EBF1A8B2CD9481A7B47AA3866363
-          898989D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FC979DA0979D
-          A0E9E6E9C0CAE4A1B0D6E0A29D746362D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9
-          D1FCD9D1FCD9D1FCD9D1FCD9D1FC979DA0979DA0979DA0979DA0979DA0D9D1FC
-          D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1
-          FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9
-          D1FC}
-        Transparent = True
-      end
-      object Label5: TTntLabel
-        Left = 32
-        Top = 52
-        Width = 95
-        Height = 13
-        Caption = 'Battery temperature:'
-        Transparent = True
-      end
-      object Label3: TTntLabel
-        Left = 32
-        Top = 72
-        Width = 64
-        Height = 13
-        Caption = 'Consumption:'
-        Transparent = True
-      end
-      object Label2: TTntLabel
-        Left = 32
-        Top = 92
-        Width = 74
-        Height = 13
-        Caption = 'Current Charge:'
-        Transparent = True
-      end
-      object Label4: TTntLabel
-        Left = 227
-        Top = 72
-        Width = 77
-        Height = 13
-        Anchors = [akTop, akRight]
-        Caption = 'Charge Counter:'
-        Transparent = True
-      end
-      object Label7: TTntLabel
-        Left = 32
-        Top = 132
-        Width = 63
-        Height = 13
-        Caption = 'From Charge:'
-        Transparent = True
-      end
-      object Label1: TTntLabel
-        Left = 32
-        Top = 112
-        Width = 75
-        Height = 13
-        Caption = 'Battery Voltage:'
-        Transparent = True
-      end
-      object Label28: TTntLabel
-        Left = 32
-        Top = 152
-        Width = 59
-        Height = 13
-        Caption = 'Battery type:'
-      end
-      object Label29: TTntLabel
-        Left = 227
-        Top = 92
-        Width = 69
-        Height = 13
-        Anchors = [akTop, akRight]
-        Caption = 'Battery Status:'
-      end
-      object Label8: TTntLabel
-        Left = 227
-        Top = 112
-        Width = 68
-        Height = 13
-        Anchors = [akTop, akRight]
-        Caption = 'Est. Time Left:'
-        Transparent = True
-      end
-      object Label35: TTntLabel
-        Left = 227
-        Top = 132
-        Width = 66
-        Height = 13
-        Anchors = [akTop, akRight]
-        Caption = 'On AC power:'
-        Transparent = True
-      end
-      object wCharge: TTntLabel
-        Left = 311
-        Top = 132
-        Width = 81
-        Height = 14
-        Alignment = taRightJustify
-        Anchors = [akTop, akRight]
-        AutoSize = False
-        Caption = '?'
-        Transparent = True
-      end
-      object lblTimeLeft: TTntLabel
-        Left = 303
-        Top = 112
-        Width = 89
-        Height = 14
-        Alignment = taRightJustify
-        Anchors = [akTop, akRight]
-        AutoSize = False
-        Caption = '?'
-        Transparent = True
-      end
-      object wBattery: TTntLabel
-        Left = 311
-        Top = 92
-        Width = 81
-        Height = 13
-        Alignment = taRightJustify
-        Anchors = [akTop, akRight]
-        AutoSize = False
-        Caption = '?'
-      end
-      object lbPower: TTntLabel
-        Left = 112
-        Top = 152
-        Width = 280
-        Height = 13
-        Alignment = taRightJustify
-        Anchors = [akLeft, akTop, akRight]
-        AutoSize = False
-        Caption = '?'
-      end
-      object lbvbat: TTntLabel
-        Left = 124
-        Top = 112
-        Width = 69
-        Height = 14
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = '?'
-        Transparent = True
-      end
-      object lbdcio: TTntLabel
-        Left = 108
-        Top = 132
-        Width = 85
-        Height = 14
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = '?'
-        Transparent = True
-      end
-      object lbcyclescharge: TTntLabel
-        Left = 315
-        Top = 72
-        Width = 77
-        Height = 14
-        Alignment = taRightJustify
-        Anchors = [akTop, akRight]
-        AutoSize = False
-        Caption = '?'
-        Transparent = True
-      end
-      object lbicharge: TTntLabel
-        Left = 116
-        Top = 92
-        Width = 77
-        Height = 14
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = '?'
-        Transparent = True
-      end
-      object lbiphone: TTntLabel
-        Left = 108
-        Top = 72
-        Width = 85
-        Height = 14
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = '?'
-        Transparent = True
-      end
-      object lbtempbatt: TTntLabel
-        Left = 140
-        Top = 52
-        Width = 53
-        Height = 14
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = '?'
-        Transparent = True
-      end
       object Image14: TTntImage
         Left = 389
         Top = 12
@@ -709,138 +489,382 @@ object frmInfoView: TfrmInfoView
         OnClick = OpenCloseImageClick
         OnDblClick = OpenCloseImageClick
       end
-      object Image8: TTntImage
-        Left = 203
-        Top = 52
-        Width = 16
-        Height = 16
-        Anchors = [akTop, akRight]
-        AutoSize = True
-        Picture.Data = {
-          07544269746D617036030000424D360300000000000036000000280000001000
-          000010000000010018000000000000030000120B0000120B0000000000000000
-          0000D9D1FCD9D1FC919191575757696969929292D9D1FCD9D1FCD9D1FCD9D1FC
-          D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCADADAD837F7F8C7A7A5650
-          504848485757575A5A5A6E61614848485959597D7D7DD9D1FCD9D1FCD9D1FCD9
-          D1FCD9D1FC888888B3AEAE9D8D8DD4B2B2E4B9B9917B7BC59393AE99A0B19497
-          997E7E5952525151516D6D6DD9D1FCD9D1FCD9D1FC8D8D8DA8A4A45453535F5D
-          5D736868CC9696AE7474FFCCCCFFCCCCFFCCCCFFCCCCFF9999FF99994E4E4ED9
-          D1FCD9D1FC9191919B9A9A5353535353537D7272E39999A98181F7F7F77A9DE3
-          555DD8323CAD7A9DE3A3B690D9D1FCD9D1FCD9D1FC9E9E9E9C9C9C6868685B5B
-          5B706969C7B6B6D9D1FC7A9DE3323CAD7A9EE2545CD77A9DE38E8270D9D1FCD9
-          D1FCD9D1FCBCBCBC9B9B9B676767535353797474C7B6B6D9D1FC323CAD799BE4
-          78A0DF323CAD789FE0D9D1FCD9D1FCD9D1FCD9D1FCC2C2C29A9A9A3BC96B4CBD
-          725C946F9B9696D9D1FC779DE1323CADD9D1FC7B9CE2343EAED9D1FCD9D1FCD9
-          D1FCD9D1FCC7C7C792929248E07B40D8734CBE736A6969D9D1FCD9D1FC7C9EE0
-          323CADD9D1FC555DD87A9DE3D9D1FCD9D1FCD9D1FCCDCDCD9797975DF58F41D9
-          733CAD626A6A6AD9D1FCD9D1FCD9D1FC7C9EE0323CADD9D1FC799EDFD9D1FCD9
-          D1FCD9D1FCD3D3D395A89553BA6C50DE7A2EA04E5B5B5BD9D1FCD9D1FCD9D1FC
-          D9D1FC323CADD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCAFAFAFA2A2A28181817777
-          77868686535353D9D1FCD9D1FCD9D1FCD9D1FC7A9DE3D9D1FCD9D1FCD9D1FCD9
-          D1FCD9D1FC9C9C9C8080807171718787879898988E8E8ED9D1FCD9D1FCD9D1FC
-          D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FC8787874127275750508585
-          859B9B9BD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9
-          D1FCD9D1FCD9D1FC7D7171939393D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FC
-          D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FC837676D9D1FCD9D1
-          FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9
-          D1FC}
-        Transparent = True
+      object TntPanel1: TTntPanel
+        Left = 0
+        Top = 48
+        Width = 207
+        Height = 209
+        Anchors = [akLeft, akTop, akBottom]
+        BevelOuter = bvNone
+        TabOrder = 0
+        DesignSize = (
+          207
+          209)
+        object lbvbat: TTntLabel
+          Left = 130
+          Top = 64
+          Width = 69
+          Height = 14
+          Alignment = taRightJustify
+          Anchors = [akTop, akRight]
+          AutoSize = False
+          Caption = '?'
+          Transparent = True
+        end
+        object lbtempbatt: TTntLabel
+          Left = 146
+          Top = 4
+          Width = 53
+          Height = 14
+          Alignment = taRightJustify
+          Anchors = [akTop, akRight]
+          AutoSize = False
+          Caption = '?'
+          Transparent = True
+        end
+        object lbiphone: TTntLabel
+          Left = 114
+          Top = 24
+          Width = 85
+          Height = 14
+          Alignment = taRightJustify
+          Anchors = [akTop, akRight]
+          AutoSize = False
+          Caption = '?'
+          Transparent = True
+        end
+        object lbicharge: TTntLabel
+          Left = 122
+          Top = 44
+          Width = 77
+          Height = 14
+          Alignment = taRightJustify
+          Anchors = [akTop, akRight]
+          AutoSize = False
+          Caption = '?'
+          Transparent = True
+        end
+        object lbdcio: TTntLabel
+          Left = 114
+          Top = 84
+          Width = 85
+          Height = 14
+          Alignment = taRightJustify
+          Anchors = [akTop, akRight]
+          AutoSize = False
+          Caption = '?'
+          Transparent = True
+        end
+        object Label7: TTntLabel
+          Left = 32
+          Top = 84
+          Width = 63
+          Height = 13
+          Caption = 'From Charge:'
+          Transparent = True
+        end
+        object Label5: TTntLabel
+          Left = 32
+          Top = 4
+          Width = 95
+          Height = 13
+          Caption = 'Battery temperature:'
+          Transparent = True
+        end
+        object Label3: TTntLabel
+          Left = 32
+          Top = 24
+          Width = 64
+          Height = 13
+          Caption = 'Consumption:'
+          Transparent = True
+        end
+        object Label2: TTntLabel
+          Left = 32
+          Top = 44
+          Width = 74
+          Height = 13
+          Caption = 'Current Charge:'
+          Transparent = True
+        end
+        object Label16: TTntLabel
+          Left = 32
+          Top = 184
+          Width = 89
+          Height = 13
+          Caption = 'Software Revision:'
+          Transparent = True
+        end
+        object Label14: TTntLabel
+          Left = 32
+          Top = 164
+          Width = 69
+          Height = 13
+          Caption = 'Serial Number:'
+          Transparent = True
+        end
+        object Label13: TTntLabel
+          Left = 32
+          Top = 144
+          Width = 32
+          Height = 13
+          Caption = 'Model:'
+          Transparent = True
+        end
+        object Label12: TTntLabel
+          Left = 32
+          Top = 124
+          Width = 66
+          Height = 13
+          Caption = 'Manufacturer:'
+          Transparent = True
+        end
+        object Label1: TTntLabel
+          Left = 32
+          Top = 64
+          Width = 75
+          Height = 13
+          Caption = 'Battery Voltage:'
+          Transparent = True
+        end
+        object Image7: TTntImage
+          Left = 8
+          Top = 4
+          Width = 16
+          Height = 16
+          AutoSize = True
+          Picture.Data = {
+            07544269746D617036030000424D360300000000000036000000280000001000
+            000010000000010018000000000000030000120B0000120B0000000000000000
+            0000D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FC
+            D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1
+            FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FC6A6A6A717171717171808080919191D9
+            D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FC5593A8
+            5593A848484846879B4F5056534D4D797979D9D1FCD9D1FCD9D1FCD9D1FCD9D1
+            FCD9D1FCD9D1FCD9D1FC94989A7BE1FF5593A86849487BE1FF74889A734E4D53
+            5353D9D1FCD9D1FCD9D1FCD9D1FCD9D1FC7F7F7F5858585352526550517BE1FF
+            7E7074DC807F7BE1FFA49D9EA16767545454D9D1FCD9D1FCD9D1FCD9D1FC7A7A
+            7A9C8A899C8A89A28A8AAE7372A18586A79091D19090DB9D9CDF9D9CA77D7D80
+            8080D9D1FCD9D1FCD9D1FC9C8A89F2F2F2FEFFFFDFD6D6D9B3B3BF8585DEBFBF
+            F9DEDEF4CECEF5BEBEF3B9B9806767D9D1FCD9D1FCD9D1FCA5A5A59C8A89EAEA
+            EAF6F7F7DAD1D1D1B0B0D19393BF9494DFD3D3F1D7D7E0B9B97E6565605D5DD9
+            D1FCD9D1FC868686808182878787EDEDEDF8F6F6DED3D0D3AFADE6B0AF7A6363
+            656161A69F9FAFAAAA9C8A896C6C6CD9D1FCA2A3A3959597787878979DA0EDEB
+            E9EFF5F7C7C9D5C2A5AEE8B1AE8070704949496C6B6B9C8A899C8A89D9D1FCD9
+            D1FC9C9D9E8D8E8E818181979DA0BDDFEC8AE2FF348AF11B37B88E61A0C5A3A1
+            9C8A899C8A899C8A89D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FC979DA098D6
+            F77BE1FF2686F50121BA5629978E6A69707170D9D1FCD9D1FCD9D1FCD9D1FCD9
+            D1FCD9D1FCD9D1FCD9D1FC979DA0B0DCF5C9EBF1A8B2CD9481A7B47AA3866363
+            898989D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FC979DA0979D
+            A0E9E6E9C0CAE4A1B0D6E0A29D746362D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9
+            D1FCD9D1FCD9D1FCD9D1FCD9D1FC979DA0979DA0979DA0979DA0979DA0D9D1FC
+            D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1
+            FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9
+            D1FC}
+          Transparent = True
+        end
+        object Label28: TTntLabel
+          Left = 32
+          Top = 104
+          Width = 59
+          Height = 13
+          Caption = 'Battery type:'
+        end
       end
-      object Label6: TTntLabel
-        Left = 227
-        Top = 52
-        Width = 93
-        Height = 13
-        Anchors = [akTop, akRight]
-        Caption = 'Phone temperature:'
-        Transparent = True
-      end
-      object Label12: TTntLabel
-        Left = 32
-        Top = 172
-        Width = 66
-        Height = 13
-        Caption = 'Manufacturer:'
-        Transparent = True
-      end
-      object Label13: TTntLabel
-        Left = 32
-        Top = 192
-        Width = 32
-        Height = 13
-        Caption = 'Model:'
-        Transparent = True
-      end
-      object Label16: TTntLabel
-        Left = 32
-        Top = 212
-        Width = 89
-        Height = 13
-        Caption = 'Software Revision:'
-        Transparent = True
-      end
-      object Label14: TTntLabel
-        Left = 32
-        Top = 232
-        Width = 69
-        Height = 13
-        Caption = 'Serial Number:'
-        Transparent = True
-      end
-      object lbSerialNumber: TTntLabel
-        Left = 108
-        Top = 232
-        Width = 284
-        Height = 14
-        Alignment = taRightJustify
-        Anchors = [akLeft, akTop, akRight]
-        AutoSize = False
-        Caption = '?'
-        Transparent = True
-      end
-      object lbSWRevision: TTntLabel
-        Left = 132
-        Top = 212
-        Width = 260
-        Height = 14
-        Alignment = taRightJustify
-        Anchors = [akLeft, akTop, akRight]
-        AutoSize = False
-        Caption = '?'
-        Transparent = True
-      end
-      object lbModel: TTntLabel
-        Left = 76
-        Top = 192
-        Width = 316
-        Height = 14
-        Alignment = taRightJustify
-        Anchors = [akLeft, akTop, akRight]
-        AutoSize = False
-        Caption = '?'
-        Transparent = True
-      end
-      object lbManufacturer: TTntLabel
-        Left = 112
-        Top = 172
-        Width = 280
-        Height = 14
-        Alignment = taRightJustify
-        Anchors = [akLeft, akTop, akRight]
-        AutoSize = False
-        Caption = '?'
-        Transparent = True
-      end
-      object lbtempphone: TTntLabel
-        Left = 335
-        Top = 52
-        Width = 57
-        Height = 14
-        Alignment = taRightJustify
-        Anchors = [akTop, akRight]
-        AutoSize = False
-        Caption = '?'
-        Transparent = True
+      object TntPanel2: TTntPanel
+        Left = 208
+        Top = 48
+        Width = 205
+        Height = 209
+        Anchors = [akTop, akBottom]
+        BevelOuter = bvNone
+        TabOrder = 1
+        DesignSize = (
+          205
+          209)
+        object wBattery: TTntLabel
+          Left = 111
+          Top = 44
+          Width = 81
+          Height = 13
+          Alignment = taRightJustify
+          Anchors = [akTop, akRight]
+          AutoSize = False
+          Caption = '?'
+        end
+        object wCharge: TTntLabel
+          Left = 112
+          Top = 84
+          Width = 80
+          Height = 14
+          Alignment = taRightJustify
+          Anchors = [akTop, akRight]
+          AutoSize = False
+          Caption = '?'
+          Transparent = True
+        end
+        object lbtempphone: TTntLabel
+          Left = 136
+          Top = 4
+          Width = 56
+          Height = 14
+          Alignment = taRightJustify
+          Anchors = [akTop, akRight]
+          AutoSize = False
+          Caption = '?'
+          Transparent = True
+        end
+        object lbSWRevision: TTntLabel
+          Left = 0
+          Top = 184
+          Width = 192
+          Height = 14
+          Alignment = taRightJustify
+          Anchors = [akLeft, akTop, akRight]
+          AutoSize = False
+          Caption = '?'
+          Transparent = True
+        end
+        object lbSerialNumber: TTntLabel
+          Left = 0
+          Top = 164
+          Width = 192
+          Height = 14
+          Alignment = taRightJustify
+          Anchors = [akLeft, akTop, akRight]
+          AutoSize = False
+          Caption = '?'
+          Transparent = True
+        end
+        object lbPower: TTntLabel
+          Left = 0
+          Top = 104
+          Width = 192
+          Height = 13
+          Alignment = taRightJustify
+          Anchors = [akLeft, akTop, akRight]
+          AutoSize = False
+          Caption = '?'
+        end
+        object lbModel: TTntLabel
+          Left = 0
+          Top = 144
+          Width = 192
+          Height = 14
+          Alignment = taRightJustify
+          Anchors = [akLeft, akTop, akRight]
+          AutoSize = False
+          Caption = '?'
+          Transparent = True
+        end
+        object lbManufacturer: TTntLabel
+          Left = 0
+          Top = 124
+          Width = 192
+          Height = 14
+          Alignment = taRightJustify
+          Anchors = [akLeft, akTop, akRight]
+          AutoSize = False
+          Caption = '?'
+          Transparent = True
+        end
+        object lblTimeLeft: TTntLabel
+          Left = 103
+          Top = 64
+          Width = 89
+          Height = 14
+          Alignment = taRightJustify
+          Anchors = [akTop, akRight]
+          AutoSize = False
+          Caption = '?'
+          Transparent = True
+        end
+        object lbcyclescharge: TTntLabel
+          Left = 115
+          Top = 24
+          Width = 77
+          Height = 14
+          Alignment = taRightJustify
+          Anchors = [akTop, akRight]
+          AutoSize = False
+          Caption = '?'
+          Transparent = True
+        end
+        object Label8: TTntLabel
+          Left = 32
+          Top = 64
+          Width = 68
+          Height = 13
+          Caption = 'Est. Time Left:'
+          Transparent = True
+        end
+        object Label6: TTntLabel
+          Left = 32
+          Top = 4
+          Width = 93
+          Height = 13
+          Caption = 'Phone temperature:'
+          Transparent = True
+        end
+        object Label4: TTntLabel
+          Left = 32
+          Top = 24
+          Width = 77
+          Height = 13
+          Caption = 'Charge Counter:'
+          Transparent = True
+        end
+        object Label35: TTntLabel
+          Left = 32
+          Top = 84
+          Width = 66
+          Height = 13
+          Caption = 'On AC power:'
+          Transparent = True
+        end
+        object Label29: TTntLabel
+          Left = 32
+          Top = 44
+          Width = 69
+          Height = 13
+          Caption = 'Battery Status:'
+        end
+        object Image8: TTntImage
+          Left = 8
+          Top = 4
+          Width = 16
+          Height = 16
+          AutoSize = True
+          Picture.Data = {
+            07544269746D617036030000424D360300000000000036000000280000001000
+            000010000000010018000000000000030000120B0000120B0000000000000000
+            0000D9D1FCD9D1FC919191575757696969929292D9D1FCD9D1FCD9D1FCD9D1FC
+            D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCADADAD837F7F8C7A7A5650
+            504848485757575A5A5A6E61614848485959597D7D7DD9D1FCD9D1FCD9D1FCD9
+            D1FCD9D1FC888888B3AEAE9D8D8DD4B2B2E4B9B9917B7BC59393AE99A0B19497
+            997E7E5952525151516D6D6DD9D1FCD9D1FCD9D1FC8D8D8DA8A4A45453535F5D
+            5D736868CC9696AE7474FFCCCCFFCCCCFFCCCCFFCCCCFF9999FF99994E4E4ED9
+            D1FCD9D1FC9191919B9A9A5353535353537D7272E39999A98181F7F7F77A9DE3
+            555DD8323CAD7A9DE3A3B690D9D1FCD9D1FCD9D1FC9E9E9E9C9C9C6868685B5B
+            5B706969C7B6B6D9D1FC7A9DE3323CAD7A9EE2545CD77A9DE38E8270D9D1FCD9
+            D1FCD9D1FCBCBCBC9B9B9B676767535353797474C7B6B6D9D1FC323CAD799BE4
+            78A0DF323CAD789FE0D9D1FCD9D1FCD9D1FCD9D1FCC2C2C29A9A9A3BC96B4CBD
+            725C946F9B9696D9D1FC779DE1323CADD9D1FC7B9CE2343EAED9D1FCD9D1FCD9
+            D1FCD9D1FCC7C7C792929248E07B40D8734CBE736A6969D9D1FCD9D1FC7C9EE0
+            323CADD9D1FC555DD87A9DE3D9D1FCD9D1FCD9D1FCCDCDCD9797975DF58F41D9
+            733CAD626A6A6AD9D1FCD9D1FCD9D1FC7C9EE0323CADD9D1FC799EDFD9D1FCD9
+            D1FCD9D1FCD3D3D395A89553BA6C50DE7A2EA04E5B5B5BD9D1FCD9D1FCD9D1FC
+            D9D1FC323CADD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCAFAFAFA2A2A28181817777
+            77868686535353D9D1FCD9D1FCD9D1FCD9D1FC7A9DE3D9D1FCD9D1FCD9D1FCD9
+            D1FCD9D1FC9C9C9C8080807171718787879898988E8E8ED9D1FCD9D1FCD9D1FC
+            D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FC8787874127275750508585
+            859B9B9BD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9
+            D1FCD9D1FCD9D1FC7D7171939393D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FC
+            D9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FC837676D9D1FCD9D1
+            FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9D1FCD9
+            D1FC}
+          Transparent = True
+        end
       end
     end
   end

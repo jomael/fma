@@ -13017,10 +13017,11 @@ var
     optimizer: TTntStringList;
   begin
     Result := -1;
-    for i := 0 to AList.Count-1 do begin
-      optimizer := TTntStringList.Create;
-      try
+    optimizer := TTntStringList.Create;
+    try
+      for i := 0 to AList.Count-1 do begin
         GetTokenList(optimizer, AList[i]);
+        if optimizer.Count < 6 then continue;
         { compare pdu data, if equal compare message type,
           will be considered as found if message type equals AType OR '3'}
         if (AnsiCompareStr(APDU, optimizer[5]) = 0) then
@@ -13032,9 +13033,9 @@ var
             end;
             break;
           end;
-      finally
-        optimizer.Free;
       end;
+    finally
+      optimizer.Free;
     end;
   end;
 begin

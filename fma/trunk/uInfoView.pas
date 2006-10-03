@@ -324,6 +324,8 @@ type
     linkSyncBookmarks: TTntLabel;
     linkSyncAll: TTntLabel;
     linkJumpSent: TTntLabel;
+    TntPanel1: TTntPanel;
+    TntPanel2: TTntPanel;
     procedure ListViewResize(Sender: TObject);
     procedure ListViewCompare(Sender: TObject; Item1, Item2: TListItem; Data: Integer; var Compare: Integer);
     procedure FrameResize(Sender: TObject);
@@ -353,6 +355,7 @@ type
     procedure linkSyncAllClick(Sender: TObject);
     procedure linkSyncBookmarksClick(Sender: TObject);
     procedure linkJumpSentClick(Sender: TObject);
+    procedure BatteryPanelResize(Sender: TObject);
   private
     { Private declarations }
   public
@@ -997,6 +1000,14 @@ end;
 procedure TfrmInfoView.linkJumpSentClick(Sender: TObject);
 begin
   Form1.ExplorerNew.FocusedNode := Form1.FNodeMsgSent;
+  Form1.ExplorerNewChange(Form1.ExplorerNew, Form1.ExplorerNew.FocusedNode);
+end;
+
+procedure TfrmInfoView.BatteryPanelResize(Sender: TObject);
+begin
+  TntPanel1.Width := BatteryPanel.Width div 2;
+  TntPanel2.Left := BatteryPanel.Width div 2;
+  TntPanel2.Width := BatteryPanel.Width - TntPanel2.Left;
 end;
 
 end.
