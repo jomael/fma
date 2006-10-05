@@ -9340,29 +9340,35 @@ begin
           dlg.ShowProgress(FProgressLongOnly);
         dlg.SetDescr(_('Downloading files'));
         Status(_('Downloading files'));
-        ObexGetFile(ObexSaveDialog.FileName, CurFile.FullPath);
-        { Download rest of the files using same settings }
-        while Node <> nil do begin
-          if frmExplore.ListItems.Selected[Node] and (Node <> frmExplore.ListItems.FocusedNode) then begin
-            dlg.SetDescr(_('Saving...'));
-            CurFile := PExploreItem(frmExplore.ListItems.GetNodeData(Node))^.fFile;
-            fName := WideExtractFileName(CurFile.InternalName);
-            if CurFile.FileType = ftDir then begin
-              MessageDlgW(WideFormat(_('Error: Download of Directories (here: %0:s) is not yet supported'), [fName]),mtError, MB_OK);
-              Node := frmExplore.ListItems.GetNext(Node);
-              continue;
-            end;
-            ObexSaveDialog.FileName := WideExtractFilePath(ObexSaveDialog.FileName) + fname;
-            if FileExists(ObexSaveDialog.FileName) then begin
-              ObexSaveDialog.Filter := _('Similar Files|*')+WideExtractFileExt(fname)+_('|All Files|*.*');
-              if not ObexSaveDialog.Execute then begin
+        Enabled := False; // prevent keyboard move up/down in list while deleteing
+        try
+          ObexGetFile(ObexSaveDialog.FileName, CurFile.FullPath);
+          { Download rest of the files using same settings }
+          while Node <> nil do begin
+            if frmExplore.ListItems.Selected[Node] and (Node <> frmExplore.ListItems.FocusedNode) then begin
+              dlg.SetDescr(_('Saving...'));
+              CurFile := PExploreItem(frmExplore.ListItems.GetNodeData(Node))^.fFile;
+              fName := WideExtractFileName(CurFile.InternalName);
+              if CurFile.FileType = ftDir then begin
+                MessageDlgW(WideFormat(_('Error: Download of Directories (here: %0:s) is not yet supported'), [fName]),mtError, MB_OK);
                 Node := frmExplore.ListItems.GetNext(Node);
                 continue;
               end;
+              ObexSaveDialog.FileName := WideExtractFilePath(ObexSaveDialog.FileName) + fname;
+              if FileExists(ObexSaveDialog.FileName) then begin
+                ObexSaveDialog.Filter := _('Similar Files|*')+WideExtractFileExt(fname)+_('|All Files|*.*');
+                if not ObexSaveDialog.Execute then begin
+                  Node := frmExplore.ListItems.GetNext(Node);
+                  continue;
+                end;
+              end;
+              ObexGetFile(ObexSaveDialog.FileName, CurFile.FullPath);
+              frmExplore.ListItems.Selected[Node] := False;
             end;
-            ObexGetFile(ObexSaveDialog.FileName, CurFile.FullPath);
+            Node := frmExplore.ListItems.GetNext(Node);
           end;
-          Node := frmExplore.ListItems.GetNext(Node);
+        finally
+          Enabled := True;
         end;
       end
       else
