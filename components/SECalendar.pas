@@ -35,6 +35,7 @@ type
     procedure SetDateObjects(ADate: TDateTime; const Value: TObject);
     function GetColor(const Index: Integer): TColor;
     procedure SetColor(const Index: Integer; const Value: TColor);
+    function GetSelCount: integer;
   protected
     procedure Change; dynamic;
     procedure ChangeMonth(Delta: Integer);
@@ -63,11 +64,14 @@ type
     procedure ClearSelection;
     procedure ClearObjects;
     procedure UpdateCalendar; virtual;
+    function LocaleStartOfWeek: integer;
     function DayToDate(ADay: integer): TDateTime;
+    function DaySelected(ADay: integer): boolean;
     function ObjectsCount: integer;
     function ObjectDateByIndex(Index: integer): TDateTime;
     function DateObjectByIndex(Index: integer): TObject;
     property DateObjects[ADate: TDateTime]: TObject read GetDateObjects write SetDateObjects;
+    property SelCount: integer read GetSelCount;
     property Selection: TCalSelection read GetSelection write SetSelection;
     property OwnObjects: boolean read FOwnObjects write FOwnObjects;
   published
@@ -138,6 +142,7 @@ begin
   FSelColor := clInfoBk;
   SetMixColor;
   FUseCurrentDate := True;
+  FStartOfWeek := LocaleStartOfWeek;
   FixedCols := 0;
   FixedRows := 1;
   ColCount := 7;
@@ -567,7 +572,10 @@ end;
 
 function TSECalendar.DayToDate(ADay: integer): TDateTime;
 begin
-  Result := CalendarDate + ADay - DayOf(CalendarDate);
+  if (Aday < 1) or (Aday > DaysInMonth(CalendarDate)) then
+    Result := 0
+  else
+    Result := CalendarDate + ADay - DayOf(CalendarDate);
 end;
 
 function TSECalendar.ObjectDateByIndex(Index: integer): TDateTime;
@@ -594,7 +602,7 @@ function TSECalendar.GetColor(const Index: Integer): TColor;
 begin
   case Index of
     1: Result := FObjColor;
-    2: Result := FSelStart;
+    2: Result := FSelColor;
   else Result := 0;
   end;
 end;
@@ -603,7 +611,7 @@ procedure TSECalendar.SetColor(const Index: Integer; const Value: TColor);
 begin
   case Index of
     1: FObjColor := Value;
-    2: FSelStart := Value;
+    2: FSelColor := Value;
   end;
   SetMixColor;
 end;
@@ -624,7 +632,37 @@ procedure TSECalendar.SetMixColor;
               (MixColors(A and $0000FF, B and $0000FF));
   end;
 begin
-  FMixColor := AddColors(FObjColor,FSelStart);
+  FMixColor := AddColors(FObjColor,FSelColor);
+end;
+
+function TSECalendar.GetSelCount: integer;
+begin
+  if FSelecting then
+    Result := 0
+  else
+    Result := FSelEnd - FSelStart + 1;
+end;
+
+function TSECalendar.DaySelected(ADay: integer): boolean;
+begin
+  if (Aday < 1) or (Aday > DaysInMonth(CalendarDate)) then
+    Result := False
+  else
+    Result := Aday in Selection;
+end;
+
+function TSECalendar.LocaleStartOfWeek: integer;
+var
+  i: integer;
+  s: String[2];
+begin
+  i := GetLocaleInfoA(LOCALE_USER_DEFAULT,LOCALE_IFIRSTDAYOFWEEK,@s[1],2);
+  if i = 2 then begin // count the trailing #0 char too
+    SetLength(s,1);
+    Result := (StrToInt(s) + 1) mod 7;
+  end
+  else
+    Result := FStartOfWeek;
 end;
 
 end.
