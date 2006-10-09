@@ -349,7 +349,7 @@ begin
     try
       LogWriter := TLogWriter.Create(LogEnumeration);
       try
-        LogWriter.LogWriterEngine := TLogTextWriterEngine.Create;
+        LogWriter.LogWriterEngine := TLogTextWriterEngineWithBOM.Create;
         LogWriter.ToStream(LogFile);
         FLogSaved := True;
       finally

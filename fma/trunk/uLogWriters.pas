@@ -68,10 +68,15 @@ type
 
   TLogTextWriterEngine = class(TInterfacedObject, ILogWriterEngine)
   public
-    procedure WriteHeader(Stream: TStream);
+    procedure WriteHeader(Stream: TStream); virtual;
     procedure WriteItem(Stream: TStream; const Item: ILogItem);
     procedure WriteStr(Stream: TStream; const Str: WideString);
-    procedure WriteFooter(Stream: TStream);
+    procedure WriteFooter(Stream: TStream); virtual;
+  end;
+
+  TLogTextWriterEngineWithBOM = class(TLogTextWriterEngine)
+  public
+    procedure WriteHeader(AStream: TStream); override;
   end;
 
 implementation
@@ -133,6 +138,12 @@ var
 begin
   Msg := Str + sLinebreak;
   Stream.Write(Msg[1], Length(Msg) * 2);
+end;
+
+procedure TLogTextWriterEngineWithBOM.WriteHeader(AStream: TStream);
+const BOM: Word = $FEFF;
+begin
+  AStream.Write(BOM, SizeOf(Word));
 end;
 
 end.
