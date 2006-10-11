@@ -9,7 +9,8 @@ MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
 DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
-PROJECTS = MobileAgent.exe floAtMediaCtrl.exe UpdateManager.exe WinampCOMLib.dll
+PROJECTS = UpdateSvnRevision.bat MobileAgent.exe floAtMediaCtrl.exe \
+  UpdateManager.exe WinampCOMLib.dll
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -25,5 +26,8 @@ UpdateManager.exe: fmaUpMngr\trunk\UpdateManager.dpr
 
 WinampCOMLib.dll: winampCOMlib\trunk\WinampCOMLib.dpr
   $(DCC)
+
+UpdateSvnRevision.bat: UpdateSvnRevision.bat
+  call $**
 
 
