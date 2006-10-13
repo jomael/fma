@@ -147,7 +147,7 @@ type
     procedure Loaded; override;
     procedure OnDecompress(Sender: TObject);
     procedure OnWizardReady(Sender: TObject);
-    function OnGetversionDetails(const FromVersionSignature, ToVersionSignature: string;
+    function OnGetVersionDetails(const FromVersionSignature, ToVersionSignature: string;
       Path: TStrings): Int64;
   public
     { Public declarations }
@@ -850,6 +850,7 @@ begin
   UsePatch := False;
   UseWeb := IsInetDownloadAvailable;
   ExePath := ExtractFilePath(Application.ExeName);
+  Chdir(ExePath); //ExtractFileDir(Application.ExeName));
   if FAppName = '' then FAppName := 'application'; // do not localize ?
   SaveAs := ChangeFileExt(Application.ExeName,'.lst'); // do not localize
   { Download updates index }
