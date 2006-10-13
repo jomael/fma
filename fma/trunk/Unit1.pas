@@ -10857,7 +10857,7 @@ var
         CheckforUpdate1.Enabled := False;
         try
           Update;
-          FmaWebUpdate1.NewUpdateExists(FmaWebUpdate1.CurrentBuild + BuildPatchLetter, wuWizardOnUpdate);
+          FmaWebUpdate1.NewUpdateExists(GetBuildVersion,wuWizardOnUpdate);
           Result := True;
         finally
           CheckforUpdate1.Enabled := True;
@@ -12689,7 +12689,7 @@ procedure TForm1.CheckforUpdate2Click(Sender: TObject);
 begin
   CheckforUpdate1.Enabled := False;
   try
-    FmaWebUpdate1.CheckforUpdate(FmaWebUpdate1.CurrentBuild + BuildPatchLetter);
+    FmaWebUpdate1.CheckforUpdate(GetBuildVersion);
   finally
     CheckforUpdate1.Enabled := True;
   end;

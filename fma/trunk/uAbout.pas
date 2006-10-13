@@ -223,22 +223,6 @@ uses
   Dialogs, TntDialogs, StdCtrls, TntStdCtrls, ExtCtrls, TntExtCtrls, ShellApi,
   Graphics, TntGraphics;
 
-(*
-const
-  // should be changed manualy when releasing a patch,
-  // and should be cleared when releasing a new build version.
-
-  // also keep minor changes patch by increase letters,
-  // and majr changes patch by increaseing build number.
-  BuildPatchLetter = '';
-
-  // useful for monthly builds ala Xmas Edition.
-  BuildFriendlyName = '';
-*)
-
-{ Following  include file contains the commented lines above.
-  Its done to avoid CVS checkin/checkout on every single update. }
-
 {$I uAbout.inc}
 
 type
@@ -270,6 +254,7 @@ var
   frmAbout: TfrmAbout;
 
 function GetBuildVersionDtl: widestring;
+function GetBuildVersion: widestring;
 
 implementation
 
@@ -281,12 +266,23 @@ uses
 
 function GetBuildVersionDtl: widestring;
 begin
+  {
   Result := ExtractFileVersionInfo(Application.ExeName,'FileVersion') + // do not localize
     BuildPatchLetter;
+  }
+  Result := ExtractFileVersionInfo(Application.ExeName,'ProductVersion') + ' Build ' + // do not localize
+    IntToStr(SvnRevision);
   if BuildFriendlyName <> '' then
     Result := Result + ' ' + BuildFriendlyName;
+  {
   if BuildPatchLetter <> '' then
-    Result := Result + _(' (patched)');
+    Result := Result + ' ' + _('(patched)');
+  }
+end;
+
+function GetBuildVersion: widestring;
+begin
+  Result := ExtractFileVersionInfo(Application.ExeName,'FileVersion') + ' R' + IntToStr(SvnRevision); // do not localize
 end;
 
 { TfrmAbout }
@@ -300,7 +296,7 @@ end;
 
 procedure TfrmAbout.LoadVersionInfo;
 begin
-  lbVersion.Caption := WideFormat(_('Version %s'), [GetBuildVersionDtl]);;
+  lbVersion.Caption := WideFormat(_('Version %s'), [GetBuildVersion]);;
   lbURL.Caption := ExtractFileVersionInfo(Application.ExeName,'URL'); // do not localize
   lbURL.Hint := lbURL.Caption;
 end;

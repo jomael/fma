@@ -67,11 +67,11 @@ object frmAbout: TfrmAbout
     object Label3: TTntLabel
       Left = 12
       Top = 72
-      Width = 441
+      Width = 323
       Height = 13
       Caption = 
         'This software product is licensed under terms and conditions of ' +
-        'General Public License (GPL).'
+        'GPL.'
       Transparent = True
     end
     object Label12: TTntLabel
@@ -81,9 +81,9 @@ object frmAbout: TfrmAbout
       Height = 29
       AutoSize = False
       Caption = 
-        'Please use the fma website mentioned below for any bug reports o' +
-        'r feature requests. Do not contact the developers personally. Yo' +
-        'u can also visit us on IRC (irc.chatspike.net #fma).'
+        'Please use the FMA website mentioned bellow if you want to post ' +
+        'Bug reports or Feature requests. Do not contact the developers p' +
+        'ersonally.'
       Transparent = True
       WordWrap = True
     end
@@ -114,17 +114,13 @@ object frmAbout: TfrmAbout
         Alignment = taCenter
         BiDiMode = bdRightToLeft
         Lines.Strings = (
-          'Credits should go to (in order of appearance):'
-          ''
-          ':: LEAD DEVS ::'
-          ''
-          'Dako,'
-          'Mhr'
+          '(in order of appearance):'
           ''
           ':: CREDITS ::'
           ''
           'Warren,'
           'Crino77,'
+          'Dako,'
           'LordLarry,'
           'vo.x,'
           'VoSSy,'
@@ -152,6 +148,7 @@ object frmAbout: TfrmAbout
           'Gravanov,'
           'Iceberg,'
           'Otherland,'
+          'mhr'
           '...'
           ''
           ':: DESIGN ::'
@@ -163,7 +160,10 @@ object frmAbout: TfrmAbout
           ''
           ':: FORUMS ::'
           ''
-          'Sebastian Baciu'
+          'Sebastian Baciu,'
+          'ExpertOne,'
+          'Dako'
+          '...'
           ''
           ':: SCRIPTS ::'
           ''
@@ -179,11 +179,7 @@ object frmAbout: TfrmAbout
           '<localization-list>'
           '...'
           ''
-          'Thanks to all!'
-          ''
-          
-            '(still in the progress of adding, let us know if your name shoul' +
-            'd be here)')
+          'Thanks to all!')
         ParentBiDiMode = False
         ReadOnly = True
         ScrollBars = ssVertical

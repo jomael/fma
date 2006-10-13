@@ -3156,7 +3156,7 @@ end;
 
 procedure TfrmOptions.btnCheckForUpdatesClick(Sender: TObject);
 begin
-  if Form1.FmaWebUpdate1.NewUpdateExists(Form1.FmaWebUpdate1.CurrentBuild + BuildPatchLetter, wuWizardOnUpdate) = '' then
+  if Form1.FmaWebUpdate1.NewUpdateExists(GetBuildVersion,wuWizardOnUpdate) = '' then
     MessageDlgW(_('No new updates are available now.'), mtConfirmation, MB_OK);
 end;
 
