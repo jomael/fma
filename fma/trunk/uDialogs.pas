@@ -10,14 +10,8 @@ unit uDialogs;
 *
 * Change Log:
 * $Log: uDialogs.pas,v $
-* Revision 1.4.2.1  2005/10/04 10:05:28  expertone
-* L10N Fixes
 *
-* Revision 1.4  2005/02/09 12:44:49  z_stoichev
-* Fixed package dependencies.
-* Added header comments.
-*
-*
+*******************************************************************************
 }
 
 interface

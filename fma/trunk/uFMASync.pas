@@ -12,34 +12,6 @@ unit uFMASync;
 *
 * Change Log:
 * $Log: uFMASync.pas,v $
-* Revision 1.6.2.2  2005/09/06 18:32:55  z_stoichev
-* Bugfixes and improvements (2.1.1.102b)
-*
-* Revision 1.6.2.1  2005/08/17 18:40:54  lordlarry
-* - Added Outlook Field Mappings
-*
-* Revision 1.7  2005/04/18 19:15:37  lordlarry
-* Added: Outlook Sync for Addresses
-* Added: Any FMA Contact Field can be mapped to any Outlook Contact Field
-*
-* Revision 1.6  2005/03/12 16:01:45  lordlarry
-* Fixed Now updates Display Name
-*
-* Revision 1.5  2005/02/19 12:51:01  lordlarry
-* Changed Log Messages Category and Severity (Removing the SyncLog method)
-*
-* Revision 1.4  2005/02/08 15:38:51  voxik
-* Merged with L10N branch
-*
-* Revision 1.3.12.2  2004/10/25 20:21:41  expertone
-* Replaced all standart components with TNT components. Some small fixes
-*
-* Revision 1.3.12.1  2004/10/19 19:48:38  expertone
-* Add localization (gnugettext)
-*
-* Revision 1.3  2004/06/25 18:27:09  lordlarry
-* Added this changelog header
-*
 *
 }
 

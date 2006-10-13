@@ -10,40 +10,6 @@ unit uBrowseFolders;
 *
 * Change Log:
 * $Log: uBrowseFolders.pas,v $
-* Revision 1.1.2.11  2006/02/23 15:41:56  z_stoichev
-* Fixed Browse folders initial GUI update.
-*
-* Revision 1.1.2.10  2006/01/18 10:43:22  z_stoichev
-* Fixes.
-*
-* Revision 1.1.2.9  2006/01/16 11:26:55  mhr3
-* Form1.Explorer -> Form1.ExplorerNew
-*
-* Revision 1.1.2.8  2005/10/03 08:15:47  z_stoichev
-* Browse For Folder changes.
-*
-* Revision 1.1.2.7  2005/10/02 22:33:42  z_stoichev
-* Allow current explorer node to be selected.
-*
-* Revision 1.1.2.6  2005/09/30 14:24:24  z_stoichev
-* Fixes
-*
-* Revision 1.1.2.5  2005/09/20 20:02:03  z_stoichev
-* GUI changes.
-*
-* Revision 1.1.2.4  2005/09/20 15:49:12  z_stoichev
-* Browse Folder do not select current one.
-*
-* Revision 1.1.2.3  2005/09/20 14:46:23  z_stoichev
-* Remember last selected folder.
-* Do not allow empty folder creation.
-*
-* Revision 1.1.2.2  2005/09/20 13:38:12  z_stoichev
-* Moved node Path function into Unit1.
-*
-* Revision 1.1.2.1  2005/09/20 11:56:58  z_stoichev
-* Initial checkin.
-*
 *
 }
 

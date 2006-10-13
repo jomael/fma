@@ -10,36 +10,6 @@ unit uEditEvent;
 *
 * Change Log:
 * $Log: uEditEvent.pas,v $
-* Revision 1.5  2005/02/25 22:34:51  voxik
-* Fixed gettext was changing the default property value.
-*
-* Revision 1.4  2005/02/08 15:38:34  voxik
-* Merged with L10N branch
-*
-* Revision 1.2.2.3  2005/01/07 17:34:30  expertone
-* Merge with MAIN branch
-*
-* Revision 1.3  2004/12/10 22:17:19  z_stoichev
-* Fixed some default fonts and charsets.
-*
-* Revision 1.2.2.2  2004/10/25 20:21:39  expertone
-* Replaced all standart components with TNT components. Some small fixes
-*
-* Revision 1.2.2.1  2004/10/19 19:48:38  expertone
-* Add localization (gnugettext)
-*
-* Revision 1.2  2004/10/11 12:43:14  voxik
-* Merged with Calendar branch (Fma 0.1.2.10)
-*
-* Revision 1.1.2.4  2004/09/08 19:47:34  voxik
-* Added Event reminder support
-*
-* Revision 1.1.2.3  2004/07/12 19:17:11  voxik
-* *** empty log message ***
-*
-* Revision 1.1.2.2  2004/07/02 18:27:07  z_stoichev
-* Added Caption label.
-*
 *
 }
 

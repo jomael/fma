@@ -10,19 +10,6 @@ unit uOfflineProfile;
 *
 * Change Log:
 * $Log: uOfflineProfile.pas,v $
-* Revision 1.3.2.7  2006/04/07 21:07:32  z_stoichev
-* Added Profile Password Protection.
-*
-* Revision 1.3.2.6  2006/03/16 20:16:44  z_stoichev
-* - Fixed Switch Database (Database Manager) implementation.
-* - Fixed Relocate old database to Application Data folder.
-* - Fixed Manage, Delete and Relocate phone profile changes.
-* - Fixed Set friendly name once in Getting Started wizard.
-* - Added Set default K750 clones settings for new phones.
-* - Added Check OBEX compatability on Getting Started finish.
-* - Added Show currentlly opened phone name in Caption.
-* - Added New profiles database unique ID by phone name.
-*
 *
 }
 

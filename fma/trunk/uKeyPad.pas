@@ -10,9 +10,6 @@ unit uKeyPad;
 *
 * Change Log:
 * $Log: uKeyPad.pas,v $
-* Revision 1.10.2.4  2006/02/23 10:18:37  z_stoichev
-* Added Header comments.
-*
 *
 }
 

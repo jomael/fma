@@ -10,50 +10,6 @@ unit uLogger;
 *
 * Change Log:
 * $Log: uLogger.pas,v $
-* Revision 1.12.2.2  2005/08/17 18:39:11  lordlarry
-* - Changed Implementation of Log Classes
-*
-* Revision 1.14  2005/03/29 17:55:58  lordlarry
-* Fixed bug when message is added with Format Strings in them (No argument for format '%0:252F')
-*
-* Revision 1.13  2005/03/28 18:53:44  lordlarry
-* Changed some implementation details of the LogObservers en LogWriters
-*
-* Revision 1.12  2005/03/13 14:23:48  lordlarry
-* Fixed Contains to be thread safe
-* Fixed SameAs to handle nil
-*
-* Revision 1.11  2005/03/12 16:15:43  z_stoichev
-* Added some helper functions.
-*
-* Revision 1.10  2005/03/03 19:05:05  lordlarry
-* Added Filtering on Log Severity
-*
-* Revision 1.9  2005/03/03 08:27:46  lordlarry
-* Removed LogCollection.Items and Count
-* Changed LogCollection to LogEnumeration
-*
-* Revision 1.8  2005/02/19 12:49:02  lordlarry
-* Changed: WideSting Compatible
-*
-* Revision 1.7  2005/02/19 11:02:38  lordlarry
-* Changed Log Messages Category and Severity (Removing the Debug method)
-*
-* Revision 1.6  2005/02/17 14:48:57  z_stoichev
-* Log updates
-*
-* Revision 1.5  2005/02/16 16:17:25  z_stoichev
-* Initial Filter implementation (working)
-* Filter internal data should be moved from TLogItem to TLogEnumeration!
-*
-* Revision 1.4  2005/02/16 10:46:19  z_stoichev
-* Fixed getFirst method. Code aligned.
-*
-* Revision 1.3  2005/02/14 19:24:23  lordlarry
-* Added category pictures
-*
-* Revision 1.2  2005/02/12 18:11:31  lordlarry
-* Added CVS this header
 *
 }
 

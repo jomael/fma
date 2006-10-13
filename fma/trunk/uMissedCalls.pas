@@ -10,44 +10,6 @@ unit uMissedCalls;
 *
 * Change Log:
 * $Log: uMissedCalls.pas,v $
-* Revision 1.8.2.2  2006/01/16 11:26:56  mhr3
-* Form1.Explorer -> Form1.ExplorerNew
-*
-* Revision 1.8.2.1  2005/12/09 13:29:20  z_stoichev
-* - Fixed Update missed calls when minimized.
-* - Added Notification icon for missing calls.
-* - Added Notification icon for new messages.
-*
-* Revision 1.8  2005/02/08 15:38:52  voxik
-* Merged with L10N branch
-*
-* Revision 1.7.12.2  2004/10/25 20:21:46  expertone
-* Replaced all standart components with TNT components. Some small fixes
-*
-* Revision 1.7.12.1  2004/10/19 19:48:38  expertone
-* Add localization (gnugettext)
-*
-* Revision 1.7  2004/06/29 12:37:07  z_stoichev
-* New message window renamed
-*
-* Revision 1.6  2004/06/15 13:03:27  z_stoichev
-* Missed calls fixes.
-*
-* Revision 1.5  2004/04/01 15:06:47  z_stoichev
-* unknown contact support
-*
-* Revision 1.4  2004/03/26 18:37:39  z_stoichev
-* Build 0.1.0.35 RC5
-*
-* Revision 1.3  2003/11/28 09:38:07  z_stoichev
-* Merged with branch-release-1-1 (Fma 0.10.28c)
-*
-* Revision 1.2.2.5  2003/11/21 16:05:48  z_stoichev
-* Added Add contact option for unknown numbers.
-* List view is not cleared when clear list check is on.
-* GUI changes.
-*
-*
 *
 *******************************************************************************
 }

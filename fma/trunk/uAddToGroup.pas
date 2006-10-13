@@ -1,5 +1,19 @@
 unit uAddToGroup;
 
+{
+*******************************************************************************
+* Descriptions: Add contact to phone group 
+* $Source: /cvsroot/fma/fma/uAddToGroup.pas,v $
+* $Locker:  $
+*
+* Todo:
+*
+* Change Log:
+* $Log: uAddToGroup.pas,v $
+*
+*******************************************************************************
+}
+
 interface
 
 uses

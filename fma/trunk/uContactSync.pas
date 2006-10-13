@@ -14,42 +14,6 @@ unit uContactSync;
 *
 * Change Log:
 * $Log: uContactSync.pas,v $
-* Revision 1.11.2.3  2005/09/06 18:32:55  z_stoichev
-* Bugfixes and improvements (2.1.1.102b)
-*
-* Revision 1.11.2.2  2005/08/30 12:55:43  z_stoichev
-* - Added Conflict dialog Don't Ask Again checkbox.
-* - Fixed Prompt Conflict unicode and GUI layout.
-* - Fixed Sync Conflict when priority is Let Me Chose.
-*
-* Revision 1.11.2.1  2005/08/17 18:40:54  lordlarry
-* - Added Outlook Field Mappings
-*
-* Revision 1.12  2005/04/18 19:15:37  lordlarry
-* Added: Outlook Sync for Addresses
-* Added: Any FMA Contact Field can be mapped to any Outlook Contact Field
-*
-* Revision 1.11  2005/02/19 12:51:01  lordlarry
-* Changed Log Messages Category and Severity (Removing the SyncLog method)
-*
-* Revision 1.10  2005/02/08 15:38:34  voxik
-* Merged with L10N branch
-*
-* Revision 1.9.12.2  2004/10/25 20:21:39  expertone
-* Replaced all standart components with TNT components. Some small fixes
-*
-* Revision 1.9.12.1  2004/10/19 19:48:37  expertone
-* Add localization (gnugettext)
-*
-* Revision 1.9  2004/07/07 09:39:49  z_stoichev
-* Resolved warnings
-*
-* Revision 1.8  2004/06/26 16:47:09  lordlarry
-* Contacts can be Unlinked
-*
-* Revision 1.7  2004/06/25 18:27:09  lordlarry
-* Added this changelog header
-*
 *
 }
 

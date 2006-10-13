@@ -10,45 +10,6 @@ unit uOrganizeFavs;
 *
 * Change Log:
 * $Log: uOrganizeFavs.pas,v $
-* Revision 1.6.2.3  2005/09/20 14:44:57  z_stoichev
-* Changed Confirmations default button to NO.
-*
-* Revision 1.6.2.2  2005/09/08 11:19:56  z_stoichev
-* Unicode bugfixes.
-*
-* Revision 1.6.2.1  2005/08/16 16:15:31  z_stoichev
-* bugfixes
-*
-* Revision 1.6  2005/02/09 14:01:45  z_stoichev
-* Fixed #13#10 to sLinebreak.
-*
-* Revision 1.5  2005/02/08 15:38:54  voxik
-* Merged with L10N branch
-*
-* Revision 1.3.14.4  2005/02/02 23:15:53  voxik
-* Changed MessageDlg and ShowMessages replaced by new unicode versions
-*
-* Revision 1.3.14.3  2005/01/07 17:34:38  expertone
-* Merge with MAIN branch
-*
-* Revision 1.4  2004/12/21 16:01:25  z_stoichev
-* Fixed AV/GUI bug when last item is deleted.
-*
-* Revision 1.3.14.2  2004/10/25 20:21:55  expertone
-* Replaced all standart components with TNT components. Some small fixes
-*
-* Revision 1.3.14.1  2004/10/19 19:48:48  expertone
-* Add localization (gnugettext)
-*
-* Revision 1.3  2004/06/29 11:51:15  z_stoichev
-* Added Select One Contact support
-*
-* Revision 1.2  2004/06/24 08:38:19  z_stoichev
-* Add Remove confirmation
-*
-* Revision 1.1  2004/05/20 06:38:25  z_stoichev
-* Initial checkin.
-*
 *
 }
 

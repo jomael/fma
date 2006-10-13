@@ -8,18 +8,6 @@ unit uXMLContactSync; // do not localize
 *
 * Change Log:
 * $Log: uXMLContactSync.pas,v $
-* Revision 1.4  2005/02/08 15:38:57  voxik
-* Merged with L10N branch
-*
-* Revision 1.3.12.2  2004/10/25 20:21:58  expertone
-* Replaced all standart components with TNT components. Some small fixes
-*
-* Revision 1.3.12.1  2004/10/19 19:48:49  expertone
-* Add localization (gnugettext)
-*
-* Revision 1.3  2004/06/25 18:27:09  lordlarry
-* Added this changelog header
-*
 *
 }
 

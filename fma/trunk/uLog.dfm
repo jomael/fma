@@ -22,7 +22,7 @@ object frmLog: TfrmLog
     Left = 0
     Top = 0
     Width = 580
-    Height = 239
+    Height = 234
     Align = alClient
     ClipboardFormats.Strings = (
       'CSV'

@@ -10,37 +10,6 @@ unit uOutlookSync;
 *
 * Change Log:
 * $Log: uOutlookSync.pas,v $
-* Revision 1.7.2.2  2005/09/06 18:32:57  z_stoichev
-* Bugfixes and improvements (2.1.1.102b)
-*
-* Revision 1.7.2.1  2005/08/17 18:40:54  lordlarry
-* - Added Outlook Field Mappings
-*
-* Revision 1.9  2005/04/19 19:30:55  lordlarry
-* Fixed: Category for new Contacts in Outlook was not written
-*
-* Revision 1.8  2005/04/18 19:15:40  lordlarry
-* Added: Outlook Sync for Addresses
-* Added: Any FMA Contact Field can be mapped to any Outlook Contact Field
-*
-* Revision 1.7  2005/02/19 12:51:01  lordlarry
-* Changed Log Messages Category and Severity (Removing the SyncLog method)
-*
-* Revision 1.6  2005/02/08 15:38:54  voxik
-* Merged with L10N branch
-*
-* Revision 1.5.12.2  2004/10/25 20:21:55  expertone
-* Replaced all standart components with TNT components. Some small fixes
-*
-* Revision 1.5.12.1  2004/10/19 19:48:48  expertone
-* Add localization (gnugettext)
-*
-* Revision 1.5  2004/07/25 13:30:37  lordlarry
-* Added the ability to select the Outlook folder where all the New contacts end up.
-*
-* Revision 1.4  2004/06/25 18:27:09  lordlarry
-* Added this changelog header
-*
 *
 }
 

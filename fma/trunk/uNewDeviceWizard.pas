@@ -10,56 +10,6 @@ unit uNewDeviceWizard;
 *
 * Change Log:
 * $Log: uNewDeviceWizard.pas,v $
-* Revision 1.5.2.11  2006/03/16 18:39:55  z_stoichev
-* Added New profiles database unique ID by phone name.
-*
-* Revision 1.5.2.10  2006/03/16 12:26:27  z_stoichev
-* - Fixed Set friendly name once in Getting Started wizard.
-* - Added Set default K750 clones settings for new phones.
-* - Added Check OBEX compatability on Getting Started finish.
-*
-* Revision 1.5.2.9  2006/03/15 10:04:30  z_stoichev
-* Fixed Getting Started dialog widgets overlapping.
-*
-* Revision 1.5.2.8  2006/03/14 14:09:38  z_stoichev
-* Initial Getting Started is optional.
-*
-* Revision 1.5.2.7  2006/02/06 13:51:55  z_stoichev
-* Fixed Handle exceptions on Speed calibration.
-*
-* Revision 1.5.2.6  2005/09/13 14:50:04  z_stoichev
-* Added USB device arrival or removed detection.
-*
-* Revision 1.5.2.5  2005/09/12 18:53:43  expertone
-* no message
-*
-* Revision 1.5.2.4  2005/08/23 20:59:37  z_stoichev
-* - Fixed Getting Started Wizard GUI typos.
-*
-* Revision 1.5.2.3  2005/04/13 20:01:18  lordlarry
-* Fixed: Widcomm issue
-*
-* Revision 1.5.2.2  2005/04/11 22:36:23  z_stoichev
-* Fixed GSM coding scheme.
-*
-* Revision 1.5.2.1  2005/04/11 22:11:27  z_stoichev
-* Fixed GSM coding scheme. Fixed typos.
-*
-* Revision 1.5  2005/03/05 14:23:57  lordlarry
-* Changed the Name Locally used Comm Components to prevent confiusion and solve a 'with' bug
-*
-* Revision 1.4  2005/02/24 21:29:14  lordlarry
-* Added a better (but ugly) method to make the TWaitThread code threadsafe. All data that is accessed outside of the class goes through the ThreadSafe object which does the locking.
-*
-* Revision 1.3  2005/02/17 11:58:57  z_stoichev
-* Getting Started Wizard Improvements
-*
-* Revision 1.2  2005/02/15 11:16:18  z_stoichev
-* Wizard finished
-*
-* Revision 1.1  2005/02/14 16:31:38  z_stoichev
-* Initial checkin.
-*
 *
 }
 

@@ -1,5 +1,18 @@
 unit uDeliveryRule;
 
+{
+*******************************************************************************
+* Descriptions: Text Messages delivery rules
+* $Source: /cvsroot/fma/fma/uDeliveryRule.pas,v $
+* $Locker:  $
+*
+* Todo:
+*
+* Change Log:
+* $Log: uDeliveryRule.pas,v $
+*
+}
+
 interface
 
 uses

@@ -10,22 +10,6 @@ unit uGetContact;
 *
 * Change Log:
 * $Log: uGetContact.pas,v $
-* Revision 1.2.2.1  2005/09/18 20:32:16  z_stoichev
-* Get/select contact(s) fixes.
-* Do not delay dialog show.
-*
-* Revision 1.2  2005/02/08 15:38:51  voxik
-* Merged with L10N branch
-*
-* Revision 1.1.14.2  2004/10/25 20:21:42  expertone
-* Replaced all standart components with TNT components. Some small fixes
-*
-* Revision 1.1.14.1  2004/10/19 19:48:38  expertone
-* Add localization (gnugettext)
-*
-* Revision 1.1  2004/06/29 11:51:15  z_stoichev
-* Added Select One Contact support
-*
 *
 }
 

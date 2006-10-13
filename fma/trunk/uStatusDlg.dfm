@@ -22,7 +22,7 @@ object frmStatusDlg: TfrmStatusDlg
   object Label1: TTntLabel
     Left = 56
     Top = 16
-    Width = 68
+    Width = 63
     Height = 13
     Caption = '<description>'
   end

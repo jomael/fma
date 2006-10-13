@@ -1,5 +1,19 @@
 unit uVpVDB; // do not localize
 
+{
+*******************************************************************************
+* Descriptions: vCalendar implementation
+* $Source: /cvsroot/fma/fma/uVpVDB.pas,v $
+* $Locker:  $
+*
+* Todo:
+*
+* Change Log:
+* $Log: uVpVDB.pas,v $
+*
+*******************************************************************************
+}
+
 interface
 
 uses

@@ -10,9 +10,6 @@ unit uPassword;
 *
 * Change Log:
 * $Log: uPassword.pas,v $
-* Revision 1.1.2.1  2006/04/07 20:58:17  z_stoichev
-* Initial checkin.
-*
 *
 }
 

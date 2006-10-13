@@ -10,37 +10,8 @@ unit uChatSMS;
 *
 * Change Log:
 * $Log: uChatSMS.pas,v $
-* Revision 1.6.2.2  2005/08/31 21:59:32  z_stoichev
-* Added chat customization support.
 *
-* Revision 1.6.2.1  2005/04/07 22:08:53  z_stoichev
-* Fixed Long SMS click.
-*
-* Revision 1.6  2005/03/13 10:46:27  z_stoichev
-* Fixed: Chat not scrolled on new message.
-*
-* Revision 1.5  2005/02/09 14:01:38  z_stoichev
-* Fixed #13#10 to sLinebreak.
-*
-* Revision 1.4  2005/02/08 15:38:34  voxik
-* Merged with L10N branch
-*
-* Revision 1.3.12.2  2004/10/25 20:21:38  expertone
-* Replaced all standart components with TNT components. Some small fixes
-*
-* Revision 1.3.12.1  2004/10/19 19:48:30  expertone
-* Add localization (gnugettext)
-*
-* Revision 1.3  2004/07/14 09:35:05  z_stoichev
-* - Fixed Chat Message enter text area height.
-*
-* Revision 1.2  2004/06/29 12:37:03  z_stoichev
-* New message window renamed
-*
-* Revision 1.1  2004/06/23 13:47:25  z_stoichev
-* Initial Chat support
-*
-*
+*******************************************************************************
 }
 
 interface

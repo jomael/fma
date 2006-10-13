@@ -1,6 +1,20 @@
-{$J+}
-
 unit uVBase; // do not localize
+
+{
+*******************************************************************************
+* Descriptions: vBase object
+* $Source: /cvsroot/fma/fma/uVBase.pas,v $
+* $Locker:  $
+*
+* Todo:
+*
+* Change Log:
+* $Log: uVBase.pas,v $
+*
+*******************************************************************************
+}
+
+{$J+}
 
 interface
 

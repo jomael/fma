@@ -3,7 +3,6 @@ inherited frmGetContact: TfrmGetContact
   Top = 265
   Caption = 'Select A Contact'
   ClientHeight = 265
-  ParentFont = True
   OldCreateOrder = True
   PixelsPerInch = 96
   TextHeight = 13

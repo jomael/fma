@@ -10,47 +10,6 @@ unit uScriptEditor;
 *
 * Change Log:
 * $Log: uScriptEditor.pas,v $
-* Revision 1.3.2.5  2005/10/02 22:32:59  z_stoichev
-* Show script options popup item.
-*
-* Revision 1.3.2.4  2005/09/08 21:07:18  z_stoichev
-* Fixed common Edit actions
-*
-* Revision 1.3.2.3  2005/09/06 18:32:57  z_stoichev
-* Bugfixes and improvements (2.1.1.102b)
-*
-* Revision 1.3.2.2  2005/09/01 01:45:43  z_stoichev
-* Script Editor changes, improvements and bugfixes.
-*
-* Revision 1.3.2.1  2005/08/26 15:30:09  z_stoichev
-* - Explorer not visible by default on fresh install.
-* - FMA window default height increased on fresh install.
-* - Various FMA windows default transparency removed.
-* - Fixed quoted parameter send to script editor.
-* - External script editor can be specified in Options.
-* - Internal script editor restored and is optional.
-* - Internal script editor error checking bugfixes.
-* - Ask to save modified script on application exit.
-* - Ask to save modified script Explorer change.
-*
-* Revision 1.3  2005/02/09 14:01:45  z_stoichev
-* Fixed #13#10 to sLinebreak.
-*
-* Revision 1.2  2005/02/08 15:38:54  voxik
-* Merged with L10N branch
-*
-* Revision 1.1.16.3  2005/02/02 23:15:54  voxik
-* Changed MessageDlg and ShowMessages replaced by new unicode versions
-*
-* Revision 1.1.16.2  2004/10/25 20:21:56  expertone
-* Replaced all standart components with TNT components. Some small fixes
-*
-* Revision 1.1.16.1  2004/10/19 19:48:48  expertone
-* Add localization (gnugettext)
-*
-* Revision 1.1  2004/05/20 06:38:25  z_stoichev
-* Initial checkin.
-*
 *
 *******************************************************************************
 }

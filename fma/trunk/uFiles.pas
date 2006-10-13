@@ -10,24 +10,6 @@ unit uFiles;
 *
 * Change Log:
 * $Log: uFiles.pas,v $
-* Revision 1.6.2.10  2006/03/12 13:04:31  z_stoichev
-* New UTF8 Codec usage.
-*
-* Revision 1.6.2.9  2006/01/18 10:43:22  z_stoichev
-* Fixes.
-*
-* Revision 1.6.2.8  2006/01/16 11:26:55  mhr3
-* Form1.Explorer -> Form1.ExplorerNew
-*
-* Revision 1.6.2.7  2005/11/20 12:19:39  mhr3
-* Fixed WideStringReplace to Tnt_WideStringReplace (update your Tnt package)
-*
-* Revision 1.6.2.6  2005/09/16 02:00:07  z_stoichev
-* Fixed AV bugs on refresh folders.
-*
-* Revision 1.6.2.5  2005/09/08 11:19:51  z_stoichev
-* Unicode bugfixes.
-*
 *
 }
 

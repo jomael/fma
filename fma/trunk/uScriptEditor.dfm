@@ -2,12 +2,12 @@ object frmEditor: TfrmEditor
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 273
   Align = alClient
   TabOrder = 0
   object MessagesSplitter1: TTntSplitter
     Left = 0
-    Top = 240
+    Top = 236
     Width = 443
     Height = 3
     Cursor = crVSplit
@@ -19,7 +19,7 @@ object frmEditor: TfrmEditor
   end
   object MessagesPanel: TTntPanel
     Left = 0
-    Top = 243
+    Top = 239
     Width = 443
     Height = 34
     Align = alBottom
@@ -70,7 +70,7 @@ object frmEditor: TfrmEditor
     Left = 0
     Top = 0
     Width = 443
-    Height = 240
+    Height = 236
     Align = alClient
     BevelOuter = bvNone
     BorderStyle = bsSingle
@@ -138,7 +138,7 @@ object frmEditor: TfrmEditor
       Left = 0
       Top = 20
       Width = 439
-      Height = 216
+      Height = 212
       Cursor = crIBeam
       Align = alClient
       Font.Charset = DEFAULT_CHARSET

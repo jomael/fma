@@ -10,33 +10,6 @@ unit uLogWriters;
 *
 * Change Log:
 * $Log: uLogWriters.pas,v $
-* Revision 1.8.2.1  2005/08/17 18:39:11  lordlarry
-* - Changed Implementation of Log Classes
-*
-* Revision 1.9  2005/03/28 18:53:44  lordlarry
-* Changed some implementation details of the LogObservers en LogWriters
-*
-* Revision 1.8  2005/03/08 11:53:24  z_stoichev
-* Made helper ToStr functions public.
-*
-* Revision 1.7  2005/03/06 21:00:29  lordlarry
-* Changed the Log Writers so they work on a possible filtered Log Enumeration
-*
-* Revision 1.6  2005/03/03 08:27:46  lordlarry
-* Removed LogCollection.Items and Count
-* Changed LogCollection to LogEnumeration
-*
-* Revision 1.5  2005/02/27 18:14:27  gravanov
-* Fixed: Length of log strings, now saving to file works..
-*
-* Revision 1.4  2005/02/25 21:38:01  voxik
-* Fixed WideString support
-*
-* Revision 1.3  2005/02/19 12:49:02  lordlarry
-* Changed: WideSting Compatible
-*
-* Revision 1.2  2005/02/12 18:11:31  lordlarry
-* Added CVS this header
 *
 }
 

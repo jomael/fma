@@ -10,22 +10,12 @@ unit uSMS;
 *
 * Sample test SMS messages: 
 * - Това е един примерен текст, който се използва от дизайнера за запълване на полето.
-* - But according to the late Douglas Adams in The Hitch-Hitchhiker's hiker's Guide to the Galaxy Trilogy, "In the beginning the Universe was created. This has made a lot of people very angry and been widely regarded as a bad move".
+* - But according to the late Douglas Adams in The Hitch-Hitchhiker's hiker's Guide to the Galaxy Trilogy,
+*   "In the beginning the Universe was created. This has made a lot of people very angry and been widely
+*   regarded as a bad move".
 *
 * Change Log:
 * $Log: uSMS.pas,v $
-* Revision 1.5.2.4  2006/03/09 16:03:44  z_stoichev
-* Fixed Sending UCS2 Long SMSes.
-*
-* Revision 1.5.2.3  2006/03/09 09:11:52  z_stoichev
-* Gsm_SMS code merged into uSMS.
-*
-* Revision 1.5.2.2  2005/05/17 17:40:00  lordlarry
-* *** empty log message ***
-*
-* Revision 1.5  2005/04/11 21:41:58  z_stoichev
-* Added header comments.
-*
 *
 }
 

@@ -5120,21 +5120,21 @@ object frmNote: TfrmNote
       object lblName: TTntLabel
         Left = 64
         Top = 20
-        Width = 55
+        Width = 54
         Height = 13
         Caption = 'Post a note'
       end
       object Label1: TTntLabel
         Left = 8
         Top = 76
-        Width = 27
+        Width = 26
         Height = 13
         Caption = 'Note:'
       end
       object Label2: TTntLabel
         Left = 8
         Top = 336
-        Width = 28
+        Width = 27
         Height = 13
         Caption = 'Type:'
       end

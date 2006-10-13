@@ -10,15 +10,6 @@ unit uEditTask;
 *
 * Change Log:
 * $Log: uEditTask.pas,v $
-* Revision 1.5  2005/02/08 15:38:50  voxik
-* Merged with L10N branch
-*
-* Revision 1.2.2.3  2005/01/07 17:34:30  expertone
-* Merge with MAIN branch
-*
-* Revision 1.4  2004/12/10 22:27:04  z_stoichev
-* added Browse for a contact
-*
 *
 }
 

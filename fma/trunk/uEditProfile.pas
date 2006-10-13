@@ -10,58 +10,6 @@ unit uEditProfile;
 *
 * Change Log:
 * $Log: uEditProfile.pas,v $
-* Revision 1.14.2.4  2006/03/12 13:04:31  z_stoichev
-* New UTF8 Codec usage.
-*
-* Revision 1.14.2.3  2005/09/20 14:44:57  z_stoichev
-* Changed Confirmations default button to NO.
-*
-* Revision 1.14.2.2  2005/08/22 09:13:15  z_stoichev
-* Edit Profile Cancel will ask for confirmation. GUI changes.
-*
-* Revision 1.14.2.1  2005/08/21 17:38:47  z_stoichev
-* GUI changed to match other edit windows.
-*
-* Revision 1.14  2005/02/24 21:29:14  lordlarry
-* Added a better (but ugly) method to make the TWaitThread code threadsafe. All data that is accessed outside of the class goes through the ThreadSafe object which does the locking.
-*
-* Revision 1.13  2005/02/19 12:06:44  lordlarry
-* Changed Log Messages Category and Severity (Removing the Debug method)
-*
-* Revision 1.12  2005/02/08 15:38:34  voxik
-* Merged with L10N branch
-*
-* Revision 1.11.14.4  2005/02/02 23:15:52  voxik
-* Changed MessageDlg and ShowMessages replaced by new unicode versions
-*
-* Revision 1.11.14.3  2005/01/07 17:34:30  expertone
-* Merge with MAIN branch
-*
-* Revision 1.11.14.2  2004/10/25 20:21:40  expertone
-* Replaced all standart components with TNT components. Some small fixes
-*
-* Revision 1.11.14.1  2004/10/19 19:48:38  expertone
-* Add localization (gnugettext)
-*
-* Revision 1.11  2004/06/17 13:16:54  z_stoichev
-* Merged uEditProfile and uEditProfileDlg
-*
-* Revision 1.6  2004/05/19 18:34:15  z_stoichev
-* Build 0.1.0.35c
-*
-* Revision 1.5  2003/11/28 09:38:07  z_stoichev
-* Merged with branch-release-1-1 (Fma 0.10.28c)
-*
-* Revision 1.4.2.1  2003/10/27 07:22:54  z_stoichev
-* Build 0.1.0 RC1 Initial Checkin.
-*
-* Revision 1.4  2003/10/24 12:33:21  z_stoichev
-* Make size independent of child frame's size.
-* Fixed Win XP theme issue.
-*
-* Revision 1.3  2003/01/30 04:15:57  warren00
-* Updated with header comments
-*
 *
 *******************************************************************************
 }

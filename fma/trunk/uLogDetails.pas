@@ -10,28 +10,6 @@ unit uLogDetails;
 *
 * Change Log:
 * $Log: uLogDetails.pas,v $
-* Revision 1.3.2.2  2005/08/17 18:39:11  lordlarry
-* - Changed Implementation of Log Classes
-*
-* Revision 1.5  2005/04/19 08:51:00  z_stoichev
-* Fixed D6 Windows XP Theme support
-* Prev,Next do not select all message text.
-*
-* Revision 1.4  2005/03/28 18:53:44  lordlarry
-* Changed some implementation details of the LogObservers en LogWriters
-*
-* Revision 1.3  2005/03/13 10:41:26  z_stoichev
-* Added Up, Down button texts
-* Added Track new messages option.
-* GUI changes.
-*
-* Revision 1.2  2005/03/12 16:17:09  z_stoichev
-* Added own LogObserver to monitor LogEnumeration changes.
-* Images replaced with some XP style images.
-*
-* Revision 1.1  2005/03/08 13:31:43  z_stoichev
-* Initial checkin.
-*
 *
 }
 

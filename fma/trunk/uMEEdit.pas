@@ -10,33 +10,6 @@ unit uMEEdit;
 *
 * Change Log:
 * $Log: uMEEdit.pas,v $
-* Revision 1.1.2.9  2006/03/12 13:04:31  z_stoichev
-* New UTF8 Codec usage.
-*
-* Revision 1.1.2.8  2006/03/09 09:13:01  z_stoichev
-* Gsm_SMS code merged into uSMS.pas!
-*
-* Revision 1.1.2.7  2006/01/16 11:26:56  mhr3
-* Form1.Explorer -> Form1.ExplorerNew
-*
-* Revision 1.1.2.6  2005/09/20 14:44:57  z_stoichev
-* Changed Confirmations default button to NO.
-*
-* Revision 1.1.2.5  2005/09/19 12:19:03  z_stoichev
-* Added Command line switch "/fixdb" to clean DB.
-*
-* Revision 1.1.2.4  2005/09/16 02:00:41  z_stoichev
-* New progress dialog with multitask support.
-*
-* Revision 1.1.2.3  2005/09/15 15:00:49  z_stoichev
-* Changed popup menu.
-*
-* Revision 1.1.2.2  2005/09/15 11:21:43  z_stoichev
-* Do not show positions warning if IRMC Sync is on.
-*
-* Revision 1.1.2.1  2005/09/07 18:48:20  z_stoichev
-* Initial checkin.
-*
 *
 *******************************************************************************
 }

@@ -10,49 +10,6 @@ unit uPromptConflict;
 *
 * Change Log:
 * $Log: uPromptConflict.pas,v $
-* Revision 1.5.2.2  2005/09/01 13:43:25  z_stoichev
-* Added Resolve Conflict Show Changes support.
-*
-* Revision 1.5.2.1  2005/08/30 12:55:43  z_stoichev
-* - Added Conflict dialog Don't Ask Again checkbox.
-* - Fixed Prompt Conflict unicode and GUI layout.
-* - Fixed Sync Conflict when priority is Let Me Chose.
-*
-* Revision 1.5  2005/02/08 15:38:54  voxik
-* Merged with L10N branch
-*
-* Revision 1.4.14.3  2005/01/07 17:34:38  expertone
-* Merge with MAIN branch
-*
-* Revision 1.4.14.2  2004/10/25 20:21:55  expertone
-* Replaced all standart components with TNT components. Some small fixes
-*
-* Revision 1.4.14.1  2004/10/19 19:48:48  expertone
-* Add localization (gnugettext)
-*
-* Revision 1.4  2004/06/19 15:43:11  lordlarry
-* Added more Unicode support
-*
-* Revision 1.3  2004/06/05 13:32:56  lordlarry
-* Merged with OutlookSync branch
-*
-* Revision 1.2.4.2  2004/05/17 12:45:12  z_stoichev
-* Build 0.1.1.10 beta 2
-*
-* Revision 1.2.4.1  2004/03/08 17:43:00  lordlarry
-* Added properties so it could also be used in the Outlook Synchronization part
-*
-* Revision 1.2  2003/11/28 09:38:07  z_stoichev
-* Merged with branch-release-1-1 (Fma 0.10.28c)
-*
-* Revision 1.1.2.1  2003/10/27 07:22:54  z_stoichev
-* Build 0.1.0 RC1 Initial Checkin.
-*
-* Revision 1.1  2003/02/14 14:23:54  crino77
-* Initial Checkin
-*
-* $Revision: 1.5.2.2 $
-*
 *
 *******************************************************************************
 }

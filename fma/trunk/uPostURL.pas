@@ -10,9 +10,6 @@ unit uPostURL;
 *
 * Change Log:
 * $Log: uPostURL.pas,v $
-* Revision 1.5.2.2  2005/09/15 15:01:24  z_stoichev
-* GUI fixes.
-*
 *
 }
 

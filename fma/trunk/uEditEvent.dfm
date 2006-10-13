@@ -182,28 +182,28 @@ object frmEditEvent: TfrmEditEvent
       object Label2: TTntLabel
         Left = 8
         Top = 76
-        Width = 40
+        Width = 39
         Height = 13
         Caption = 'Subject:'
       end
       object Label4: TTntLabel
         Left = 8
         Top = 140
-        Width = 56
+        Width = 53
         Height = 13
         Caption = 'Categories:'
       end
       object Label5: TTntLabel
         Left = 8
         Top = 192
-        Width = 53
+        Width = 49
         Height = 13
         Caption = 'Start date:'
       end
       object Label6: TTntLabel
         Left = 8
         Top = 224
-        Width = 51
+        Width = 47
         Height = 13
         Caption = 'Start time:'
       end
@@ -217,21 +217,21 @@ object frmEditEvent: TfrmEditEvent
       object Label7: TTntLabel
         Left = 8
         Top = 312
-        Width = 47
+        Width = 46
         Height = 13
         Caption = 'End date:'
       end
       object Label8: TTntLabel
         Left = 8
         Top = 344
-        Width = 45
+        Width = 44
         Height = 13
         Caption = 'End time:'
       end
       object Label9: TTntLabel
         Left = 8
         Top = 267
-        Width = 45
+        Width = 43
         Height = 13
         Caption = 'Duration:'
       end
@@ -387,14 +387,14 @@ object frmEditEvent: TfrmEditEvent
         object Label10: TTntLabel
           Left = 10
           Top = 56
-          Width = 51
+          Width = 47
           Height = 13
           Caption = 'Start time:'
         end
         object Label26: TTntLabel
           Left = 10
           Top = 24
-          Width = 53
+          Width = 49
           Height = 13
           Caption = 'Start date:'
         end
@@ -427,14 +427,14 @@ object frmEditEvent: TfrmEditEvent
       object Label3: TTntLabel
         Left = 8
         Top = 76
-        Width = 29
+        Width = 30
         Height = 13
         Caption = 'GUID:'
       end
       object Label25: TTntLabel
         Left = 8
         Top = 108
-        Width = 35
+        Width = 34
         Height = 13
         Caption = 'File As:'
       end

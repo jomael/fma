@@ -10,18 +10,6 @@ unit uLogObserver;
 *
 * Change Log:
 * $Log: uLogObserver.pas,v $
-* Revision 1.2.2.2  2005/08/18 20:37:10  z_stoichev
-* Fixed Events Log do not change focus when filtered.
-* (Was broken since last LordLarry merge with HEAD)
-*
-* Revision 1.2.2.1  2005/08/17 18:39:11  lordlarry
-* - Changed Implementation of Log Classes
-*
-* Revision 1.3  2005/03/28 18:53:44  lordlarry
-* Changed some implementation details of the LogObservers en LogWriters
-*
-* Revision 1.2  2005/02/12 18:11:31  lordlarry
-* Added CVS this header
 *
 }
 

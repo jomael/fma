@@ -16,7 +16,7 @@ object frmInputQuery: TfrmInputQuery
   object TntLabel1: TTntLabel
     Left = 12
     Top = 12
-    Width = 84
+    Width = 79
     Height = 13
     Caption = 'Enter text below:'
   end

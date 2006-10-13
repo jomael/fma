@@ -10,9 +10,6 @@ unit uNewAlarm;
 *
 * Change Log:
 * $Log: uNewAlarm.pas,v $
-* Revision 1.1.2.1  2006/03/23 16:36:12  z_stoichev
-* Initial checkin.
-*
 *
 }
 

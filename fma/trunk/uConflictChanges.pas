@@ -10,9 +10,6 @@ unit uConflictChanges;
 *
 * Change Log:
 * $Log: uConflictChanges.pas,v $
-* Revision 1.1.2.2  2005/09/06 18:32:55  z_stoichev
-* Bugfixes and improvements (2.1.1.102b)
-*
 *
 *******************************************************************************
 }

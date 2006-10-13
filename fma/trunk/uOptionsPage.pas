@@ -10,15 +10,6 @@ unit uOptionsPage;
 *
 * Change Log:
 * $Log: uOptionsPage.pas,v $
-* Revision 1.1.2.3  2006/03/15 10:01:12  z_stoichev
-* Fixed Refresh options when showing only one page.
-*
-* Revision 1.1.2.2  2005/12/15 11:41:55  z_stoichev
-* Fixed Show custom options page dialog height.
-*
-* Revision 1.1.2.1  2005/10/02 22:37:05  z_stoichev
-* Initial checkin.
-*
 *
 *******************************************************************************
 }

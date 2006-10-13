@@ -51,14 +51,14 @@ object frmLogDetails: TfrmLogDetails
       object TntLabel1: TTntLabel
         Left = 8
         Top = 76
-        Width = 44
+        Width = 41
         Height = 13
         Caption = 'Severity:'
       end
       object TntLabel2: TTntLabel
         Left = 8
         Top = 108
-        Width = 49
+        Width = 45
         Height = 13
         Caption = 'Category:'
       end

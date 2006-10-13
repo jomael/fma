@@ -10,15 +10,6 @@ unit uThreadSafe;
 *
 * Change Log:
 * $Log: uThreadSafe.pas,v $
-* Revision 1.3  2005/03/01 12:03:54  z_stoichev
-* MSec is cardinal
-*
-* Revision 1.2  2005/02/28 20:05:53  lordlarry
-* Fixed a time out bug which occured after making the code thread safe
-*
-* Revision 1.1  2005/02/24 21:30:43  lordlarry
-* Added a better (but ugly) method to make the TWaitThread code threadsafe. All data that is accessed outside of the class goes through the ThreadSafe object which does the locking.
-*
 *
 }
 

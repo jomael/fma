@@ -10,30 +10,6 @@ unit uCallContact;
 *
 * Change Log:
 * $Log: uCallContact.pas,v $
-* Revision 1.2.2.3  2006/03/11 15:19:06  z_stoichev
-* Fixed Call contact will Ask for connection.
-*
-* Revision 1.2.2.2  2005/09/06 18:32:55  z_stoichev
-* Bugfixes and improvements (2.1.1.102b)
-*
-* Revision 1.2.2.1  2005/08/19 12:25:25  z_stoichev
-* GUI fixes and Unicode support bugfix.
-*
-* Revision 1.2  2005/02/08 15:38:33  voxik
-* Merged with L10N branch
-*
-* Revision 1.1.14.3  2005/01/07 17:34:29  expertone
-* Merge with MAIN branch
-*
-* Revision 1.1.14.2  2004/10/25 20:21:38  expertone
-* Replaced all standart components with TNT components. Some small fixes
-*
-* Revision 1.1.14.1  2004/10/19 19:48:30  expertone
-* Add localization (gnugettext)
-*
-* Revision 1.1  2004/06/29 13:47:22  z_stoichev
-* Initial checkin.
-*
 *
 }
 

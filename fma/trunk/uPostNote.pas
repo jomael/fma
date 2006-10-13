@@ -10,33 +10,6 @@ unit uPostNote;
 *
 * Change Log:
 * $Log: uPostNote.pas,v $
-* Revision 1.6.2.1  2005/09/15 15:01:23  z_stoichev
-* GUI fixes.
-*
-* Revision 1.6  2005/02/08 15:38:54  voxik
-* Merged with L10N branch
-*
-* Revision 1.5.18.2  2004/10/25 20:21:55  expertone
-* Replaced all standart components with TNT components. Some small fixes
-*
-* Revision 1.5.18.1  2004/10/19 19:48:48  expertone
-* Add localization (gnugettext)
-*
-* Revision 1.5  2003/11/28 09:38:07  z_stoichev
-* Merged with branch-release-1-1 (Fma 0.10.28c)
-*
-* Revision 1.4.2.2  2003/11/27 12:54:22  z_stoichev
-* Unicode support.
-*
-* Revision 1.4.2.1  2003/10/27 07:22:54  z_stoichev
-* Build 0.1.0 RC1 Initial Checkin.
-*
-* Revision 1.4  2003/10/13 14:15:28  z_stoichev
-* Added Class field (private or public).
-*
-* Revision 1.3  2003/01/30 04:15:57  warren00
-* Updated with header comments
-*
 *
 *******************************************************************************
 }

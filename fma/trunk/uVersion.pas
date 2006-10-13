@@ -10,19 +10,6 @@ unit uVersion;
 *
 * Change Log:
 * $Log: uVersion.pas,v $
-* Revision 1.2  2005/02/08 15:38:56  voxik
-* Merged with L10N branch
-*
-* Revision 1.1.16.2  2004/10/25 20:21:57  expertone
-* Replaced all standart components with TNT components. Some small fixes
-*
-* Revision 1.1.16.1  2004/10/19 19:48:49  expertone
-* Add localization (gnugettext)
-*
-* Revision 1.1  2003/12/09 16:09:31  z_stoichev
-* Initial checkin.
-*
-*
 *
 }
 

@@ -10,9 +10,6 @@ unit gginitialize;
 *
 * Change Log:
 * $Log: gginitialize.pas,v $
-* Revision 1.2.2.2  2006/02/23 10:18:37  z_stoichev
-* Added Header comments.
-*
 *
 }
 

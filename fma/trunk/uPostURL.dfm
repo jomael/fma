@@ -5126,7 +5126,7 @@ object frmBookmark: TfrmBookmark
       object Label1: TTntLabel
         Left = 8
         Top = 76
-        Width = 24
+        Width = 23
         Height = 13
         Caption = 'Title:'
       end

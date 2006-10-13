@@ -1,5 +1,19 @@
 unit uChooseLink;
 
+{
+*******************************************************************************
+* Descriptions: Link Outlook and FMA contacts 
+* $Source: /cvsroot/fma/fma/uChooseLink.pas,v $
+* $Locker:  $
+*
+* Todo:
+*
+* Change Log:
+* $Log: uChooseLink.pas,v $
+*
+*******************************************************************************
+}
+
 interface
 
 uses

@@ -42,13 +42,13 @@ inherited frmCharMessage: TfrmCharMessage
   object TalkToPanel: TTntPanel [5]
     Left = 0
     Top = 4
-    Width = 354
+    Width = 356
     Height = 23
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 1
     DesignSize = (
-      354
+      356
       23)
     object Label1: TTntLabel
       Left = 4
@@ -109,7 +109,7 @@ inherited frmCharMessage: TfrmCharMessage
   object Chat: TTntRichEdit [6]
     Left = 0
     Top = 48
-    Width = 354
+    Width = 356
     Height = 129
     Align = alTop
     Anchors = [akLeft, akTop, akRight, akBottom]

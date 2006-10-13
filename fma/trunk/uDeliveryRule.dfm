@@ -16,7 +16,7 @@ object frmSMSRule: TfrmSMSRule
   object TntLabel27: TTntLabel
     Left = 8
     Top = 226
-    Width = 67
+    Width = 63
     Height = 13
     Caption = 'Target folder:'
   end
@@ -30,7 +30,7 @@ object frmSMSRule: TfrmSMSRule
   object TntLabel26: TTntLabel
     Left = 8
     Top = 58
-    Width = 81
+    Width = 77
     Height = 13
     Caption = 'Correspondents:'
   end

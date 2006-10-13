@@ -1,5 +1,19 @@
 unit uVCalendar; // do not localize
 
+{
+*******************************************************************************
+* Descriptions: Calendar
+* $Source: /cvsroot/fma/fma/uVCalendar.pas,v $
+* $Locker:  $
+*
+* Todo:
+*
+* Change Log:
+* $Log: uVCalendar.pas,v $
+*
+*******************************************************************************
+}
+
 interface
 
 uses

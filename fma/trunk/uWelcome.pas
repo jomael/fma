@@ -10,15 +10,6 @@ unit uWelcome;
 *
 * Change Log:
 * $Log: uWelcome.pas,v $
-* Revision 1.1.2.3  2005/09/09 10:39:00  z_stoichev
-* Fixed Welcome Tips can not be closed issue.
-*
-* Revision 1.1.2.2  2005/09/08 21:07:56  z_stoichev
-* Welcome Tips are optional.
-*
-* Revision 1.1.2.1  2005/09/08 16:12:53  z_stoichev
-* Added Welcome Tips dialog and COM object method AddTip.
-*
 *
 *******************************************************************************
 }

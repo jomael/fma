@@ -10,67 +10,6 @@ unit uAddToPhonebook;
 *
 * Change Log:
 * $Log: uAddToPhonebook.pas,v $
-* Revision 1.7.2.7  2005/09/20 14:44:57  z_stoichev
-* Changed Confirmations default button to NO.
-*
-* Revision 1.7.2.6  2005/09/18 20:34:03  z_stoichev
-* Add to Phonebook fixes.
-* Avoid dublicate adds (ERROR response).
-*
-* Revision 1.7.2.5  2005/09/16 10:41:08  z_stoichev
-* Fixed phone type is disabled always.
-*
-* Revision 1.7.2.4  2005/09/06 18:32:55  z_stoichev
-* Bugfixes and improvements (2.1.1.102b)
-*
-* Revision 1.7.2.3  2005/08/24 08:32:24  z_stoichev
-* Fixed panel background in Windows XP themes.
-*
-* Revision 1.7.2.2  2005/08/23 20:58:43  z_stoichev
-* - Fixed Add to Phonebook GUI depends on target source.
-* - Added Add to Phonebook/Group Cancel confirmation.
-*
-* Revision 1.7.2.1  2005/08/20 18:07:47  z_stoichev
-* - Fixed Find contact in Phonebook (Irmc), Phone Book, SIM.
-* - Fixed Add contact to phonebook when replacing old one.
-*
-* Revision 1.7  2005/02/18 15:22:52  z_stoichev
-* Fixed behaviour when IRMC is disabled.
-* Added Lookup into SIM phone book.
-*
-* Revision 1.6  2005/02/08 15:38:33  voxik
-* Merged with L10N branch
-*
-* Revision 1.5.2.4  2005/02/02 23:15:51  voxik
-* Changed MessageDlg and ShowMessages replaced by new unicode versions
-*
-* Revision 1.5.2.3  2005/01/07 17:34:29  expertone
-* Merge with MAIN branch
-*
-* Revision 1.5.2.2  2004/10/25 20:21:37  expertone
-* Replaced all standart components with TNT components. Some small fixes
-*
-* Revision 1.5.2.1  2004/10/19 19:48:30  expertone
-* Add localization (gnugettext)
-*
-* Revision 1.5  2004/10/15 14:01:53  z_stoichev
-* Merged with Stable bugfixes
-*
-* Revision 1.4  2004/09/08 20:21:22  lordlarry
-* Changed the Exception to a ShowMessage. Don't scare the poor users again :)
-*
-* Revision 1.3.6.1  2004/09/08 20:21:19  lordlarry
-* Added Exception.Message to the Exception Details Log
-*
-* Revision 1.3  2004/07/07 08:10:46  z_stoichev
-* Common Wizard Image usage
-*
-* Revision 1.2  2004/06/30 15:28:26  z_stoichev
-* GUI improvements
-*
-* Revision 1.1  2004/06/30 14:05:20  z_stoichev
-* Initial checkin.
-*
 *
 }
 

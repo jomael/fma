@@ -8,65 +8,10 @@ unit uSyncBookmarks;
 *
 * Todo:
 * - Create a custmo view for bookmarks, custom popup menu, custom Properties.
+* - Add support for new phones K610 etc.
 *
 * Change Log:
 * $Log: uSyncBookmarks.pas,v $
-* Revision 1.4.2.12  2006/03/12 13:04:31  z_stoichev
-* New UTF8 Codec usage.
-*
-* Revision 1.4.2.11  2006/01/16 11:26:57  mhr3
-* Form1.Explorer -> Form1.ExplorerNew
-*
-* Revision 1.4.2.10  2005/12/12 21:40:48  mhr3
-* fixed access violation when deleting bookmark
-*
-* Revision 1.4.2.9  2005/09/20 14:44:57  z_stoichev
-* Changed Confirmations default button to NO.
-*
-* Revision 1.4.2.8  2005/09/19 13:16:51  z_stoichev
-* Properties Toolbar button initial click issue fixed.
-*
-* Revision 1.4.2.7  2005/09/19 12:19:04  z_stoichev
-* Added Command line switch "/fixdb" to clean DB.
-*
-* Revision 1.4.2.6  2005/09/18 21:40:52  z_stoichev
-* - Added Bookmarks sync Force As popup menu commands.
-* - Fixed Bookmarks sync editor multi-select support.
-*
-* Revision 1.4.2.5  2005/09/16 14:18:49  z_stoichev
-* Fixed typos.
-*
-* Revision 1.4.2.4  2005/09/15 15:06:58  z_stoichev
-* Sync Bookmarks changes.
-*
-* Revision 1.4.2.3  2005/09/14 15:24:05  z_stoichev
-* Bookmarks sync.
-*
-* Revision 1.4.2.2  2005/09/13 20:25:54  z_stoichev
-* Started 'real' bookmarks sync implementation.
-*
-* Revision 1.4.2.1  2005/08/24 14:36:18  z_stoichev
-* - Synchronization display messages are uniform now.
-*
-* Revision 1.4  2005/02/19 12:51:01  lordlarry
-* Changed Log Messages Category and Severity (Removing the SyncLog method)
-*
-* Revision 1.3  2005/02/18 16:18:23  z_stoichev
-* Intermediate bugfixes - not finished work, sorry no time!
-*
-* Revision 1.2  2005/02/08 15:38:55  voxik
-* Merged with L10N branch
-*
-* Revision 1.1.2.2  2005/02/02 23:15:54  voxik
-* Changed MessageDlg and ShowMessages replaced by new unicode versions
-*
-* Revision 1.1.2.1  2005/01/07 18:04:01  expertone
-* Merge with MAIN branch
-*
-* Revision 1.1  2004/12/23 15:52:29  z_stoichev
-* Sync Bookmarks started.
-* Bugfixes.
-*
 *
 }
 
