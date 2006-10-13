@@ -1460,7 +1460,7 @@ begin
           str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.cell),False);
           str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.fax),False);
           str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.other),False);
-          str := str + '",' + contact.LUID;
+          str := str + '",' + WideStringToLongString(contact.LUID);
           str := str + ',' + NumPos2Str(contact.Position);
           str := str + ',' + IntToStr(contact.DefaultIndex);
           str := str + ',"' + HTMLEncode(WideStringToUTF8String(contact.picture),False);

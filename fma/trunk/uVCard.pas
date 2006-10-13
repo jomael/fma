@@ -822,7 +822,7 @@ begin
     // on EConvertError do PValue := '??convert_error??';
     Log.AddMessage('QP2Str: Convert error for "'+PValue+'".', lsDebug); // do not localize debug
   end;
-  Result := s;
+  Result := LongStringToWideString(s);
   // now decode UTF7 if needed
   if IsUTF7 then Result := UTF7ToWideString(s);
   // now decode UTF8 if needed

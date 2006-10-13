@@ -4810,7 +4810,7 @@ begin
         if (NumType = '145') and (Number[1] <> '+') then
           Number := '+' + Number;
 
-        sl.Add(WideStringToUTF8String(WideQuoteStr(Name,True)) + ',' + Number + ',' + IntToStr(position) +
+        sl.Add(UTF8Encode(WideQuoteStr(Name,True)) + ',' + Number + ',' + IntToStr(position) +
           ',3' + // 3 = not modified (new) item
           ',' + GUIDToString(NewGUID) + ',""'); // CDID and LUID fields
       end;
@@ -8224,12 +8224,14 @@ var
   contact: PContactData;
   Name: WideString;
   procedure DoAdd(TelType,Tel: WideString; position: integer);
+  var utf8s: string;
   begin
     { WARNING!! contact.StateIndex meaning should match SIM.imageindex one (new,mod,del) }
     { SEE ParsePhonebookListFromEditor !!! Implementations should match }
-    sl.Add(WideStringToUTF8String(WideQuoteStr(Name + TelType,True)) + ',' + Tel + ',' +
+    utf8s := UTF8Encode(WideQuoteStr(Name + TelType,True));
+    sl.Add(utf8s + ',' + WideStringToLongString(Tel) + ',' +
       IntToStr(position) + ',' + IntToStr(contact.StateIndex) + ',' +
-      GUIDToString(contact^.CDID) + ',"' + contact^.LUID + '"');
+      GUIDToString(contact^.CDID) + ',"' + WideStringToLongString(contact^.LUID) + '"');
   end;
 begin
   sl.Clear;
@@ -12258,11 +12260,13 @@ var
   sl: TStrings;
   Tree: TVirtualStringTree;
   procedure DoAdd(Name: WideString);
+  var utf8s: string;
   begin
     { SEE ParsePhonebookListFromSync !!! Implementations should match }
-    sl.Add(WideStringToUTF8String(WideQuoteStr(Name,True)) + ',' + contact^.pnumb + ',' +
+    utf8s := UTF8Encode(WideQuoteStr(Name,True));
+    sl.Add(utf8s + ',' + WideStringToLongString(contact^.pnumb) + ',' +
       IntToStr(contact^.position) + ',' + IntToStr(contact^.imageindex) + ',' +
-      GUIDToString(contact^.CDID) + ',"' + contact^.LUID + '"');
+      GUIDToString(contact^.CDID) + ',"' + WideStringToLongString(contact^.LUID) + '"');
   end;
 begin
   NeedRefresh := False;
