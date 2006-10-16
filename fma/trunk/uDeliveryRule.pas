@@ -111,7 +111,7 @@ begin
   try
     OnSelectionChange := OnFolderSelected;
     AllowNewFolder := True;
-    RootNode := Form1.FNodeMsgRoot;
+    RootNode := Form1.FNodeMsgFmaRoot;
     SelectedNodePath := Form1.ExplorerNodePath(FolderNode);
     if ShowModal = mrOK then
     begin

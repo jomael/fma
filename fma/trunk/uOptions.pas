@@ -2959,7 +2959,8 @@ begin
   try
     OnSelectionChange := OnFolderSelected;
 
-    RootNode := Form1.FNodeMsgRoot;
+    RootNode := Form1.FNodeMsgPhoneRoot;
+    AddNodes(Form1.FNodeMsgFmaRoot);
     Caption := _('Run Rules In...');
     if ShowModal = mrOK then begin
       w := '';
@@ -3005,8 +3006,10 @@ end;
 procedure TfrmOptions.OnFolderSelected(Sender: TObject; Node: PVirtualNode;
   var EnableOKButton, EnableNewFolder: boolean);
 begin
-  EnableOKButton := Assigned(Node) and (Node <> Form1.FNodeMsgRoot) and
-    (Node <> Form1.FNodeMsgDrafts) and (Node <> Form1.FNodeMsgOutbox);
+  // can be phone's inbox/outbox, archive or custom folders
+  EnableOKButton := Assigned(Node) and (Node <> Form1.FNodeMsgFmaRoot) and
+    (Node <> Form1.FNodeMsgDrafts) and (Node <> Form1.FNodeMsgOutbox) and
+    (Node <> Form1.FNodeMsgPhoneRoot);
 end;
 
 function TfrmOptions.Get_UILangChanged: Boolean;

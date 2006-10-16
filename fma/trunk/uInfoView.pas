@@ -317,7 +317,7 @@ begin
     //lblTimeLeft.Caption := '?';
   end;
   { Inbox and Outbox }
-  i := GetNewSMSCount(Form1.FNodeMsgRoot) + GetNewSMSCount(Form1.FNodeMsgInbox) +
+  i := GetNewSMSCount(Form1.FNodeMsgPhoneRoot) + GetNewSMSCount(Form1.FNodeMsgInbox) +
     GetNewSMSCount(Form1.FNodeMsgSent) + GetNewSMSCount(Form1.FNodeMsgArchive);
   if i <> 0 then begin
     wInboxNew.Caption := IntToStr(i);

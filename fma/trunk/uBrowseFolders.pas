@@ -53,12 +53,14 @@ type
     procedure Set_Selected(const Value: WideString);
     procedure Set_NewOK(const Value: boolean);
     procedure Set_RootNode(const Value: PVirtualNode);
+    function AddExplorerNode(ParentNode,Node: PVirtualNode):PVirtualNode;
   protected
     procedure DoInitTree;
   public
     { Public declarations }
     AllowCurrent: boolean;
     function FindNodeWithPath(path: WideString): PVirtualNode;
+    procedure AddNodes(Parent: PVirtualNode);
     property OnSelectionChange: TBrowseSelectionChangeEvent read FOnSelect write FOnSelect;
     property RootNode: PVirtualNode read FRootNode write Set_RootNode;
     property SelectedNodePath: WideString read Get_Selected write Set_Selected;
@@ -82,55 +84,50 @@ const
 { TfrmBrowseFolders }
 
 procedure TfrmBrowseFolders.DoInitTree;
-var
-  Child: PVirtualNode;
-  Cname: WideString;
-  MsgMode: boolean;
-  procedure AddExplorerNode(ParentNode,Node: PVirtualNode);
-  var
-    n: PVirtualNode;
-    data, data2: PFmaExplorerNode;
-  begin
-    if MsgMode then Cname := Form1.GetSMSNodeName(Node)
-      else begin
-        data := Form1.ExplorerNew.GetNodeData(Node);
-        Cname := data.Text;
-      end;
-    if vsVisible in Node.States then begin
-      n := tvFolders.AddChild(ParentNode);
-      if Assigned(n) then begin
-        data := Form1.ExplorerNew.GetNodeData(Node);
-        data2 := tvFolders.GetNodeData(n);
-        data2.Data := Node;
-        data2.ImageIndex := data.ImageIndex;
-        data2.StateIndex := data.StateIndex;
-        data2.Text := Cname;
-        Node := Node.FirstChild;
-        while Node<>nil do begin
-          AddExplorerNode(n, Node);
-          Node := Node.NextSibling;
-        end;
-      end;
-    end;
-  end;
 begin
-  Child := FRootNode;
-  MsgMode := False;
-  while Assigned(Child) do begin
-    if Child = Form1.FNodeMsgRoot then begin
-      MsgMode := True;
-      break;
-    end;
-    Child := Child.Parent;
-  end;
+  tvFolders.Clear;
+  AddNodes(FRootNode);
+end;
+
+procedure TfrmBrowseFolders.AddNodes(Parent: PVirtualNode);
+var n: PVirtualNode;
+begin
+  if FRootNode = nil then
+    FRootNode := Parent;
   tvFolders.BeginUpdate;
   try
-    tvFolders.Clear;
-    AddExplorerNode(nil,FRootNode);
-    if tvFolders.RootNodeCount > 0 then
-      tvFolders.Expanded[tvFolders.GetFirst] := true;
+    n := AddExplorerNode(nil,Parent);
+    if Assigned(n) then
+      tvFolders.Expanded[n] := true;
   finally
     tvFolders.EndUpdate;
+  end;
+end;
+
+function TfrmBrowseFolders.AddExplorerNode(ParentNode,Node: PVirtualNode):PVirtualNode;
+var
+  data, data2: PFmaExplorerNode;
+  Cname: WideString;
+begin
+  Result := nil;
+  data := Form1.ExplorerNew.GetNodeData(Node);
+  Cname := data.Text;
+
+  if vsVisible in Node.States then begin
+    Result := tvFolders.AddChild(ParentNode);
+    if Assigned(Result) then begin
+      data := Form1.ExplorerNew.GetNodeData(Node);
+      data2 := tvFolders.GetNodeData(Result);
+      data2.Data := Node;
+      data2.ImageIndex := data.ImageIndex;
+      data2.StateIndex := data.StateIndex;
+      data2.Text := Cname;
+      Node := Node.FirstChild;
+      while Node<>nil do begin
+        AddExplorerNode(Result, Node);
+        Node := Node.NextSibling;
+      end;
+    end;
   end;
 end;
 

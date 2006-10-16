@@ -45,10 +45,11 @@ const
 
   FMA_HANDLEMESSAGE = WM_USER + 100;
 
-  FmaMessagesRootFlag  = $200000;
+  FmaMessagesPhoneRootFlag  = $200000;
+  FmaMessagesFmaRootFlag = $300000;
   FmaMessageFolderFlag = $080000; // added to Explorer.Node's stateindex
 
-  FmaSMSSubFolderFlag  = FmaMessagesRootFlag or FmaMessageFolderFlag;
+  FmaSMSSubFolderFlag  = FmaMessagesFmaRootFlag or FmaMessageFolderFlag;
   FmaNodeSubitemsMask  = $0F0000;
 
 type
@@ -928,7 +929,7 @@ type
     FNodeContactsRoot,
     FNodeContactsME, FNodeContactsSM, FNodeProfiles, FNodeGroups, FNodeCalls, FNodeCallsIn, FNodeCallsOut, FNodeCallsMissed,
     FNodeObex, FNodeOrganizer, FNodeAlarms, FNodeBookmarks, FNodeScripts, FNodeCalendar: PVirtualNode;
-    FNodeMsgRoot,
+    FNodeMsgPhoneRoot, FNodeMsgFmaRoot,
     FNodeMsgInbox, FNodeMsgSent, FNodeMsgOutbox, FNodeMsgDrafts, FNodeMsgArchive: PVirtualNode;
     // new ones end
     FSMSCounterReseted,FSMSDoWarning,FSMSDoReset: boolean;
@@ -1019,7 +1020,6 @@ type
     function GetSMSDeliveryNode(Sender: WideString; CustomRules: WideString = '';
       AllowDefaultArchive: Boolean = True): PVirtualNode;
     function GetSMSNodeName(Node: PVirtualNode): WideString; overload;
-    function GetSMSNodeName(const Name: WideString): WideString; overload;
     procedure EditSMSDeliveryRules(Node: PVirtualNode);
 
     procedure ClearExplorerViews;
@@ -1067,7 +1067,7 @@ type
     procedure ExplorerAddToGroup(GroupIndex: integer; Contact: WideString; Number: String);
     procedure ExplorerDelFromGroup(GroupIndex: integer; Contact: WideString);
 
-    function ExplorerFindNode(NodePath: WideString; AllowCreate: Boolean = False): PVirtualNode;
+    function ExplorerFindNode(NodePath: WideString; ParentNode: PVirtualNode = nil; AllowCreate: Boolean = False): PVirtualNode;
     function ExplorerNodePath(Node: PVirtualNode; SepChar: WideChar = '\'; SkipRoot: Boolean = False): WideString;
 
     function ExplorerNodeIsFileOrFolder(Node: PVirtualNode): Boolean;
@@ -3207,7 +3207,7 @@ begin
       else
         ActionConnectionDownload.Hint := _('Refresh Data');
 
-      if ((EData.StateIndex and $F00000) = FmaMessagesRootFlag) and
+      if ((EData.StateIndex and $E00000) = FmaMessagesPhoneRootFlag) and
         ((EData.StateIndex and FmaNodeSubitemsMask) <> 0) then begin // SMS text Messages
         ActionConnectionDownload.Hint := _('Download Messages');
         SetFrameVisible('MSG'); // do not localize
@@ -3314,23 +3314,24 @@ var
 begin
   data := ExplorerNew.GetNodeData(ExplorerNew.FocusedNode);
   id := data.StateIndex;
-  { Do not ask for connection if refreshing Archive, Drafts or Custom SMS folders }
-  if (id and $F00000 <> FmaMessagesRootFlag) or (id and FmaNodeSubitemsMask = 0) then
+  { Do not ask for connection if refreshing Fma Text Folders }
+  if (((id and $F00000) shr 20) in [1,2,4,5,7,8,9]) then
     AskRequestConnection;
 
   // Contacts
   if (id and $F00000) = $100000 then ActionContactsDownloadExecute(Self);
   // Messages
-  if (id and $F00000) = FmaMessagesRootFlag then
+  if (id and $F00000) = FmaMessagesPhoneRootFlag then begin
     if (id and FmaMessageFolderFlag) = 0 then
       { Text Messages, Inbox or Sent Items folders }
       if (id and FmaNodeSubitemsMask) = 0 then
         DownloadAllMessages // this is Text Messages root folder, so download all of them :)
       else
         DownloadMessages(ExplorerNew.FocusedNode) // this will work for both Inbox and Send Items
-    else
-      { Archive, Drafts and Custom folders }
-      UpdateNewMessagesCounter(ExplorerNew.FocusedNode);
+  end
+  else if ((id and $F00000) = FmaMessagesFmaRootFlag) and ((id and FmaNodeSubitemsMask) <> 0) then
+    { Archive, Drafts, Outbox and Custom folders }
+    UpdateNewMessagesCounter(ExplorerNew.FocusedNode);
   // Calls
   if (id and $F00000) = $400000 then
     case (id and FmaNodeSubitemsMask) shr 16 of
@@ -3340,10 +3341,10 @@ begin
       3: InitCalls(FNodeCallsMissed);
     end;
   // Organizer
-  if (id and $F00000) = $300000 then
+  if (id and $F00000) = $900000 then
     case (id and FmaNodeSubitemsMask) shr 16 of
       0: ;
-      1: ;
+      1: InitAlarms;
       2: InitBookmarks;
       3: ;
       4: InitCalendar;
@@ -3352,12 +3353,11 @@ begin
   if (id and $F00000) = $500000 then InitObexFolders;
   if (id and $F00000) = $700000 then InitProfile;
   if (id and $F00000) = $800000 then InitGroups;
-  if (id and $FF0000) = $310000 then InitAlarms;
   // Update view
   ExplorerNewChange(ExplorerNew,ExplorerNew.FocusedNode);
   // Update database
   // Only if not Messages, Calls or Groups since they will do it anyway
-  if not ((id and $F00000 shr 20) in [2,4,8]) then begin
+  if not ((id and $F00000 shr 20) in [2,3,4,8]) then begin
     SavePhoneDataFiles(True);
   end;
 end;
@@ -3847,10 +3847,11 @@ begin
               buf := UTF8StringToWideString(WideStringToLongString(Copy(Msg,2,Length(Msg)-2)));
               if Length(buf)<=FAccessoriesMenu.FInputMax then begin
                 result := '';
-                while Pos('"',buf)>0 do
+                {while Pos('"',buf)>0 do
                   result := result + GetFirstToken(buf,'"') + '""';
-                { TODO: Use WideStringReplace() to double quotes }
-                result := result + buf;
+                result := result + buf;}
+                { Use WideStringReplace() to double quotes }
+                result := Tnt_WideStringReplace(buf, '"', '""', [rfReplaceAll]);
                 ScheduleScriptEvent(FAccessoriesMenu.FGeneralEvent, [result]);
               end
               else begin
@@ -6106,7 +6107,7 @@ procedure TForm1.ObexConnect(Target: widestring);
 begin
   RequestConnection;
   if not FObex.Connected then
-    FObex.Connect(Target);
+    FObex.Connect(WideStringToLongString(Target));
 end;
 
 function TForm1.ObexGetObject(Path: Widestring; var stream: TStream; progress: boolean): cardinal;
@@ -6614,7 +6615,8 @@ begin
     InitExplorerTree; // Locates all nodes, and creates database storage
     SetExplorerNode(ExplorerNew.GetFirst);
     ExplorerNew.Expanded[ExplorerNew.GetFirst] := True;
-    ExplorerNew.Expanded[FNodeMsgRoot] := True;
+    ExplorerNew.Expanded[FNodeMsgPhoneRoot] := True;
+    ExplorerNew.Expanded[FNodeMsgFmaRoot] := True;
     ExplorerNew.Expanded[FNodeContactsRoot] := True;
     ExplorerNew.Expanded[FNodeCalls] := True;
     ExplorerNew.Expanded[FNodeOrganizer] := True;
@@ -6908,7 +6910,6 @@ var
     if From <> '' then begin
       s := '';
       if From = 'ME' then root := FNodeContactsME else root := FNodeContactsSM; // do not localize
-      // TODO: check if this really is root.FirstChild
       itNode1 := root.FirstChild;
       while itNode1 <> nil do begin
         data1 := ExplorerNew.GetNodeData(itNode1);
@@ -8186,7 +8187,12 @@ begin
   if not ThreadSafe.Busy and not FObex.Connected and (ExplorerNew.FocusedNode <> nil) then begin
     data := ExplorerNew.GetNodeData(ExplorerNew.FocusedNode);
     d := (data.StateIndex and $F00000) shr 20;
-    ActionConnectionDownload.Enabled := d in [1,2,3,4,5,7,8];
+    // enable Refresh ONLY for organizer nodes not organizer itself
+    if (d = 9) and (data.StateIndex = $900000) then
+      d := 0;
+    { Refresh enabled for Contacts-1, Phone Text Msgs-2, Fma Text Msgs-3,
+      Calls-4, Files-5, Profiles-7, Groups-8, Organizer nodes-9 }
+    ActionConnectionDownload.Enabled := d in [1,2,3,4,5,7,8,9];
   end
   else
     ActionConnectionDownload.Enabled := False;
@@ -8482,13 +8488,13 @@ begin
     { Cleanup user-defined SMS Folders }
     LoadUserFoldersData(FullPath,False);
     try
-      ScanSMSFolder(FNodeMsgRoot);
+      ScanSMSFolder(FNodeMsgFmaRoot);
     finally
       SaveUserFoldersData(FullPath);
     end;
 
     { TODO: Fix other databases too }
-        
+
   finally
     Enabled := True;
     Log.AddMessage('Database: Repair finished', lsDebug); // do not localize debug
@@ -8496,6 +8502,9 @@ begin
     sl.Free;
     FreeAndNil(frmStatusDlg);
   end;
+  // Reload all data
+  if ID = PhoneIdentity then
+    LoadPhoneDataFiles(ID);
 end;
 
 function TForm1.LoadPhoneDataFiles(ID: string; ShowStatus,ShowProgress: Boolean): boolean;
@@ -9024,9 +9033,9 @@ begin
   if Assigned(FNodeCalls) then
   try
     if frmInfoView.Visible then EBCAState(False);
-    InitCalls(fnodecallsIn);
-    InitCalls(fnodecallsOut);
-    InitCalls(fnodecallsMissed);
+    InitCalls(FNodeCallsIn);
+    InitCalls(FNodeCallsOut);
+    InitCalls(FNodeCallsMissed);
     if frmInfoView.Visible then EBCAState(True);
     ExplorerNew.Expanded[FNodeCalls] := true;
   except
@@ -9550,11 +9559,12 @@ var
 begin
   if Assigned(Node) then begin
     EData := Sender.GetNodeData(Node);
-    if ((EData.StateIndex and $F00000) = FmaMessagesRootFlag) and ((EData.StateIndex and FmaNodeSubitemsMask) <> 0) then begin // SMS folders
-      if (EData.SpecialImagesFlags and $80 <> 0) and (EData.SpecialImages <> 0) then //if Pos(' (',EData.Text) <> 0 then
-        TargetCanvas.Font.Style := [fsBold]
-      else
-        TargetCanvas.Font.Style := [];
+    if ((EData.StateIndex and $E00000) = FmaMessagesPhoneRootFlag) then begin
+      if ((EData.StateIndex and FmaNodeSubitemsMask) <> 0) then // SMS folders
+        if (EData.SpecialImagesFlags and $80 <> 0) and (EData.SpecialImages <> 0) then //if Pos(' (',EData.Text) <> 0 then
+          TargetCanvas.Font.Style := [fsBold]
+        else
+          TargetCanvas.Font.Style := [];
     end
     else
       TargetCanvas.Font.Style := [];
@@ -9590,7 +9600,7 @@ var
 begin
   Result := 0;
   data := ExplorerNew.GetNodeData(rootNode);
-  if not Assigned(rootNode) or (data.StateIndex and $F00000 <> FmaMessagesRootFlag) then
+  if not Assigned(rootNode) or (data.StateIndex and $E00000 <> FmaMessagesPhoneRootFlag) then
     exit; // this works only for Text Message folders
 
   cnt := 0;
@@ -9795,25 +9805,23 @@ begin
   Child := RootNode;
   MsgMode := False;
   while Assigned(Child) do begin
-    if Child = FNodeMsgRoot then begin
+    if (Child = FNodeMsgPhoneRoot) or (Child = FNodeMsgFmaRoot) then begin
       MsgMode := True;
       break;
     end;
     Child := Child.Parent;
   end;
-  if RootNode <> nil then begin
-    //if Child <> nil then Child := Child.FirstChild else
-    Child := RootNode.FirstChild;
-    while Child <> nil do begin
-      if MsgMode then Cname := GetSMSNodeName(Child)
-      else begin
-        EData := ExplorerNew.GetNodeData(Child);
-        Cname := EData.Text;
-      end;
-      if WideCompareText(Cname,Named) = 0 then
-        break;
-      Child := Child.NextSibling;
+  // if RootNode <> nil then begin - we'd Exit
+  Child := RootNode.FirstChild;
+  while Child <> nil do begin
+    if MsgMode then Cname := GetSMSNodeName(Child)
+    else begin
+      EData := ExplorerNew.GetNodeData(Child);
+      Cname := EData.Text;
     end;
+    if WideCompareText(Cname,Named) = 0 then
+      break;
+    Child := Child.NextSibling;
   end;
   Result := Child;
 end;
@@ -9867,7 +9875,7 @@ var
   EData: PFmaExplorerNode;
 begin
   EData := ExplorerNew.GetNodeData(rootNode);
-  if not Assigned(rootNode) or (EData.StateIndex and FmaMessagesRootFlag <> FmaMessagesRootFlag) then
+  if not Assigned(rootNode) or (EData.StateIndex and $E00000 <> FmaMessagesPhoneRootFlag) then
     exit;
 
   sms := TSMS.Create;
@@ -10236,7 +10244,7 @@ var
 begin
   Result := False;
   data := ExplorerNew.GetNodeData(rootNode);
-  if not Assigned(rootNode) or (data.StateIndex and FmaMessagesRootFlag <> FmaMessagesRootFlag) then
+  if not Assigned(rootNode) or (data.StateIndex and FmaMessagesPhoneRootFlag <> FmaMessagesPhoneRootFlag) then
     exit;
 
   sl := TStringList(data.Data);
@@ -10971,7 +10979,7 @@ var
       if data.StateIndex = FmaSMSSubFolderFlag then
         ExplorerNew.DeleteNode(itNode);
       itNode := itNode.PrevSibling;
-      // TODO: fix!!!
+      // TODO -omhr: fix!!!
     end;
   end;
 begin
@@ -11137,8 +11145,11 @@ begin
               LoadPhoneDataFiles(SelectedProfile,True,True);
               ID := SelectedProfile;
             end
-            else
+            else begin
               ID := PhoneIdentity;
+              { save any changes}
+              SavePhoneDataFiles(False);
+            end;
             { repair }
             Status(_('Repairing profile...')); Update;
             RepairPhoneDataFiles(ID);
@@ -13336,7 +13347,7 @@ var
 begin
   EData := ExplorerNew.GetNodeData(ExplorerNew.FocusedNode);
   ActionViewAddFolder.Visible := (EData <> nil) and
-    (EData.StateIndex and $F00000 = FmaMessagesRootFlag) and
+    (EData.StateIndex and $F00000 = FmaMessagesFmaRootFlag) and
     (ExplorerNew.FocusedNode <> FNodeMsgOutbox) and (ExplorerNew.FocusedNode <> FNodeMsgDrafts);
   ActionViewAddFolder.Enabled := ActionViewAddFolder.Visible;
 end;
@@ -13443,7 +13454,7 @@ begin
   EData.ImageIndex := 3;
   EData.StateIndex := FmaSMSSubFolderFlag; // mark as SMS folder
   EData.Data := Pointer(TStringList.Create);
-  EData.SpecialImagesFlags := $80; // show 'new message' counter in explorer 
+  EData.SpecialImagesFlags := $80; // show 'new message' counter in explorer
 end;
 
 procedure TForm1.LoadUserFoldersData(DBPath: string; ShowUnreadFolders: Boolean);
@@ -13453,7 +13464,9 @@ var
   EData: PFmaExplorerNode;
   NodePath: WideString;
   i,j: Integer;
+  Migrated: boolean;
 begin
+  Migrated := False;
   with TIniFile.Create(DBPath + 'UserFolders.dat') do
   try
     sl := TStringList.Create;
@@ -13466,13 +13479,39 @@ begin
         ReadSectionValues(sl[i],dl);
         NodePath := UTF8StringToWideString(dl.Values['Path']); // do not localize
         { remove "My Phone\" prefix }
-        GetFirstToken(NodePath,'\'); // do not localize
+        { Change for FMA 2.2: now custom folder nodes must have
+          FNodeMsgFmaRoot as parent, so use only '\PathRelativeTo_FNodeMsgFmaRoot'
+          ask user for new location if old is used }
+        if GetFirstToken(NodePath,'\') <> '' then begin // do not localize
+          if not Migrated then begin
+            // TODO: copy UserFolders.dat to UserFolders.bak
+            Migrated := True;
+          end;
+          MessageDlgW(WideFormat(_('Please choose new location for your old folder: "%s" (otherwise it''s contains will be saved to Archive)'),
+            [NodePath]), mtWarning, MB_OK);
+          with TfrmBrowseFolders.Create(nil) do
+          try
+            OnSelectionChange := OnFolderSelected;
+            AllowNewFolder := True;
+            RootNode := Form1.FNodeMsgFmaRoot;
+            if ShowModal = mrOK then begin
+              EData := tvFolders.GetNodeData(FindNodeWithPath(SelectedNodePath));
+              Node := EData.Data;
+            end else
+              Node := FNodeMsgArchive;
+          finally
+            Free;
+          end;
+        end else
         { create target folder }
-        Node := ExplorerFindNode(NodePath,True);
+          Node := ExplorerFindNode(NodePath,FNodeMsgFmaRoot,True);
         { update explorer view }
+        if Node = nil then Continue;
         EData := ExplorerNew.GetNodeData(Node);
         nl := TStringList(EData.Data);
-        nl.Clear;
+        { don't clear if user is migrating data }
+        if not Migrated then
+          nl.Clear;
         for j := 1 to dl.Count-1 do // ignore Value[0] since it is the 'Path' one
           nl.Add(dl.Values[dl.Names[j]]);
         if UpdateNewMessagesCounter(Node) <> 0 then
@@ -13486,6 +13525,8 @@ begin
   finally
     Free;
   end;
+  if Migrated then
+    SaveUserFoldersData(DBPath);
 end;
 
 procedure TForm1.SaveUserFoldersData(DBPath: string);
@@ -13512,7 +13553,10 @@ var
         s := 'Folder '+IntToStr(cnt); // section name // do not localize
         { add folder Path in Explorer view as first value }
         NodePath := ExplorerNodePath(itNode); // do not localize
-        db.WriteString(s,'Path',WideStringToUTF8String(NodePath)); // do not localize
+        { Change for FMA 2.2: Path is relative to FNodeMsgFmaRoot}
+        GetFirstToken(NodePath, '\');
+        GetFirstToken(NodePath, '\');
+        db.WriteString(s,'Path','\'+WideStringToUTF8String(NodePath)); // do not localize
         { add folder data next }
         sl := TStringList(EData.Data);
         for j := 0 to sl.Count-1 do
@@ -13598,9 +13642,10 @@ begin
   with TfrmBrowseFolders.Create(nil) do
   try
     OnSelectionChange := OnFolderSelected;
+    // enables moving to Archive / user folders
     AllowCurrent := False; // do not overwrite messages
     AllowNewFolder := True;
-    RootNode := FNodeMsgRoot;
+    RootNode := FNodeMsgFmaRoot;
     Caption := _('Move Messages To...');
     if ShowModal = mrOK then begin
       Update;
@@ -13624,14 +13669,15 @@ begin
   EnableNewFolder := (Node <> FNodeMsgOutbox) and (Node <> FNodeMsgDrafts);
 end;
 
-function TForm1.ExplorerFindNode(NodePath: WideString; AllowCreate: Boolean): PVirtualNode;
+function TForm1.ExplorerFindNode(NodePath: WideString; ParentNode: PVirtualNode; AllowCreate: Boolean): PVirtualNode;
 var
-  ParentNode,Node: PVirtualNode;
+  Node: PVirtualNode;
   w: WideString;
 begin
   Result := nil;
   { Warning! NodePath should not contain "My Phone\" prefix! }
-  ParentNode := ExplorerNew.GetFirst;
+  if ParentNode = nil then
+    ParentNode := ExplorerNew.GetFirst;
   repeat
     w := GetFirstToken(NodePath,'\'); // do not localize
     Node := FindExplorerChildNode(w,ParentNode);
@@ -13685,7 +13731,7 @@ var
   EData: PFmaExplorerNode;
 begin
   EData := ExplorerNew.GetNodeData(Node);
-  Result := GetSMSNodeName(EData.Text);
+  Result := EData.Text;
 end;
 
 procedure TForm1.ActionSyncAllExecute(Sender: TObject);
@@ -14045,19 +14091,6 @@ begin
   end;
 end;
 
-function TForm1.GetSMSNodeName(const Name: WideString): WideString;
-var
-  s: WideString;
-  i: integer;
-begin
-  s := Name;
-  // Obsolete...
-  i := Pos(' (',s);
-  if i <> 0 then Delete(s,i,Length(s));
-  // ...Obsolete
-  Result := s;
-end;
-
 procedure TForm1.MissedCallsTrayIconDblClick(Sender: TObject);
 begin
   ActionMissedCalls.Execute;
@@ -14199,17 +14232,17 @@ begin
   //data.SpecialImages := $2D2C2D2C;
   //data.SpecialImagesFlags := $77;
 
-    FNodeMsgRoot := ExplorerNew.AddChild(root);
-    data := ExplorerNew.GetNodeData(FNodeMsgRoot);
-    data.Text := _('Text Messages');
+    FNodeMsgPhoneRoot := ExplorerNew.AddChild(root);
+    data := ExplorerNew.GetNodeData(FNodeMsgPhoneRoot);
+    data.Text := _('Phone Text Folders');
     data.ImageIndex := 5;
-    data.StateIndex := $200000;
+    data.StateIndex := FmaMessagesPhoneRootFlag;
     data.SpecialImages := $3F400041;
     data.SpecialImagesFlags := $07;
 
-      FNodeMsgInbox := ExplorerNew.AddChild(FNodeMsgRoot);
+      FNodeMsgInbox := ExplorerNew.AddChild(FNodeMsgPhoneRoot);
       data := ExplorerNew.GetNodeData(FNodeMsgInbox);
-      data.Text := _('Inbox');
+      data.Text := _('Incoming');
       data.ImageIndex := 39;
       data.StateIndex := $210000;
       //data.SpecialImages := $3F400041;
@@ -14217,9 +14250,9 @@ begin
       data.SpecialImagesFlags := $80;
       data.Data := TStringList.Create;
 
-      FNodeMsgSent := ExplorerNew.AddChild(FNodeMsgRoot);
+      FNodeMsgSent := ExplorerNew.AddChild(FNodeMsgPhoneRoot);
       data := ExplorerNew.GetNodeData(FNodeMsgSent);
-      data.Text := _('Sent Items');
+      data.Text := _('Outgoing');
       data.ImageIndex := 40;
       data.StateIndex := $220000;
       //data.SpecialImages := $3F400041;
@@ -14227,29 +14260,35 @@ begin
       data.SpecialImagesFlags := $80;
       data.Data := TStringList.Create;
 
-      FNodeMsgOutbox := ExplorerNew.AddChild(FNodeMsgRoot);
+    FNodeMsgFmaRoot := ExplorerNew.AddChild(root);
+    data := ExplorerNew.GetNodeData(FNodeMsgFmaRoot);
+    data.Text := _('FMA Text Folders');
+    data.ImageIndex := 5;
+    data.StateIndex := FmaMessagesFmaRootFlag;
+
+      FNodeMsgOutbox := ExplorerNew.AddChild(FNodeMsgFmaRoot);
       data := ExplorerNew.GetNodeData(FNodeMsgOutbox);
       data.Text := _('Outbox');
       data.ImageIndex := 56;
-      data.StateIndex := $2A0000;
+      data.StateIndex := $3A0000;
       data.SpecialImagesFlags := $80;
       data.Data := TStringList.Create;
 
-      FNodeMsgArchive := ExplorerNew.AddChild(FNodeMsgRoot);
-      data := ExplorerNew.GetNodeData(FNodeMsgArchive);
-      data.Text := _('Archive');
-      data.ImageIndex := 3;
-      data.StateIndex := $2B0000;
-      data.SpecialImagesFlags := $80;
-      data.Data := TStringList.Create;
-
-      FNodeMsgDrafts := ExplorerNew.AddChild(FNodeMsgRoot);
+      FNodeMsgDrafts := ExplorerNew.AddChild(FNodeMsgFmaRoot);
       data := ExplorerNew.GetNodeData(FNodeMsgDrafts);
       data.Text := _('Drafts');
       data.ImageIndex := 57;
-      data.StateIndex := $2C0000;
+      data.StateIndex := $3C0000;
       //data.SpecialImages := $3D00003D;
       //data.SpecialImagesFlags := $65;
+      data.SpecialImagesFlags := $80;
+      data.Data := TStringList.Create;
+
+      FNodeMsgArchive := ExplorerNew.AddChild(FNodeMsgFmaRoot);
+      data := ExplorerNew.GetNodeData(FNodeMsgArchive);
+      data.Text := _('Archive');
+      data.ImageIndex := 3;
+      data.StateIndex := $3B0000;
       data.SpecialImagesFlags := $80;
       data.Data := TStringList.Create;
 
@@ -14345,7 +14384,7 @@ begin
       data := ExplorerNew.GetNodeData(FNodeAlarms);
       data.Text := _('Alarms');
       data.ImageIndex := 42;
-      data.StateIndex := $310000;
+      data.StateIndex := $910000;
       data.SpecialImages := $3F400041;
       data.SpecialImagesFlags := $07;
       data.Data := TStringList.Create;
@@ -14354,7 +14393,7 @@ begin
       data := ExplorerNew.GetNodeData(FNodeBookmarks);
       data.Text := _('Bookmarks');
       data.ImageIndex := 20;
-      data.StateIndex := $320000;
+      data.StateIndex := $920000;
       data.SpecialImages := $3F400041;
       data.SpecialImagesFlags := $07;
       data.Data := TStringList.Create;
@@ -14363,7 +14402,7 @@ begin
       data := ExplorerNew.GetNodeData(FNodeCalendar);
       data.Text := _('Calendar');
       data.ImageIndex := 43;
-      data.StateIndex := $340000;
+      data.StateIndex := $940000;
       data.SpecialImages := $3F400041;
       data.SpecialImagesFlags := $07;
 
@@ -14502,7 +14541,7 @@ begin
       DownloadMessages(FNodeMsgInbox)
     else if hit.HitNode = FNodeMsgSent then
       DownloadMessages(FNodeMsgSent)
-    else if hit.HitNode = FNodeMsgRoot then
+    else if hit.HitNode = FNodeMsgPhoneRoot then
       DownloadAllMessages
     else if hit.HitNode = FNodeMsgDrafts then
       ActionSMSNewMsg.Execute

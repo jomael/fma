@@ -232,11 +232,11 @@ var
   i,j,k,q,t: integer;
   s,d: WideString;
 begin
-  if delimiter = '"' then delimiter := ','; 
+  if delimiter = '"' then delimiter := ',';
   { Left trim text }
   i := 1;
   j := Length(Str);
-  while (i <= j) and (str[i] = ' ') do inc(i);
+  while (i <= j) and (str[i] = ' ') do inc(i); // how about TrimLeft(str)?
   { Find right token end }
   t := Pos(delimiter,str)-1;
   if t < 0 then t := j;

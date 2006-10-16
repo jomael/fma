@@ -448,7 +448,7 @@ end;
 
 function TFiles.Update: boolean;
 begin
-  Form1.ObexConnect(ObexFolderBrowserServiceID);
+  Form1.ObexConnect(LongStringToWideString(ObexFolderBrowserServiceID));
   try
     result := fRoot.Update;
   finally
