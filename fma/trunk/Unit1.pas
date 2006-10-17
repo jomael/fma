@@ -985,7 +985,9 @@ type
     procedure DownloadAllMessages;
     procedure SMSToFolder(FolderNode: PVirtualNode);
     function SMSNewFolder(ParentNode: PVirtualNode; AName: WideString): PVirtualNode;
-    function IsCorrectSMSFolderName(AName: WideString):boolean;
+    function IsCorrectSMSFolderName(AName: WideString): boolean;
+    function IsNewSMSFolderNameOK(AParentNode: PVirtualNode; AName: WideString): WideString;
+    function IsNewPhoneNameOK(AName: WideString): WideString;
 
     { Phonebook }
     procedure DownloadPhonebook(var ABuffer: string);
@@ -1798,6 +1800,8 @@ begin
       except
         device := '';
       end;
+      { Remove "\" char which is invalid for Text Folders paths from Device }
+      device := StringReplace(device,'\','',[rfReplaceAll]);
       if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
       ShowNextProgress;
 
@@ -1812,7 +1816,7 @@ begin
 
       { Detect phone database state }
       dlg.SetDescr(_('Opening phone database'));
-      CurrentIdentity := ExtractPhoneIdentity(model,serial);
+      CurrentIdentity := ExtractPhoneIdentity(model,serial); // will remove invalid chars from Model and Serial
       PhoneChanged := AnsiCompareText(PhoneIdentity,CurrentIdentity) <> 0;
       Log.AddMessage('Auto-connect: Prev phone ID: '+PhoneIdentity, lsDebug); // do not localize debug
       Log.AddMessage('Auto-connect: Curr phone ID: '+CurrentIdentity, lsDebug); // do not localize debug
@@ -3329,7 +3333,7 @@ begin
       if (id and FmaNodeSubitemsMask) = 0 then
         DownloadAllMessages // this is Text Messages root folder, so download all of them :)
       else
-        DownloadMessages(ExplorerNew.FocusedNode) // this will work for both Inbox and Send Items
+        DownloadMessages(ExplorerNew.FocusedNode) // this will work for both Incoming and Outgoing
   end
   else
   if (id and $F00000) = FmaMessagesFmaRootFlag then
@@ -9789,7 +9793,7 @@ begin
           if pcGeneral.ActivePage = tsPhone then begin
             { Rename phone }
             FSelPhone := NewName;
-            if FSelPhone = '' then FSelPhone := _('My Phone');
+            //if FSelPhone = '' then FSelPhone := _('My Phone');
             EData.Text := FSelPhone;
             Caption := WideFormat(_('floAt''s Mobile Agent %s - [%s]'),[GetBuildVersionDtl,FSelPhone]);
             { Update view }
@@ -11217,10 +11221,10 @@ end;
 
 function TForm1.ExtractPhoneIdentity(var Model, Serial: string): string;
   function RemoveUnsafeChars(var s: string): string;
-begin
+  begin
     s := StringReplace(s,'"','',[rfReplaceAll]);
     s := StringReplace(s,':','-',[rfReplaceAll]);
-    s := StringReplace(s,'\','-',[rfReplaceAll]);
+    s := StringReplace(s,'\','-',[rfReplaceAll]); { Remove "\" char which is invalid for Text Folders and OS paths } 
     s := StringReplace(s,'/','-',[rfReplaceAll]);
     Result := s;
   end;
@@ -13402,23 +13406,18 @@ end;
 
 procedure TForm1.ActionViewAddFolderExecute(Sender: TObject);
 var
-  w: WideString;
+  w,e: WideString;
 begin
   w := '';
-  if WideInputQuery(_('Create Folder'),_('Enter folder name:'),w) then
-    if Trim(w) <> '' then
-      if FindExplorerChildNode(w,ExplorerNew.FocusedNode) = nil then begin
-        if not IsCorrectSMSFolderName(w) then begin
-          MessageDlgW(_('The character "\" is not allowed.'),mtError,MB_OK);
-        end else begin
-          SMSNewFolder(ExplorerNew.FocusedNode,w);
-          ExplorerNew.Selected[ExplorerNew.FocusedNode] := true;;
-        end;
-      end
-      else
-        MessageDlgW(_('Folder alerady exists.'),mtError,MB_OK)
-    else
-      MessageDlgW(_('You have to enter folder name.'),mtError,MB_OK);
+  if WideInputQuery(_('Create Folder'),_('Enter folder name:'),w) then begin
+    e := IsNewSMSFolderNameOK(ExplorerNew.FocusedNode,w);
+    if e <> '' then begin
+      MessageDlgW(e,mtError,MB_OK);
+      Abort;
+    end;
+    SMSNewFolder(ExplorerNew.FocusedNode,w);
+    ExplorerNew.Selected[ExplorerNew.FocusedNode] := True;
+  end;
 end;
 
 procedure TForm1.ExplorerNewFreeNode(Sender: TBaseVirtualTree; Node: PVirtualNode);
@@ -14944,7 +14943,7 @@ begin
           FSelPhone := frmNewDeviceWizard.SelectedDevice.FriendlyName;
           EData := ExplorerNew.GetNodeData(ExplorerNew.GetFirst);
           if Assigned(EData) then begin
-            if FSelPhone = '' then FSelPhone := _('My Phone');
+            //if FSelPhone = '' then FSelPhone := _('My Phone');
             EData.Text := FSelPhone;
             ExplorerNew.Repaint;
             Caption := WideFormat(_('floAt''s Mobile Agent %s - [%s]'),[GetBuildVersionDtl,EData.Text]);
@@ -15209,6 +15208,34 @@ end;
 procedure TForm1.InitCalendar;
 begin
   ActionSyncCalendarExecute(Self);
+end;
+
+function TForm1.IsNewSMSFolderNameOK(AParentNode: PVirtualNode; AName: WideString): WideString;
+begin
+  if Trim(AName) = '' then
+    Result := _('You have to enter folder name.')
+  else
+  if not IsCorrectSMSFolderName(AName) then
+    Result := _('The character "\" is not allowed.')
+  else
+  if Assigned(FindExplorerChildNode(AName,AParentNode)) then
+    Result := _('This folder name already exists.')
+  else
+    Result := '';
+end;
+
+function TForm1.IsNewPhoneNameOK(AName: WideString): WideString;
+begin
+  if Trim(AName) = '' then
+    Result := _('You have to enter phone name.')
+  else
+  if not IsCorrectSMSFolderName(AName) then
+    Result := _('The character "\" is not allowed.')
+  else
+  if PhoneExists(AName) then
+    Result := _('This phone name already exists.')
+  else
+    Result := '';
 end;
 
 initialization
