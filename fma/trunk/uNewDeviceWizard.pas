@@ -235,14 +235,14 @@ begin
 end;
 
 procedure TfrmNewDeviceWizard.NextButtonClick(Sender: TObject);
+var
+  e: WideString;
 begin
   case nbWizard.PageIndex of
     piName: begin
-      if Trim(edFriendlyName.Text) = '' then
-        MessageDlgW(_('You have to enter phone name.'),mtError,MB_OK)
-      else
-      if Form1.PhoneExists(edFriendlyName.Text) then
-        MessageDlgW(_('This phone name already exists.'),mtError,MB_OK)
+      e := Form1.IsNewPhoneNameOK(edFriendlyName.Text);
+      if e <> '' then
+        MessageDlgW(e,mtError,MB_OK)
       else
         SendMessage(Handle,WM_NEXTWPAGE,0,0);
     end;

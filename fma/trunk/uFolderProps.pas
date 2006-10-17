@@ -934,7 +934,7 @@ end;
 procedure TfrmFolderProps.DoSaveChanges;
 var
   i: Integer;
-  s,w: string;
+  s,w,e: string;
   DelRecurrent: boolean;
   data: PFmaExplorerNode;
 begin
@@ -980,34 +980,24 @@ begin
     btnSaveImage.Click;
   if (pcGeneral.ActivePage = tsPhone) and FModified then begin
     data := Form1.ExplorerNew.GetNodeData(FRootNode);
-    if Trim(TntEdit1.Text) = '' then
-      w := _('You have to enter phone name.')
-    else
-    if Form1.PhoneExists(TntEdit1.Text) and (WideCompareStr(TntEdit1.Text,data.Text) <> 0) then
-      w := _('This phone name already exists.')
-    else
-      w := '';
-    if w <> '' then begin
-      MessageDlgW(w,mtError,MB_OK);
-      Abort;
+    { Name changed? }
+    if WideCompareStr(TntEdit1.Text,data.Text) <> 0 then begin
+      e := Form1.IsNewPhoneNameOK(TntEdit1.Text);
+      if e <> '' then begin
+        MessageDlgW(e,mtError,MB_OK);
+        Abort;
+      end;
     end;
   end;
   if (pcGeneral.ActivePage = tsDatabase) and FModified then begin
     data := Form1.ExplorerNew.GetNodeData(FRootNode);
-    if Trim(TntEdit1.Text) = '' then
-      w := _('You have to enter folder name.')
-    else
-    if Assigned(Form1.ExplorerFindNode(TntEdit1.Text,FRootNode.Parent)) and
-      (WideCompareStr(TntEdit1.Text,data.Text) <> 0) then
-      w := _('This folder name already exists.')
-    else
-    if not Form1.IsCorrectSMSFolderName(TntEdit1.Text) then
-      w := _('The character "\" is not allowed.')
-    else
-      w := '';
-    if w <> '' then begin
-      MessageDlgW(w,mtError,MB_OK);
-      Abort;
+    { Name changed? }
+    if WideCompareStr(TntEdit1.Text,data.Text) <> 0 then begin
+      e := Form1.IsNewSMSFolderNameOK(FRootNode.Parent,TntEdit1.Text);
+      if e <> '' then begin
+        MessageDlgW(e,mtError,MB_OK);
+        Abort;
+      end;
     end;
   end;
 end;
