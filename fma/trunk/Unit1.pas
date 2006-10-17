@@ -985,6 +985,7 @@ type
     procedure DownloadAllMessages;
     procedure SMSToFolder(FolderNode: PVirtualNode);
     function SMSNewFolder(ParentNode: PVirtualNode; AName: WideString): PVirtualNode;
+    function IsCorrectSMSFolderName(AName: WideString):boolean;
 
     { Phonebook }
     procedure DownloadPhonebook(var ABuffer: string);
@@ -13407,8 +13408,12 @@ begin
   if WideInputQuery(_('Create Folder'),_('Enter folder name:'),w) then
     if Trim(w) <> '' then
       if FindExplorerChildNode(w,ExplorerNew.FocusedNode) = nil then begin
-        SMSNewFolder(ExplorerNew.FocusedNode,w);
-        ExplorerNew.Selected[ExplorerNew.FocusedNode] := true;;
+        if not IsCorrectSMSFolderName(w) then begin
+          MessageDlgW(_('The character "\" is not allowed.'),mtError,MB_OK);
+        end else begin
+          SMSNewFolder(ExplorerNew.FocusedNode,w);
+          ExplorerNew.Selected[ExplorerNew.FocusedNode] := true;;
+        end;
       end
       else
         MessageDlgW(_('Folder alerady exists.'),mtError,MB_OK)
@@ -13489,6 +13494,14 @@ begin
   { Update database }
   SavePhoneDataFiles(True);
   Status(WideFormat(_('%0:d %1:s stored in %2:s'),[total,ngettext('message','messages',total),data.Text]),False);
+end;
+
+function TForm1.IsCorrectSMSFolderName(AName: WideString):boolean;
+begin
+  if Pos('\', AName) > 0 then
+    Result := False
+  else
+    Result := True;
 end;
 
 function TForm1.SMSNewFolder(ParentNode: PVirtualNode; AName: WideString): PVirtualNode;

@@ -1001,6 +1001,9 @@ begin
       (WideCompareStr(TntEdit1.Text,data.Text) <> 0) then
       w := _('This folder name already exists.')
     else
+    if not Form1.IsCorrectSMSFolderName(TntEdit1.Text) then
+      w := _('The character "\" is not allowed.')
+    else
       w := '';
     if w <> '' then begin
       MessageDlgW(w,mtError,MB_OK);
