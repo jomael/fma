@@ -1009,6 +1009,7 @@ begin
       end;
     finally
       ListMsg.EndUpdate;
+      NoItemsPanel.Visible := ListMsg.ChildCount[nil] = 0;
       Form1.Enabled := True;
       Form1.UpdateNewMessagesCounter(Form1.ExplorerNew.FocusedNode);
     end;
@@ -1685,18 +1686,21 @@ end;
 procedure TfrmMsgView.SendToPhone1Click(Sender: TObject);
 begin
   WriteSMS('ME'); // do not localize
+  Form1.DownloadAllMessages; // update Phone folders
   Form1.Status(_('Messages sent to Phone'));
 end;
 
 procedure TfrmMsgView.SendToSIM1Click(Sender: TObject);
 begin
   WriteSMS('SM'); // do not localize
+  Form1.DownloadAllMessages; // update Phone folders
   Form1.Status(_('Messages sent to SIM card'));
 end;
 
 procedure TfrmMsgView.SendfromPhone1Click(Sender: TObject);
 begin
   WriteSMS('ME',2); // do not localize
+  Form1.DownloadMessages(Form1.FNodeMsgSent); // update Phone Outgoing folder
   Form1.Status(_('Drafts sent to Phone'));
 end;
 
