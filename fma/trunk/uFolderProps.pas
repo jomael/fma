@@ -254,12 +254,11 @@ begin
     end;
     Node := Node.Parent;
   end;
+
+  { Get node details }
   data := Form1.ExplorerNew.GetNodeData(Value);
   id := data.StateIndex;
-  if (id and $F00000) = $200000 then
-    TntEdit1.Text := Form1.GetSMSNodeName(Value) // Text Message folders
-  else
-    TntEdit1.Text := data.Text;
+  TntEdit1.Text := data.Text;
   TntEdit1Change(nil);
 
   { Allow phone rename if connected and root is selected }
@@ -289,7 +288,7 @@ begin
       lvDatabase.Items.Add.Caption := 'ContactSync.xml'; // do not localize
     end;
     // Messages
-    if (id and $F00000) = $200000 then begin
+    if (id and FmaMessagesRootMask) = FmaMessagesRootFlag then begin
       lvDatabase.Items.Add.Caption := 'SMSArchive.dat'; // do not localize
       lvDatabase.Items.Add.Caption := 'SMSDrafts.dat'; // do not localize
       lvDatabase.Items.Add.Caption := 'SMSInbox.dat'; // do not localize
@@ -299,23 +298,25 @@ begin
       lvDatabase.Items.Add.Caption := 'SMSSent.dat'; // do not localize
       lvDatabase.Items.Add.Caption := 'UserFolders.dat'; // do not localize
       { Allow Rules only for specified folders }
-      btnRules.Enabled := data.StateIndex = FmaSMSSubFolderFlag;
+      btnRules.Enabled := (data.StateIndex and $F00000 = FmaMessagesFmaRootFlag) and
+        (data.StateIndex and FmaNodeSubitemsMask = FmaMessageFolderFlag);
       btnRules.Visible := True;
       lvDatabase.Height := btnRules.Top - lvDatabase.Top - 8;
+      { Allow renaming of Custom Folders }
+      TntEdit1.Visible := btnRules.Enabled;
     end;
     // Organizer Bookmarks
-    if (id and $FF0000) = $320000 then begin
+    if (id and $FF0000) = $920000 then begin
       lvDatabase.Items.Add.Caption := 'Bookmarks.dat'; // do not localize
       lvDatabase.Items.Add.Caption := 'Bookmarks.SYNC.dat'; // do not localize
     end;
     // Organizer Calendar
-    if (id and $FF0000) = $340000 then begin
+    if (id and $FF0000) = $940000 then begin
       lvDatabase.Items.Add.Caption := 'Calendar.vcs'; // do not localize
       lvDatabase.Items.Add.Caption := 'Calendar.SYNC.dat'; // do not localize
     end;
-    // Files, Profiles, Groups, Calls, Alarms
-    if ((id and $F00000) = $500000) or ((id and $F00000) = $700000) or
-      ((id and $F00000) = $800000) or ((id and $F00000) = $400000) or ((id and $FF0000) = $310000) then begin
+    // only for Calls-4, Files-5, Profiles-7, Groups-8 and Alarms-91
+    if ((id and $F00000) shr 20 in [4,5,7,8]) or ((id and $FF0000) = $910000) then begin
       NoItemsPanel.Visible := True;
       btnFindDB.Enabled := False;
     end;
@@ -984,6 +985,21 @@ begin
     else
     if Form1.PhoneExists(TntEdit1.Text) and (WideCompareStr(TntEdit1.Text,data.Text) <> 0) then
       w := _('This phone name already exists.')
+    else
+      w := '';
+    if w <> '' then begin
+      MessageDlgW(w,mtError,MB_OK);
+      Abort;
+    end;
+  end;
+  if (pcGeneral.ActivePage = tsDatabase) and FModified then begin
+    data := Form1.ExplorerNew.GetNodeData(FRootNode);
+    if Trim(TntEdit1.Text) = '' then
+      w := _('You have to enter folder name.')
+    else
+    if Assigned(Form1.ExplorerFindNode(TntEdit1.Text,FRootNode.Parent)) and
+      (WideCompareStr(TntEdit1.Text,data.Text) <> 0) then
+      w := _('This folder name already exists.')
     else
       w := '';
     if w <> '' then begin

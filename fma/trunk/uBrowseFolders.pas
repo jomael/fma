@@ -90,7 +90,8 @@ begin
 end;
 
 procedure TfrmBrowseFolders.AddNodes(Parent: PVirtualNode);
-var n: PVirtualNode;
+var
+  n: PVirtualNode;
 begin
   if FRootNode = nil then
     FRootNode := Parent;
@@ -132,7 +133,8 @@ begin
 end;
 
 function TfrmBrowseFolders.Get_Selected: WideString;
-var data: PFmaExplorerNode;
+var
+  data: PFmaExplorerNode;
 begin
   Result := '';
   if tvFolders.SelectedCount > 0 then
@@ -308,7 +310,8 @@ end;
 procedure TfrmBrowseFolders.tvFoldersGetText(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType;
   var CellText: WideString);
-var EData: PFmaExplorerNode;
+var
+  EData: PFmaExplorerNode;
 begin
   EData := Sender.GetNodeData(Node);
   if Assigned(EData) then CellText := EData.Text;
@@ -317,7 +320,8 @@ end;
 procedure TfrmBrowseFolders.tvFoldersGetImageIndex(
   Sender: TBaseVirtualTree; Node: PVirtualNode; Kind: TVTImageKind;
   Column: TColumnIndex; var Ghosted: Boolean; var ImageIndex: Integer);
-var EData: PFmaExplorerNode;
+var
+  EData: PFmaExplorerNode;
 begin
   EData := Sender.GetNodeData(Node);
   if Assigned(EData) then ImageIndex := EData.ImageIndex;

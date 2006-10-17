@@ -45,12 +45,15 @@ const
 
   FMA_HANDLEMESSAGE = WM_USER + 100;
 
-  FmaMessagesPhoneRootFlag  = $200000;
-  FmaMessagesFmaRootFlag = $300000;
-  FmaMessageFolderFlag = $080000; // added to Explorer.Node's stateindex
+  FmaMessagesRootFlag      = $200000; // used for both FmaMessagesPhoneRootFlag and FmaMessagesFmaRootFlag testing
+  FmaMessagesRootMask      = $E00000;
 
-  FmaSMSSubFolderFlag  = FmaMessagesFmaRootFlag or FmaMessageFolderFlag;
-  FmaNodeSubitemsMask  = $0F0000;
+  FmaMessagesPhoneRootFlag = FmaMessagesRootFlag;
+  FmaMessagesFmaRootFlag   = FmaMessagesRootFlag or $100000; // see FmaMessagesRootMask
+  FmaMessageFolderFlag     = $080000; // added to Explorer.Node's stateindex
+
+  FmaSMSSubFolderFlag      = FmaMessagesFmaRootFlag or FmaMessageFolderFlag;
+  FmaNodeSubitemsMask      = $0F0000;
 
 type
   TConfirmation = (cfNone, cfYesToAll, cfNoToAll);
@@ -1019,7 +1022,7 @@ type
 
     function GetSMSDeliveryNode(Sender: WideString; CustomRules: WideString = '';
       AllowDefaultArchive: Boolean = True): PVirtualNode;
-    function GetSMSNodeName(Node: PVirtualNode): WideString; overload;
+    function GetNodeText(Node: PVirtualNode): WideString; 
     procedure EditSMSDeliveryRules(Node: PVirtualNode);
 
     procedure ClearExplorerViews;
@@ -1068,7 +1071,7 @@ type
     procedure ExplorerDelFromGroup(GroupIndex: integer; Contact: WideString);
 
     function ExplorerFindNode(NodePath: WideString; ParentNode: PVirtualNode = nil; AllowCreate: Boolean = False): PVirtualNode;
-    function ExplorerNodePath(Node: PVirtualNode; SepChar: WideChar = '\'; SkipRoot: Boolean = False): WideString;
+    function ExplorerNodePath(Node: PVirtualNode; SepChar: WideChar = '\'; StripTokens: Integer = 0): WideString;
 
     function ExplorerNodeIsFileOrFolder(Node: PVirtualNode): Boolean;
 
@@ -3207,7 +3210,7 @@ begin
       else
         ActionConnectionDownload.Hint := _('Refresh Data');
 
-      if ((EData.StateIndex and $E00000) = FmaMessagesPhoneRootFlag) and
+      if ((EData.StateIndex and FmaMessagesRootMask) = FmaMessagesRootFlag) and
         ((EData.StateIndex and FmaNodeSubitemsMask) <> 0) then begin // SMS text Messages
         ActionConnectionDownload.Hint := _('Download Messages');
         SetFrameVisible('MSG'); // do not localize
@@ -3215,7 +3218,7 @@ begin
           frmMsgView.RenderListView(TStringList(EData.Data));
       end
       else if (EData.StateIndex and $F00000) = $100000 then begin // Contacts
-
+        // should be AFTER ..StateIndex and FmaMessagesRootMask) = FmaMessagesRootFlag.. check !
       end
       else if (EData.StateIndex and $F00000) = $500000 then begin // Files
         SetFrameVisible('EXPLORE'); // do not localize
@@ -3318,8 +3321,6 @@ begin
   if (((id and $F00000) shr 20) in [1,2,4,5,7,8,9]) then
     AskRequestConnection;
 
-  // Contacts
-  if (id and $F00000) = $100000 then ActionContactsDownloadExecute(Self);
   // Messages
   if (id and $F00000) = FmaMessagesPhoneRootFlag then begin
     if (id and FmaMessageFolderFlag) = 0 then
@@ -3329,9 +3330,18 @@ begin
       else
         DownloadMessages(ExplorerNew.FocusedNode) // this will work for both Inbox and Send Items
   end
-  else if ((id and $F00000) = FmaMessagesFmaRootFlag) and ((id and FmaNodeSubitemsMask) <> 0) then
-    { Archive, Drafts, Outbox and Custom folders }
-    UpdateNewMessagesCounter(ExplorerNew.FocusedNode);
+  else
+  if (id and $F00000) = FmaMessagesFmaRootFlag then
+    case (id and FmaNodeSubitemsMask) shr 16 of
+      0: ;
+      else begin
+        { Archive, Drafts, Outbox and Custom folders }
+        UpdateNewMessagesCounter(ExplorerNew.FocusedNode);
+      end;
+    end;
+  // Contacts
+  if (id and $F00000) = $100000 then 
+    ActionContactsDownloadExecute(Self);
   // Calls
   if (id and $F00000) = $400000 then
     case (id and FmaNodeSubitemsMask) shr 16 of
@@ -3356,7 +3366,7 @@ begin
   // Update view
   ExplorerNewChange(ExplorerNew,ExplorerNew.FocusedNode);
   // Update database
-  // Only if not Messages, Calls or Groups since they will do it anyway
+  // Only if not Messages (Phone and FMA), Calls or Groups since they will do it anyway
   if not ((id and $F00000 shr 20) in [2,3,4,8]) then begin
     SavePhoneDataFiles(True);
   end;
@@ -9559,7 +9569,7 @@ var
 begin
   if Assigned(Node) then begin
     EData := Sender.GetNodeData(Node);
-    if ((EData.StateIndex and $E00000) = FmaMessagesPhoneRootFlag) then begin
+    if ((EData.StateIndex and FmaMessagesRootMask) = FmaMessagesRootFlag) then begin
       if ((EData.StateIndex and FmaNodeSubitemsMask) <> 0) then // SMS folders
         if (EData.SpecialImagesFlags and $80 <> 0) and (EData.SpecialImages <> 0) then //if Pos(' (',EData.Text) <> 0 then
           TargetCanvas.Font.Style := [fsBold]
@@ -9600,7 +9610,7 @@ var
 begin
   Result := 0;
   data := ExplorerNew.GetNodeData(rootNode);
-  if not Assigned(rootNode) or (data.StateIndex and $E00000 <> FmaMessagesPhoneRootFlag) then
+  if not Assigned(rootNode) or (data.StateIndex and FmaMessagesRootMask <> FmaMessagesRootFlag) then
     exit; // this works only for Text Message folders
 
   cnt := 0;
@@ -9721,7 +9731,10 @@ var
   ANode: PVirtualNode;
   EData: PFmaExplorerNode;
   sim: PSIMData;
-  //bt,bu: WideString;
+  rl: TTntStringList;
+  w,OldName,NewName: WideString;
+  RuleMigrated: boolean;
+  k: Integer;
 begin
   EData := ExplorerNew.GetNodeData(Node);
   if (Node.Parent = FNodeBookmarks) then begin
@@ -9762,26 +9775,60 @@ begin
     end;
   end
   else begin
+    OldName := EData.Text;
     { Show common properties }
     frmFolderProps := TfrmFolderProps.Create(nil);
     with frmFolderProps do
     try
       RootNode := Node;
       if ShowModal = mrOk then begin
-        { Phone renamed? }
-        if pcGeneral.ActivePage = tsPhone then begin
-          FSelPhone := TntEdit1.Text;
-          if FSelPhone = '' then FSelPhone := _('My Phone');
-          EData.Text := FSelPhone;
-          Caption := WideFormat(_('floAt''s Mobile Agent %s - [%s]'),[GetBuildVersionDtl,EData.Text]);
-          { Update view }
-          ExplorerNewChange(ExplorerNew,ExplorerNew.FocusedNode);
-          { Update tray icon if phone is renamed }
-          if FConnected then
-            CoolTrayIcon1.Hint := WideFormat(_('Connected to %s'),[FSelPhone]);
-            
-          { Save changes }
-          SavePhoneDataFiles(True);
+        NewName := TntEdit1.Text;
+        if WideCompareStr(NewName,OldName) <> 0 then begin
+          { My Phone renamed? }
+          if pcGeneral.ActivePage = tsPhone then begin
+            { Rename phone }
+            FSelPhone := NewName;
+            if FSelPhone = '' then FSelPhone := _('My Phone');
+            EData.Text := FSelPhone;
+            Caption := WideFormat(_('floAt''s Mobile Agent %s - [%s]'),[GetBuildVersionDtl,FSelPhone]);
+            { Update view }
+            ExplorerNewChange(ExplorerNew,ExplorerNew.FocusedNode);
+            { Update tray icon if phone is renamed }
+            if FConnected then
+              CoolTrayIcon1.Hint := WideFormat(_('Connected to %s'),[FSelPhone]);
+            { Save changes }
+            SavePhoneDataFiles(True);
+          end;
+          { Custom Folder renamed? }
+          if pcGeneral.ActivePage = tsDatabase then begin
+            OldName := ExplorerNodePath(Node,'\',2); // Get folder's Delivery Rule path
+            k := GetTokenCount(OldName,'\'); // Get number of names in the Rule's path
+            { Rename folder }
+            EData.Text := NewName;
+            { Change last name in Delivery Rule's path (True = Don't quote path's names) }
+            NewName := SetToken(OldName,NewName,k-1,'\',True);
+            RuleMigrated := False;
+            rl := TTntStringList.Create;
+            try
+              rl.Text := FDeliveryRules.Text;
+              for k := 0 to rl.Count-1 do begin
+                w := rl[k];
+                w := GetToken(w,2);
+                if WideCompareStr(OldName,w) = 0 then begin
+                  rl[k] := SetToken(rl[k],NewName,2); // replace folder path in delivery rule
+                  RuleMigrated := True;
+                end;
+              end;
+              if RuleMigrated then
+                FDeliveryRules.Text := rl.Text;
+            finally
+              rl.Free;
+            end;
+            { Update view }
+            ExplorerNewChange(ExplorerNew,ExplorerNew.FocusedNode);
+            { Save changes }
+            SavePhoneDataFiles(True);
+          end;
         end;
       end;
     finally
@@ -9814,7 +9861,7 @@ begin
   // if RootNode <> nil then begin - we'd Exit
   Child := RootNode.FirstChild;
   while Child <> nil do begin
-    if MsgMode then Cname := GetSMSNodeName(Child)
+    if MsgMode then Cname := GetNodeText(Child)
     else begin
       EData := ExplorerNew.GetNodeData(Child);
       Cname := EData.Text;
@@ -9875,7 +9922,7 @@ var
   EData: PFmaExplorerNode;
 begin
   EData := ExplorerNew.GetNodeData(rootNode);
-  if not Assigned(rootNode) or (EData.StateIndex and $E00000 <> FmaMessagesPhoneRootFlag) then
+  if not Assigned(rootNode) or (EData.StateIndex and FmaMessagesRootMask <> FmaMessagesRootFlag) then
     exit;
 
   sms := TSMS.Create;
@@ -10244,7 +10291,7 @@ var
 begin
   Result := False;
   data := ExplorerNew.GetNodeData(rootNode);
-  if not Assigned(rootNode) or (data.StateIndex and FmaMessagesPhoneRootFlag <> FmaMessagesPhoneRootFlag) then
+  if not Assigned(rootNode) or (data.StateIndex and FmaMessagesRootMask <> FmaMessagesRootFlag) then
     exit;
 
   sl := TStringList(data.Data);
@@ -11232,7 +11279,7 @@ var
   dlg: TfrmConnect;
   i,NewCount,ModCount: Integer;
   EData: PFmaExplorerNode;
-  function FindPDUinList(var AList: TStringList; AType, APDU: String; correctType: boolean): integer;
+  function FindPDUinList(var AList: TStringList; AType, APDU: String; FixType: boolean): integer;
   var
     i: Integer;
     optimizer: TTntStringList;
@@ -11248,7 +11295,7 @@ var
         if (AnsiCompareStr(APDU, optimizer[5]) = 0) then
           if (optimizer[0] = AType) or (optimizer[0] = '3') then begin
             Result := i;
-            if (correctType) and (optimizer[0] <> AType) then begin
+            if FixType and (optimizer[0] <> AType) then begin
               AList[i] := SetToken(AList[i],AType,0);
               inc(ModCount);
             end;
@@ -11269,7 +11316,7 @@ begin
   nl := TStringList.Create;
   dlg := GetProgressDialog;
   try
-    dlg.Initialize(4,_('Synchronizing text messages')+sLineBreak+'('+GetSMSNodeName(Node)+')');
+    dlg.Initialize(4,_('Synchronizing text messages')+sLineBreak+'('+GetNodeText(Node)+')');
     if CanShowProgress then
       dlg.ShowProgress(FProgressLongOnly);
     EData := ExplorerNew.GetNodeData(Node);
@@ -13462,11 +13509,15 @@ var
   sl,dl,nl: TStringList;
   Node: PVirtualNode;
   EData: PFmaExplorerNode;
-  NodePath: WideString;
-  i,j: Integer;
-  Migrated: boolean;
+  NodePath,OldPath,NewPath: WideString;
+  i,j,k: Integer;
+  DBMigrated,RelocateFolder,RulesBroken,RulesMigrated: boolean;
+  rl: TTntStringList;
+  w: WideString;
 begin
-  Migrated := False;
+  RulesMigrated := False;
+  RulesBroken := False;
+  DBMigrated := False;
   with TIniFile.Create(DBPath + 'UserFolders.dat') do
   try
     sl := TStringList.Create;
@@ -13478,40 +13529,75 @@ begin
         dl.Clear;
         ReadSectionValues(sl[i],dl);
         NodePath := UTF8StringToWideString(dl.Values['Path']); // do not localize
+        NewPath := '';
+        OldPath := NodePath;
+        GetFirstToken(OldPath,'\'); // remove "My Phone"
+        RelocateFolder := False;
         { remove "My Phone\" prefix }
         { Change for FMA 2.2: now custom folder nodes must have
           FNodeMsgFmaRoot as parent, so use only '\PathRelativeTo_FNodeMsgFmaRoot'
           ask user for new location if old is used }
         if GetFirstToken(NodePath,'\') <> '' then begin // do not localize
-          if not Migrated then begin
+          if not DBMigrated then begin
             // TODO: copy UserFolders.dat to UserFolders.bak
-            Migrated := True;
+            CopyFile(PChar(DBPath + 'UserFolders.dat'),PChar(DBPath + 'UserFolders.bak'),False);
+            DBMigrated := True;
           end;
-          MessageDlgW(WideFormat(_('Please choose new location for your old folder: "%s" (otherwise it''s contains will be saved to Archive)'),
-            [NodePath]), mtWarning, MB_OK);
-          with TfrmBrowseFolders.Create(nil) do
-          try
-            OnSelectionChange := OnFolderSelected;
-            AllowNewFolder := True;
-            RootNode := Form1.FNodeMsgFmaRoot;
-            if ShowModal = mrOK then begin
-              EData := tvFolders.GetNodeData(FindNodeWithPath(SelectedNodePath));
-              Node := EData.Data;
-            end else
-              Node := FNodeMsgArchive;
-          finally
-            Free;
+          Node := FNodeMsgArchive;
+          if MessageDlgW(WideFormat(_('You have to relocate your old folder "%s" under FMA Text Folders.'),[NodePath])+ 
+            sLineBreak + _('Click OK to select relocate target folder, or Cancel to use FMA Archive instead.'),
+            mtWarning, MB_OKCANCEL) = ID_OK then begin
+            with TfrmBrowseFolders.Create(nil) do
+            try
+              OnSelectionChange := OnFolderSelected;
+              AllowNewFolder := True;
+              RootNode := Form1.FNodeMsgFmaRoot;
+              if ShowModal = mrOK then begin
+                EData := tvFolders.GetNodeData(FindNodeWithPath(SelectedNodePath));
+                Node := EData.Data;
+              end;
+            finally
+              Free;
+            end;
           end;
-        end else
-        { create target folder }
+          { Change for FMA 2.2: Path is relative to FNodeMsgFmaRoot}
+          NewPath := ExplorerNodePath(Node,'\',2);
+          RelocateFolder := True;
+        end
+        else begin
+          { create target folder }
           Node := ExplorerFindNode(NodePath,FNodeMsgFmaRoot,True);
+        end;
         { update explorer view }
         if Node = nil then Continue;
         EData := ExplorerNew.GetNodeData(Node);
         nl := TStringList(EData.Data);
-        { don't clear if user is migrating data }
-        if not Migrated then
+        if RelocateFolder then begin
+          { Update Delivery Rules with new relocated path }
+          if NewPath <> '' then begin
+            rl := TTntStringList.Create;
+            try
+              rl.Text := FDeliveryRules.Text;
+              for k := 0 to rl.Count-1 do begin
+                w := rl[k];
+                w := GetToken(w,2);
+                if WideCompareStr(OldPath,w) = 0 then begin
+                  rl[k] := SetToken(rl[k],NewPath,2); // replace folder path in delivery rule
+                  RulesMigrated := True;
+                end;
+              end;
+              FDeliveryRules.Text := rl.Text;
+            finally
+              rl.Free;
+            end;
+          end
+          else
+            RulesBroken := True;
+        end
+        else begin
+          { don't clear if user is migrating/relocating data }
           nl.Clear;
+        end;
         for j := 1 to dl.Count-1 do // ignore Value[0] since it is the 'Path' one
           nl.Add(dl.Values[dl.Names[j]]);
         if UpdateNewMessagesCounter(Node) <> 0 then
@@ -13525,8 +13611,14 @@ begin
   finally
     Free;
   end;
-  if Migrated then
+  if DBMigrated then begin
     SaveUserFoldersData(DBPath);
+    if RulesBroken then
+      MessageDlgW(_('Since you migrated your Custom Folders, you have to check your Delivery Rules in FMA Options too.'),
+        mtInformation, MB_OK);
+  end;
+  { TODO: save Delivery Rules if needed! (but AVOID reccursion if loading DB right now) }
+  if RulesMigrated then ;
 end;
 
 procedure TForm1.SaveUserFoldersData(DBPath: string);
@@ -13552,10 +13644,8 @@ var
         inc(cnt);
         s := 'Folder '+IntToStr(cnt); // section name // do not localize
         { add folder Path in Explorer view as first value }
-        NodePath := ExplorerNodePath(itNode); // do not localize
         { Change for FMA 2.2: Path is relative to FNodeMsgFmaRoot}
-        GetFirstToken(NodePath, '\');
-        GetFirstToken(NodePath, '\');
+        NodePath := ExplorerNodePath(itNode,'\',2); // do not localize
         db.WriteString(s,'Path','\'+WideStringToUTF8String(NodePath)); // do not localize
         { add folder data next }
         sl := TStringList(EData.Data);
@@ -13592,18 +13682,20 @@ begin
   end;
 end;
 
-function TForm1.ExplorerNodePath(Node: PVirtualNode; SepChar: WideChar; SkipRoot: Boolean): WideString;
+function TForm1.ExplorerNodePath(Node: PVirtualNode; SepChar: WideChar; StripTokens: Integer): WideString;
 begin
   Result := '';
   if Assigned(Node) then begin
-    Result := GetSMSNodeName(Node);
+    Result := GetNodeText(Node);
     Node := Node.Parent;
     while Assigned(Node) and (Node <> ExplorerNew.RootNode) do begin
-      Result := GetSMSNodeName(Node) + SepChar + Result;
+      Result := GetNodeText(Node) + SepChar + Result;
       Node := Node.Parent;
     end;
-    if SkipRoot then // remove first entry
+    while StripTokens > 0 do begin
       GetFirstToken(Result,SepChar);
+      dec(StripTokens);
+    end;
   end;
 end;
 
@@ -13622,7 +13714,7 @@ var
 begin
   MessageBeep(MB_ICONASTERISK);
   if MessageDlgW(WideFormat(_('Are you sure you want to delete folder "%s" and ALL its contents (No Undo)?'),
-    [GetSMSNodeName(ExplorerNew.FocusedNode)]), mtConfirmation, MB_YESNO or MB_DEFBUTTON2) = ID_YES then begin
+    [GetNodeText(ExplorerNew.FocusedNode)]), mtConfirmation, MB_YESNO or MB_DEFBUTTON2) = ID_YES then begin
     Node := ExplorerNew.FocusedNode.Parent;
     ExplorerNew.DeleteNode(ExplorerNew.FocusedNode);
     SetExplorerNode(Node);
@@ -13726,7 +13818,7 @@ begin
   end;
 end;
 
-function TForm1.GetSMSNodeName(Node: PVirtualNode): WideString;
+function TForm1.GetNodeText(Node: PVirtualNode): WideString;
 var
   EData: PFmaExplorerNode;
 begin
@@ -13946,7 +14038,7 @@ begin
       rl.Text := FDeliveryRules.Text; // get list
       sl.Text := Options.DeliveryRules;
       if ShowPageModal(Options.tabSMSDelivery, WideFormat('%s - [%s]',
-        [Options.tabSMSDelivery.Caption,GetSMSNodeName(Node)])) = mrOK then begin
+        [Options.tabSMSDelivery.Caption,GetNodeText(Node)])) = mrOK then begin
         dl.Text := Options.DeliveryRules;
         { add new items }
         for i := 0 to dl.Count-1 do
@@ -14244,7 +14336,7 @@ begin
       data := ExplorerNew.GetNodeData(FNodeMsgInbox);
       data.Text := _('Incoming');
       data.ImageIndex := 39;
-      data.StateIndex := $210000;
+      data.StateIndex := FmaMessagesPhoneRootFlag or $10000;
       //data.SpecialImages := $3F400041;
       //data.SpecialImagesFlags := $07;
       data.SpecialImagesFlags := $80;
@@ -14254,7 +14346,7 @@ begin
       data := ExplorerNew.GetNodeData(FNodeMsgSent);
       data.Text := _('Outgoing');
       data.ImageIndex := 40;
-      data.StateIndex := $220000;
+      data.StateIndex := FmaMessagesPhoneRootFlag or $20000;
       //data.SpecialImages := $3F400041;
       //data.SpecialImagesFlags := $07;
       data.SpecialImagesFlags := $80;
@@ -14270,7 +14362,7 @@ begin
       data := ExplorerNew.GetNodeData(FNodeMsgOutbox);
       data.Text := _('Outbox');
       data.ImageIndex := 56;
-      data.StateIndex := $3A0000;
+      data.StateIndex := FmaMessagesFmaRootFlag or $A0000;
       data.SpecialImagesFlags := $80;
       data.Data := TStringList.Create;
 
@@ -14278,7 +14370,7 @@ begin
       data := ExplorerNew.GetNodeData(FNodeMsgDrafts);
       data.Text := _('Drafts');
       data.ImageIndex := 57;
-      data.StateIndex := $3C0000;
+      data.StateIndex := FmaMessagesFmaRootFlag or $C0000;
       //data.SpecialImages := $3D00003D;
       //data.SpecialImagesFlags := $65;
       data.SpecialImagesFlags := $80;
@@ -14288,7 +14380,7 @@ begin
       data := ExplorerNew.GetNodeData(FNodeMsgArchive);
       data.Text := _('Archive');
       data.ImageIndex := 3;
-      data.StateIndex := $3B0000;
+      data.StateIndex := FmaMessagesFmaRootFlag or $B0000;
       data.SpecialImagesFlags := $80;
       data.Data := TStringList.Create;
 

@@ -2857,9 +2857,9 @@ begin
     if ShowModal = mrOk then
       with lvRules.Items.Add do begin
         Caption := RuleName;
-        SubItems.Add(Form1.GetSMSNodeName(FolderNode));
+        SubItems.Add(Form1.GetNodeText(FolderNode));
         SubItems.Add(Correspondents);
-        SubItems.Add(Form1.ExplorerNodePath(FolderNode,'\',True));
+        SubItems.Add(Form1.ExplorerNodePath(FolderNode,'\',2));
         Data := Pointer(FolderNode);
         ImageIndex := 62;
       end;
@@ -2879,9 +2879,9 @@ begin
       FolderLocked := Assigned(FDeliveryFolder);
       if ShowModal = mrOk then begin
         Caption := RuleName;
-        SubItems[0] := Form1.GetSMSNodeName(FolderNode);
+        SubItems[0] := Form1.GetNodeText(FolderNode);
         SubItems[1] := Correspondents;
-        SubItems[2] := Form1.ExplorerNodePath(FolderNode,'\',True);
+        SubItems[2] := Form1.ExplorerNodePath(FolderNode,'\',2);
         Data := Pointer(FolderNode);
         ImageIndex := 62; // overwrite 'folder not found' index, if any
       end;
@@ -2933,9 +2933,9 @@ begin
         SubItems.Add('');                 // folder name (will be set later)
         SubItems.Add(GetFirstToken(w));   // correspondents
         SubItems.Add(GetFirstToken(w));   // node path
-        Node := Form1.ExplorerFindNode(SubItems[2]);
+        Node := Form1.ExplorerFindNode(SubItems[2],Form1.FNodeMsgFmaRoot);
         if Assigned(Node) then begin
-          SubItems[0] := Form1.GetSMSNodeName(Node);
+          SubItems[0] := Form1.GetNodeText(Node);
           Data := Pointer(Node);
           ImageIndex := 62;
         end
@@ -2996,7 +2996,7 @@ begin
   if Assigned(Value) then begin
     { If target folder is specified, then leave only Delivery Rules
       which target is this very folder. }
-    NodePath := Form1.ExplorerNodePath(Value,'\',True);
+    NodePath := Form1.ExplorerNodePath(Value,'\',2);
     for i := lvRules.Items.Count-1 downto 0 do
       if WideCompareStr(NodePath,lvRules.Items[i].SubItems[2]) <> 0 then
         lvRules.Items.Delete(i);

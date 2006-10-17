@@ -100,7 +100,7 @@ end;
 
 procedure TfrmSMSRule.Set_Folder(const Value: PVirtualNode);
 begin
-  edFolder.Text := Form1.ExplorerNodePath(Value,'\',True);
+  edFolder.Text := Form1.ExplorerNodePath(Value,'\',2);
   FFolderNode := Value;
 end;
 
@@ -113,8 +113,7 @@ begin
     AllowNewFolder := True;
     RootNode := Form1.FNodeMsgFmaRoot;
     SelectedNodePath := Form1.ExplorerNodePath(FolderNode);
-    if ShowModal = mrOK then
-    begin
+    if ShowModal = mrOK then begin
       EData := tvFolders.GetNodeData(FindNodeWithPath(SelectedNodePath));
       FolderNode := EData.Data;
     end;
@@ -167,7 +166,7 @@ end;
 procedure TfrmSMSRule.Set_Locked(const Value: boolean);
 begin
   FFolderLocked := Value;
-  edFolder.ReadOnly := Value;
+  //edFolder.ReadOnly := Value;
   btnBrowse.Enabled := not Value;
   if Value then edFolder.Color := clBtnFace
     else edFolder.Color := clWindow;

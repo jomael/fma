@@ -37,7 +37,7 @@ function GetTokenCount(str: WideString; delimiter: WideChar = ','): Integer;
 function GetToken(str: WideString; index: Integer; delimiter: WideChar = ','): WideString;
 { Replace token number 0..n-1 in str with NewToken value, where n is taken from GetTokenCount.
   This function could be used to append a new token to the list }
-function SetToken(str,NewToken: WideString; index: Integer; delimiter: WideChar = ','): WideString;
+function SetToken(str,NewToken: WideString; index: Integer; delimiter: WideChar = ','; DontQuote: boolean = False): WideString;
 { Extract all tokens from str and place them in Strings List.
   Caller has to Create and Free AList manually! Assume that Result.count equals to GetTokenCount }
 procedure GetTokenList(AList: TTntStrings; str: WideString; delimiter: WideChar = ',');
@@ -373,7 +373,7 @@ begin
   Result := w;
 end;
 
-function SetToken(str,NewToken: WideString; index: Integer; delimiter: WideChar): WideString;
+function SetToken(str,NewToken: WideString; index: Integer; delimiter: WideChar; DontQuote: boolean): WideString;
 var
   s: WideString;
   n,k: Integer;
@@ -381,12 +381,23 @@ begin
   k := GetTokenCount(str,delimiter);
   s := '';
   if (index >= 0) and (index <= k) then
-    for n := 0 to index-1 do
-      s := s + GetToken(str,n,delimiter) + delimiter;
-  s := s + NewToken;
+    for n := 0 to index-1 do begin
+      if DontQuote then
+        s := s + GetToken(str,n,delimiter) + delimiter
+      else
+        s := s + WideQuoteStr(GetToken(str,n,delimiter),False,delimiter) + delimiter;
+    end;
+  if DontQuote then
+    s := s + NewToken
+  else
+    s := s + WideQuoteStr(NewToken,False,delimiter);
   if (index >= 0) and (index < k-1) then
-    for n := index+1 to k-1 do
-      s := s + delimiter + GetToken(str,n,delimiter);
+    for n := index+1 to k-1 do begin
+      if DontQuote then
+        s := s + delimiter + GetToken(str,n,delimiter)
+      else
+        s := s + delimiter + WideQuoteStr(GetToken(str,n,delimiter),False,delimiter);
+    end;
   Result := s;
 end;
 

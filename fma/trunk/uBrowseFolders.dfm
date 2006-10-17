@@ -17,7 +17,7 @@ object frmBrowseFolders: TfrmBrowseFolders
     Left = 52
     Top = 12
     Width = 261
-    Height = 28
+    Height = 27
     AutoSize = False
     Caption = '*'
     WordWrap = True

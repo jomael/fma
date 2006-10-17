@@ -1427,7 +1427,7 @@ var EData: PFmaExplorerNode;
 begin
   EData := Form1.ExplorerNew.GetNodeData(Form1.ExplorerNew.FocusedNode);
   Result := Assigned(EData) and
-    (EData.StateIndex and $E00000 = FmaMessagesPhoneRootFlag) and
+    (EData.StateIndex and FmaMessagesRootMask = FmaMessagesRootFlag) and
     (Form1.ExplorerNew.FocusedNode <> Form1.FNodeMsgOutbox) and (Form1.ExplorerNew.FocusedNode <> Form1.FNodeMsgDrafts);
 end;
 
