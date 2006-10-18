@@ -1,0 +1,287 @@
+FMA 2.1 Beta 4
+
+Release Notes:
+
+Hi all! Consider this as BETA software. Please report any
+BUGS to our web page at SourceForge.net. We have decided
+to release one more BETA version before going to final
+FMA 2.2 build, so here is the latest FMA 2.1 Beta 4.
+
+The current build includes many bugfixes and improvements.
+Some new features were implemented too, as separating FMA's
+and Phone's Text Messages folders. Now moving SMS messages
+between Phone and FMA is more intuitional and easy than
+before.
+
+This BETA version does not include latest support for Sony
+Ericsson phones W900, M600 and similar. Some new brands as
+K610 are partially supported (no Calls, no Bookmarks), and
+we have plans to add full support for them in final FMA 2.2.
+
+Always do a backup of profile databases before using this 
+new FMA Beta 4.
+
+Important Notice:
+
+All Custom Text Messages folders (if any) were moved under 
+new Explorer's node named FMA Text Folders. On first FMA
+start you will be prompted to relocate all of these folders.
+Just create an appripriate new folder for every old one.
+
+And all Delivery Rules attached to the old folders will be 
+automatically relocated to the corresponding new folders.
+You don't have to care about this.
+
+Known Issues:
+
+This applies only to FMA 2.1.3.33. If you are using or
+installing a different version, skip this notes.
+
+How to update from 2.1.3.33 version which hang-ups?
+
+- Exit FMA and go to following directory:
+C:\Documents and Settings\<your-user-name>\Application Data
+
+- Rename FMA folder to FMA_old
+
+- Start 2.1.3.33 version and update it to 33a patch
+
+- Exit FMA and go back to directory:
+C:\Documents and Settings\<your-user-name>\Application Data
+
+- Delete FMA folder (remember, your data is in FMA_old one)
+
+- Rename FMA_old folder back to FMA
+
+Now you can use new patched FMA with your data preserved.
+
+What's New?
+
+The following is a brief list of most important but not all
+changes in FMA Beta 4 release. You can explore it searching
+for more. Here we go:
+
+- Text Messages folders splitted to FMA and Phone ones.
+
+- Upload message to Phone will update Phone folders.
+
+- Auto-switch to Long SMS mode when creating new SMS.
+
+- Import Text Messages transaction and header check.
+
+- Cleanup Folder option to Messages view popup menu.
+
+- Repair database button in Database Manager dialog.
+
+- Added Database password protection (Database Manager).
+
+- Added Phone Organizer Alarms support for T610 clones.
+
+- Added Alarm Activated popup dialog (Pospone/Dismiss).
+
+- Added daily and weekly automatic Web Update support.
+
+- Added Main menu and Toolbars customization popup menu.
+
+- Added Calendar entities auto/manual recurrence support.
+
+- Added Calendar settings in separated Options sub-page.
+
+- Added Import/Export entire FMA Calendar from/to file.
+
+- Link Contact to Outlook smart auto-preselect actions.
+
+- Standard Baloon notifications can be disabled now.
+
+- Check OBEX compatability on Getting Started finish.
+
+- Check for incorrect COM port number on Profile load.
+
+- Getting Started wizard search type filtering support.
+
+What's Changed?
+
+If you need more detailed information about changes made
+in this release, we are posting the complete log since 
+FMA Beta 3. The change log is following:
+
+- Fixed Display (0) unread message items.
+- Fixed Gradient fills removed on few places.
+- Fixed Browse folders initial GUI update.
+- Fixed Delete folder will focus parent one.
+- Fixed Change Profile GUI notifications.
+- Fixed Delivery Rules database update.
+- Fixed Sending UCS2 encoded Long SMS-es.
+- Fixed New SMS UCS2 Codec implementation.
+- Fixed Detect PDU's UDHI Length bugfixes.
+- Fixed Send all SMS parts with same DSC.
+- Fixed Don't mark partial Long SMS as new.
+- Fixed Ask to save SMS Draft on FMA exit.
+- Fixed Set/use Exiting FMA flag properly.
+- Changed Save SMS Draft could be canceled.
+- Changed Auto switch to Long SMS mode. 
+- Fixed Command line switch FIXDB implementation.
+- Fixed New text messages receiving speed issue.
+- Fixed Clear all explorer views on Database switch.
+- Fixed Text Messages duplicates in SMS folders.
+- Fixed GetNodeLongText not working with duplicates.
+- Added Cleanup Folder option to SMS popup menu.
+- Added Repair DB button to Switch Profiles dialog.
+- Added QP2Str Convert error logging and workaround.
+- Changed Proximity check interval to 20 seconds.
+- Changed Inbox suspended interval to 30 seconds.
+- Fixed Add SMS Sender to Phonebook (No IRMC).
+- Fixed ContactNumberByName implementation.
+- Fixed Select contacts specified by name only.
+- Fixed Call contact will Ask for connection.
+- Fixed No postal address for T610 contacts.
+- Fixed Messages View panels background color.
+- Fixed Quoted-printable softlinks removal.
+- Fixed Creating new Profile statusbar text.
+- Fixed Don't restore FMA in Web Update mode.
+- Changed Prompt Conflict dialog GUI buttons.
+- Changed Chose Link Contact dialog GUI view.
+- Changed Wizards big image using logo only.
+- Added Remember phone model in database.
+- Other small bugfixes and GUI improvements.
+- Fixed Nodes with same name, find 1st only.
+- Fixed Popup menu available in empty views.
+- Fixed New UTF8 codec implementation usage.
+- Fixed Keyboard Lock toolbar icon blinking.
+- Fixed Use special icons if scrollbar visible.
+- Fixed Developer Tools Send AT implementation.
+- Fixed Developer Tools UTF8 decode folder LS.
+- Fixed Sync Phone Clock added more logging.
+- Fixed Profiles and Groups unicode support.
+- Fixed Delivery Rules GUI selection change.
+- Changed Hide Developer Tools on node change.
+- Changed Default explorer view popup menu.
+- Changed Main menu Action submenu options.
+- Changed FMA general tray icon popup menu.
+- Changed FMA options GUI some new features.
+- Added Organizer Alarms support (T610 only).
+- Fixed Add to Phonebook Delphi6 compatability.
+- Fixed Abort action if RequestConnection fails.
+- Fixed Don't show Getting Started if minimized.
+- Fixed Hide FMA from Taskbar during Web update.
+- Fixed Debug severity type set on debug events.
+- Fixed Do not show empty offline profile name.
+- Fixed Repairing profile DB relocate if needed.
+- Fixed Hide temporary new Alarm explorer node.
+- Fixed Refresh action was not reloading Alarms.
+- Fixed Change reccurent to non-reccurent Alarm.
+- Fixed Show Alarms properties database details.
+- Fixed Group properties listview columns names.
+- Added Group properties Add Member confirmation.
+- Added Default explorer view New popup option.
+- Added Auto-WebUpdate daily and weekly support.
+- Added FMA Main menu and Toolbars popup menu.
+- Changed Some main menu items were rearranged.
+- Changed Sony Ericsson known brands DB updated.
+- Changed Initial Getting Started is optional.
+- Changed Get Alarms on Connection is optional.
+- Changed Offline profiles New will ask confirm.
+- Changed Default FMA Main form appearance.
+- Fixed Move Messages to Archive mode detection.
+- Fixed Typo 'reccur' to 'recurr' in few places.
+- Fixed New Message dialog GUI initial settings.
+- Fixed Call contact dialog to main form center.
+- Fixed Main dialog position to screen center.
+- Fixed Main dialog status bar wrong top position.
+- Fixed Explorer splitter initial visible state.
+- Fixed New Call popup dialog remove resize flag.
+- Fixed Bookmarks Sync default sorting column order.
+- Fixed Getting Started dialog widgets overlapping.
+- Fixed Refresh options when showing only one page.
+- Added Delivery Rules options details information.
+- Added Standard baloons can be disabled in options.
+- Added Call monitoring no popup/baloons options.
+- Added Calendar entities (auto)recurrence support.
+- Added Calendar settings in new FMA Options page.
+- Changed Calendar Events and tasks popup menus.
+- Changed Do not download phonebook on new phone.
+- Fixed Database Manager implementation support.
+- Fixed Relocate old database to Application Data folder.
+- Fixed Manage, Delete and Relocate phone profile changes.
+- Fixed Set friendly name once in Getting Started wizard.
+- Added Set default K750 clones settings for new phones.
+- Added Check OBEX compatability on Getting Started finish.
+- Added Show currentlly opened phone name in Caption.
+- Added Profiles database new unique ID by phone name.
+- Fixed Calling dialog crash on call hangup.
+- Fixed New message trayicon not disappearing.
+- Fixed Open DB Manager only in Offline mode.
+- Fixed Load same profile DB, don't clear GUI.
+- Added New FMA Alarm Activated popup dialog.
+- Added Default Alarm sound scheme setting.
+- Fixed Multibyte character sets decoding.
+- Fixed Splash dialog size on non-96 dpi.
+- Added Profile DB password protection.
+- Fixed Multibyte and Unicode issues.
+- Fixed Profile DB password dlg font.
+- Fixed GUI on various dialog places.
+- Fixed Load protected DB without pass.
+- Fixed Some Unicode related issues.
+- Fixed Default DB wrong phone name set.
+- Changed DB Manager second column. 
+- Fixed Calendar Reccurence save changes.
+- Fixed Auto-connect to phone on startup.
+- Fixed New person FMA Today restrictions.
+- Fixed Copy all contacts PB to/from SIM.
+- Added Remember restrictions in profile.
+- Added Show Sync failed baloon messages.
+- Fixed GetFirstToken quote detection.
+- Fixed Get telecom/pb/info.log file.
+- Fixed Forums URL under Help menu.
+- Fixed Detection of different brands.
+- Fixed Download OBEX folder button.
+- Fixed Explore folder on double-click.
+- Fixed Files listing for K610 phones.
+- Fixed Today status for K610 phones.
+- Fixed Calendar Reccurence method.
+- Fixed Load DB failed in DB Manager.
+- Fixed Clear Calendar on DB change.
+- Fixed Force Calendar Item updates.
+- Fixed Link Contact smart action set.
+- Fixed Message Preview close button.
+- Changed Progress Dialog bar colors.
+- Added New phones K610 and K790 IDs.
+- Added Link Contact action shortcuts.
+- Added Calendar Import/Export all.
+- Fixed broken GetFirstToken(Delimiter) issue.
+- Fixed broken Text Messages GUI, popup menus.
+- Added: Import Text Messages transaction.
+- Added: Import Text Messages header check.
+- Fixed: Import/Export Messages unicode.
+- Fixed: Special token cases are handled.
+- Fixed: Right keypad mode for new SE brands.
+- Fixed: Non-phone-file node Properties AV bug.
+- Fixed: Windows Explorer Drag-n-Drop support.
+- Fixed: FMA Theme viewer support restrictions.
+- Fixed: Calendar Unicode compaability (K790).
+- Fixed: Ignore incorrect COM stored in DB.
+- Fixed: GetTokenCount when last one in empty.
+- Fixed: Smart connect on delete phone message.
+- Fixed: Download messages don't warn replace.
+- Added: Alternative battery indicator support.
+- Added: Common features usage baloons hints.
+- Added: Save DB changes on FMA Options exit.
+- Added: Startup progress bar to Splash form.
+- Fixed: Tasks popup menu Properties option.
+- Fixed: Edit Calendar Task DPI compatability.
+- Fixed: Getting Started search NoItems panel.
+- Added: Getting Started search type filtering.
+- Added: Load phone profile progress indicator.
+- Fixed: Loading Text Messages folder hang-ups.
+- Fixed: Cleanup Text Messages new items flag.
+- Fixed: Load Text Messages folders speed-ups.
+- Fixed: Folder new messages Counter speed-ups.
+- Fixed: Reverted changes for custom WideFuncs.
+- Fixed: Accessories menu for newer SE phones.
+- Fixed: Warning dialog about COM port.
+- Fixed: New/Modified message counters.
+- Fixed: Some Text Message optimizations (mhr).
+- Fixed: Downloading multiple files GUI lock.
+- Fixed: Detection of different SE phone brands.
+
+The FMA Team
