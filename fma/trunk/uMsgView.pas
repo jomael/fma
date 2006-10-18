@@ -768,6 +768,7 @@ var
   sl: TStringList;
   wl: TTntStringList;
   Ref, Tot, N, j: Integer;
+  UpdateIncoming,UpdateOutgoing: boolean;
   procedure DelNodeFromDBandView;
   begin
     if AnsiCompareText(GetToken(sl[item.ownerindex],5),item.pdu) = 0 then begin
@@ -782,6 +783,8 @@ var
   end;
 begin
   { By default message status will be set to 'Received unread' (StoreAs = -1) }
+  UpdateIncoming := False;
+  UpdateOutgoing := False;
   ListMsg.BeginUpdate;
   try
     EData := Form1.ExplorerNew.GetNodeData(Form1.ExplorerNew.FocusedNode);
@@ -810,7 +813,7 @@ begin
                 continue; // skip missing parts messages
               end;
 
-            { Send all message part to phone }
+            { Send all message parts to phone }
             for j := 0 to wl.Count-1 do begin
               item := GetNodeData(PVirtualNode(wl.Objects[j]));
               State := StoreAs;
@@ -828,7 +831,12 @@ begin
               end;
               if State = -1 then State := 0;
               { Upload to phone }
-              if not Form1.WriteSMS(Mem, item.pdu, State) then
+              if Form1.WriteSMS(Mem, item.pdu, State) then
+                case State of
+                  0,1: UpdateIncoming := True;
+                  2,3: UpdateOutgoing := True;
+                end
+              else
                 raise EInOutError.Create(_('Could not send message to phone (storage full?)'));
             end;
 
@@ -856,6 +864,16 @@ begin
     ListMsg.EndUpdate;
     Form1.UpdateNewMessagesCounter(Form1.ExplorerNew.FocusedNode);
   end;
+
+  { Refresh Phone Text Folders as needed }
+  if UpdateIncoming then
+    if UpdateOutgoing then
+      Form1.DownloadAllMessages
+    else
+      Form1.DownloadMessages(Form1.FNodeMsgInbox)
+  else
+    if UpdateOutgoing then
+      Form1.DownloadMessages(Form1.FNodeMsgSent);
 end;
 
 procedure TfrmMsgView.pmListMsgPopup(Sender: TObject);
@@ -1686,21 +1704,18 @@ end;
 procedure TfrmMsgView.SendToPhone1Click(Sender: TObject);
 begin
   WriteSMS('ME'); // do not localize
-  Form1.DownloadAllMessages; // update Phone folders
   Form1.Status(_('Messages sent to Phone'));
 end;
 
 procedure TfrmMsgView.SendToSIM1Click(Sender: TObject);
 begin
   WriteSMS('SM'); // do not localize
-  Form1.DownloadAllMessages; // update Phone folders
   Form1.Status(_('Messages sent to SIM card'));
 end;
 
 procedure TfrmMsgView.SendfromPhone1Click(Sender: TObject);
 begin
   WriteSMS('ME',2); // do not localize
-  Form1.DownloadMessages(Form1.FNodeMsgSent); // update Phone Outgoing folder
   Form1.Status(_('Drafts sent to Phone'));
 end;
 
