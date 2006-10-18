@@ -11,24 +11,22 @@ unit WinampCOMLib_TLB;
 // manual modifications will be lost.                                         
 // ************************************************************************ //
 
-// PASTLWTR : $Revision: 1.5 $
-// File generated on 12.03.2004 15:03:29 from Type Library described below.
+// PASTLWTR : 1.2
+// File generated on 18.10.2006 18:52:34 from Type Library described below.
 
 // ************************************************************************  //
-// Type Lib: C:\Projects\cvsroot\WinampCtrl\WinampCOMLib.tlb (1)
+// Type Lib: C:\Projects\FMA\winampCOMlib\trunk\WinampCOMLib.tlb (1)
 // LIBID: {A849469B-2282-4DDB-87DE-8A1AC15DAE04}
 // LCID: 0
 // Helpfile: 
+// HelpString: WinampCOMLib Library
 // DepndLst: 
-//   (1) v2.0 stdole, (C:\WINDOWS\System32\stdole2.tlb)
-//   (2) v4.0 StdVCL, (C:\WINDOWS\System32\stdvcl40.dll)
-// Errors:
-//   Hint: Member 'Repeat' of 'IWinampCOMObj' changed to 'Repeat_'
+//   (1) v2.0 stdole, (C:\WINDOWS\system32\STDOLE2.TLB)
 // ************************************************************************ //
 {$TYPEDADDRESS OFF} // Unit must be compiled without type-checked pointers. 
 {$WARN SYMBOL_PLATFORM OFF}
 {$WRITEABLECONST ON}
-
+{$VARPROPSETTER ON}
 interface
 
 uses Windows, ActiveX, Classes, Graphics, StdVCL, Variants;
@@ -105,10 +103,10 @@ type
     procedure Set_SongPosParseTime(Value: WordBool); safecall;
     function Get_GetArtistByPosition(Position: Integer): WideString; safecall;
     function Get_GetSongPosition: WideString; safecall;
-    function Get_Shuffle: WordBool; safecall;
-    procedure Set_Shuffle(Value: WordBool); safecall;
-    function Get_Repeat_: WordBool; safecall;
-    procedure Set_Repeat_(Value: WordBool); safecall;
+    function Get_ShuffleMode: WordBool; safecall;
+    procedure Set_ShuffleMode(Value: WordBool); safecall;
+    function Get_RepeatMode: WordBool; safecall;
+    procedure Set_RepeatMode(Value: WordBool); safecall;
     procedure Set_SetVolume(Param1: Integer); safecall;
     function Get_JumpToTime(ms: Integer): Integer; safecall;
     function Get_GetUniqueArtist(Index: Integer): WideString; safecall;
@@ -141,8 +139,8 @@ type
     property SongPosParseTime: WordBool read Get_SongPosParseTime write Set_SongPosParseTime;
     property GetArtistByPosition[Position: Integer]: WideString read Get_GetArtistByPosition;
     property GetSongPosition: WideString read Get_GetSongPosition;
-    property Shuffle: WordBool read Get_Shuffle write Set_Shuffle;
-    property Repeat_: WordBool read Get_Repeat_ write Set_Repeat_;
+    property ShuffleMode: WordBool read Get_ShuffleMode write Set_ShuffleMode;
+    property RepeatMode: WordBool read Get_RepeatMode write Set_RepeatMode;
     property SetVolume: Integer write Set_SetVolume;
     property JumpToTime[ms: Integer]: Integer read Get_JumpToTime;
     property GetUniqueArtist[Index: Integer]: WideString read Get_GetUniqueArtist;
@@ -191,8 +189,8 @@ type
     property SongPosParseTime: WordBool dispid 226;
     property GetArtistByPosition[Position: Integer]: WideString readonly dispid 227;
     property GetSongPosition: WideString readonly dispid 228;
-    property Shuffle: WordBool dispid 229;
-    property Repeat_: WordBool dispid 230;
+    property ShuffleMode: WordBool dispid 229;
+    property RepeatMode: WordBool dispid 230;
     property SetVolume: Integer writeonly dispid 231;
     property JumpToTime[ms: Integer]: Integer readonly dispid 232;
     property GetUniqueArtist[Index: Integer]: WideString readonly dispid 233;

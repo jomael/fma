@@ -56,7 +56,6 @@ type
     Label10: TLabel;
     lblLink2: TLabel;
     GroupBox7: TGroupBox;
-    Memo1: TMemo;
     Panel1: TPanel;
     Image3: TImage;
     Label16: TLabel;
@@ -66,6 +65,8 @@ type
     RadioButton2: TRadioButton;
     RadioButton3: TRadioButton;
     RadioButton4: TRadioButton;
+    Label18: TLabel;
+    lblLink3: TLabel;
     procedure Button2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -132,6 +133,8 @@ begin
   lblLink1.Font.Color := clBlue;
   lblLink2.Font.Style := lblLink2.Font.Style + [fsUnderline];
   lblLink2.Font.Color := clBlue;
+  lblLink3.Font.Style := lblLink3.Font.Style + [fsUnderline];
+  lblLink3.Font.Color := clBlue;
   LoadSettings;
 end;
 

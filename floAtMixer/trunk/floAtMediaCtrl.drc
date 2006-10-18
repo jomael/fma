@@ -8,85 +8,84 @@
   resources were bound to the produced executable.
 */
 
-#define ComConst_SCreateRegKeyError 65248
-#define ComConst_SOleError 65249
-#define ComConst_STypeInfoMissing 65250
-#define ComConst_SBadTypeInfo 65251
-#define ComConst_SDispIntfMissing 65252
-#define ComConst_SNoMethod 65253
-#define ComConst_SVarNotObject 65254
-#define ComConst_STooManyParams 65255
-#define ComConst_SDAXError 65256
-#define ComConst_SAutomationWarning 65257
-#define ComConst_SNoCloseActiveServer1 65258
-#define ComConst_SNoCloseActiveServer2 65259
-#define JConsts_sChangeJPGSize 65260
-#define JConsts_sJPEGError 65261
-#define JConsts_sJPEGImageFile 65262
-#define ExtCtrls_clNameNone 65264
-#define ExtCtrls_clNameScrollBar 65265
-#define ExtCtrls_clName3DDkShadow 65266
-#define ExtCtrls_clName3DLight 65267
-#define ExtCtrls_clNameWindow 65268
-#define ExtCtrls_clNameWindowFrame 65269
-#define ExtCtrls_clNameWindowText 65270
-#define ComStrs_sTabFailClear 65271
-#define ComStrs_sTabFailDelete 65272
-#define ComStrs_sTabFailRetrieve 65273
-#define ComStrs_sTabFailGetObject 65274
-#define ComStrs_sTabFailSet 65275
-#define ComStrs_sTabFailSetObject 65276
-#define ComStrs_sTabMustBeMultiLine 65277
-#define ComStrs_sPageIndexError 65278
-#define WinHelpViewer_hNoKeyword 65279
-#define ExtCtrls_clNameBtnFace 65280
-#define ExtCtrls_clNameBtnHighlight 65281
-#define ExtCtrls_clNameBtnShadow 65282
-#define ExtCtrls_clNameBtnText 65283
-#define ExtCtrls_clNameCaptionText 65284
-#define ExtCtrls_clNameDefault 65285
-#define ExtCtrls_clNameGrayText 65286
-#define ExtCtrls_clNameHighlight 65287
-#define ExtCtrls_clNameHighlightText 65288
-#define ExtCtrls_clNameInactiveBorder 65289
-#define ExtCtrls_clNameInactiveCaption 65290
-#define ExtCtrls_clNameInactiveCaptionText 65291
-#define ExtCtrls_clNameInfoBk 65292
-#define ExtCtrls_clNameInfoText 65293
-#define ExtCtrls_clNameMenu 65294
-#define ExtCtrls_clNameMenuText 65295
-#define ExtCtrls_clNameSilver 65296
-#define ExtCtrls_clNameRed 65297
-#define ExtCtrls_clNameLime 65298
-#define ExtCtrls_clNameYellow 65299
-#define ExtCtrls_clNameBlue 65300
-#define ExtCtrls_clNameFuchsia 65301
-#define ExtCtrls_clNameAqua 65302
-#define ExtCtrls_clNameWhite 65303
-#define ExtCtrls_clNameMoneyGreen 65304
-#define ExtCtrls_clNameSkyBlue 65305
-#define ExtCtrls_clNameCream 65306
-#define ExtCtrls_clNameMedGray 65307
-#define ExtCtrls_clNameActiveBorder 65308
-#define ExtCtrls_clNameActiveCaption 65309
-#define ExtCtrls_clNameAppWorkSpace 65310
-#define ExtCtrls_clNameBackground 65311
-#define Consts_SDockedCtlNeedsName 65312
-#define Consts_SDockTreeRemoveError 65313
-#define Consts_SDockZoneNotFound 65314
-#define Consts_SDockZoneHasNoCtl 65315
-#define HelpIntfs_hNoTableOfContents 65316
-#define HelpIntfs_hNothingFound 65317
-#define HelpIntfs_hNoContext 65318
-#define HelpIntfs_hNoTopics 65319
-#define ExtCtrls_clNameBlack 65320
-#define ExtCtrls_clNameMaroon 65321
-#define ExtCtrls_clNameGreen 65322
-#define ExtCtrls_clNameOlive 65323
-#define ExtCtrls_clNameNavy 65324
-#define ExtCtrls_clNamePurple 65325
-#define ExtCtrls_clNameTeal 65326
-#define ExtCtrls_clNameGray 65327
+#define ComConst_SOleError 65248
+#define ComConst_STypeInfoMissing 65249
+#define ComConst_SBadTypeInfo 65250
+#define ComConst_SDispIntfMissing 65251
+#define ComConst_SNoMethod 65252
+#define ComConst_SVarNotObject 65253
+#define ComConst_STooManyParams 65254
+#define ComConst_SDAXError 65255
+#define ComConst_SAutomationWarning 65256
+#define ComConst_SNoCloseActiveServer1 65257
+#define ComConst_SNoCloseActiveServer2 65258
+#define JConsts_sChangeJPGSize 65259
+#define JConsts_sJPEGError 65260
+#define JConsts_sJPEGImageFile 65261
+#define ExtCtrls_clNameScrollBar 65264
+#define ExtCtrls_clName3DDkShadow 65265
+#define ExtCtrls_clName3DLight 65266
+#define ExtCtrls_clNameWindow 65267
+#define ExtCtrls_clNameWindowFrame 65268
+#define ExtCtrls_clNameWindowText 65269
+#define ComStrs_sTabFailClear 65270
+#define ComStrs_sTabFailDelete 65271
+#define ComStrs_sTabFailRetrieve 65272
+#define ComStrs_sTabFailGetObject 65273
+#define ComStrs_sTabFailSet 65274
+#define ComStrs_sTabFailSetObject 65275
+#define ComStrs_sTabMustBeMultiLine 65276
+#define ComStrs_sPageIndexError 65277
+#define WinHelpViewer_hNoKeyword 65278
+#define ComConst_SCreateRegKeyError 65279
+#define ExtCtrls_clNameBtnHighlight 65280
+#define ExtCtrls_clNameBtnShadow 65281
+#define ExtCtrls_clNameBtnText 65282
+#define ExtCtrls_clNameCaptionText 65283
+#define ExtCtrls_clNameDefault 65284
+#define ExtCtrls_clNameGrayText 65285
+#define ExtCtrls_clNameHighlight 65286
+#define ExtCtrls_clNameHighlightText 65287
+#define ExtCtrls_clNameInactiveBorder 65288
+#define ExtCtrls_clNameInactiveCaption 65289
+#define ExtCtrls_clNameInactiveCaptionText 65290
+#define ExtCtrls_clNameInfoBk 65291
+#define ExtCtrls_clNameInfoText 65292
+#define ExtCtrls_clNameMenu 65293
+#define ExtCtrls_clNameMenuText 65294
+#define ExtCtrls_clNameNone 65295
+#define ExtCtrls_clNameRed 65296
+#define ExtCtrls_clNameLime 65297
+#define ExtCtrls_clNameYellow 65298
+#define ExtCtrls_clNameBlue 65299
+#define ExtCtrls_clNameFuchsia 65300
+#define ExtCtrls_clNameAqua 65301
+#define ExtCtrls_clNameWhite 65302
+#define ExtCtrls_clNameMoneyGreen 65303
+#define ExtCtrls_clNameSkyBlue 65304
+#define ExtCtrls_clNameCream 65305
+#define ExtCtrls_clNameMedGray 65306
+#define ExtCtrls_clNameActiveBorder 65307
+#define ExtCtrls_clNameActiveCaption 65308
+#define ExtCtrls_clNameAppWorkSpace 65309
+#define ExtCtrls_clNameBackground 65310
+#define ExtCtrls_clNameBtnFace 65311
+#define Consts_SDockTreeRemoveError 65312
+#define Consts_SDockZoneNotFound 65313
+#define Consts_SDockZoneHasNoCtl 65314
+#define HelpIntfs_hNoTableOfContents 65315
+#define HelpIntfs_hNothingFound 65316
+#define HelpIntfs_hNoContext 65317
+#define HelpIntfs_hNoTopics 65318
+#define ExtCtrls_clNameBlack 65319
+#define ExtCtrls_clNameMaroon 65320
+#define ExtCtrls_clNameGreen 65321
+#define ExtCtrls_clNameOlive 65322
+#define ExtCtrls_clNameNavy 65323
+#define ExtCtrls_clNamePurple 65324
+#define ExtCtrls_clNameTeal 65325
+#define ExtCtrls_clNameGray 65326
+#define ExtCtrls_clNameSilver 65327
 #define Consts_SmkcPgDn 65328
 #define Consts_SmkcEnd 65329
 #define Consts_SmkcHome 65330
@@ -101,8 +100,8 @@
 #define Consts_SmkcAlt 65339
 #define Consts_SIconToClipboard 65340
 #define Consts_SCannotOpenClipboard 65341
-#define Consts_SInvalidMemoSize 65342
-#define Consts_SDuplicateMenus 65343
+#define Consts_SDuplicateMenus 65342
+#define Consts_SDockedCtlNeedsName 65343
 #define Consts_SMsgDlgNo 65344
 #define Consts_SMsgDlgOK 65345
 #define Consts_SMsgDlgCancel 65346
@@ -297,7 +296,6 @@
 #define SysConst_SOverflow 65535
 STRINGTABLE
 BEGIN
-	ComConst_SCreateRegKeyError,	"Error creating system registry entry"
 	ComConst_SOleError,	"OLE error %.8x"
 	ComConst_STypeInfoMissing,	"Type information missing for class %s"
 	ComConst_SBadTypeInfo,	"Incorrect type information for class %s"
@@ -312,7 +310,6 @@ BEGIN
 	JConsts_sChangeJPGSize,	"Cannot change the size of a JPEG image"
 	JConsts_sJPEGError,	"JPEG error #%d"
 	JConsts_sJPEGImageFile,	"JPEG Image File"
-	ExtCtrls_clNameNone,	"None"
 	ExtCtrls_clNameScrollBar,	"Scroll Bar"
 	ExtCtrls_clName3DDkShadow,	"3D Dark Shadow"
 	ExtCtrls_clName3DLight,	"3D Light"
@@ -328,7 +325,7 @@ BEGIN
 	ComStrs_sTabMustBeMultiLine,	"MultiLine must be True when TabPosition is tpLeft or tpRight"
 	ComStrs_sPageIndexError,	"%d is an invalid PageIndex value.  PageIndex must be between 0 and %d"
 	WinHelpViewer_hNoKeyword,	"No help keyword specified."
-	ExtCtrls_clNameBtnFace,	"Button Face"
+	ComConst_SCreateRegKeyError,	"Error creating system registry entry"
 	ExtCtrls_clNameBtnHighlight,	"Button Highlight"
 	ExtCtrls_clNameBtnShadow,	"Button Shadow"
 	ExtCtrls_clNameBtnText,	"Button Text"
@@ -344,7 +341,7 @@ BEGIN
 	ExtCtrls_clNameInfoText,	"Info Text"
 	ExtCtrls_clNameMenu,	"Menu Background"
 	ExtCtrls_clNameMenuText,	"Menu Text"
-	ExtCtrls_clNameSilver,	"Silver"
+	ExtCtrls_clNameNone,	"None"
 	ExtCtrls_clNameRed,	"Red"
 	ExtCtrls_clNameLime,	"Lime"
 	ExtCtrls_clNameYellow,	"Yellow"
@@ -360,7 +357,7 @@ BEGIN
 	ExtCtrls_clNameActiveCaption,	"Active Caption"
 	ExtCtrls_clNameAppWorkSpace,	"Application Workspace"
 	ExtCtrls_clNameBackground,	"Background"
-	Consts_SDockedCtlNeedsName,	"Docked control must have a name"
+	ExtCtrls_clNameBtnFace,	"Button Face"
 	Consts_SDockTreeRemoveError,	"Error removing control from dock tree"
 	Consts_SDockZoneNotFound,	" - Dock zone not found"
 	Consts_SDockZoneHasNoCtl,	" - Dock zone has no control"
@@ -376,6 +373,7 @@ BEGIN
 	ExtCtrls_clNamePurple,	"Purple"
 	ExtCtrls_clNameTeal,	"Teal"
 	ExtCtrls_clNameGray,	"Gray"
+	ExtCtrls_clNameSilver,	"Silver"
 	Consts_SmkcPgDn,	"PgDn"
 	Consts_SmkcEnd,	"End"
 	Consts_SmkcHome,	"Home"
@@ -390,8 +388,8 @@ BEGIN
 	Consts_SmkcAlt,	"Alt+"
 	Consts_SIconToClipboard,	"Clipboard does not support Icons"
 	Consts_SCannotOpenClipboard,	"Cannot open clipboard"
-	Consts_SInvalidMemoSize,	"Text exceeds memo capacity"
 	Consts_SDuplicateMenus,	"Menu '%s' is already being used by another form"
+	Consts_SDockedCtlNeedsName,	"Docked control must have a name"
 	Consts_SMsgDlgNo,	"&No"
 	Consts_SMsgDlgOK,	"OK"
 	Consts_SMsgDlgCancel,	"Cancel"

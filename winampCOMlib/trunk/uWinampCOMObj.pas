@@ -81,10 +81,10 @@ type
     function Get_SongPosParseTime: WordBool; safecall;
     procedure Set_SongPosParseTime(Value: WordBool); safecall;
     function Get_GetArtistByPosition(Position: Integer): WideString; safecall;
-    function Get_Shuffle: WordBool; safecall;
-    procedure Set_Shuffle(Value: WordBool); safecall;
-    function Get_Repeat_: WordBool; safecall;
-    procedure Set_Repeat_(Value: WordBool); safecall;
+    function Get_ShuffleMode: WordBool; safecall;
+    procedure Set_ShuffleMode(Value: WordBool); safecall;
+    function Get_RepeatMode: WordBool; safecall;
+    procedure Set_RepeatMode(Value: WordBool); safecall;
     procedure Set_SetVolume(Value: Integer); safecall;
     function Get_JumpToTime(ms: Integer): Integer; safecall;
     function Get_GetUniqueArtist(Index: Integer): WideString; safecall;
@@ -482,7 +482,7 @@ begin
 end;
 {end private}
 
-function TWinampCOMObj.Get_Shuffle: WordBool;
+function TWinampCOMObj.Get_ShuffleMode: WordBool;
 var value: integer;
 begin
   Result := False;
@@ -490,7 +490,7 @@ begin
   if value = 1 then Result := True;
 end;
 
-procedure TWinampCOMObj.Set_Shuffle(Value: WordBool);
+procedure TWinampCOMObj.Set_ShuffleMode(Value: WordBool);
 begin
   if Value then
     SendMessage(WinampHnd(),WM_USER, 1, 252)
@@ -498,7 +498,7 @@ begin
     SendMessage(WinampHnd(), WM_USER, 0, 252);
 end;
 
-function TWinampCOMObj.Get_Repeat_: WordBool;
+function TWinampCOMObj.Get_RepeatMode: WordBool;
 var value: integer;
 begin
   Result := False;
@@ -506,7 +506,7 @@ begin
   if value = 1 then Result := True;
 end;
 
-procedure TWinampCOMObj.Set_Repeat_(Value: WordBool);
+procedure TWinampCOMObj.Set_RepeatMode(Value: WordBool);
 begin
   if Value then
     SendMessage(WinampHnd(), WM_USER, 1, 253)

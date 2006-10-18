@@ -12,16 +12,16 @@ unit floAtMediaCtrl_TLB;
 // ************************************************************************ //
 
 // PASTLWTR : 1.2
-// File generated on 29.08.2005 12:05:58 from Type Library described below.
+// File generated on 18.10.2006 18:52:51 from Type Library described below.
 
 // ************************************************************************  //
-// Type Lib: C:\Projects\cvsroot\floAtMixer\floAtMediaCtrl.tlb (1)
+// Type Lib: C:\Projects\FMA\floAtMixer\trunk\floAtMediaCtrl.tlb (1)
 // LIBID: {84D1617E-2C8E-4140-B017-6FE79FBE71CC}
 // LCID: 0
 // Helpfile: 
 // HelpString: floAtMixer Library
 // DepndLst: 
-//   (1) v2.0 stdole, (C:\WINDOWS\System32\Stdole2.tlb)
+//   (1) v2.0 stdole, (C:\WINDOWS\system32\STDOLE2.TLB)
 // ************************************************************************ //
 {$TYPEDADDRESS OFF} // Unit must be compiled without type-checked pointers. 
 {$WARN SYMBOL_PLATFORM OFF}

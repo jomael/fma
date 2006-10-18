@@ -10,7 +10,7 @@ uses
   FormOptions in 'FormOptions.pas' {FormSettings},
   MouseCtrlCoClass in 'MouseCtrlCoClass.pas',
   uFormOsd in 'uFormOsd.pas' {FormOSD},
-  uVersion in '..\fma\uVersion.pas';
+  uVersion in '..\..\fma\trunk\uVersion.pas';
 
 {$R *.TLB}
 
