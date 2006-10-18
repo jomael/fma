@@ -357,14 +357,13 @@ begin
           FSelected.DisableIrmcSync := True;
         end
         else
-        if not Form1.IsT610Clone(lvDevices.Selected.Caption) and not Form1.IsK700Clone(lvDevices.Selected.Caption) and
-          not Form1.IsK750Clone(lvDevices.Selected.Caption) then begin
+        if not Form1.IsT610orBetter(lvDevices.Selected.Caption) then begin
           { Older phones (T230, T68, ...) so no OBEX }
           Add(sTab + _('Phonebook Sync is not supported by your phone.'));
           FSelected.DisableIrmcSync := True;
         end
         else
-          if Form1.IsK750Clone(lvDevices.Selected.Caption) then
+          if Form1.IsK610orBetter(lvDevices.Selected.Caption) then
             Add(sTab + _('Your phone device is detected and supported partially.'))
           else
             Add(sTab + _('Your phone device is detected and supported.')); // T610, K700 are OK
@@ -720,7 +719,7 @@ begin
     try
       dlg := ShowStatusDlg(_('Calibrating Port Speed...'),poMainFormCenter);
       try
-        if Form1.IsK750Clone(FSelected.DeviceName) then begin
+        if Form1.IsK750orBetter(FSelected.DeviceName) then begin
           { K750 working settings: Port:'COM X', Baud:256000, RTS:Handshake, DTR:Enabled }
           LocalComPort.BaudRate := br256000;
           LocalComPort.FlowControl.ControlRTS := rtsHandshake;

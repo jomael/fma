@@ -76,8 +76,9 @@ type
     function Get_ScriptFolder: WideString; safecall;
     function PhoneDecode(aText: OleVariant): WideString; safecall;
     function PhoneEncode(const aText: WideString): OleVariant; safecall;
-    function Get_isK750clone: WordBool; safecall;
     function Get_isT610clone: WordBool; safecall;
+    function Get_isK750clone: WordBool; safecall;
+    function Get_isK750orBetter: WordBool; safecall;
   public
     procedure Initialize; override;
     destructor Destroy; override;
@@ -556,14 +557,19 @@ begin
   Result := WideStringToUTF8String(aText); // If phone is set to <>UTF-8 encoding, then this function must use diferent encode method 
 end;
 
+function TMobileAgentApp.Get_isT610clone: WordBool;
+begin
+  Result := Form1.IsT610Clone;
+end;
+
 function TMobileAgentApp.Get_isK750clone: WordBool;
 begin
   Result := Form1.IsK750Clone;
 end;
 
-function TMobileAgentApp.Get_isT610clone: WordBool;
+function TMobileAgentApp.Get_isK750orBetter: WordBool;
 begin
-  Result := Form1.IsT610Clone;
+  Result := Form1.IsK750orBetter; // K750 or better
 end;
 
 initialization

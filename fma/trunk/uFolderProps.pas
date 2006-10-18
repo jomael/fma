@@ -436,7 +436,8 @@ begin
             lblNoCache.Caption := _('In phone only');
         end;
         27: begin // theme
-          if not (Form1.IsT610Clone or Form1.IsK700Clone {or Form1.IsK750Clone}) then
+          { Theme support only for T610 and K700 phones! } 
+          if not (Form1.IsT610Clone or Form1.IsK700Clone) then
             Abort;
           SetTab(pcFile,tsFileTheme,Panel2);
           lblType.Caption := _('Theme');

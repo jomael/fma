@@ -552,7 +552,7 @@ end;
 
 function TAccessoriesMenu.UseSEcommands: Boolean;
 begin
-  Result := Form1.IsK750Clone or Form1.IsK610Clone or Form1.IsWalkmanClone; // K750 or better
+  Result := Form1.IsK750orBetter; // K750 or better
 end;
 
 initialization

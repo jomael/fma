@@ -12,7 +12,7 @@ unit MobileAgent_TLB;
 // ************************************************************************ //
 
 // PASTLWTR : 1.2
-// File generated on 18.10.2006 14:29:01 from Type Library described below.
+// File generated on 18.10.2006 17:21:56 from Type Library described below.
 
 // ************************************************************************  //
 // Type Lib: C:\Projects\FMA\fma\trunk\MobileAgent.tlb (1)
@@ -125,6 +125,7 @@ type
     function PhoneDecode(atext: OleVariant): WideString; safecall;
     function Get_isT610clone: WordBool; safecall;
     function Get_isK750clone: WordBool; safecall;
+    function Get_isK750orBetter: WordBool; safecall;
     property KeyPress: WideString read Get_KeyPress;
     property PopKey: WideString read Get_PopKey;
     property KeyInActivityTimeout: Integer write Set_KeyInActivityTimeout;
@@ -137,6 +138,7 @@ type
     property ScriptFolder: WideString read Get_ScriptFolder;
     property isT610clone: WordBool read Get_isT610clone;
     property isK750clone: WordBool read Get_isK750clone;
+    property isK750orBetter: WordBool read Get_isK750orBetter;
   end;
 
 // *********************************************************************//
@@ -196,6 +198,7 @@ type
     function PhoneDecode(atext: OleVariant): WideString; dispid 41;
     property isT610clone: WordBool readonly dispid 206;
     property isK750clone: WordBool readonly dispid 207;
+    property isK750orBetter: WordBool readonly dispid 208;
   end;
 
 // *********************************************************************//

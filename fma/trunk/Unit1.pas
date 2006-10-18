@@ -1186,6 +1186,10 @@ type
     function IsK610Clone(BrandName: WideString = ''): Boolean;
     function IsK700Clone(BrandName: WideString = ''): Boolean;    // mostly compatible with T610
     function IsK750Clone(BrandName: WideString = ''): Boolean;
+    function IsT610orBetter(BrandName: WideString = ''): Boolean; // for T610 and later/better phones
+    function IsK700orBetter(BrandName: WideString = ''): Boolean; // for K700 and later/better phones
+    function IsK750orBetter(BrandName: WideString = ''): Boolean; // for K750 and later/better phones
+    function IsK610orBetter(BrandName: WideString = ''): Boolean; // for K610 and later/better phones
     function IsWalkmanClone(BrandName: WideString = ''): Boolean; // only detects if phone has MediaPlayer
   published
     procedure ActionToolsEditProfileExecute(Sender: TObject);
@@ -2061,14 +2065,14 @@ begin
       try
         { TODO: use TxAndWait('AT*CMEC?'); // do not localize }
         { Set to 2 so ME keypad can be operated from both ME keypad and TE }
-        if IsK750Clone then // only supported on K750+ phones ?
+        if IsK750orBetter then // only supported on K750+ phones ?
           TxAndWait('AT+CMEC=2'); // do not localize
       except
       end;
       try
         TxAndWait('AT+CKPD=?'); // do not localize
         ActionToolsKeyPad.Visible := True;
-        frmKeyPad.SetKeysMode(IsT610Clone or IsK700Clone or IsK750Clone or IsK610Clone or IsWalkmanClone);
+        frmKeyPad.SetKeysMode(IsT610orBetter);
       except
         Log.AddCommunicationMessage('Send key (keypad) not supported',lsDebug); // do not localize debug
       end;
@@ -4316,7 +4320,7 @@ begin
 
       // Check for K700i! There should be a better way?? Like taking the product Id or name into account :)
       //if sl.Count <> 14 then begin
-      if not (IsK610Clone or IsK700Clone or IsK750Clone or IsWalkmanClone) then begin
+      if not IsK700orBetter then begin
         //battery voltage
         vbat := strtoint(sl.Strings[1]) * 10 +
           strtoint(sl.Strings[2]) * 10 +
@@ -5509,7 +5513,7 @@ var
   IsLocked: boolean;
 begin
   { TODO: Use SilentMode to cancel a call without Busy sound to the caller WITHOUT using keypress }
-  if SilentMode and (IsT610Clone or IsK700Clone or IsK750Clone) then begin
+  if SilentMode and IsT610orBetter then begin
     { First unlock keyboard if needed }
     if FUseKeylockMonitor then begin
       TxAndWait('AT+CLCK="CS",2'); // do not localize
@@ -9302,7 +9306,8 @@ begin
               TxAndWait('AT+CKPD=":R"'); // do not localize
             except
             end
-          else if IsK700Clone or IsK750Clone then
+          else
+          if IsK700orBetter then
             try
               // K750 phones...
               TxAndWait('AT*EKEY=1,":R",2'); // do not localize
@@ -9328,9 +9333,9 @@ begin
 
             { check silent }
             if FUseSilentMonitor then begin
-              if IsK750Clone then begin
+              if IsK750orBetter then begin
                 TxAndWait('AT+CSIL?'); // do not localize
-                { TODO: Add HandleESIL() }
+                { TODO: Add HandleCSIL() }
                 for i := 0 to ThreadSafe.RxBuffer.Count - 2 do
                   if pos('+CSIL', ThreadSafe.RxBuffer[i]) = 1 then begin // do not localize
                     FSilentMode := Copy(ThreadSafe.RxBuffer[i], 8, length(ThreadSafe.RxBuffer[i])) = '1';
@@ -9349,7 +9354,7 @@ begin
             end;
 
             { check minute minder}
-            if not IsK750Clone and FUseMinuteMonitor then begin // not suportd for K750+
+            if not IsK750orBetter and FUseMinuteMonitor then begin // not suportd for K750+
               TxAndWait('AT*ESMM?'); // do not localize
               { TODO: Add HandleESMM() }
               for i := 0 to ThreadSafe.RxBuffer.Count - 2 do
@@ -11634,7 +11639,7 @@ var
 begin
   if BrandName = '' then model := FPhoneModel else model := BrandName;
   // do not localize - begin
-  Result := (Pos('K610',model) <> 0) or // and T610 clones
+  Result := (Pos('K610',model) <> 0) or // and K610 clones
             (Pos('K618',model) <> 0) or
             (Pos('K600',model) <> 0) or
             (Pos('K608',model) <> 0) or
@@ -11651,7 +11656,7 @@ var
 begin
   if BrandName = '' then model := FPhoneModel else model := BrandName;
   // do not localize - begin
-  Result := (Pos('K700',model) <> 0) or
+  Result := (Pos('K700',model) <> 0) or // and K700 clones
             (Pos('K300',model) <> 0) or //?
             (Pos('K310',model) <> 0) or //?
             (Pos('K500',model) <> 0) or
@@ -12230,7 +12235,7 @@ end;
 
 procedure TForm1.ActionToolsSilentExecute(Sender: TObject);
 begin
-  if IsK750Clone then
+  if IsK750orBetter then
     TxAndWait('AT+CSIL='+IntToStr(byte(not FSilentMode))) // do not localize
   else
     TxAndWait('AT*ESIL='+IntToStr(byte(not FSilentMode))); // do not localize
@@ -15236,6 +15241,26 @@ begin
     Result := _('This phone name already exists.')
   else
     Result := '';
+end;
+
+function TForm1.IsT610orBetter(BrandName: WideString): Boolean;
+begin
+  Result := IsT610Clone or IsK700Clone or IsK750orBetter; // T610 or better
+end;
+
+function TForm1.IsK700orBetter(BrandName: WideString): Boolean;
+begin
+  Result := IsK700Clone or IsK750orBetter; // K700 or better
+end;
+
+function TForm1.IsK750orBetter(BrandName: WideString): Boolean;
+begin
+  Result := IsK750Clone or IsK610Clone or IsWalkmanClone; // K750 or better
+end;
+
+function TForm1.IsK610orBetter(BrandName: WideString): Boolean;
+begin
+  Result := IsK610Clone or IsWalkmanClone; // K610 or better
 end;
 
 initialization

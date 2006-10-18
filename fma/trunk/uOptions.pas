@@ -775,7 +775,7 @@ begin
   //rbBookmarksClick(nil);
   FCustomScript := edScriptPath.Text;
   OptionPages.Style := tsButtons;
-  cbMinuteMonitor.Enabled := not Form1.IsK750Clone; // not suportd for K750+
+  cbMinuteMonitor.Enabled := not Form1.IsK750orBetter; // not suportd for K750+
 //  LMDFill1.FillObject.Gradient.Color := Form1.LMDFill1.FillObject.Gradient.Color;
 //  LMDFill1.FillObject.Gradient.EndColor := Form1.LMDFill1.FillObject.Gradient.EndColor;
 end;

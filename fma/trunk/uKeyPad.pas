@@ -132,7 +132,7 @@ begin
         FTime := GetTickCount;
         FLastButton := Key;
         Timer1.Enabled := True;
-        if (Form1.IsK750Clone or Form1.IsK700Clone) then
+        if Form1.IsK700orBetter then
           Form1.TxAndWait('AT*EKEY=1,"' + Key + '",0', 'OK'); // do not localize
       end;
       1: begin // released
@@ -140,7 +140,7 @@ begin
         FLastButton := '';
         Timer1.Enabled := False;
         FTime := (GetTickCount - FTime) div 100;
-        if (Form1.IsK750Clone or Form1.IsK700Clone) then
+        if Form1.IsK700orBetter then
           Form1.TxAndWait('AT*EKEY=1,"' + Key + '",1', 'OK') // do not localize
         else begin
           if (FTime < 15) or (FTime >= 256) then
@@ -152,7 +152,7 @@ begin
       2: begin // pressed & released
         Log.AddCommunicationMessage('KeyPad: Sending Key "'+Key+'"', lsDebug); // do not localize debug
         FLastButton := '';
-        if (Form1.IsK750Clone or Form1.IsK700Clone) then
+        if Form1.IsK700orBetter then
           Form1.TxAndWait('AT*EKEY=1,"' + Key + '",2', 'OK') // do not localize
         else
           Form1.TxAndWait('AT+CKPD="' + Key + '"', 'OK'); // do not localize
