@@ -112,6 +112,10 @@ them are free source components (if nothing else stated in their licenses):
     and to create a NTFS junction point in "\fma\trunk" folder which points
     to "\locale" folder. Please name this junction point "locale".
 
+8.  The file uAbout.inc will be generated from uAbout.templ by using the batch
+    script UpdateSvnRevision.bat in repository root folder. Run it before any
+    release build.
+
 It should be all, let us know if you've anything to add. Good luck!!
 
 /FMA team
