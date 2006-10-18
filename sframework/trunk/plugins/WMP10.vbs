@@ -488,21 +488,20 @@ Sub mp9Launch()
     Me.Show
   Else
     Util.LaunchAppDlg
+    AppOpen = False
     On Error Resume Next
     ActiveXManager("WMPuICE.WMPApp").Open
-    On Error GoTo 0
     For i=1 to 8          'Tries 8 times each second if WMP is on
       fma.Sleep (1000)
-      On Error Resume Next
       WMPCtrl = null
       Set WMPCtrl = ActiveXManager("WMPuICE.WMPApp").Core
-      On Error GoTo 0
       If (not IsNull(WMPCtrl)) Then
         AppOpen =  ActiveXManager("WMPuICE.WMPApp").Running
         fma.Sleep (100)
         Exit For
       End If
     Next
+    On Error GoTo 0
     If AppOpen Then
       WMPRunning    'without this lockups happended sometimes
       Me.Show

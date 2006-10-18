@@ -1,5 +1,5 @@
 'FMA Script Framework Core Plugin
-'PluginDisabler
+'PluginManager
 'Disables menu items in FMA menu - pretty the same functionality as Configurator > PluginManager > Don't load
 'WARNING : FMA must be restarted for changes to take effect
 
@@ -12,7 +12,7 @@
 'some fixing...
 'changes should take effect immediately
 
-Class PluginDisabler
+Class PluginManager
 
 Private m_Self
 Private mainMenu
@@ -23,10 +23,10 @@ Public Property Get SHOWABLE 'Do I have a menu?
 SHOWABLE    = True
 End Property
 Public Property Get TITLE 'What's my name?
- TITLE       = g_(Me,"Plugin Disabler")
+ TITLE       = g_(Me,"Plugin Manager")
 End Property
 Public Property Get DESCRIPTION 'What's my purpose?
- DESCRIPTION = g_(Me,"Allows you to disable plugins from FMA menu")
+ DESCRIPTION = g_(Me,"Allows you to enable and disable plugins from FMA menu")
 End Property
 Public Property Get AUTHOR 'Who created me?
 AUTHOR      = "mhr"
@@ -121,7 +121,7 @@ End Sub
 
 Sub Disable( pluginFile, path )
 Dim excludeList, exceptions
-exceptions = "FrameworkMainMenu.vbs,PluginDisabler.vbs"
+exceptions = "FrameworkMainMenu.vbs,PluginManager.vbs"
 
 excludeList = Settings(PluginManager, "Don't load")
 

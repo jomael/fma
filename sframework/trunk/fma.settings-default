@@ -2,18 +2,26 @@ PluginManager("Powerpoint")\\Exe
 C:\\Program Files\\Microsoft Office\\Office10\\Powerpnt.exe
 PluginManager("StreetAtlas8")\\MapFile1Title
 
-PluginManager("StreetAtlas8")\\MapFile2Title
-
+PluginManager("LightAlloy")\\Title
+Light Alloy
 PluginManager("Camera")\\InputFilename
 /Pictures/Image(1).jpg
 PluginManager("StreetAtlas8")\\MapFile3Title
 
 PluginManager("StreetAtlas8")\\MapFile4Title
 
+PluginManager("StreetAtlas8")\\MapFile2Title
+
 PluginManager("PowerDVD5")\\Exe
 C:\\Program Files\\Cyberlink\\PowerDVD\\PowerDVD.exe
+PluginManager("NeroShowTime")\\Exe
+C:\\Programme\\Nero\\Nero 7\\Nero ShowTime\\ShowTime.exe
+PluginManager("SmsDBLog")\\ConnectionString
+DRIVER={Microsoft Access Driver (*.mdb)}; DBQ=C:\\SMSText.mdb
 PluginManager("StreetAtlas8")\\BackOnTrack
 
+PluginManager("SmsReader")\\ReadingEnabled
+0
 PluginManager("ZoomPlayer")\\Title
 Zoom Player
 PluginManager("MediaPlayerClassic")\\Exe
@@ -34,24 +42,32 @@ PluginManager("PowerDVD5")\\Title
 PowerDVD
 PluginManager("MediaCenter")\\Exe
 C:\\Windows\\eHome\\ehShell.exe
+PluginManager("NeroShowTime")\\Title
+Nero ShowTime
 PluginManager("Powerpoint")\\ResumePresentationShortcut
 {F3}
 PluginManager("MediaPlayer")\\Exe
 C:\\Program Files\\Windows Media Player\\wmplayer.exe
-PluginManager("VLCPLayer")\\Exe
-C:\\Program Files\\VideoLAN\\VLC\\vlc.exe
 PluginManager("VLCPlayer")\\Exe
+C:\\Program Files\\VideoLAN\\VLC\\vlc.exe
+PluginManager("VLCPLayer")\\Exe
 C:\\Program Files\\VideoLAN\\VLC\\vlc.exe
 PluginManager("MediaPlayerClassic")\\Title
 Media Player Classic
+PluginManager("SmsDBLog")\\InsertCommand
+INSERT INTO SMSCollection (Sender,Message) VALUES ('{0}','{1}')
 PluginManager("WinTV")\\Title
 WinTV32
+PluginManager("SmsReader")\\Voice
+Gender=Female;Age!=Child;Language={0}
 PluginManager("AutoMenu")\\Menu
 FrameworkMainMenu
 PluginManager("MediaCenter")\\Title
 Media Center
 PluginManager("Powerpoint")\\SlideOverviewShortcut
 {ESC}%ai
+PluginManager("SmsReader")\\NewSmsText
+You have new SMS from {0}. SMS says: {1}.
 PluginManager("MediaPlayer")\\Title
 Windows Media Player
 PluginManager("Camera")\\OutputDirectory
@@ -65,7 +81,9 @@ C:\\Program Files\\foobar2000\\foobar2000.exe
 PluginManager("MediaCenter9")\\Exe
 C:\\Program Files\\Media Center 9\\Media Jukebox.exe
 PluginManager\\Don't load
-BramusICQ.vbs,BSPlayer.vbs,Camera.vbs,foobar2000.vbs,MediaCenter.vbs,MediaCenter9.vbs,MediaPlayer.vbs,MediaPlayer9.vbs,MediaPlayerClassic.vbs,MoreTV.vbs,Mouse.vbs,OnCallDisconnect.vbs,PowerDVD5.vbs,SageTV.vbs,StreetAtlas8.vbs,VLCPLayer.vbs,WinDVD.vbs,WinTV.vbs,ZoomPlayer.vbs,FileExplorer.vbs,MoosePlusPlus.vbs
+BramusICQ.vbs,BSPlayer.vbs,Camera.vbs,foobar2000.vbs,MediaCenter.vbs,MediaCenter9.vbs,MediaPlayer.vbs,MediaPlayer9.vbs,MediaPlayerClassic.vbs,MoreTV.vbs,Mouse.vbs,OnCallDisconnect.vbs,SageTV.vbs,StreetAtlas8.vbs,WinDVD.vbs,WinTV.vbs,ZoomPlayer.vbs,FileExplorer.vbs,MoosePlusPlus.vbs,Configurator.vbs,FmaKey.vbs,iTunes.vbs,LightAlloy.vbs,NeroShowTime.vbs,SmsDBLog.vbs,SmsReader.vbs,SmsTextLog.vbs
+PluginManager("SmsTextLog")\\Header
+
 PluginManager("MediaPlayer9")\\Exe
 C:\\Program Files\\Windows Media Player\\wmplayer.exe
 PluginManager("SageTV")\\Exe
@@ -78,6 +96,8 @@ PluginManager("iTunes")\\Exe
 C:\\Program Files\\iTunes\\iTunes.exe
 PluginManager("foobar2000")\\Title
 foobar2000
+PluginManager("SmsTextLog")\\FileName
+C:\\SMSText.txt
 PluginManager("MediaCenter9")\\Title
 MEDIA CENTER
 PluginManager("MoreTV")\\Exe
@@ -92,6 +112,8 @@ PluginManager("MediaPlayer9")\\Title
 Windows Media Player
 PluginManager("SageTV")\\Title
 SageTV
+PluginManager("SmsTextLog")\\Footer
+
 PluginManager("Winamp")\\Title
 Winamp
 PluginManager("WinDVD")\\Title
@@ -100,10 +122,14 @@ PluginManager("StreetAtlas8")\\Heading
 
 PluginManager("iTunes")\\Title
 iTunes
+PluginManager("LightAlloy")\\Exe
+C:\\Program Files\\Light Alloy\\LA.exe
 PluginManager("Winamp")\\PlaylistFolder
 C:\\Program Files\\Winamp
 PluginManager("MoreTV")\\Title
 MoreTV
+PluginManager("SmsTextLog")\\DataFormat
+{0}, {1}, {2}
 PluginManager("BSPlayer")\\Title
 BSPlayer
 PluginManager("Tools")\\FMATitle

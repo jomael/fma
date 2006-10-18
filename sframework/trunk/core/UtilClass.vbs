@@ -38,7 +38,7 @@ Class UtilClass
 	'Sets the centered text message on the standby screen of your mobile phone
 	Public Sub SetStandbyScreenText (text)
 		On Error Resume Next
-		If fma.isK750clone Then
+		If fma.isK750orBetter = True Then
 			Transmit "AT*SETICK=" & Chr(34) & text & Chr(34) & ",1"
 		Else
 			Transmit "AT*EAST=" & Chr(34) & text & Chr(34)
