@@ -79,6 +79,9 @@ Source: ..\scripts\sframework\trunk\doc\dev.html; DestDir: {app}\sframework\doc;
 Source: ..\scripts\sframework\trunk\doc\fma-scripting-framework.html; DestDir: {app}\sframework\doc; Components: dotscript
 Source: ..\scripts\sframework\trunk\doc\LinkedList.html; DestDir: {app}\sframework\doc; Components: dotscript
 Source: ..\scripts\sframework\trunk\doc\Simple.vbs; DestDir: {app}\sframework\doc; Components: dotscript
+Source: ..\scripts\sframework\trunk\doc\Test.vbs; DestDir: {app}\sframework\doc; Components: dotscript
+Source: ..\scripts\sframework\trunk\doc\Demo.vbs; DestDir: {app}\sframework\doc; Components: dotscript
+Source: ..\scripts\sframework\trunk\doc\Simple-l10n.vbs; DestDir: {app}\sframework\doc; Components: dotscript
 Source: ..\scripts\sframework\trunk\doc\use.html; DestDir: {app}\sframework\doc; Components: dotscript
 Source: ..\scripts\sframework\trunk\core\GnuGetText.vbs; DestDir: {app}\sframework\core; Components: dotscript
 Source: ..\scripts\sframework\trunk\core\ActiveXManagerClass.vbs; DestDir: {app}\sframework\core; Components: dotscript
@@ -98,6 +101,7 @@ Source: ..\scripts\sframework\trunk\helper\MonCloser.exe; DestDir: {app}\sframew
 Source: ..\scripts\sframework\trunk\helper\AutoItX.chm; DestDir: {app}\sframework\helper; Components: dotscript
 Source: ..\scripts\sframework\trunk\helper\AutoItX.dll; DestDir: {app}\sframework\helper; Components: dotscript; Flags: regserver sharedfile
 Source: ..\scripts\sframework\trunk\helper\BramusICQ.dll; DestDir: {app}\sframework\helper; Components: dotscript; Flags: regserver sharedfile
+Source: ..\scripts\sframework\trunk\helper\MoosePlusPlusAlert.exe; DestDir: {app}\sframework\helper; Components: dotscript
 Source: ..\scripts\sframework\trunk\helper\config\ArrayData.cls; DestDir: {app}\sframework\helper\config; Components: dotscript
 Source: ..\scripts\sframework\trunk\helper\config\config.exe; DestDir: {app}\sframework\helper\config; Components: dotscript
 Source: ..\scripts\sframework\trunk\helper\config\config.vbp; DestDir: {app}\sframework\helper\config; Components: dotscript
@@ -142,14 +146,19 @@ Source: ..\scripts\sframework\trunk\plugins\WinDVD.vbs; DestDir: {app}\sframewor
 Source: ..\scripts\sframework\trunk\plugins\WinTV.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
 Source: ..\scripts\sframework\trunk\plugins\ZoomPlayer.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
 Source: ..\scripts\sframework\trunk\plugins\StreetAtlas8.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\Demo.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\Test.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
 Source: ..\scripts\sframework\trunk\plugins\SmsDBLog.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
 Source: ..\scripts\sframework\trunk\plugins\SmsTextLog.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
 Source: ..\scripts\sframework\trunk\plugins\MediaCenter.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
 Source: ..\scripts\sframework\trunk\plugins\MediaPlayer.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\PluginDisabler.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
 Source: ..\scripts\sframework\trunk\plugins\SageTV.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
+Source: ..\scripts\sframework\trunk\plugins\FmaKey.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
+Source: ..\scripts\sframework\trunk\plugins\LightAlloy.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
+Source: ..\scripts\sframework\trunk\plugins\NeroShowTime.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
+Source: ..\scripts\sframework\trunk\plugins\OnCallDisconnect.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
+Source: ..\scripts\sframework\trunk\plugins\OnCallPauseWMP.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
+Source: ..\scripts\sframework\trunk\plugins\PluginManager.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
+Source: ..\scripts\sframework\trunk\plugins\SmsReader.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
+Source: ..\scripts\sframework\trunk\plugins\WMP10.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
 Source: ..\fma\howtos\ide-howto.txt; DestDir: {app}; Components: src
 Source: ..\fma\howtos\L10n-dev-howto.txt; DestDir: {app}\source; Flags: overwritereadonly sortfilesbyextension; Components: src
 Source: ..\fma\howtos\L10n-new-template-howto.txt; DestDir: {app}\source; Flags: overwritereadonly sortfilesbyextension; Components: src
