@@ -47,11 +47,19 @@ Class UtilClass
 	End Sub
 	
 	Public Sub DisplayMsgBox( message, timeout, backSub)
-		Dim s1
+		Dim s1, maxLength
+		maxLength = 80
+		On Error Resume Next
+		If fma.isK750orBetter = True Then
+			maxLength = 5000 'docs suggest 65535
+		Else
+			maxLength = 80
+		End If
+		On Error GoTo 0
 		s1 = EscapeInvalidATChars(message)
 		' message cannot be longer than 80 chars (phone limitation)
-		If Len(s1)>80 Then
-			s1 = Left(s1, 78) & ".."
+		If Len(s1)>maxLength Then
+			s1 = Left(s1, maxLength-2) & ".."
 		End If
 		If backSub <> "" Then am.Back = backSub
 		am.DlgMsgBox s1, timeout
