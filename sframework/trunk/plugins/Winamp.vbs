@@ -99,12 +99,12 @@ Class Winamp
 			bi.Item = Array(g_(Me,"Search/Browse"),  Self & ".SearchBrowse")
 			bi.Item = Array("View file info", Self & ".Info")
 '			bi.Item = Array("Seek",           Self & ".Seek")
-			If ActiveXManager("WinampCOMLib.WinampCOMObj").Shuffle Then
+			If ActiveXManager("WinampCOMLib.WinampCOMObj").ShuffleMode Then
 				bi.Item = Array(g_(Me,"Shuffle Off"),  Self & ".Shuffle")
 			Else
 				bi.Item = Array(g_(Me,"Shuffle On"),   Self & ".Shuffle")
 			End If
-			If ActiveXManager("WinampCOMLib.WinampCOMObj").Repeat Then
+			If ActiveXManager("WinampCOMLib.WinampCOMObj").RepeatMode Then
 				bi.Item = Array(g_(Me,"Repeat Off"),   Self & ".Repeat")
 			Else
 				bi.Item = Array(g_(Me,"Repeat On"),    Self & ".Repeat")
@@ -164,12 +164,12 @@ Class Winamp
 	End Sub
 	
 	Sub Shuffle
-		ActiveXManager("WinampCOMLib.WinampCOMObj").Shuffle = Not ActiveXManager("WinampCOMLib.WinampCOMObj").Shuffle
+		ActiveXManager("WinampCOMLib.WinampCOMObj").ShuffleMode = Not ActiveXManager("WinampCOMLib.WinampCOMObj").ShuffleMode
 		Show
 	End Sub
 	
 	Sub Repeat
-		ActiveXManager("WinampCOMLib.WinampCOMObj").Repeat = Not ActiveXManager("WinampCOMLib.WinampCOMObj").Repeat
+		ActiveXManager("WinampCOMLib.WinampCOMObj").RepeatMode = Not ActiveXManager("WinampCOMLib.WinampCOMObj").RepeatMode
 		Show
 	End Sub
 	
