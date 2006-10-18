@@ -1,0 +1,20 @@
+[OPTIONS]
+Auto Index=Yes
+Compatibility=1.1 or later
+Compiled file=MobileAgent.chm
+Contents file=Table of Contents.hhc
+Default Font=Tahoma,8,0
+Default topic=html\welcome.htm
+Display compile progress=Yes
+Full text search stop list file=Full Search.stp
+Full-text search=Yes
+Index file=Index.hhk
+Language=0x409 English (United States)
+Title=FMA Help
+
+
+[FILES]
+html\welcome.htm
+
+[INFOTYPES]
+
