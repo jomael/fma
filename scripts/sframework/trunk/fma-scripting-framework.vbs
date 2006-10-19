@@ -109,10 +109,6 @@ Set Fso   = CreateObject("Scripting.FileSystemObject")
 Set Shell = CreateObject("WScript.Shell")
 
 Dim ScriptFolder
-'Should be CHANGED to FMA installation folder! 
-'This should be done automaticaly by FMA 2 installer.
-'ScriptFolder = "C:\Program Files\Fma 2\sframework\"
-
 'Autodetect script folder (ask FMA)
 On Error Resume Next
 ScriptFolder = fma.ScriptFolder
