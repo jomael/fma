@@ -1,69 +1,12 @@
 'FMA Script Framework
 'Version 1.0
 'Developed by streawkceur <twittek@smail.uni-koeln.de> and dVRVm
+'Maintained by mhr <mhr3(nospam)@users.sourceforge.net>
 
 'Main Program
-'Optimized for FMA 2.1.2.17, but should work with FMA 2.0 as well
-
-'$Id: fma-scripting-framework.vbs,v 1.5.2.6 2005/12/23 17:07:32 mhr3 Exp $
-'$Log: fma-scripting-framework.vbs,v $
-'Revision 1.5.2.6  2005/12/23 17:07:32  mhr3
-'changed version info
-'
-'Revision 1.5.2.5  2005/12/20 10:14:54  mhr3
-'optimized keymonitoring
-'
-'Revision 1.5.2.4  2005/10/05 10:40:31  mhr3
-'Merged with changes in HEAD branch
-'
-'Revision 1.7  2005/05/12 19:04:55  voxik
-'Added file identification on start of each readed file for easier identification
-'Changed core is now loaded to one eval block for easier debug
-'
-'Revision 1.6  2005/04/17 20:19:17  mhr3
-'compability issues
-'
-'Revision 1.5  2005/02/08 15:39:09  voxik
-'Merged with L10N branch
-'
-'Revision 1.2.2.3  2005/01/07 17:58:11  expertone
-'Merge with MAIN branch
-'
-'Revision 1.4  2004/12/16 08:21:45  z_stoichev
-'Fixed: Changed Global Constants to be Dims.
-'
-'Revision 1.3  2004/11/06 20:01:26  voxik
-'Changed KeyManager to properly enable and disable key monitoring.
-'
-'Revision 1.2.2.2  2004/11/15 13:18:13  expertone
-'Update script locale with current FMA GUI language/locale
-'
-'Revision 1.2.2.1  2004/11/01 20:10:34  expertone
-'Add localization (gnugettext)
-'
-'Revision 1.2  2004/09/16 07:27:12  z_stoichev
-'Fixed install dir.
-'
-'Revision 1.1  2004/09/09 08:00:31  z_stoichev
-'Imported from streawkceur's CVS
-'
-'Revision 1.39  2004/03/22 12:04:20  streawkceur
-'Modified Configurator a bit. Added configurator option to exclude some plugins from being loaded. Updated docs.
-'
-'-Using fma.Sleep now. Configurator forces script to reload settings after it saved th settings. Introduced Util.WaitForAppClose. Updated documentation. Updated Tools plugin, now it should work better. Updated Winamp plugin, now has a dialogue for setting winamp volume. Updated BramusICQ.
-'-Now _really_ added ActiveXManager
-'-Enhanced AutoMenu plugin. It now directly show a specified plugin menu instead of going to the main menu. See configurator.
-'-Checked all files for bad line ends. Now every file should work properly in Notepad.exe :)
-'-Keyword test
-
-'FMA-Bugs/-Problems:
-'-FMA could check AT command length before TX'ing. Must not be > 250 bytes! May cause an AT error otherwise
-'-FMA could check <title> length in AT command that have a title element. It seems that titles must not be >15chars. May cause an AT error otherwise
-'-FMA could check against selected item > num items in *EASM command. May cause an AT error otherwise
-'-FMA could send multiple EASM commands without final flag to put long menus.
+'Optimized for FMA 2.1 beta4, but should work with FMA 2.0 as well
 
 'Core-TODO:
-'-Test key monitoring in minimized mode
 '-Complete ManagedMenu:
 '	-am.ClearMenu, am.Selected, am.DlgOption (which looks like a normal menu...)
 '-Remove dummy key registration
