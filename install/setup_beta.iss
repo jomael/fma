@@ -50,8 +50,8 @@ Name: desktopicon; Description: Create a &Desktop FMA icon; GroupDescription: Ad
 Name: quickicon; Description: Create a &Quick Launch FMA icon; Components: bin; GroupDescription: Additional icons:
 Name: defsounds; Description: Default FMA Sound Scheme; GroupDescription: Install also:; Components: bin
 Name: msscriptctrl; Description: Microsoft Script Control; GroupDescription: Install also:; Components: ms
-Name: mscrdownload; Description: Microsoft Script 5.6; GroupDescription: Install also:; Components: ms
-Name: mxmldownload; Description: Microsoft XML 4.0 SP2; GroupDescription: Install also:; Components: ms
+Name: msscript56; Description: Microsoft Script 5.6; GroupDescription: Install also:; Components: ms
+Name: msxmlsp2; Description: Microsoft XML 4.0 SP2; GroupDescription: Install also:
 
 [Files]
 Source: ..\fma\trunk\MobileAgent.exe; DestDir: {app}; Flags: ignoreversion uninsremovereadonly; Components: bin
@@ -66,99 +66,99 @@ Source: ..\sounds\online.wav; DestDir: {app}\sounds; Components: sound
 Source: ..\sounds\ringin.wav; DestDir: {app}\sounds; Components: sound
 Source: ..\sounds\ringout.wav; DestDir: {app}\sounds; Components: sound
 Source: ..\sounds\sentmsg.wav; DestDir: {app}\sounds; Components: sound
-Source: redist\script56.chm; DestDir: {app}; Components: dotscript script
-Source: ..\scripts\CarpeDi3m1687.vbs; DestDir: {app}; Components: script
-Source: ..\scripts\CarpediWebMouse.vbs; DestDir: {app}; Components: script
-Source: ..\floAtMixer\trunk\floAtMediaCtrl.exe; DestDir: {app}\sframework\helper; Components: dotscript; Flags: sharedfile
-Source: ..\winampCOMlib\trunk\WinampCOMLib.dll; DestDir: {app}\sframework\helper; Components: dotscript; Flags: regserver sharedfile
-Source: ..\scripts\sframework\trunk\fma-scripting-framework.vbs; DestDir: {app}\sframework; Components: dotscript
-Source: ..\scripts\sframework\trunk\fma.settings-default; DestDir: {app}\sframework; DestName: fma.settings; Components: dotscript
-Source: ..\scripts\sframework\trunk\doc\configurator.png; DestDir: {app}\sframework\doc; Components: dotscript
-Source: ..\scripts\sframework\trunk\doc\core.html; DestDir: {app}\sframework\doc; Components: dotscript
-Source: ..\scripts\sframework\trunk\doc\dev.html; DestDir: {app}\sframework\doc; Components: dotscript
-Source: ..\scripts\sframework\trunk\doc\fma-scripting-framework.html; DestDir: {app}\sframework\doc; Components: dotscript
-Source: ..\scripts\sframework\trunk\doc\LinkedList.html; DestDir: {app}\sframework\doc; Components: dotscript
-Source: ..\scripts\sframework\trunk\doc\Simple.vbs; DestDir: {app}\sframework\doc; Components: dotscript
-Source: ..\scripts\sframework\trunk\doc\Test.vbs; DestDir: {app}\sframework\doc; Components: dotscript
-Source: ..\scripts\sframework\trunk\doc\Demo.vbs; DestDir: {app}\sframework\doc; Components: dotscript
-Source: ..\scripts\sframework\trunk\doc\Simple-l10n.vbs; DestDir: {app}\sframework\doc; Components: dotscript
-Source: ..\scripts\sframework\trunk\doc\use.html; DestDir: {app}\sframework\doc; Components: dotscript
-Source: ..\scripts\sframework\trunk\core\GnuGetText.vbs; DestDir: {app}\sframework\core; Components: dotscript
-Source: ..\scripts\sframework\trunk\core\ActiveXManagerClass.vbs; DestDir: {app}\sframework\core; Components: dotscript
-Source: ..\scripts\sframework\trunk\core\DebugClass.vbs; DestDir: {app}\sframework\core; Components: dotscript
-Source: ..\scripts\sframework\trunk\core\EventManagerClass.vbs; DestDir: {app}\sframework\core; Components: dotscript
-Source: ..\scripts\sframework\trunk\core\Hash.vbs; DestDir: {app}\sframework\core; Components: dotscript
-Source: ..\scripts\sframework\trunk\core\KeyManagerClass.vbs; DestDir: {app}\sframework\core; Components: dotscript
-Source: ..\scripts\sframework\trunk\core\LinkedList.vbs; DestDir: {app}\sframework\core; Components: dotscript
-Source: ..\scripts\sframework\trunk\core\ManagedMenu.vbs; DestDir: {app}\sframework\core; Components: dotscript
-Source: ..\scripts\sframework\trunk\core\PluginManagerClass.vbs; DestDir: {app}\sframework\core; Components: dotscript
-Source: ..\scripts\sframework\trunk\core\QuickSort.vbs; DestDir: {app}\sframework\core; Components: dotscript
-Source: ..\scripts\sframework\trunk\core\SettingsClass.vbs; DestDir: {app}\sframework\core; Components: dotscript
-Source: ..\scripts\sframework\trunk\core\Stack.vbs; DestDir: {app}\sframework\core; Components: dotscript
-Source: ..\scripts\sframework\trunk\core\UtilClass.vbs; DestDir: {app}\sframework\core; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\wmpuice.dll; DestDir: {app}\sframework\helper; Flags: regserver sharedfile; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\MonCloser.exe; DestDir: {app}\sframework\helper; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\AutoItX.chm; DestDir: {app}\sframework\helper; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\AutoItX.dll; DestDir: {app}\sframework\helper; Components: dotscript; Flags: regserver sharedfile
-Source: ..\scripts\sframework\trunk\helper\BramusICQ.dll; DestDir: {app}\sframework\helper; Components: dotscript; Flags: regserver sharedfile
-Source: ..\scripts\sframework\trunk\helper\MoosePlusPlusAlert.exe; DestDir: {app}\sframework\helper; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\config\ArrayData.cls; DestDir: {app}\sframework\helper\config; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\config\config.exe; DestDir: {app}\sframework\helper\config; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\config\config.vbp; DestDir: {app}\sframework\helper\config; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\config\config.vbw; DestDir: {app}\sframework\helper\config; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\config\DefaultComparator.cls; DestDir: {app}\sframework\helper\config; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\config\fma.gif; DestDir: {app}\sframework\helper\config; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\config\fma.settings.description; DestDir: {app}\sframework\helper\config; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\config\frmSettings.frm; DestDir: {app}\sframework\helper\config; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\config\frmSettings.frx; DestDir: {app}\sframework\helper\config; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\config\frmSplash.frm; DestDir: {app}\sframework\helper\config; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\config\frmSplash.frx; DestDir: {app}\sframework\helper\config; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\config\Global.bas; DestDir: {app}\sframework\helper\config; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\config\Hash.cls; DestDir: {app}\sframework\helper\config; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\config\HashItem.cls; DestDir: {app}\sframework\helper\config; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\config\PluginComparator.cls; DestDir: {app}\sframework\helper\config; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\config\QuickSort.cls; DestDir: {app}\sframework\helper\config; Components: dotscript
-Source: ..\scripts\sframework\trunk\helper\config\UtilClass.cls; DestDir: {app}\sframework\helper\config; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\AutoMenu.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\BramusICQ.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\BSPlayer.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\Camera.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\Configurator.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\FileExplorer.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\foobar2000.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\FrameworkMainMenu.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\iTunes.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\MasterVolume.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\MediaCenter9.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\MediaPlayer9.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\MediaPlayerClassic.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\MoreTV.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\Mouse.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\MousePlus.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\OnCallPauseWA.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\PluginInfo.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\PowerDVD5.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\Powerpoint.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\Tools.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\VLCPLayer.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\Winamp.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\WinDVD.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\WinTV.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\ZoomPlayer.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\StreetAtlas8.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\SmsDBLog.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\SmsTextLog.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\MediaCenter.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\MediaPlayer.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\SageTV.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\FmaKey.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\LightAlloy.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\NeroShowTime.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\OnCallDisconnect.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\OnCallPauseWMP.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\PluginManager.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\SmsReader.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
-Source: ..\scripts\sframework\trunk\plugins\WMP10.vbs; DestDir: {app}\sframework\plugins; Components: dotscript
+Source: redist\script56.chm; DestDir: {app}\help; Components: ms\scripts ms\sframe
+Source: ..\scripts\CarpeDi3m1687.vbs; DestDir: {app}; Components: ms\scripts
+Source: ..\scripts\CarpediWebMouse.vbs; DestDir: {app}; Components: ms\scripts
+Source: ..\floAtMixer\trunk\floAtMediaCtrl.exe; DestDir: {app}; Flags: sharedfile; Tasks: 
+Source: ..\winampCOMlib\trunk\WinampCOMLib.dll; DestDir: {app}\sframework\helper; Flags: regserver sharedfile; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\fma-scripting-framework.vbs; DestDir: {app}\sframework; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\fma.settings-default; DestDir: {app}\sframework; DestName: fma.settings; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\doc\configurator.png; DestDir: {app}\sframework\doc; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\doc\core.html; DestDir: {app}\sframework\doc; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\doc\dev.html; DestDir: {app}\sframework\doc; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\doc\fma-scripting-framework.html; DestDir: {app}\sframework\doc; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\doc\LinkedList.html; DestDir: {app}\sframework\doc; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\doc\Simple.vbs; DestDir: {app}\sframework\doc; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\doc\Test.vbs; DestDir: {app}\sframework\doc; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\doc\Demo.vbs; DestDir: {app}\sframework\doc; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\doc\Simple-l10n.vbs; DestDir: {app}\sframework\doc; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\doc\use.html; DestDir: {app}\sframework\doc; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\core\GnuGetText.vbs; DestDir: {app}\sframework\core; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\core\ActiveXManagerClass.vbs; DestDir: {app}\sframework\core; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\core\DebugClass.vbs; DestDir: {app}\sframework\core; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\core\EventManagerClass.vbs; DestDir: {app}\sframework\core; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\core\Hash.vbs; DestDir: {app}\sframework\core; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\core\KeyManagerClass.vbs; DestDir: {app}\sframework\core; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\core\LinkedList.vbs; DestDir: {app}\sframework\core; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\core\ManagedMenu.vbs; DestDir: {app}\sframework\core; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\core\PluginManagerClass.vbs; DestDir: {app}\sframework\core; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\core\QuickSort.vbs; DestDir: {app}\sframework\core; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\core\SettingsClass.vbs; DestDir: {app}\sframework\core; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\core\Stack.vbs; DestDir: {app}\sframework\core; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\core\UtilClass.vbs; DestDir: {app}\sframework\core; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\wmpuice.dll; DestDir: {app}\sframework\helper; Flags: regserver sharedfile; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\MonCloser.exe; DestDir: {app}\sframework\helper; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\AutoItX.chm; DestDir: {app}\sframework\helper; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\AutoItX.dll; DestDir: {app}\sframework\helper; Flags: regserver sharedfile; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\BramusICQ.dll; DestDir: {app}\sframework\helper; Flags: regserver sharedfile; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\MoosePlusPlusAlert.exe; DestDir: {app}\sframework\helper; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\config\ArrayData.cls; DestDir: {app}\sframework\helper\config; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\config\config.exe; DestDir: {app}\sframework\helper\config; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\config\config.vbp; DestDir: {app}\sframework\helper\config; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\config\config.vbw; DestDir: {app}\sframework\helper\config; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\config\DefaultComparator.cls; DestDir: {app}\sframework\helper\config; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\config\fma.gif; DestDir: {app}\sframework\helper\config; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\config\fma.settings.description; DestDir: {app}\sframework\helper\config; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\config\frmSettings.frm; DestDir: {app}\sframework\helper\config; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\config\frmSettings.frx; DestDir: {app}\sframework\helper\config; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\config\frmSplash.frm; DestDir: {app}\sframework\helper\config; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\config\frmSplash.frx; DestDir: {app}\sframework\helper\config; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\config\Global.bas; DestDir: {app}\sframework\helper\config; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\config\Hash.cls; DestDir: {app}\sframework\helper\config; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\config\HashItem.cls; DestDir: {app}\sframework\helper\config; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\config\PluginComparator.cls; DestDir: {app}\sframework\helper\config; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\config\QuickSort.cls; DestDir: {app}\sframework\helper\config; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\helper\config\UtilClass.cls; DestDir: {app}\sframework\helper\config; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\AutoMenu.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\BramusICQ.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\BSPlayer.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\Camera.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\Configurator.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\FileExplorer.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\foobar2000.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\FrameworkMainMenu.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\iTunes.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\MasterVolume.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\MediaCenter9.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\MediaPlayer9.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\MediaPlayerClassic.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\MoreTV.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\Mouse.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\MousePlus.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\OnCallPauseWA.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\PluginInfo.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\PowerDVD5.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\Powerpoint.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\Tools.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\VLCPLayer.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\Winamp.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\WinDVD.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\WinTV.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\ZoomPlayer.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\StreetAtlas8.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\SmsDBLog.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\SmsTextLog.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\MediaCenter.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\MediaPlayer.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\SageTV.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\FmaKey.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\LightAlloy.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\NeroShowTime.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\OnCallDisconnect.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\OnCallPauseWMP.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\PluginManager.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\SmsReader.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\WMP10.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
 Source: ..\fma\howtos\ide-howto.txt; DestDir: {app}; Components: src
 Source: ..\fma\howtos\L10n-dev-howto.txt; DestDir: {app}\source; Flags: overwritereadonly sortfilesbyextension; Components: src
 Source: ..\fma\howtos\L10n-new-template-howto.txt; DestDir: {app}\source; Flags: overwritereadonly sortfilesbyextension; Components: src
@@ -319,8 +319,8 @@ Source: ..\fma\trunk\winxp.res; DestDir: {app}\source; Flags: overwritereadonly;
 Source: redist\scripten-me.exe; DestDir: {tmp}; Components: ms; Flags: deleteafterinstall; DestName: scripten.exe; MinVersion: 4.0.950,0; OnlyBelowVersion: 0,4.0.1381
 Source: redist\scripten-xp.exe; DestDir: {tmp}; Components: ms; Flags: deleteafterinstall; DestName: scripten.exe; MinVersion: 0,5.0.2195; OnlyBelowVersion: 0,5.2
 Source: redist\scripten-srv.exe; DestDir: {tmp}; Components: ms; Flags: deleteafterinstall; DestName: scripten.exe; MinVersion: 0,5.2
-Source: redist\msxml.msi; DestDir: {tmp}; Components: ms; Flags: deleteafterinstall
 Source: redist\sct10en.exe; DestDir: {tmp}; Components: ms; Flags: deleteafterinstall
+Source: redist\msxml.msi; DestDir: {tmp}; Flags: deleteafterinstall
 Source: ..\fma\help\MobileAgent.chm; DestDir: {app}\help; Components: bin
 
 [Icons]
@@ -330,39 +330,39 @@ Name: {group}\floAt's Mobile Agent; Filename: {app}\MobileAgent.exe; WorkingDir:
 Name: {group}\floAt's Mobile Agent in Debug Mode; Filename: {app}\MobileAgent.exe; Parameters: -debug -debugobex; IconIndex: 0; WorkingDir: {app}; Flags: createonlyiffileexists; Components: bin; Comment: Opens floAt's Mobile Agent application in debug mode. Useful if you have experienced some problems using FMA.
 Name: {group}\floAt's Mobile Agent Help; Filename: {app}\help\MobileAgent.chm; WorkingDir: {app}\help; Comment: Opens floAt's Mobile Agent help file.; Flags: createonlyiffileexists; Components: bin
 Name: {group}\General Public License; Filename: {app}\General Public License.rtf; WorkingDir: {app}; Comment: Opens floAt's Mobile Agent license agreement file.; Flags: createonlyiffileexists
-Name: {group}\Media Control Tray Icon; Filename: {app}\floAtMediaCtrl.exe; WorkingDir: {app}; Comment: Starts Media Control application in system tray area.; Flags: createonlyiffileexists; Components: dotscript
-Name: {group}\Project Delphi IDE Howto; Filename: {app}\ide-howto.txt; WorkingDir: {app}; Comment: Opens floAt's Mobile Agent Delphi project IDE Howto file.; Flags: createonlyiffileexists
-Name: {group}\Project Localization Howto; Filename: {app}\L10n-howto.txt; WorkingDir: {app}; Comment: Opens floAt's Mobile Agent Delphi project L18N Howto file.; Flags: createonlyiffileexists
-Name: {group}\Release Notes; Filename: {app}\history.txt; WorkingDir: {app}; Comment: Opens floAt's Mobile Agent release notes file.; Flags: createonlyiffileexists
-Name: {group}\Scripting Technologies Help; Filename: {app}\script56.chm; WorkingDir: {app}; Comment: Opens Microsoft Scripting Technologies Help file.; Flags: createonlyiffileexists; Components: dotscript script
+Name: {group}\Media Control Management; Filename: {app}\floAtMediaCtrl.exe; WorkingDir: {app}; Comment: Starts Media Control application in system tray area.; Flags: createonlyiffileexists; IconIndex: 0; Components: ms\sframe
+Name: {group}\Project Compile Notes; Filename: {app}\ide-howto.txt; WorkingDir: {app}; Comment: Opens floAt's Mobile Agent Delphi project IDE Howto file.; Flags: createonlyiffileexists
+Name: {group}\Project Localization Notes; Filename: {app}\L10n-howto.txt; WorkingDir: {app}; Comment: Opens floAt's Mobile Agent Delphi project L18N Howto file.; Flags: createonlyiffileexists
+Name: {group}\Project Release Notes; Filename: {app}\history.txt; WorkingDir: {app}; Comment: Opens floAt's Mobile Agent release notes file.; Flags: createonlyiffileexists
+Name: {group}\Scripting Technologies Help; Filename: {app}\help\script56.chm; WorkingDir: {app}\help; Comment: Opens Microsoft Scripting Technologies Help file.; Flags: createonlyiffileexists; Components: ms\scripts ms\sframe
 Name: {group}\Uninstall floAt's Mobile Agent; Filename: {uninstallexe}; Flags: createonlyiffileexists; Comment: Uninstalls floAt's Mobile Agent application.
 
 [Run]
-Filename: {app}\MobileAgent.exe; Description: Launch floAt's Mobile Agent; Flags: nowait postinstall skipifsilent; Components: bin; WorkingDir: {app}
-Filename: {app}\sframework\helper\floAtMediaCtrl.exe; WorkingDir: {app}\sframework\helper; Components: dotscript; Flags: nowait
-Filename: {tmp}\scripten.exe; Components: ms; Tasks: mscrdownload; Parameters: /q; StatusMsg: Installing Script Engine...; Flags: runminimized
+Filename: {app}\MobileAgent.exe; Description: Launch floAt's Mobile Agent; Flags: nowait skipifsilent skipifdoesntexist postinstall; Components: bin; WorkingDir: {app}
+Filename: {app}\floAtMediaCtrl.exe; WorkingDir: {app}; Flags: nowait skipifsilent skipifdoesntexist; Tasks: 
+Filename: msiexec; Flags: runminimized; Parameters: "/quiet /norestart /i ""{tmp}\msxml.msi"""; StatusMsg: Installing XML Parser...; Tasks: msxmlsp2
 Filename: {tmp}\sct10en.exe; Components: ms; Tasks: msscriptctrl; Parameters: /q; StatusMsg: Installing Script Control...; Flags: runminimized
-Filename: msiexec; Components: ms; Flags: runminimized; Tasks: mxmldownload; Parameters: "/quiet /norestart /i ""{tmp}\msxml.msi"""; StatusMsg: Installing XML Parser...
+Filename: {tmp}\scripten.exe; Components: ms; Parameters: /q; StatusMsg: Installing Script Engine...; Flags: runminimized; Tasks: msscript56
 
 [Components]
 Name: bin; Description: Application Files; Types: custom compact full
+Name: sound; Description: Sound Effect Files; Types: custom full
 Name: lang; Description: Multilanguage Support; Types: custom compact full
-Name: tools; Description: Web Update Support; Types: custom compact full
-Name: ms; Description: Scripts and XML Support; Types: custom full
-Name: sound; Description: Sound Effects; Types: custom full
-Name: script; Description: All-in-one Scripts; Types: custom full
-Name: dotscript; Description: Scripting Framework; Types: custom full
-Name: src; Description: Delphi 7 Source Code; Types: custom full
+Name: tools; Description: Web Updates Support; Types: custom compact full
+Name: ms; Description: Scripting Support; Types: custom full
+Name: ms\scripts; Description: All-in-one Scripts; Types: custom full
+Name: ms\sframe; Description: Scripting Framework; Types: custom full
+Name: src; Description: Delphi 7 Source Code; Types: custom
 
 [Dirs]
 Name: {app}\source; Components: src
 Name: {app}\sounds; Components: sound
-Name: {app}\sframework; Components: dotscript
-Name: {app}\sframework\core; Components: dotscript
-Name: {app}\sframework\doc; Components: dotscript
-Name: {app}\sframework\helper; Components: dotscript
-Name: {app}\sframework\plugins; Components: dotscript
-Name: {app}\sframework\helper\config; Components: dotscript
+Name: {app}\sframework; Components: ms\sframe
+Name: {app}\sframework\core; Components: ms\sframe
+Name: {app}\sframework\doc; Components: ms\sframe
+Name: {app}\sframework\helper; Components: ms\sframe
+Name: {app}\sframework\plugins; Components: ms\sframe
+Name: {app}\sframework\helper\config; Components: ms\sframe
 Name: {userappdata}\FMA; Flags: uninsneveruninstall; Components: bin
 Name: {app}\locale; Components: bin
 Name: {app}\locale\en; Components: bin
@@ -376,7 +376,7 @@ Root: HKCU; SubKey: AppEvents\Schemes\Apps\MobileAgent\FMA_CallReceived\.current
 Root: HKCU; SubKey: AppEvents\Schemes\Apps\MobileAgent\FMA_Calling\.current; ValueType: string; ValueData: {app}\Sounds\ringout.wav; Flags: createvalueifdoesntexist uninsdeletevalue uninsdeletekeyifempty; Components: sound; Tasks: defsounds
 Root: HKCU; SubKey: AppEvents\Schemes\Apps\MobileAgent\FMA_SMSReceived\.current; ValueType: string; ValueData: {app}\Sounds\newmsg.wav; Flags: createvalueifdoesntexist uninsdeletevalue uninsdeletekeyifempty; Components: sound; Tasks: defsounds
 Root: HKCU; SubKey: AppEvents\Schemes\Apps\MobileAgent\FMA_SMSSent\.current; ValueType: string; ValueData: {app}\Sounds\sentmsg.wav; Flags: createvalueifdoesntexist uninsdeletevalue uninsdeletekeyifempty; Components: sound; Tasks: defsounds
-Root: HKCU; Subkey: Software\floAt\MobileAgent; ValueType: string; ValueName: ScriptFile; ValueData: {app}\sframework\fma-scripting-framework.vbs; Flags: uninsdeletekeyifempty uninsdeletevalue createvalueifdoesntexist; Components: dotscript
+Root: HKCU; Subkey: Software\floAt\MobileAgent; ValueType: string; ValueName: ScriptFile; ValueData: {app}\sframework\fma-scripting-framework.vbs; Flags: uninsdeletekeyifempty uninsdeletevalue createvalueifdoesntexist; Components: ms\sframe
 
 [UninstallDelete]
 Name: {app}\*.dif; Type: files
@@ -386,6 +386,7 @@ Name: {app}\MobileAgent.lst; Type: files
 Name: {app}\data; Type: dirifempty
 Name: {app}\locale; Type: filesandordirs
 Name: {userappdata}\FMA\default.tmp; Type: filesandordirs
+Name: {userappdata}\FMA; Type: dirifempty
 
 [_ISTool]
 UseAbsolutePaths=false
