@@ -14,8 +14,8 @@ InfoAfterFile=history.txt
 OutputBaseFilename=fma-2.1-beta-4-setup
 LicenseFile=General Public License.rtf
 Compression=bzip
-WizardImageFile=..\resources\setup\fma_wizard_z610.bmp
-WizardSmallImageFile=..\resources\setup\fma_wizard_small_z610.bmp
+WizardImageFile=..\resources\setup\fma_wizard_z610_black.bmp
+WizardSmallImageFile=..\resources\setup\fma_wizard_small_z610_black.bmp
 WindowVisible=false
 BackColor=clGreen
 BackColor2=clBlack
@@ -50,8 +50,8 @@ Name: desktopicon; Description: Create a &Desktop FMA icon; GroupDescription: Ad
 Name: quickicon; Description: Create a &Quick Launch FMA icon; Components: bin; GroupDescription: Additional icons:
 Name: defsounds; Description: Default FMA Sound Scheme; GroupDescription: Install also:; Components: bin
 Name: msscriptctrl; Description: Microsoft Script Control; GroupDescription: Install also:; Components: ms
-Name: mscrdownload; Description: Microsoft Script 5.6; Flags: unchecked; GroupDescription: Install also:; Components: ms
-Name: mxmldownload; Description: Microsoft XML 4.0 SP2; Flags: unchecked; GroupDescription: Install also:; Components: ms
+Name: mscrdownload; Description: Microsoft Script 5.6; GroupDescription: Install also:; Components: ms
+Name: mxmldownload; Description: Microsoft XML 4.0 SP2; GroupDescription: Install also:; Components: ms
 
 [Files]
 Source: ..\fma\trunk\MobileAgent.exe; DestDir: {app}; Flags: ignoreversion uninsremovereadonly; Components: bin
@@ -348,11 +348,11 @@ Filename: msiexec; Components: ms; Flags: runminimized; Tasks: mxmldownload; Par
 Name: bin; Description: Application Files; Types: custom compact full
 Name: lang; Description: Multilanguage Support; Types: custom compact full
 Name: tools; Description: Web Update Support; Types: custom compact full
+Name: ms; Description: Scripts and XML Support; Types: custom full
 Name: sound; Description: Sound Effects; Types: custom full
 Name: script; Description: All-in-one Scripts; Types: custom full
 Name: dotscript; Description: Scripting Framework; Types: custom full
 Name: src; Description: Delphi 7 Source Code; Types: custom full
-Name: ms; Description: Required Components; Types: custom full
 
 [Dirs]
 Name: {app}\source; Components: src
@@ -389,4 +389,3 @@ Name: {userappdata}\FMA\default.tmp; Type: filesandordirs
 
 [_ISTool]
 UseAbsolutePaths=false
-
