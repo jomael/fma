@@ -6,6 +6,7 @@ Contents file=Table of Contents.hhc
 Default Font=Tahoma,8,0
 Default topic=html\welcome.htm
 Display compile progress=Yes
+Error log file=Compile.log
 Full text search stop list file=Full Search.stp
 Full-text search=Yes
 Index file=Index.hhk
