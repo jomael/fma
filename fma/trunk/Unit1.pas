@@ -8784,7 +8784,8 @@ begin
             Parent := Self;
             ComPort := Self.ComPort;
             ComProperty := cpPort;
-            if (Items.Count <> 0) and (Items.IndexOf(s) = -1) and (ThreadSafe.ConnectionType = 2) then begin
+            if (FSelPhone <> '') and (Items.Count <> 0) and (Items.IndexOf(s) = -1) and
+              (ThreadSafe.ConnectionType = 2) then begin
               { Ignore obsolete com ports stored in profile DB }
               w := WideFormat(_('Please select a COM port in Options | Connectivity prior connecting to %s.'),[FSelPhone]);
               if FAppInitialized then
