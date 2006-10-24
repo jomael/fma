@@ -22,14 +22,14 @@ object Form1: TForm1
   object Splitter1: TTntSplitter
     Left = 197
     Top = 54
-    Height = 576
+    Height = 573
     Visible = False
   end
   object FramePanel: TTntPanel
     Left = 200
     Top = 54
     Width = 682
-    Height = 576
+    Height = 573
     Align = alClient
     BevelOuter = bvNone
     Color = clWindow
@@ -38,7 +38,7 @@ object Form1: TForm1
       Left = 0
       Top = 24
       Width = 682
-      Height = 552
+      Height = 549
       Align = alClient
       BevelOuter = bvNone
       BorderStyle = bsSingle
@@ -47,7 +47,7 @@ object Form1: TForm1
       Visible = False
       DesignSize = (
         678
-        548)
+        545)
       object TntPageControl1: TTntPageControl
         Left = 4
         Top = 4
@@ -554,7 +554,7 @@ object Form1: TForm1
   end
   object StatusBar: TTntStatusBar
     Left = 0
-    Top = 630
+    Top = 627
     Width = 882
     Height = 19
     Panels = <
@@ -603,7 +603,7 @@ object Form1: TForm1
         Control = tbMainMenu
         ImageIndex = -1
         MinHeight = 21
-        Width = 600
+        Width = 601
       end
       item
         Break = False
@@ -611,7 +611,7 @@ object Form1: TForm1
         ImageIndex = -1
         MinHeight = 22
         Visible = False
-        Width = 127
+        Width = 125
       end
       item
         Break = False
@@ -619,7 +619,7 @@ object Form1: TForm1
         ImageIndex = -1
         MinHeight = 24
         Visible = False
-        Width = 145
+        Width = 146
       end
       item
         Control = tbStandard
@@ -633,28 +633,28 @@ object Form1: TForm1
         Control = tbExplorer
         ImageIndex = -1
         MinHeight = 24
-        Width = 213
+        Width = 219
       end
       item
         Break = False
         Control = tbMessages
         ImageIndex = -1
         MinHeight = 24
-        Width = 292
+        Width = 291
       end
       item
         Break = False
         Control = tbCalls
         ImageIndex = -1
         MinHeight = 24
-        Width = 128
+        Width = 123
       end>
     EdgeBorders = [ebTop, ebBottom]
     OnChange = CoolBarChange
     object tbStandard: TToolBar
-      Left = 9
+      Left = 12
       Top = 26
-      Width = 224
+      Width = 222
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -747,9 +747,9 @@ object Form1: TForm1
       end
     end
     object tbProfile: TToolBar
-      Left = 613
+      Left = 617
       Top = 1
-      Width = 116
+      Width = 111
       Height = 22
       AutoSize = True
       ButtonWidth = 25
@@ -782,9 +782,9 @@ object Form1: TForm1
       end
     end
     object tbMessages: TToolBar
-      Left = 465
+      Left = 474
       Top = 26
-      Width = 281
+      Width = 278
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -872,9 +872,9 @@ object Form1: TForm1
       end
     end
     object tbCalls: TToolBar
-      Left = 761
+      Left = 769
       Top = 26
-      Width = 117
+      Width = 109
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -911,9 +911,9 @@ object Form1: TForm1
       end
     end
     object tbMainMenu: TToolBar
-      Left = 9
+      Left = 12
       Top = 1
-      Width = 589
+      Width = 587
       Height = 21
       AutoSize = True
       ButtonHeight = 21
@@ -930,9 +930,9 @@ object Form1: TForm1
       OnCustomDrawButton = tbMainMenuCustomDrawButton
     end
     object tbPhone: TToolBar
-      Left = 744
+      Left = 746
       Top = 0
-      Width = 134
+      Width = 132
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -967,7 +967,7 @@ object Form1: TForm1
       end
     end
     object tbExplorer: TToolBar
-      Left = 248
+      Left = 251
       Top = 26
       Width = 206
       Height = 24
@@ -1047,7 +1047,7 @@ object Form1: TForm1
     Left = 0
     Top = 54
     Width = 197
-    Height = 576
+    Height = 573
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 0
@@ -1095,7 +1095,7 @@ object Form1: TForm1
       Left = 0
       Top = 22
       Width = 197
-      Height = 554
+      Height = 551
       HelpContext = 1
       Align = alClient
       BevelInner = bvLowered
@@ -1114,13 +1114,15 @@ object Form1: TForm1
       PopupMenu = PopupMenu1
       TabOrder = 1
       TreeOptions.AutoOptions = [toAutoDropExpand, toAutoScrollOnExpand, toAutoSpanColumns, toAutoTristateTracking, toAutoDeleteMovedNodes]
-      TreeOptions.MiscOptions = [toFullRepaintOnResize, toInitOnSave, toReportMode, toToggleOnDblClick, toWheelPanning]
+      TreeOptions.MiscOptions = [toAcceptOLEDrop, toFullRepaintOnResize, toInitOnSave, toReportMode, toToggleOnDblClick, toWheelPanning]
       TreeOptions.PaintOptions = [toHotTrack, toShowButtons, toShowDropmark, toShowRoot, toShowTreeLines, toThemeAware, toUseBlendedImages]
       OnAfterCellPaint = ExplorerNewAfterCellPaint
       OnChange = ExplorerNewChange
       OnClick = ExplorerNewClick
       OnContextPopup = ExplorerNewContextPopup
       OnDblClick = ExplorerNewDblClick
+      OnDragOver = ExplorerNewDragOver
+      OnDragDrop = ExplorerNewDragDrop
       OnFreeNode = ExplorerNewFreeNode
       OnGetText = ExplorerNewGetText
       OnPaintText = ExplorerNewPaintText

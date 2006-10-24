@@ -904,7 +904,7 @@ begin
   MarkasRead1.Enabled := HasUnread;
   MarkasUnread1.Enabled := HasRead;
   MarkAllRead1.Enabled := CanModifyReadStatus;
-  DownloadSMS1.Enabled := (not Form1.FConnected or not Form1.FObex.Connected) and 
+  DownloadSMS1.Enabled := (not Form1.FConnected or not Form1.FObex.Connected) and
     ((Form1.ExplorerNew.FocusedNode = Form1.FNodeMsgInbox) or (Form1.ExplorerNew.FocusedNode = Form1.FNodeMsgSent));
   data := Form1.ExplorerNew.GetNodeData(Form1.ExplorerNew.FocusedNode);
   SendToPhone1.Enabled := not SendMessage1.Visible and Form1.FConnected and not Form1.FObex.Connected and
@@ -1064,6 +1064,9 @@ procedure TfrmMsgView.ListMsgChange(Sender: TBaseVirtualTree;
 begin
   ResetAutoMarkAsReadTimer;
   UpdatePropertiesStatus;
+  // we need to update actions (for drag&drop)
+  Form1.ActionSMSToFolder.Update;
+  pmListMsgPopup(nil);
 end;
 
 procedure TfrmMsgView.Timer1Timer(Sender: TObject);

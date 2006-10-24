@@ -36,7 +36,7 @@ uses
   LMDProgressFill, LMDHookComponent, LMDFMDrop, WSocket, WBluetoothSocket, WIrCOMMSocket, mmsystem, uAccessoriesMenu,
   uMissedCalls, uKeyPad, CoolTrayIcon, WebUtil, jpeg, AMixer, LMDFill, WebUpdate, aw_SCtrl, CPort, uScriptEditor,
   uContactSync, uChatSMS, GR32_Image, uFiles, uSyncCalendar, PBFolderDialog, uSIMEdit, uMEEdit, uMsgView, uInfoView,
-  uXML, uSyncPhonebook, uSyncBookmarks, uVCard, uLog, uLogger, SEProgress, USBMonitor;
+  uXML, uSyncPhonebook, uSyncBookmarks, uVCard, uLog, uLogger, SEProgress, USBMonitor, ActiveX;
 
 const
   LongOperationsTimeout = 45000; // 45 seconds (for searching in phone book, sending messages etc.)
@@ -760,6 +760,13 @@ type
     procedure ActionToolsExportCalendarUpdate(Sender: TObject);
     procedure ActionToolsImportCalendarExecute(Sender: TObject);
     procedure ActionToolsImportCalendarUpdate(Sender: TObject);
+    procedure ExplorerNewDragOver(Sender: TBaseVirtualTree;
+      Source: TObject; Shift: TShiftState; State: TDragState; Pt: TPoint;
+      Mode: TDropMode; var Effect: Integer; var Accept: Boolean);
+    procedure ExplorerNewDragDrop(Sender: TBaseVirtualTree;
+      Source: TObject; DataObject: IDataObject; Formats: TFormatArray;
+      Shift: TShiftState; Pt: TPoint; var Effect: Integer;
+      Mode: TDropMode);
   private
     { Private declarations }
     LastSMSSendFailure,LastSMSReceiveFailure: TDateTime;
@@ -11019,7 +11026,7 @@ var
   end;
   procedure ClearUserFolders(Root: PVirtualNode);
   var
-    itNode: PVirtualNode;
+    itNode, itNode2: PVirtualNode;
     data: PFmaExplorerNode;
   begin
     if (Root = nil) or (Root = FNodeContactsME) or (Root = FNodeContactsSM) then
@@ -11028,16 +11035,11 @@ var
     itNode := Root.FirstChild;
     while itNode <> nil do begin
       ClearUserFolders(itNode);
-      itNode := itNode.NextSibling;
-    end;
-
-    itNode := Root.LastChild;
-    while itNode <> nil do begin
+      itNode2 := itNode.NextSibling;
       data := ExplorerNew.GetNodeData(itNode);
       if data.StateIndex = FmaSMSSubFolderFlag then
         ExplorerNew.DeleteNode(itNode);
-      itNode := itNode.PrevSibling;
-      // TODO -omhr: fix!!!
+      itNode := itNode2;
     end;
   end;
 begin
@@ -15262,6 +15264,65 @@ end;
 function TForm1.IsK610orBetter(BrandName: WideString): Boolean;
 begin
   Result := IsK610Clone or IsWalkmanClone; // K610 or better
+end;
+
+procedure TForm1.ExplorerNewDragOver(Sender: TBaseVirtualTree;
+  Source: TObject; Shift: TShiftState; State: TDragState; Pt: TPoint;
+  Mode: TDropMode; var Effect: Integer; var Accept: Boolean);
+var
+  TargetNode: PVirtualNode;
+  hit: THitInfo;
+  canMove, dummy: boolean;
+begin
+  Accept := False;
+  Effect := DROPEFFECT_NONE;
+  if Source is TVirtualStringTree then begin
+    if Source = frmMsgView.ListMsg then begin
+      Accept := True;
+      Sender.GetHitTestInfoAt(Pt.X, Pt.Y, True, hit);
+      TargetNode := hit.HitNode;
+      if Assigned(TargetNode) and (TargetNode <> Sender.FocusedNode) and (Mode = dmOnNode) then begin
+        // use ActionSMSToFolderUpdate
+        if ActionSMSToFolder.Enabled then begin
+          canMove := False;
+          // use OnFolderSelected
+          OnFolderSelected(nil, TargetNode, canMove, dummy);
+          if canMove then
+            Effect := DROPEFFECT_MOVE;
+        end;
+        // allow moving Drafts > Outgoing = SendfromPhone1
+        if (Sender.FocusedNode = FNodeMsgDrafts) and (TargetNode = FNodeMsgSent) then begin
+          if frmMsgView.SendfromPhone1.Enabled then
+            Effect := DROPEFFECT_MOVE;
+        end;
+        // TODO: allow Uploading to Phone folders
+      end;
+    end;
+  end;
+end;
+
+procedure TForm1.ExplorerNewDragDrop(Sender: TBaseVirtualTree;
+  Source: TObject; DataObject: IDataObject; Formats: TFormatArray;
+  Shift: TShiftState; Pt: TPoint; var Effect: Integer; Mode: TDropMode);
+var
+  DropNode: PVirtualNode;
+  hit: THitInfo;
+begin
+  // handle Drop event
+  if (Source is TVirtualStringTree) and (Source = frmMsgView.ListMsg) then begin
+    Sender.GetHitTestInfoAt(Pt.X, Pt.Y, True, hit);
+    DropNode := hit.HitNode;
+    if DropNode = nil then Exit;
+    // basically same as ActionSMSToFolderExecute
+    if (ActionSMSToFolder.Enabled) and (DropNode <> FNodeMsgSent) then begin
+      SMSToFolder(DropNode);
+      frmMsgView.DeleteSelected(False);
+    end;
+    if (DropNode = FNodeMsgSent) then begin
+      if frmMsgView.SendfromPhone1.Enabled then
+        frmMsgView.SendfromPhone1Click(nil);
+    end;
+  end;
 end;
 
 initialization
