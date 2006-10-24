@@ -9596,7 +9596,9 @@ begin
     end
     else
       TargetCanvas.Font.Style := [];
-    if (Node = Sender.FocusedNode) and ExplorerNew.Focused then
+    if (ExplorerNew.Focused) and (Node = Sender.FocusedNode) then
+      TargetCanvas.Font.Color := clHighlightText
+    else if (Node = Sender.DropTargetNode) then
       TargetCanvas.Font.Color := clHighlightText
     else
       TargetCanvas.Font.Color := clWindowText;
