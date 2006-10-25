@@ -1159,7 +1159,7 @@ type
     procedure SetActionState(act: TTntAction; state: Boolean);
 
     { Obex routines within Connect/disconnect block }
-    procedure ObexConnect(Target: widestring = '');
+    procedure ObexConnect(Target: String = '');
     procedure ObexDisconnect;
 
     function ObexGetObject(Path: Widestring; var Where: TStringList;
@@ -2579,8 +2579,8 @@ end;
 procedure TForm1.FlushOK;
 begin
   if FObex.Connected then ObexDisconnect;
-  TxAndWait(''); // this will not transmit data, but only check for stray OK response.
   ThreadSafe.AbortDetected := ThreadSafe.AbortDetected or (FObex.IsAborted and not CoolTrayIcon1.CycleIcons);
+  TxAndWait(''); // this will not transmit data, but only check for stray OK response.
 end;
 
 procedure TForm1.ComPortRxChar(Sender: TObject; Count: Integer);
@@ -5785,7 +5785,11 @@ var
 begin
   if FConnected and FConnectingComplete then begin
     for i := 0 to FileList.Count - 1 do
+    try
       ObexPutFile(FileList.Strings[i]);
+    except
+      Status(_('Phone didn''t accept sent file!'));
+    end;
   end
   else
     Beep;
@@ -6129,11 +6133,11 @@ begin
   end;
 end;
 
-procedure TForm1.ObexConnect(Target: widestring);
+procedure TForm1.ObexConnect(Target: String);
 begin
   RequestConnection;
   if not FObex.Connected then
-    FObex.Connect(WideStringToLongString(Target));
+    FObex.Connect(Target);
 end;
 
 function TForm1.ObexGetObject(Path: Widestring; var stream: TStream; progress: boolean): cardinal;
