@@ -50,8 +50,6 @@ PluginManager("MediaPlayer")\\Exe
 C:\\Program Files\\Windows Media Player\\wmplayer.exe
 PluginManager("VLCPlayer")\\Exe
 C:\\Program Files\\VideoLAN\\VLC\\vlc.exe
-PluginManager("VLCPLayer")\\Exe
-C:\\Program Files\\VideoLAN\\VLC\\vlc.exe
 PluginManager("MediaPlayerClassic")\\Title
 Media Player Classic
 PluginManager("SmsDBLog")\\InsertCommand

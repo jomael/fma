@@ -1,6 +1,6 @@
 'Controls the VLC Player
 
-Class VLCPLayer
+Class VLCPlayer
 
 Private m_Self 'Reference to myself
 Private mainMenu 'The menu
