@@ -1,9 +1,9 @@
 Option Explicit
-'------------ CarpeDi3m1687.vbscript version 3.5b (see below for actual number) ------------
+'------------ CarpeDi3m1687.vbscript version 3.5d (see below for actual number) ------------
 
 ' :: Requirements ::
 
-'       * FMA build "0.1.1.16" or later
+'       * FMA build "2.1.1.102" or later
 '       * Microsoft Script Control engine
 '       * WinampControl build "1.3" or later
 '       * Float's Media Control "1.5.1.2" or later
@@ -22,7 +22,8 @@ Option Explicit
 '       * Speech Text by skyw33
 '       * WMP 9/10 control by mhr
 '       * PowerDVD6 control extended by herb.solo
-
+'       * RadLight control extended by !MOJSO!
+'       * Monitor ON/OF control extended by !MOJSO!
 ' :: More ::
 
 '       * original script created by CarpeDi3m <CarpeDi3m1687@hotmail.com>
@@ -156,7 +157,16 @@ Option Explicit
 '     - DVD navigation (left, right, up, down, main menu, select)
 '     - Launch/Close WinDVD
 
-'
+''   * RadLight
+'     - standard play functions ( play, pause, stop, prev, next )
+'     - prev/next
+'     - fast forward/reverse
+'     - jump ahead/back
+'     - fullscreen toggle
+'     - subtitle on/off     
+'     - launch/close RadLight
+'                    Tested on RadLight version 3.03 [R5]   
+'                                 created by !MOJSO! <mojsovski@gmail.com>
 
 ' ---- TV software ----
 
@@ -226,7 +236,8 @@ Option Explicit
 '       - shutdown
 '       - hibernate
 '       - reboot
-'     + TODO > monitor on/off using SF's prog
+'       - Monitor ON/OF To work properly insert a corect program location of Floats` Mobile Agent  Go to script line 284  (fmadir = C:\Program Files\Fma 2) 
+'                         Monitor on/of  created by !MOJSO! <mojsovski@gmail.com>
 
 '   * Internet browsing using MSIE
 '     - entering address
@@ -237,7 +248,7 @@ Option Explicit
 '     - enter text (press *)
 '     - enter key (press #)
 
- ---- config ----
+ '---- config ----
 
 
 '   * Custom MenuSettings (option button)
@@ -264,11 +275,13 @@ Option Explicit
 Public FileName
 Public OutputDirectory
 Public ProgramDir
+Public fmadir
 
 ProgramDir = "C:\Program Files" 'for englisch systems
 'ProgramDir = "C:\Programme" 'for german systems
 
 WinampDir = "C:\Program Files\Winamp5"
+fmadir = fma.MobileAgentFolder      'Float's Mobile Agent Directory
 
 Sub setDefault()
   FileName = "/Pictures/Picture(1).jpg"
@@ -306,9 +319,9 @@ Sub setDefault()
 '  addRootItem(13)		'Zoom-Player
   addRootItem(14)		'Browse Files
   addRootItem(15)		'Iexplore
-
+  addRootItem(16)       'RadLight
 '--------------------- menu order ------------------------------
-  
+
 '********************** end custom config **********************
 
 
@@ -321,7 +334,7 @@ Public RootID		'rows are ordered by ID
 Public RootEXE
 
 Sub initRootID()          'inits all menuitems
-  Redim RootEXE(15)
+  Redim RootEXE(16)
 
 '************ Change these settings as needed *************
 
@@ -329,7 +342,7 @@ Sub initRootID()          'inits all menuitems
   RootEXE(1) = ProgramDir & "\MoreTV.353\MoreTV.exe"
   RootEXE(2) = WinampDir & "\winamp.exe"
   RootEXE(3) = ProgramDir & "\CyberLink\PowerDVD\PowerDVD.exe"
-  RootEXE(4) = ProgramDir & "\Webteh\BSPlayer\bplay.exe"
+  RootEXE(4) = ProgramDir & "\Webteh\BSplayer\bplay.exe"
   RootEXE(5) = "wmplayer.exe"
 
   RootEXE(6) = "" 'NOT USED volume control
@@ -340,14 +353,14 @@ Sub initRootID()          'inits all menuitems
   RootEXE(10) = ProgramDir & "\InterVideo\DVD6\WinVD.exe"
   RootEXE(11) = "iTunes.exe"
   RootEXE(12) = ProgramDir & "\DScaler\DScaler.EXE"
-  RootEXE(13) = ProgramDir & "\Zoomplayer\ZPlayer.exe"  
+  RootEXE(13) = ProgramDir & "\Zoomplayer\ZPlayer.exe"
 
   RootEXE(14) = "" 'NOT USED browse files
   RootEXE(15) = ProgramDir & "\Internet Explorer\iexplore.exe" 'internet expl
-
+  RootEXE(16) = ProgramDir & "\RadLight\RadLight3\RadLight.exe"
 '********************** end custom config **********************
 
-  Redim RootID(15,2)
+  Redim RootID(16,2)
   RootID(0,0) = 0		                             'id
   RootID(0,1) = "Win TV"	                       'name in menu
   RootID(0,2) = "enterWinTV"                     'method to enter menu
@@ -379,7 +392,7 @@ Sub initRootID()          'inits all menuitems
   RootID(7,0) = 7
   RootID(7,1) = "PowerPoint"
   RootID(7,2) = "enterPowerPoint"
-  
+
   RootID(8,0) = 8
   RootID(8,1) = "Misc Control"
   RootID(8,2) = "enterMiscControl"
@@ -403,7 +416,7 @@ Sub initRootID()          'inits all menuitems
   RootID(13,0) = 13
   RootID(13,1) = "Zoom Player"
   RootID(13,2) = "enterZoomPlayer"
-  
+
   RootID(14,0) = 14
   RootID(14,1) = "Browse Files"
   RootID(14,2) = "enterBrowse"
@@ -411,6 +424,10 @@ Sub initRootID()          'inits all menuitems
   RootID(15,0) = 15
   RootID(15,1) = "Browse WWW"
   RootID(15,2) = "enterExplorer"
+
+  RootID(16,0) = 16
+  RootID(16,1) = "RadLight"
+  RootID(16,2) = "enterRadLight"
 End Sub
 
 
@@ -443,7 +460,7 @@ Sub gotoMethod()		'called after exiting volume
         enterMoreTV
       End If
 
-    Case 2 
+    Case 2
       Select Case GotoMethodValue
         Case "enterWinamp"    enterWinamp
         Case "winampSearch"   winampSearch
@@ -477,6 +494,7 @@ Sub gotoMethod()		'called after exiting volume
     Case 13 enterZoomPlayer
     Case 14 enterBrowse
     Case 15 enterExplorer
+    Case 16 enterRadLight
   End Select
 End Sub
 
@@ -596,7 +614,7 @@ Sub OnInit()
   'Reapply settings (usualy after editing the script inside FMA)
   OnDisconnected
   OnConnected
-  
+
   'Add main menu options
   fma.AddCmd "How to build your own scripts?", "OnFMAScriptHowto"
   fma.AddCmd "-", ""
@@ -648,15 +666,15 @@ On Error GoTo 0
 
   setDefault			'set default user settings
   readSettings			'read stored user settings (if config file is available)
- 
+
   GetPlayListBool = TRUE
-  
+
   BSPlayerZoomValue = 1
 
   WinampCtrl.PathExe = WinampDir
 
   WinampVol = 128
-  WinampCtrl.SetVolume = WinampVol  
+  WinampCtrl.SetVolume = WinampVol
   VolumeBackup = VolumeCtrl.Volume
 
   WinampCtrl.GetPlaylistMode = 1
@@ -924,7 +942,7 @@ Function filter(str)				'filters a String
   s = replace(s,Chr(132),",,")  'safe
   s = replace(s,Chr(133),"...")
   s = replace(s,Chr(134),"+")
-  s = replace(s,Chr(135),"++")  
+  s = replace(s,Chr(135),"++")
   s = replace(s,Chr(136),"^")
   s = replace(s,Chr(137),"%")
   s = replace(s,Chr(138),"S")
@@ -1013,7 +1031,7 @@ Function filter(str)				'filters a String
   s = replace(s,Chr(214),"O")
   s = replace(s,Chr(215),"x")
   s = replace(s,Chr(216),"O")
-  
+
   s = replace(s,Chr(217),"U")
   s = replace(s,Chr(218),"U")
   s = replace(s,Chr(219),"U")
@@ -1059,7 +1077,7 @@ Function filter(str)				'filters a String
   s = replace(s,Chr(250),"u")
   s = replace(s,Chr(251),"u")
   s = replace(s,Chr(252),"u")
-  
+
   s = replace(s,Chr(253),"y")
   s = replace(s,Chr(254),"") '?
 
@@ -1068,7 +1086,7 @@ End Function
 
 '------------------ String Pixels calculation -------------
 
-Function strPix(str,max)			'return #pixels needed to display string and 
+Function strPix(str,max)			'return #pixels needed to display string and
   Dim i, pixsize
 
   If (Max = -1) Then				'no maximum break
@@ -1184,10 +1202,10 @@ Function center(Str,char)		'center str with char sign on left and right side
   If (pixs = -1) Then		'if #str is larger dan screenwidth  (overflow)
     center = str
     Exit Function
-    
+
   Else
     r = ScreenWidth - pixs	'remaining pixels
-  
+
     If (char = "") Then
       s = (ScreenWidth - pixs)\6		'determine number of spaces at left side (remaining pixels div. by 2*3 space pixels)
       center = Space(s) & Str
@@ -1196,7 +1214,7 @@ Function center(Str,char)		'center str with char sign on left and right side
       p = 2*pixelsOf(char)
 
       i = r\p
-      s = (r - i*p)\6  
+      s = (r - i*p)\6
     End If
   End If
   center = Space(s) & String(i,char) & str & String(i,char)
@@ -1209,7 +1227,7 @@ Sub about()
 
   Dim title, text, text1, text2, text3, text4
   title = "about"
-  
+
   If (MyPhoneType(1)<3) Then
     text1 = "CarpeDi3m1687 v" & ScriptVersion
     text2 = "        by CarpeDi3m      "
@@ -1221,10 +1239,10 @@ Sub about()
   End If
   text4 = "Contributors: daveo, skyw33, HRS, Vit Ondruch, mhr, nossenigma, hazart, eMBee"
 ' all should be mentioned, no?
-  
+
   text = text1 & text2 & text3 & text4
 
-  am.NextState = 2  
+  am.NextState = 2
   am.DlgInformation title, text
   am.back = "onAMRoot"
 End Sub
@@ -1301,7 +1319,7 @@ Sub browse
   i=3						'drive letters
   For Each oDrive in oDrives
     Select Case oDrive.DriveType
-      Case 1 
+      Case 1
         TempVolumeName = "- Removable"
       Case 2
         TempVolumeName = " <" & filter(oDrive.VolumeName) & ">"
@@ -1344,7 +1362,7 @@ Sub browse
   Next
 
   EndFiles = i-1
-  
+
   If ((BeginFolders>EndFolders) And (BeginFiles>EndFiles)) Then
     If (CurrentItem = "selectPlaylist") Then
       BrowseFilesArray(i,0) = "Empty"
@@ -1410,7 +1428,7 @@ Sub browseShow
   Next
 
   am.NextState = 2
-  am.Update   
+  am.Update
 End Sub
 
 Sub browseOption
@@ -1591,7 +1609,7 @@ Sub winamp()
     If (WinampCtrl.GetPlayListLength > 0) Then		'not empty playlist
        SaveSongState = WinampCtrl.GetSongState
 
-       Select Case SaveSongState 
+       Select Case SaveSongState
          Case "Playing"
            am.AddItem "> " & songTitle(SavePlayListPos-1,-ScreenWidth), "enterPlayList"
          Case "Stopped"
@@ -1622,7 +1640,7 @@ Sub winamp()
        End Select
      am.Title = Left(SaveSongState & " #" & SavePlayListPos,15)
      Else
-       am.Title = "Empty playlist" 
+       am.Title = "Empty playlist"
      End If
 
      am.AddItem "Playlists", "browsePlaylist"
@@ -1753,7 +1771,7 @@ Sub playList(p)			'first track on list is p=0
     fma.AddTimer 4000, "playlistUpdate"
   End If
 
-  Pos = p				'var needed to pass to: prevPlayList, nextPlayList, playSongs(1..9) 
+  Pos = p				'var needed to pass to: prevPlayList, nextPlayList, playSongs(1..9)
 
   setItemPress("clickOnSong")
   For i=0 to NrSongsOnPage-1
@@ -1846,11 +1864,11 @@ End Sub
 
 Sub nextPlayList()
   Pos = Pos+NrSongsOnPage
- 
+
   If (Pos > getTotalSongs-1) Then		'last page
     Pos = 0
   End If
-  
+
   playList(Pos)		'Show new playlist with song# (Pos) as top of the list
 End Sub
 
@@ -1869,7 +1887,7 @@ Function getSong(p)				'return songtitle of song p
     Exit Function
   ElseIf (simpleSearchOn) Then
     mark = " "
-    For i=0 to SearchResult-1 
+    For i=0 to SearchResult-1
       If (WinampCtrl.GetSearchSong(i)=p) Then
         mark = "- "
         Exit For
@@ -1921,7 +1939,7 @@ Function invertGetIndex(i)
 End Function
 
 Sub songInfo(i)							'show song info of song# i
-  Dim arrSong, arrArtist, tempArr 
+  Dim arrSong, arrArtist, tempArr
   Dim artist, song, track, length, line1, line2, line3, line4, line5, line6, line7
 
   setGotoMethod("songInfo")
@@ -1929,7 +1947,7 @@ Sub songInfo(i)							'show song info of song# i
   deleteTimers
   fma.AddTimer 2250, "songInfoUpdate"
   LastArg1 = i
-  
+
   WinampCtrl.SongPosParseTime = TRUE
   WinampCtrl.SetLengthParseTime = TRUE				'sets return of WinampCtrl.GetSongLength to (h:m:s)
 
@@ -1938,7 +1956,7 @@ Sub songInfo(i)							'show song info of song# i
 
   track = " [ " & invertGetIndex(i)+1 & " of " & getTotalSongs & " ] "
   length = " ( " & WinampCtrl.GetSongLength & " ) "
-  
+
   arrSong = splitString(song)
   arrArtist = splitString(artist)
 
@@ -1990,9 +2008,9 @@ Sub songInfo2()							'show song info of song#
   am.Title = Left("( " & WinampCtrl.GetSongPosition & " )",15)
 
   CurrentItem = "songInfo2"
-  
+
   am.AddItem center("Samplerate: " & WinampCtrl.GetSongSampleRate & "kHz",""), "enterPlayList"
-  am.AddItem center("Bitrate: " & WinampCtrl.GetSongBitRate & "kbps",""), "enterPlayList"    
+  am.AddItem center("Bitrate: " & WinampCtrl.GetSongBitRate & "kbps",""), "enterPlayList"
   am.AddItem center(songChanel,""), "enterPlayList"
 
   am.Back = "exitSongInfo"
@@ -2044,7 +2062,7 @@ Sub boxT68i(line1,line2,line3,line4,line5,line6,line7)	'function needed for song
   am.AddItem line2, "exitSongInfo"
   am.AddItem line3, "exitSongInfo"
   am.AddItem line4, "exitSongInfo"
-  am.AddItem line5, "exitSongInfo"    
+  am.AddItem line5, "exitSongInfo"
   am.AddItem line6, "exitSongInfo"
   am.AddItem line7, "exitSongInfo"
   am.NextState=2
@@ -2062,7 +2080,7 @@ Sub boxT610(line1,line2,line3,line4,line5,line6,line7)	'function needed for song
 
   SongOneLine = (Trim(line2) = "") Or (Trim(line3) = "")
   ArtistOneLine = (Trim(line6) = "")
-  
+
   If ((Not SongOneLine) Or ArtistOneLine) Then	'song multiple lines
     am.AddItem line2, "exitSongInfo"
   Else
@@ -2073,7 +2091,7 @@ Sub boxT610(line1,line2,line3,line4,line5,line6,line7)	'function needed for song
   am.AddItem line4, "exitSongInfo"
 
   If (Not ArtistOneLine) Then		 'Artist multiple lines
-    am.AddItem line5, "exitSongInfo"    
+    am.AddItem line5, "exitSongInfo"
   Else					 'Artist single line
     Line6 = line5
   End If
@@ -2101,7 +2119,7 @@ Sub enterSeek()
 
   setGotoMethod("enterSeek")
   CurrentItem = "seek"
-  
+
   SavePlayListPos = WinampCtrl.GetPlayListPosition
 
   WinampCtrl.SongPosParseTime = FALSE
@@ -2256,7 +2274,7 @@ Sub winampSearch()
   am.AddItem "Search artist", "searchArtist"
   am.AddItem "Search songtitle", "searchSong"
   am.AddItem "Show all artists", "enterAllArtists"
-  
+
   am.Back = "enterWinamp"
   am.NextState=2
   am.Update
@@ -2349,7 +2367,7 @@ Sub simpleResults
     Else
       am.AddItem SearchResult & " results", "gotoSimpleSearchPlayList"
     End If
-    
+
     am.AddItem "New search", "simpleSearch"
   Else
     am.AddItem "No results", "enterPlaylist"
@@ -2358,7 +2376,7 @@ Sub simpleResults
 
   am.back = "playlistOptions"
   am.NextState=2
-  am.Update  
+  am.Update
 End Sub
 
 
@@ -2495,7 +2513,7 @@ Sub allArtists   'show list of all artists
 
   SearchResult = WinampCtrl.GetTotalUniqueArtist
   am.Title = Left("[" & CStr(PagePos+1) & "/" & CStr((SearchResult \ NrResults)+1) & "]",15)
-  
+
   Dim i, i2
   i2 = PagePos*NrResults
 
@@ -2538,7 +2556,7 @@ Sub prevArtists  'prev page of artists
     PagePos = PagePos - 1
   End If
 
-  If (CurrentItem = "allArtists") Then 
+  If (CurrentItem = "allArtists") Then
     allArtists
   Else
     artistResults
@@ -2585,9 +2603,9 @@ Sub volumeControl()
 
   am.Title = Left(VolStat,15)
 
-  If VolStat = "Muted" Then 
+  If VolStat = "Muted" Then
     am.AddItem "UnMute", "volMute"
-  Else 
+  Else
     am.AddItem "Mute", "volMute"
     am.AddItem "Master volume", "masterVol"
   End If
@@ -2614,7 +2632,7 @@ Sub masterVolEvent(value, final)
 End Sub
 
 Sub volMute()
-  If VolumeCtrl.Mute = 1 Then 
+  If VolumeCtrl.Mute = 1 Then
     VolumeCtrl.Mute = 0
   Else
     VolumeCtrl.Mute = 1
@@ -2627,7 +2645,7 @@ End Sub
 Function getVolumeStat()
   If VolumeCtrl.Mute = 1 Then
     getVolumeStat = "Muted"
-  Else 
+  Else
     getVolumeStat = "Vol: " & VolumeCtrl.Volume & "%"
   End If
 End Function
@@ -2798,15 +2816,15 @@ Sub enterMoreTV()
   am.Clear
   moreTV
 End Sub
-        
+
 Sub moreTV()
   enterAppMenu(1)
 
   If (AppOpen) Then
     am.AddItem "Remote Mode", "channelList"
-    am.AddItem "Mute", "moreTVMute"   
-    am.AddItem "Fullscreen", "moreTVFullscreen"       
-    am.AddItem "Videotext", "moreTVVideotext"    
+    am.AddItem "Mute", "moreTVMute"
+    am.AddItem "Fullscreen", "moreTVFullscreen"
+    am.AddItem "Videotext", "moreTVVideotext"
     am.AddItem "Close MoreTV", "moreTVClose"
   Else
     am.AddItem "Launch MoreTV", "moreTVLaunch"
@@ -3165,6 +3183,99 @@ Sub zoomPlayerRewind
 	am.Update
 End Sub
 
+'----------------- RadLight control ------------------
+'id=16
+
+Sub enterRadLight()
+  AppOpen = shell.AppActivate("RadLight")
+  am.Clear
+  RadLight
+End Sub
+
+Sub RadLight()
+  enterAppMenu(16)
+
+  If (AppOpen) Then
+    am.AddItem "Play", "RadLightPlay"
+    am.AddItem "Stop", "RadLightStop"
+    am.AddItem "Pause", "RadLightPause"
+    am.AddItem "Mute", "RadLightVolumeMute"
+    am.AddItem "Fullscreen", "RadLightFullscreen"
+    am.AddItem "Fast Fwd", "RadLightFastForward"
+    am.AddItem "Rewind", "RadLightRewind"
+    am.AddItem "SubTitles", "RadLightSubtitles"
+    am.AddItem "Close RadLight", "RadLightClose"
+  Else
+    am.AddItem "Launch RadLight", "RadLightLaunch"
+  End If
+
+  am.Back = "onAMRoot"
+  am.NextState=2
+  am.Update
+End Sub
+
+Sub RadLightLaunch()
+  LaunchAppDlg
+  shell.Exec RootEXE(16)
+  AppOpen = TRUE
+  RadLight
+End Sub
+Sub RadLightClose()
+  CloseAppDlg
+  If shell.AppActivate("RadLight") Then shell.SendKeys("^{x}")
+  AppOpen = FALSE
+  RadLight
+End Sub
+
+Sub RadLightPlay
+	If shell.AppActivate("RadLight") Then Shell.SendKeys("x")
+	am.Update
+End Sub
+Sub RadLightStop
+	If shell.AppActivate("RadLight") Then Shell.SendKeys("c")
+	am.Update
+End Sub
+Sub RadLightPause
+	If shell.AppActivate("RadLight") Then Shell.SendKeys("{ }")
+	am.Update
+End Sub
+Sub RadLightPrev
+	If shell.AppActivate("RadLight") Then Shell.SendKeys("z")
+	am.Update
+End Sub
+Sub RadLightNext
+	If shell.AppActivate("RadLight") Then Shell.SendKeys("b")
+	am.Update
+End Sub
+
+Sub RadLightVolumeUp
+	If shell.AppActivate("RadLight") Then Shell.SendKeys("+{UP}")
+	am.Update
+End Sub
+Sub RadLightVolumeDn
+	If shell.AppActivate("RadLight") Then Shell.SendKeys("+{DOWN}")
+	am.Update
+End Sub
+Sub RadLightVolumeMute
+	If shell.AppActivate("RadLight") Then Shell.SendKeys("^m")
+	am.Update
+End Sub
+Sub RadLightSubtitles
+	If shell.AppActivate("RadLight") Then Shell.SendKeys("s")
+	am.Update
+End Sub
+Sub RadLightFullscreen
+	If shell.AppActivate("RadLight") Then Shell.SendKeys("f")
+	am.Update
+End Sub
+Sub RadLightFastForward
+	If shell.AppActivate("RadLight") Then Shell.SendKeys("+{RIGHT}")
+	am.Update
+End Sub
+Sub RadLightRewind
+	If shell.AppActivate("RadLight") Then Shell.SendKeys("%{LEFT}")
+	am.Update
+End Sub
 
 '----------------------------- Windows Media Player Control -----------------------------
 'id=5
@@ -3193,7 +3304,7 @@ dim WMPnewState, songName
     WMPnewState = WMPcurrentItemState
     If (WMPCtrl.currentPlaylist.count>0) Then
       songName = Filter(WMPCtrl.currentMedia.name)
-      If (WMPCtrl.currentMedia.getItemInfo("Artist")<>"") Then 
+      If (WMPCtrl.currentMedia.getItemInfo("Artist")<>"") Then
         songName = songName & " - " & Filter(WMPCtrl.currentMedia.getItemInfo("Artist"))
       End If
       If (WMPCtrl.playState=2) Then
@@ -3286,9 +3397,9 @@ End Sub
 
 '----------------------------------------------
 Sub mp9PlayPause()
-  If (WMPCtrl.playstate=3) Then 
-    WMPCtrl.controls.pause 
-  Else 
+  If (WMPCtrl.playstate=3) Then
+    WMPCtrl.controls.pause
+  Else
     WMPCtrl.controls.play
   End If
   mediaPlayer
@@ -3689,8 +3800,8 @@ Sub mp9list2(i)
 End Sub
 
 Sub mp9askEdit
-  If (WMPCtrl.currentPlaylist.count>0) Then 
-    CurrentItem = "editItem"   
+  If (WMPCtrl.currentPlaylist.count>0) Then
+    CurrentItem = "editItem"
     am.DlgYesNo "Edit current item?", "mp9edit1", 7
     am.NextState = 2
     am.Back = "enterMediaPlayer"
@@ -3706,7 +3817,7 @@ Sub mp9edit1(r)
     am.DlgInputStr "Edit Item", "Author:", 40, Filter(WMPCtrl.currentMedia.getItemInfo("Author")), "mp9edit2"
     am.NextState = 2
     am.Back = "enterMediaPlayer"
-  Else 
+  Else
     enterMediaPlayer
   End If
 End Sub
@@ -4212,7 +4323,7 @@ Sub iTunesLaunch()
   AppOpen = TRUE
   iTunes
 End Sub
-Sub iTunesClose() 
+Sub iTunesClose()
   CloseAppDlg
   If shell.AppActivate("iTunes") Then shell.SendKeys("%{F4}")
   AppOpen = FALSE
@@ -4313,8 +4424,10 @@ Sub shutdownMenu()
 
   am.Clear
   am.Title = "Shutdown PC"
+  am.AddItem "Monitor OFF", "monitorof"
+  am.AddItem "Monitor ON", "monitoron"
   am.AddItem "Shutdown", "shutdown"
-  am.AddItem "Hibernate", "hibernate"  
+  am.AddItem "Hibernate", "hibernate"
   am.AddItem "Reboot", "reboot"
   If (ShutdownBool) Then am.AddItem "Cancel Shutdown", "cancelShutdown"
 
@@ -4365,9 +4478,26 @@ Sub cancelShutdown()
   am.NextState=2
   am.Update
 End Sub
+Sub monitorof
+ am.Clear
+  shell.Exec fmadir & "\sframework\helper\moncloser 0"
+  am.Title = "Monitor OFF"
+   am.AddItem center("Back to shutdownMenu",""), "shutdownMenu"
 
+  am.Back = "shutdownMenu"
+  am.NextState=2
+  am.Update
+  End Sub
+Sub monitoron
+ am.Clear
+  shell.Exec fmadir & "\sframework\helper\moncloser 1"
+     am.Title = "Monitor ON"
+   am.AddItem center("Back to shutdownMenu",""), "shutdownMenu"
 
-
+  am.Back = "shutdownMenu"
+  am.NextState=2
+  am.Update
+End Sub
 '---------------------------- user-settings menu ------------------------------
 
 Function checkBox(b)
@@ -4410,7 +4540,7 @@ Sub settingsMain()
   am.AddItem "Playlist: " & NrSongsOnPage & " items per page", "setNrOfSongs"
   am.AddItem checkBox(SettingStartOnConnect) & "Auto start", "setStartOnConnect"
   am.AddItem checkBox(SaveSettingsBool) & "Save settings", "setSaveSettings"
-   
+
   If (MyPhoneType(1)=1) Then
     am.AddItem center("[SE T610]",""), "setMyPhoneType"
   ElseIf (MyPhoneType(1)=2) Then
@@ -4418,7 +4548,7 @@ Sub settingsMain()
   ElseIf (MyPhoneType(1)=3) Then
     am.AddItem center("[SE T68i]",""), "setMyPhoneType"
   End If
-  
+
   am.AddItem MenuItemExitMenu, "exitSettings"
 
   am.Back = "exitSettings"
@@ -4504,9 +4634,9 @@ Sub selectMenu(a1,a2) 		 'a1 contains a selection of sorted indexes from a2 whic
   Dim i, b, e
   am.ClearMenu
   am.Title = "Menulist [1/2]"
-  
+
   setItemPress("toggleOption")
-  
+
   For i=0 To UBound(a2)		'all elements
     b = FALSE
     For Each e In a1		'sorted indexes
@@ -4548,9 +4678,9 @@ End Sub
 Sub orderMenu(arr)		'arr contains selected sorted indexes of all available items in TempArray
   Dim i, limit
   am.Clear
-  am.Selected = SelectItem 
+  am.Selected = SelectItem
   limit = UBound(arr)
-  
+
   If (limit = 0) Then
     am.Title = "No items"
     am.AddItem "Select items", "gotoSelect"
@@ -4748,6 +4878,7 @@ Sub OnKeyPress(button, state)				'state=1 :pressed    state=0 :released
                 Case Else            browseKeyEvent button, state
               End Select
             Case RootID(15,0) iexploreKeyEvent button, state  'iexplore
+            Case RootID(16,0) RadLightKeyEvent button, state
 
             Case "settings"  settingsKeyEvent button, state
           End Select
@@ -4854,9 +4985,9 @@ Sub volumeKeysEvent(s)
     Case RootID(2,0)			'within winamp
       If (CurrentItem <> "volumeslide") Then  winampSlideVol
     Case RootID(15,0)			'internet explorer
-      If (AppOpen) and (CurrentItem <> "volumeslide") and (s="u") Then  
+      If (AppOpen) and (CurrentItem <> "volumeslide") and (s="u") Then
         IEtabB
-      ElseIf (AppOpen) and (CurrentItem <> "volumeslide") and (s="d") Then 
+      ElseIf (AppOpen) and (CurrentItem <> "volumeslide") and (s="d") Then
         IEtabF
       End If
     Case Else					'not in winamp
@@ -4870,7 +5001,7 @@ End Sub
 Sub WinTVKeyEvent(button, state)
   Select Case CurrentItem
     Case "menu"
-      Select Case button  
+      Select Case button
         Case ">"  winTVChannelUp
         Case "<"  winTVChannelDown
         Case CameraButton winTVSnapShot
@@ -4882,7 +5013,7 @@ End Sub
 Sub MoreTVKeyEvent(button, state)
   Select Case CurrentItem
     Case "menu"
-      Select Case button  
+      Select Case button
         Case ">"  moreTVChannelUp
         Case "<"  moreTVChannelDown
       End Select
@@ -4893,7 +5024,7 @@ End Sub
 Sub DScalerKeyEvent(button, state)
   Select Case CurrentItem
     Case "menu"
-      Select Case button  
+      Select Case button
         Case ">"  dScalerChannelUp
         Case "<"  dScalerChannelDown
         Case CameraButton dScalerSnapShot
@@ -5039,6 +5170,18 @@ Sub zoomPlayerKeyEvent(button, state)
   End Select
 End Sub
 
+'id=16
+Sub RadLightKeyEvent(button, state)
+  Select Case CurrentItem
+    Case "menu"
+      Select Case button
+        Case ">"  RadLightNext
+        Case "<"  RadLightPrev
+		Case Else
+      End Select
+  End Select
+End Sub
+
 'id=2
 Sub winampKeyEvent(button, state)     'winamp key events
   Select Case CurrentItem
@@ -5143,7 +5286,7 @@ Sub iexploreKeyEvent(button, state)
         Case "*"
           If (not EnterTextBool) Then EnterTextIE3
         Case "#"
-          If (not EnterTextBool) Then 
+          If (not EnterTextBool) Then
             shell.AppActivate("Microsoft Internet Explorer")
             shell.SendKeys "{ENTER}"
             enterExplorer
@@ -5171,7 +5314,7 @@ Sub saveSettings()
   Next
 
   File.WriteLine "EOF"
-  
+
   File.Close
 End Sub
 
@@ -5209,10 +5352,10 @@ Sub readSettings()
         While (temp <> "EOF")
           addRootItem(CInt(temp))
           temp = File.ReadLine
-        Wend 
+        Wend
       End If
       File.Close
-      
+
       setPhone
     End If
   End If
@@ -5444,7 +5587,7 @@ Sub sendMailClose
   enterExplorer
 End Sub
 
-Sub IEclose() 
+Sub IEclose()
   CloseAppDlg
   If shell.AppActivate("Microsoft Internet Explorer") Then shell.SendKeys("%{F4}")
   AppOpen = FALSE
@@ -5627,14 +5770,14 @@ End Sub
 
 '------------------------ Begin MS Agent Speech ---------------------------------
 ' SpeechSay by skyw33
-' Here's a function for having MS Agent speak anything you give it 
+' Here's a function for having MS Agent speak anything you give it
 ' Just specify where your agent character file is.
 '
 ' *** THIS IS WORK IN PROGRESS!!! ***
 '
 ' I posted the MS Agent Script a while back. The only way I've gotten it to work is
-' to "run" a separate, stand-alone script from within the fma script that contains 
-' the instructions to launch Agent. So far, the things I've found that run in stand-alone 
+' to "run" a separate, stand-alone script from within the fma script that contains
+' the instructions to launch Agent. So far, the things I've found that run in stand-alone
 ' mode but don't run from within fma are this and the wscript.sleep function.
 
 Sub SpeechSay(SpeechText)
@@ -5661,3 +5804,4 @@ Sub SpeechSay(SpeechText)
 End Sub
 
 '--------------------------- End MS Agent Speech ---------------------------------
+
