@@ -915,7 +915,7 @@ type
     FTextMessageOptions: TTextMessageOptions;
     FCallOptions: TCallOptions;
     FScriptRunning, FScriptInitialized, FScriptErrorOccur, FBatteryLow, FBatteryWarning,
-    FCalWideView,FCalRecurrence,FCalRecurrAsk: boolean;
+    FCalWideView,FCalRecurrence,FCalRecurrAsk,FCalAutoBirthday: boolean;
     FFmaMutex: Cardinal;
     FShowDiagram,FShowTodayCaption,FClearPhoneMessage: Boolean;
     FUseCIND,FUseAlternateSignalMeter,FUseAlternateBatteryMeter: Boolean;
@@ -4715,6 +4715,7 @@ begin
     FCalWideView := FormStorage1.StoredValue['Calendar Wide']; // do not localize
     FCalRecurrence := FormStorage1.StoredValue['Calendar Recurr']; // do not localize
     FCalRecurrAsk := FormStorage1.StoredValue['Ask Cal Recurr']; // do not localize
+    FCalAutoBirthday := FormStorage1.StoredValue['Calendar Birthday']; // do not localize
 
     FUseSilentMonitor := FormStorage1.StoredValue['Silent Monitor']; // do not localize
     FUseMinuteMonitor := FormStorage1.StoredValue['Minute Monitor']; // do not localize
@@ -4885,6 +4886,7 @@ begin
     cbCalRecurrence.Checked := FCalRecurrence;
     cbCalRecurrenceClick(nil);
     cbCalRecurrAsk.Checked := FCalRecurrAsk;
+    cbCalBirthday.Checked := FCalAutoBirthday;
 
     //Outlook Sync
     rbOutlookSync.ItemIndex := FOutlookSyncConflict;
@@ -5220,9 +5222,11 @@ begin
       FCalWideView := cbCalWideMode.Checked;
       FCalRecurrence := cbCalRecurrence.Checked;
       FCalRecurrAsk := cbCalRecurrAsk.Checked;
+      FCalAutoBirthday := cbCalBirthday.Checked;
       FormStorage1.StoredValue['Calendar Wide'] := FCalWideView; // do not localize
       FormStorage1.StoredValue['Calendar Recurr'] := FCalRecurrence; // do not localize
       FormStorage1.StoredValue['Ask Cal Recurr'] := FCalRecurrAsk; // do not localize
+      FormStorage1.StoredValue['Calendar Birthday'] := FCalAutoBirthday; // do not localize
 
       //Outlook Synchronize
       FOutlookSyncConflict := rbOutlookSync.ItemIndex;
@@ -13671,7 +13675,7 @@ var
         s := 'Folder '+IntToStr(cnt); // section name // do not localize
         { add folder Path in Explorer view as first value }
         { Change for FMA 2.2: Path is relative to FNodeMsgFmaRoot}
-        NodePath := ExplorerNodePath(itNode,'\',2); // do not localize
+        NodePath := ExplorerNodePath(itNode,'\',2);
         db.WriteString(s,'Path','\'+WideStringToUTF8String(NodePath)); // do not localize
         { add folder data next }
         sl := TStringList(EData.Data);
@@ -13831,7 +13835,7 @@ begin
         num2 := ExtractNumber(GetFirstToken(c,';'));
         if WideCompareStr(num1,num2) = 0 then begin
           { matching number found }
-          Node := ExplorerFindNode(GetToken(w,2)); // get node by Rule node path
+          Node := ExplorerFindNode(GetToken(w,2),FNodeMsgFmaRoot); // get node by Rule node path
           if Assigned(Node) then begin
             Result := Node;
             break;

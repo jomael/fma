@@ -19,7 +19,8 @@ interface
 uses
   Windows, TntWindows, Messages, SysUtils, TntSysUtils, Variants, Classes, TntClasses, Graphics, TntGraphics, Controls, TntControls, Forms, TntForms,
   Dialogs, TntDialogs, ExtCtrls, TntExtCtrls, StdCtrls, TntStdCtrls, ComCtrls, TntComCtrls, UniTntCtrls, Buttons, TntButtons, uSyncPhonebook,
-  Menus, TntMenus, MPlayer, GR32_Image, uContactSync, VirtualTrees;
+  Menus, TntMenus, MPlayer, GR32_Image, uContactSync, VirtualTrees, uVCard,
+  ImgList, Mask;
 
 type
   TfrmEditContact = class(TTntForm)
@@ -33,7 +34,6 @@ type
     Label2: TTntLabel;
     Label4: TTntLabel;
     txtOrganization: TTntEdit;
-    txtEmail: TTntEdit;
     Label5: TTntLabel;
     Bevel2: TTntBevel;
     Label6: TTntLabel;
@@ -91,7 +91,7 @@ type
     SelImage: TImage32;
     txtDisplayAs: TTntComboBox;
     TabSheet5: TTntTabSheet;
-    NBLabel: TTntLabel;
+    Label34: TTntLabel;
     tsCallNotes: TTntTabSheet;
     GroupBox6: TTntGroupBox;
     CheckBox1: TTntCheckBox;
@@ -139,6 +139,29 @@ type
     TntBevel6: TTntBevel;
     TntLabel5: TTntLabel;
     TntBevel7: TTntBevel;
+    TntLabel6: TTntLabel;
+    txtAddressType: TTntComboBox;
+    TntTabSheet1: TTntTabSheet;
+    TntImage5: TTntImage;
+    TntLabel7: TTntLabel;
+    TntBevel5: TTntBevel;
+    TntLabel8: TTntLabel;
+    txtURL: TTntEdit;
+    TntLabel9: TTntLabel;
+    lvEmails: TTntListView;
+    MailAddButton: TTntButton;
+    MailEditButton: TTntButton;
+    MailDelButton: TTntButton;
+    MailPrefButton: TTntButton;
+    ImageList1: TImageList;
+    txtBirthday: TTntDateTimePicker;
+    TntBevel8: TTntBevel;
+    TntLabel10: TTntLabel;
+    TntBevel9: TTntBevel;
+    TntLabel11: TTntLabel;
+    BirthdayDeleteButton: TTntButton;
+    lblDisabledPostal: TTntLabel;
+    PostalDeleteButton: TTntButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure txtCustomChange(Sender: TObject);
@@ -168,17 +191,35 @@ type
     procedure txtChange(Sender: TObject);
     procedure txtDisplayAsChange(Sender: TObject);
     procedure CancelButtonClick(Sender: TObject);
+    procedure txtAddressTypeChange(Sender: TObject);
+    procedure MailAddButtonClick(Sender: TObject);
+    procedure MailPrefButtonClick(Sender: TObject);
+    procedure MailEditButtonClick(Sender: TObject);
+    procedure MailDelButtonClick(Sender: TObject);
+    procedure lvEmailsSelectItem(Sender: TObject; Item: TListItem;
+      Selected: Boolean);
+    procedure lvEmailsDblClick(Sender: TObject);
+    procedure BirthdayDeleteButtonClick(Sender: TObject);
+    procedure txtBirthdayChange(Sender: TObject);
+    procedure PostalDeleteButtonClick(Sender: TObject);
   private
     { Private declarations }
+    FAddress: integer; // the index of last shown address
+    FAddresses: array[0..1] of TPostalAddress;
     FPhonePrev: string;
     FPrevChangeAs: WideString;
     FUseSIMMode,FLoadingData,FUseOwnMode: boolean;
-    FCustomImage: Boolean;
+    FCustomImage,FSwappingAdr: Boolean;
     function PhonesCount: integer;
+    function PrefEmailIndex: integer;
+    procedure DoSetModified;
     procedure DoSanityCheck;
+    procedure DoEmailCheck(AMail: WideString);
     procedure LoadContactData;
     procedure SaveContactData;
     procedure ShowFullName(Modified: WideString = '');
+    procedure FillInternetAdrs;
+    procedure FillPostalAdrs;
     procedure FillDisplayNameList;
     procedure UpdateDefNum(SetTo: integer = 0);
     procedure UpdatePersonalize;
@@ -210,7 +251,7 @@ implementation
 
 uses
   gnugettext, gnugettexthelpers,
-  uGlobal, uLogger, Unit1, uFiles, uDialogs, uImg32Helper;
+  uGlobal, uLogger, Unit1, uFiles, uDialogs, uImg32Helper, uInputQuery;
 
 {$R *.dfm}
 
@@ -222,6 +263,7 @@ begin
   TntImage2.Picture.Assign(TntImage.Picture);
   TntImage3.Picture.Assign(TntImage.Picture);
   TntImage4.Picture.Assign(TntImage.Picture);
+  TntImage5.Picture.Assign(TntImage.Picture);
   { Align personalization widgets }
   lblPicDim.Left := imgDim.Left + imgDim.Width + 4;
   lblPicName.Left := Label13.Left + Label13.Width + 4;
@@ -230,7 +272,7 @@ begin
   lblSndType.Left := imgSnd.Left + imgSnd.Width + 4;
   lblSndName.Left := Label14.Left + Label14.Width + 4;
   lblSndSize.Left := Label16.Left + Label16.Width + 4;
-  //NBLabel.Font.Color := clRed;
+  //lblDisabledPostal.Font.Color := clRed;
 {$IFNDEF VER150}
   Form1.ThemeManager1.CollectForms(Self);
 {$ENDIF}
@@ -243,7 +285,8 @@ begin
   TntLabel2.Caption := txtDisplayAs.Text;
   TntLabel3.Caption := txtDisplayAs.Text;
   TntLabel4.Caption := txtDisplayAs.Text;
-  txtChange(Sender);
+  TntLabel7.Caption := txtDisplayAs.Text;
+  DoSetModified;
 end;
 
 procedure TfrmEditContact.FormShow(Sender: TObject);
@@ -251,9 +294,18 @@ begin
   MaxFullNameLen := txtName.MaxLength;
   LoadContactData;
   PageControl1.ActivePageIndex := 0;
-  if Form1.IsT610Clone then
+  if Form1.IsT610Clone then begin
     { Hide postal adress tab if not supported by phone (T610 clones) }
-    TabSheet7.TabVisible := False;
+    TabSheet7.Enabled := False;
+    lblDisabledPostal.Visible := True;
+  end;
+  if not Form1.IsK610orBetter then begin
+    txtURL.Enabled := False;
+    txtAddressType.Enabled := False;
+    txtBirthday.Enabled := False;
+  end;
+  ResetButton.Enabled := not IsNew;
+  UnlinkOutlookButton.Enabled := not IsNew;
   txtName.SetFocus;
 end;
 
@@ -287,17 +339,15 @@ begin
     txtFileAs.Text := contact.displayname;
     txtDisplayAs.Text := contact.displayname;
     txtOrganization.Text := contact.org;
-    txtEmail.Text := contact.email;
+    txtBirthday.Date := contact.Birthday;
+    txtBirthdayChange(nil);
     txtHome.Text := contact.home;
     txtWork.Text := contact.work;
     txtCell.Text := contact.cell;
     txtFax.Text := contact.fax;
     txtOther.Text := contact.other;
-    txtStreet.Text := contact.Street;
-    txtCity.Text := contact.City;
-    txtRegion.Text := contact.Region;
-    txtPostalCode.Text := contact.PostalCode;
-    txtCountry.Text := contact.Country;
+    FillPostalAdrs;
+    FillInternetAdrs;
     ShowFullName;
     FillDisplayNameList;
     if not (FUseSIMMode or FUseOwnMode) then begin
@@ -333,7 +383,6 @@ begin
     FLoadingData := False;
   end;
   // done
-  ResetButton.Enabled := not IsNew;
   ApplyButton.Enabled := False;
   Modified := False;
   customModified := False;
@@ -341,7 +390,7 @@ end;
 
 procedure TfrmEditContact.SaveContactData;
 var
-  i: integer;
+  i,j: integer;
   s,a: WideString;
 begin
   contact.title := txtTitle.text;
@@ -367,26 +416,34 @@ begin
     txtDisplayAs.Text := s;
   *)
   contact.displayname := txtDisplayAs.Text;
-  contact.email := txtEmail.text;
   contact.home := txtHome.text;
   contact.work := txtWork.text;
   contact.cell := txtCell.text;
   contact.fax := txtFax.text;
   contact.other := txtOther.text;
-  contact.Street := txtStreet.text;
-  contact.City := txtCity.text;
-  contact.Region := txtRegion.text;
-  contact.PostalCode := txtPostalCode.text;
-  contact.Country := txtCountry.text;
-
+  contact.homepage := txtURL.text;
+  { birthday }
+  contact.Birthday := Trunc(txtBirthday.Date);
+  { internet }
+  a := '';
+  i := PrefEmailIndex;
+  if i <> -1 then contact.email := lvEmails.Items[i].Caption
+    else contact.email := '';
+  for j := 0 to lvEmails.Items.Count-1 do
+    if i <> j then a := a + lvEmails.Items[j].Caption + sLineBreak;
+  contact.moremails := a;
+  { postal }
+  txtAddressTypeChange(nil); // save current changes to FAddresses
+  contact.homeAddress := FAddresses[0];
+  contact.workAddress := FAddresses[1];
+  //See SyncPhonebook to save notes. SetContactNotes(@contact,MemoNotes.Lines);
   if not (FUseSIMMode or FUseOwnMode) then begin
     contact.DefaultIndex := cbDefaultNum.ItemIndex;
     contact.picture := lblPicName.Caption;
     contact.sound := lblSndName.Caption;
     contact.CDID := StringToGUID(txtContactDataID.Text);
   end;
-  { Dont change modified flags here, since we'll use them in SyncPhonebook.
-    Only disable apply button. }
+  { Dont reset modified flags here, since we'll use them in SyncPhonebook. Only disable apply button. }
   ApplyButton.Enabled := False;
 end;
 
@@ -519,8 +576,9 @@ begin
   txtTitle.Color := c;
   txtOrganization.Enabled := b;
   txtOrganization.Color := c;
-  txtEmail.Enabled := b;
-  txtEmail.Color := c;
+  txtBirthday.Enabled := b;
+  txtBirthday.Color := c;
+  txtBirthdayChange(nil);
   txtDisplayAs.Enabled := b;
   txtDisplayAs.Color := c;
   { In SIM mode leave only General tab visible }
@@ -923,6 +981,11 @@ begin
     MessageDlgW(_('You have to enter only one phone number.'), mtError, MB_OK);
     Abort;
   end;
+  { check date }
+  if txtBirthday.Date >= Now then begin
+    MessageDlgW(_('You have to enter valid birthday date.'), mtError, MB_OK);
+    Abort;
+  end;
 end;
 
 procedure TfrmEditContact.FillDisplayNameList;
@@ -1014,8 +1077,7 @@ begin
     ShowFullName(w);
     FPrevChangeAs := w;
   end;
-  ApplyButton.Enabled := not IsNew;
-  Modified := True;
+  DoSetModified;
 end;
 
 procedure TfrmEditContact.OnChangeAsEnter(Sender: TObject);
@@ -1035,17 +1097,21 @@ begin
   txtName.Text := w;
   txtFileAs.Text := AContact.displayname;
   txtOrganization.Text := AContact.org;
-  txtEmail.Text := AContact.email;
+  txtBirthday.Date := contact.Birthday;
+  txtBirthdayChange(nil);
   txtHome.Text := AContact.home;
   txtWork.Text := AContact.work;
   txtCell.Text := AContact.cell;
   txtFax.Text := AContact.fax;
   txtOther.Text := AContact.other;
-  txtStreet.Text     := AContact.Street;
-  txtCity.Text       := AContact.City;
-  txtRegion.Text     := AContact.Region;
-  txtPostalCode.Text := AContact.PostalCode;
-  txtCountry.Text    := AContact.Country;
+  txtURL.Text := AContact.homepage;
+  FAddress := -1;
+  FAddresses[0] := AContact.homeAddress;
+  FAddresses[1] := AContact.workAddress;
+  txtAddressType.ItemIndex := 0;
+  txtAddressTypeChange(nil);
+  if Form1.IsK610orBetter then // notes support for K610+ phones
+    GetContactNotes(@AContact,MemoNotes.Lines);
   // - Do not copy displayname, it will be merged
   // txtDisplayAs.Text := AContact.displayname;
   // - Keep old GUID!
@@ -1106,7 +1172,10 @@ procedure TfrmEditContact.MemoNotesChange(Sender: TObject);
 begin
   btNotesSave.Enabled := Trim(MemoNotes.Text) <> '';
   btNotesClear.Enabled := btNotesSave.Enabled;
-  customModified := True;
+  if not (FUseSIMMode or FUseOwnMode) and Form1.IsK610orBetter then
+    Modified := True // notes support in K610+ phones...
+  else
+    customModified := True; // ...or notes are FMA setting
   ApplyButton.Enabled := True;
 end;
 
@@ -1127,8 +1196,7 @@ end;
 
 procedure TfrmEditContact.txtChange(Sender: TObject);
 begin
-  ApplyButton.Enabled := not IsNew;
-  Modified := True;
+  DoSetModified;
 end;
 
 procedure TfrmEditContact.CancelButtonClick(Sender: TObject);
@@ -1151,6 +1219,200 @@ end;
 function TfrmEditContact.Get_Notes: TTntStrings;
 begin
   Result := MemoNotes.Lines;
+end;
+
+procedure TfrmEditContact.txtAddressTypeChange(Sender: TObject);
+begin
+  FSwappingAdr := True;
+  try
+    if FAddress <> -1 then with FAddresses[FAddress] do begin
+      Street := txtStreet.text;
+      City := txtCity.text;
+      Region := txtRegion.text;
+      PostalCode := txtPostalCode.text;
+      Country := txtCountry.text;
+    end;
+    FAddress := txtAddressType.ItemIndex;
+    with FAddresses[FAddress] do begin
+      txtStreet.Text := Street;
+      txtCity.Text := City;
+      txtRegion.Text := Region;
+      txtPostalCode.Text := PostalCode;
+      txtCountry.Text := Country;
+    end;
+  finally
+    FSwappingAdr := False;
+  end;
+end;
+
+procedure TfrmEditContact.FillInternetAdrs;
+var
+  sl: TTntStringList;
+  i: integer;
+  w: WideString;
+begin
+  txtURL.Text := contact.homepage;
+  lvEmails.Clear;
+  if contact.email <> '' then
+    with lvEmails.Items.Add do begin
+      Caption := contact.email;
+      ImageIndex := 1;
+    end;
+  sl := TTntStringList.Create;
+  try
+    sl.Text := contact.moremails;
+    for i := 0 to sl.Count-1 do begin
+      w := Trim(sl[i]);
+      if w <> '' then
+        with lvEmails.Items.Add do begin
+          Caption := w;
+          ImageIndex := 0;
+        end;
+    end;
+  finally
+    sl.Free;
+    lvEmailsSelectItem(lvEmails,nil,False);
+  end;
+end;
+
+function TfrmEditContact.PrefEmailIndex: integer;
+var
+  i: integer;
+begin
+  Result := -1;
+  for i := 0 to lvEmails.Items.Count-1 do
+    if lvEmails.Items[i].ImageIndex = 1 then begin
+      Result := i;
+      break;
+    end;
+end;
+
+procedure TfrmEditContact.DoEmailCheck(AMail: WideString);
+var
+  i: integer;
+begin
+  i := Pos('@',AMail);
+  if (i < 2) or (i > Length(AMail)-2) then begin
+    MessageDlgW(_('Incorrect e-mail address specified.'),mtError,MB_OK);
+    Abort;
+  end;
+end;
+
+procedure TfrmEditContact.MailPrefButtonClick(Sender: TObject);
+var
+  i: integer;
+begin
+  i := PrefEmailIndex;
+  if i <> lvEmails.Selected.Index then begin
+    lvEmails.Items[i].ImageIndex := 0;
+    lvEmails.Selected.ImageIndex := 1;
+    DoSetModified;
+    MailPrefButton.Enabled := False;
+  end;
+end;
+
+procedure TfrmEditContact.MailAddButtonClick(Sender: TObject);
+var
+  w: WideString;
+  i: integer;
+begin
+  w := '';
+  if WideInputQuery(_('Add E-mail'),_('E-mail:'),w) then begin
+    DoEmailCheck(w);
+    i := PrefEmailIndex;
+    with lvEmails.Items.Add do begin
+      Caption := w;
+      if i = -1 then ImageIndex := 1 else ImageIndex := 0;
+    end;
+    DoSetModified;
+    lvEmailsSelectItem(lvEmails,lvEmails.Selected,Assigned(lvEmails.Selected));
+  end;
+end;
+
+procedure TfrmEditContact.MailEditButtonClick(Sender: TObject);
+var
+  w: WideString;
+begin
+  w := lvEmails.Selected.Caption;
+  if WideInputQuery(_('Edit E-mail'),_('E-mail:'),w) then begin
+    DoEmailCheck(w);
+    lvEmails.Selected.Caption := w;
+    DoSetModified;
+  end;
+end;
+
+procedure TfrmEditContact.MailDelButtonClick(Sender: TObject);
+var
+  i: integer;
+begin
+  if MessageDlgW(WideFormat(_('Delete e-mail address "%s"?'),[lvEmails.Selected.Caption]),
+    mtConfirmation, MB_YESNO or MB_DEFBUTTON2) = ID_YES then begin
+    lvEmails.Selected.Delete;
+    i := PrefEmailIndex;
+    if (i = -1) and (lvEmails.Items.Count <> 0) then
+      lvEmails.Items[0].ImageIndex := 1;
+    DoSetModified;
+    lvEmailsSelectItem(lvEmails,nil,False);
+  end;
+end;
+
+procedure TfrmEditContact.lvEmailsSelectItem(Sender: TObject;
+  Item: TListItem; Selected: Boolean);
+begin
+  { Allow multiple e-mails for K610+ phones }
+  MailAddButton.Enabled := Form1.IsK610orBetter or (lvEmails.Items.Count = 0);
+  MailPrefButton.Enabled := Selected and (lvEmails.Selected.ImageIndex <> 1);
+  MailEditButton.Enabled := Selected;
+  MailDelButton.Enabled := Selected;
+end;
+
+procedure TfrmEditContact.DoSetModified;
+begin
+  if not FSwappingAdr then begin
+    ApplyButton.Enabled := not IsNew;
+    Modified := True;
+  end;
+end;
+
+procedure TfrmEditContact.FillPostalAdrs;
+begin
+  FAddress := -1;
+  FAddresses[0] := contact.homeAddress;
+  FAddresses[1] := contact.workAddress;
+  txtAddressType.ItemIndex := 0;
+  txtAddressType.Enabled := Form1.IsK610orBetter;
+  txtAddressTypeChange(nil);
+end;
+
+procedure TfrmEditContact.lvEmailsDblClick(Sender: TObject);
+begin
+  if Assigned(lvEmails.Selected) then MailEditButton.Click;
+end;
+
+procedure TfrmEditContact.BirthdayDeleteButtonClick(Sender: TObject);
+begin
+  if MessageDlgW(_('Clear birthday setting?'),mtConfirmation,MB_YESNO or MB_DEFBUTTON2) = ID_YES then begin
+    txtBirthday.Date := 0;
+    txtBirthdayChange(nil);
+  end;
+end;
+
+procedure TfrmEditContact.txtBirthdayChange(Sender: TObject);
+begin
+  BirthdayDeleteButton.Enabled := txtBirthday.Enabled and (Trunc(txtBirthday.Date) <> 0);
+  DoSetModified;
+end;
+
+procedure TfrmEditContact.PostalDeleteButtonClick(Sender: TObject);
+begin
+  if MessageDlgW(WideFormat(_('Delete %s postal address?'),[txtAddressType.Text]),
+    mtConfirmation,MB_YESNO or MB_DEFBUTTON2) = ID_YES then begin
+    txtStreet.Text := '';
+    txtCity.Text := '';
+    txtRegion.Text := '';
+    txtPostalCode.Text := '';
+    txtCountry.Text := '';
+  end;
 end;
 
 end.

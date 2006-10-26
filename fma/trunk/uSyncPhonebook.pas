@@ -26,9 +26,10 @@ type
     home, work, cell, fax, other : integer;
   end;
   TContactData = Record
-    title, name, surname, displayname, org, email: WideString;
+    title, name, surname, displayname, org, homepage, email, moremails: WideString;
     home, work, cell, fax, other : WideString;
-    street, city, region, postalCode, country: WideString;
+    homeAddress, workAddress: TPostalAddress;
+    Birthday, Modified: TDate;
     CDID: TGUID;
     LUID : WideString;
     StateIndex : Integer; //0 new entry;1 modified entry;2 deleted entry;3 normal entry
@@ -141,6 +142,7 @@ type
     procedure DoFirstImportCheck;
     procedure DoBuildColumnsPopup(Where: TComponent);
     procedure DoAutosizeLastColumn;
+    procedure DoAddCalendarBirthday;
   public
     State: Integer;
     SelContact: PContactData;
@@ -184,6 +186,8 @@ function GetContactFmaid(contact: PContactData): string;
 function GetContactNotes(contact: PContactData; Notes: TTntStrings): boolean;
 function SetContactNotes(contact: PContactData; Notes: TTntStrings): boolean;
 function GetContactDetails(contact: PContactData; Notes: TTntStrings): boolean;
+function GetContactHomeAdr(contact: PContactData): WideString;
+function GetContactWorkAdr(contact: PContactData): WideString;
 
 function IsContactPhone(contact: PContactData; Phone: string): boolean;
 function GetContactPhoneType(contact: PContactData; Phone: string): string;
@@ -198,7 +202,7 @@ procedure SetDisplayName(contact: PContactData; Format: Integer; FamilyFirst: bo
 implementation
 
 uses
-  gnugettext, gnugettexthelpers, cUnicodeCodecs,
+  gnugettext, gnugettexthelpers, cUnicodeCodecs, uVCalendar,
   uLogger, uThreadSafe, WebUtil, DateUtils, Unit1, uGlobal, uEditContact, ComCtrls, TntComCtrls,
   UniTntCtrls, uAddToGroup, uStatusDlg, IniFiles, uXML, uDialogs, uConflictChanges;
 
@@ -272,9 +276,33 @@ begin
   Result := Format('{%s}-%s',[contact^.LUID,GUIDToString(contact^.CDID)]);
 end;
 
+function GetContactHomeAdr(contact: PContactData): WideString;
+begin
+  { Result = "street, city PostalCode, region country" }
+  with contact^.homeAddress do begin
+    Result := WideConcatList(street,city,', ');
+    Result := WideConcatList(Result,PostalCode,' ');
+    Result := WideConcatList(Result,region,', ');
+    Result := WideConcatList(Result,country,' ');
+  end;
+end;
+
+function GetContactWorkAdr(contact: PContactData): WideString;
+begin
+  { Result = "street, city PostalCode, region country" }
+  with contact^.workAddress do begin
+    Result := WideConcatList(street,city,', ');
+    Result := WideConcatList(Result,PostalCode,' ');
+    Result := WideConcatList(Result,region,', ');
+    Result := WideConcatList(Result,country,' ');
+  end;
+end;
+
 function GetContactDetails(contact: PContactData; Notes: TTntStrings): boolean;
 var
   s: string;
+  i: integer;
+  sl: TTntStringList;
 begin
   Notes.Clear;
   case contact^.StateIndex of
@@ -283,24 +311,28 @@ begin
     2: s := _('Deleted');
     3: s := _('Unmodified');
   end;
-  Notes.Add(_('State: ')+s+_(' contact'));
-  Notes.Add(_('Full name: ')+getcontactfullname(contact));
-  Notes.Add(_('Display name: ')+contact^.displayname);
-  Notes.Add(_('Title: ')+contact^.title);
-  Notes.Add(_('Company: ')+contact^.org);
-  Notes.Add(_('E-mail: ')+contact^.email);
-  Notes.Add(_('Home phone: ')+contact^.home);
-  Notes.Add(_('Work phone: ')+contact^.work);
-  Notes.Add(_('Cell phone: ')+contact^.cell);
-  Notes.Add(_('Fax number: ')+contact^.fax);
-  Notes.Add(_('Other phone: ')+contact^.other);
-  Notes.Add(_('Street: ')+contact^.street);
-  Notes.Add(_('City: ')+contact^.city);
-  Notes.Add(_('Region: ')+contact^.region);
-  Notes.Add(_('Postal code: ')+contact^.postalCode);
-  Notes.Add(_('Country: ')+contact^.country);
-  Notes.Add(_('Picture File: ')+contact^.picture);
-  Notes.Add(_('Ringing Tone: ')+contact^.sound);
+  Notes.Add(_('State:')+' '+s+' '+_('contact'));
+  Notes.Add(_('Full name:')+' '+getcontactfullname(contact));
+  Notes.Add(_('Display name:')+' '+contact^.displayname);
+  Notes.Add(_('Title:')+' '+contact^.title);
+  Notes.Add(_('Company:')+' '+contact^.org);
+  Notes.Add(_('Home phone:')+' '+contact^.home);
+  Notes.Add(_('Work phone:')+' '+contact^.work);
+  Notes.Add(_('Cell phone:')+' '+contact^.cell);
+  Notes.Add(_('Fax number:')+' '+contact^.fax);
+  Notes.Add(_('Other phone:')+' '+contact^.other);
+  Notes.Add(_('Home Street:')+' '+contact^.homeAddress.street);
+  Notes.Add(_('Home City:')+' '+contact^.homeAddress.city);
+  Notes.Add(_('Home Region:')+' '+contact^.homeAddress.region);
+  Notes.Add(_('Home Postal code:')+' '+contact^.homeAddress.postalCode);
+  Notes.Add(_('Home Country:')+' '+contact^.homeAddress.country);
+  Notes.Add(_('Work Street:')+' '+contact^.workAddress.street);
+  Notes.Add(_('Work City:')+' '+contact^.workAddress.city);
+  Notes.Add(_('Work Region:')+' '+contact^.workAddress.region);
+  Notes.Add(_('Work Postal code:')+' '+contact^.workAddress.postalCode);
+  Notes.Add(_('Work Country:')+' '+contact^.workAddress.country);
+  Notes.Add(_('Picture File:')+' '+contact^.picture);
+  Notes.Add(_('Ringing Tone:')+' '+contact^.sound);
   case contact^.DefaultIndex of
     0: s := _('None');
     1: s := _('Cell');
@@ -308,7 +340,18 @@ begin
     3: s := _('Home');
     4: s := _('Other');
   end;
-  Notes.Add(_('Default phone: ')+s);
+  Notes.Add(_('Default phone:')+' '+s);
+  Notes.Add(_('Birthday:')+' '+DateToStr(contact^.Birthday));
+  Notes.Add(_('Home page:')+' '+contact^.homepage);
+  Notes.Add(_('E-mail:')+' '+contact^.email);
+  sl := TTntStringList.Create;
+  try
+    sl.Text := contact^.moremails;
+    for i := 0 to sl.Count-1 do
+      Notes.Add(_('E-mail:')+' '+sl[i]);
+  finally
+    sl.Free;
+  end;
   Result := True;
 end;
 
@@ -372,16 +415,16 @@ begin
   contact^.displayname := VCard.DisplayName;
   contact^.org := VCard.org;
   contact^.email := VCard.email;
+  contact^.moremails := VCard.MoreEmails.Text;
   contact^.home := VCard.telhome;
   contact^.work := VCard.telwork;
   contact^.cell := VCard.telcell;
   contact^.fax := VCard.telfax;
   contact^.other := VCard.telother;
-  contact^.Street := VCard.Street;
-  contact^.City := VCard.City;
-  contact^.Region := VCard.Region;
-  contact^.PostalCode := VCard.PostalCode;
-  contact^.Country := VCard.Country;
+  contact^.homeAddress := VCard.HomeAddress;
+  contact^.workAddress := VCard.WorkAddress;
+  contact^.Birthday := VCard.BDay;
+  contact^.homepage := VCard.URL;
   // DefaultIndex = 0 none;1 cell;2 work;3 home;4 other
   if VCard.TelPref = 'M' then // do not localize
     contact^.DefaultIndex := 1
@@ -407,6 +450,7 @@ begin
   finally
     sl.Free;
   end;
+  contact^.Modified := VCard.ModifiedDate;
 end;
 
 function Contact2vCard(contact: PContactData; var VCard: TVCard): boolean;
@@ -421,17 +465,16 @@ begin
   VCard.DisplayName := contact^.displayname;
   VCard.org := contact^.org;
   VCard.email := contact^.email;
+  VCard.MoreEmails.Text := contact^.moremails;
   VCard.telhome := contact^.home;
   VCard.telwork := contact^.work;
   VCard.telcell := contact^.cell;
   VCard.telfax := contact^.fax;
   VCard.telother := contact^.other;
-  VCard.Street := contact^.Street;
-  VCard.City := contact^.City;
-  VCard.Region := contact^.Region;
-  VCard.PostalCode := contact^.PostalCode;
-  VCard.Country := contact^.Country;
-
+  VCard.HomeAddress := contact^.homeAddress;
+  VCard.WorkAddress := contact^.workAddress;
+  VCard.BDay := contact^.Birthday;
+  VCard.URL := contact^.homepage;
   // DefaultIndex = 0 none;1 cell;2 work;3 home;4 other
   case contact^.DefaultIndex of
     1: VCard.TelPref := 'M'; // do not localize
@@ -458,12 +501,14 @@ begin
     sl.Free;
   end;
   { TODO: Add better Modified date support }
-  VCard.ModifiedDate := Now;
+  VCard.ModifiedDate := contact^.Modified;
   //debug
+  {
   if Form1.Memo2.Visible then begin
     Form1.Memo2.Lines.Clear;
     Form1.Memo2.Lines.Text := Form1.Memo2.Lines.Text + VCard.Raw.Text;
   end;
+  }
 end;
 
 function NumPos2Str(Pos: TNumberPos): string;
@@ -525,10 +570,11 @@ var
     end;
   end;
 begin
-  s := contact^.country;
-  AddField(contact^.postalCode+' '+contact^.city);
-  AddField(contact^.region);
-  AddField(contact^.street);
+  s := '';
+  AddField(contact^.homeAddress.country);
+  AddField(contact^.homeAddress.postalCode+' '+contact^.homeAddress.city);
+  AddField(contact^.homeAddress.region);
+  AddField(contact^.homeAddress.street);
   if s <> '' then
     AddField(GetContactDisplayName(contact));
   Result := s;
@@ -806,11 +852,11 @@ begin
   else if Column = 7 then CellText := contact.cell
   else if Column = 8 then CellText := contact.fax
   else if Column = 9 then CellText := contact.other
-  else if Column = 10 then CellText := contact.street
-  else if Column = 11 then CellText := contact.city
-  else if Column = 12 then CellText := contact.region
-  else if Column = 13 then CellText := contact.postalcode
-  else if Column = 14 then CellText := contact.country
+  else if Column = 10 then CellText := contact.homeAddress.street
+  else if Column = 11 then CellText := contact.homeAddress.city
+  else if Column = 12 then CellText := contact.homeAddress.region
+  else if Column = 13 then CellText := contact.homeAddress.postalcode
+  else if Column = 14 then CellText := contact.homeAddress.country
   else if Column = 15 then CellText := GetContactDisplayName(contact);
 end;
 
@@ -893,11 +939,16 @@ begin
   else if Column = 7 then Result := WideCompareStr(contact1.cell,  contact2.cell)
   else if Column = 8 then Result := WideCompareStr(contact1.fax,   contact2.fax)
   else if Column = 9 then Result := WideCompareStr(contact1.other, contact2.other)
-  else if Column = 10 then Result := WideCompareStr(contact1.Street, contact2.Street)
-  else if Column = 11 then Result := WideCompareStr(contact1.City, contact2.City)
-  else if Column = 12 then Result := WideCompareStr(contact1.Region, contact2.Region)
-  else if Column = 13 then Result := WideCompareStr(contact1.PostalCode, contact2.PostalCode)
-  else if Column = 14 then Result := WideCompareStr(contact1.Country, contact2.Country)
+  else if Column = 10 then Result := WideCompareStr(contact1.homeAddress.Street,
+                                                    contact2.homeAddress.Street)
+  else if Column = 11 then Result := WideCompareStr(contact1.homeAddress.City,
+                                                    contact2.homeAddress.City)
+  else if Column = 12 then Result := WideCompareStr(contact1.homeAddress.Region,
+                                                    contact2.homeAddress.Region)
+  else if Column = 13 then Result := WideCompareStr(contact1.homeAddress.PostalCode,
+                                                    contact2.homeAddress.PostalCode)
+  else if Column = 14 then Result := WideCompareStr(contact1.homeAddress.Country,
+                                                    contact2.homeAddress.Country)
   else if Column = 15 then Result := WideCompareStr(GetContactDisplayName(contact1),
                                                     GetContactDisplayName(contact2));
 end;
@@ -999,11 +1050,26 @@ begin
         end;
         { Display Name }
         contact.displayname := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
-        contact.Street := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
-        contact.City := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
-        contact.Region := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
-        contact.PostalCode := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
-        contact.Country := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        { Postal Addresses }
+        contact.homeAddress.Street := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.homeAddress.City := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.homeAddress.Region := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.homeAddress.PostalCode := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.homeAddress.Country := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.workAddress.Street := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.workAddress.City := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.workAddress.Region := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.workAddress.PostalCode := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.workAddress.Country := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        { Internet }
+        contact.homepage := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        contact.moremails := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
+        { Personal }
+        try
+          contact.Birthday := StrToInt(WideStringToLongString(GetFirstToken(s)));
+        except
+          contact.Birthday := 0;
+        end;
       except
         ListContacts.DeleteNode(Node);
         Log.AddMessageFmt(_('Database: Error loading data (DB Index %d)'), [i], lsError);
@@ -1055,11 +1121,19 @@ begin
           str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.sound),False);
           str := str + '",' + GUIDToString(contact.CDID);
           str := str + ',"' + HTMLEncode(WideStringToUTF8String(contact.displayname),False);
-          str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.Street),False);
-          str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.City),False);
-          str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.Region),False);
-          str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.PostalCode),False);
-          str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.Country),False)+ '"';
+          str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.homeAddress.Street),False);
+          str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.homeAddress.City),False);
+          str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.homeAddress.Region),False);
+          str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.homeAddress.PostalCode),False);
+          str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.homeAddress.Country),False);
+          str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.workAddress.Street),False);
+          str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.workAddress.City),False);
+          str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.workAddress.Region),False);
+          str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.workAddress.PostalCode),False);
+          str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.workAddress.Country),False);
+          str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.homepage),False);
+          str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.moremails),False);
+          str := str + '",' + IntToStr(Trunc(contact.Birthday));
           sl.Add(str);
         except
         end;
@@ -1631,7 +1705,7 @@ begin
         sl := TStringList.Create;
         str := '"Title","First Name","Last Name","Company","E-mail Address","E-mail Display Name","Home Phone","Business Phone",'+ // do not localize
           '"Mobile Phone","Business Fax","Other Phone","Primary Phone",'+ // do not localize
-          '"Home Street","Home City","Home State","Home Postal Code","Home Country"'; // do not localize
+          '"Home Street","Home City","Home State","Home Postal Code","Home Country","Birthday"'; // do not localize
         sl.add(str);
         with ListContacts do begin
           node := GetFirst;
@@ -1640,6 +1714,7 @@ begin
               if Selected[node] then begin
                 { Bug 847307 Export to .csv files.
                   Fixed to use "," instead of ";" and field names compatability with Outlook 2003 fields, which are shown here:
+
                   "Title","First Name","Middle Name","Last Name","Suffix","Company","Department","Job Title","Business Street",
                   "Business Street 2","Business Street 3","Business City","Business State","Business Postal Code","Business Country",
                   "Home Street","Home Street 2","Home Street 3","Home City","Home State","Home Postal Code","Home Country",
@@ -1651,7 +1726,8 @@ begin
                   "E-mail 2 Address","E-mail 2 Type","E-mail 2 Display Name","E-mail 3 Address","E-mail 3 Type","E-mail 3 Display Name",
                   "Gender","Government ID Number","Hobby","Home Address PO Box","Initials","Internet Free Busy","Keywords","Language",
                   "Location","Manager's Name","Mileage","Notes","Office Location","Organizational ID Number","Other Address PO Box",
-                  "Priority","Private","Profession","Referred By","Sensitivity","Spouse","User 1","User 2","User 3","User 4","Web Page" }
+                  "Priority","Private","Profession","Referred By","Sensitivity","Spouse","User 1","User 2","User 3","User 4","Web Page"
+                }
                 contact := GetNodeData(node);
                 str := WideQuoteStr(contact.title) + ',' +
                   WideQuoteStr(contact.name) + ',' +
@@ -1665,11 +1741,12 @@ begin
                   WideQuoteStr(contact.fax) + ',' +
                   WideQuoteStr(contact.other) + ',' +
                   WideQuoteStr(GetContactDefPhone(contact)) + ',' +
-                  WideQuoteStr(contact.street) + ',' +
-                  WideQuoteStr(contact.city) + ',' +
-                  WideQuoteStr(contact.region) + ',' +
-                  WideQuoteStr(contact.postalCode) + ',' +
-                  WideQuoteStr(contact.country);
+                  WideQuoteStr(contact.homeAddress.street) + ',' +
+                  WideQuoteStr(contact.homeAddress.city) + ',' +
+                  WideQuoteStr(contact.homeAddress.region) + ',' +
+                  WideQuoteStr(contact.homeAddress.postalCode) + ',' +
+                  WideQuoteStr(contact.homeAddress.country) + ',' +
+                  WideQuoteStr(DateToStr(contact.Birthday));
                 sl.add(str);
               end;
             except
@@ -1700,11 +1777,11 @@ begin
                   AddChild('cell',      HTMLEncode(WideStringToUTF8String(contact.cell), False)); // do not localize
                   AddChild('fax',       HTMLEncode(WideStringToUTF8String(contact.fax), False)); // do not localize
                   AddChild('other',     HTMLEncode(WideStringToUTF8String(contact.other), False)); // do not localize
-                  AddChild('street',    HTMLEncode(WideStringToUTF8String(contact.street),False)); // do not localize
-                  AddChild('city',      HTMLEncode(WideStringToUTF8String(contact.city),False)); // do not localize
-                  AddChild('region',    HTMLEncode(WideStringToUTF8String(contact.region),False)); // do not localize
-                  AddChild('postalCode',HTMLEncode(WideStringToUTF8String(contact.postalCode),False)); // do not localize
-                  AddChild('country',   HTMLEncode(WideStringToUTF8String(contact.country),False)); // do not localize
+                  AddChild('street',    HTMLEncode(WideStringToUTF8String(contact.homeAddress.street),False)); // do not localize
+                  AddChild('city',      HTMLEncode(WideStringToUTF8String(contact.homeAddress.city),False)); // do not localize
+                  AddChild('region',    HTMLEncode(WideStringToUTF8String(contact.homeAddress.region),False)); // do not localize
+                  AddChild('postalCode',HTMLEncode(WideStringToUTF8String(contact.homeAddress.postalCode),False)); // do not localize
+                  AddChild('country',   HTMLEncode(WideStringToUTF8String(contact.homeAddress.country),False)); // do not localize
                 end;
               Node := GetNext(Node);
             end;
@@ -1739,11 +1816,11 @@ begin
                 str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(contact.cell),False) + '</TD>'; // do not localize
                 str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(contact.fax),False) + '</TD>'; // do not localize
                 str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(contact.other),False) + '</TD>'; // do not localize
-                str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(contact.street),False) + '</TD>'; // do not localize
-                str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(contact.city),False) + '</TD>'; // do not localize
-                str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(contact.region),False) + '</TD>'; // do not localize
-                str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(contact.postalCode),False) + '</TD>'; // do not localize
-                str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(contact.country),False) + '</TD>'; // do not localize
+                str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(contact.homeAddress.street),False) + '</TD>'; // do not localize
+                str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(contact.homeAddress.city),False) + '</TD>'; // do not localize
+                str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(contact.homeAddress.region),False) + '</TD>'; // do not localize
+                str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(contact.homeAddress.postalCode),False) + '</TD>'; // do not localize
+                str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(contact.homeAddress.country),False) + '</TD>'; // do not localize
                 str := str + '</TR>'; // do not localize
                 sl.add(str);
               end;
@@ -2007,6 +2084,7 @@ end;
 function TfrmSyncPhonebook.DoEdit(AsNew: boolean; NewNumber: string; ContactData: PContactData): boolean;
 var
   Node: PVirtualNode;
+  NewBday: Boolean;
   procedure SyncChanges;
   begin
     ListContacts.Sort(nil, ListContacts.Header.SortColumn, ListContacts.Header.SortDirection);
@@ -2040,7 +2118,7 @@ begin
     txtDisplayAs.MaxLength := FMaxNameLen; //??
     txtTitle.MaxLength := FMaxTitleLen;
     txtOrganization.MaxLength := FMaxOrgLen;
-    txtEmail.MaxLength := FMaxMailLen;
+    //txtEmail.MaxLength := FMaxMailLen;
     txtHome.MaxLength := FMaxTellen;
     txtWork.MaxLength := FMaxTellen;
     txtCell.MaxLength := FMaxTellen;
@@ -2058,6 +2136,7 @@ begin
       else UseOwnMode := True;
     // edit contact
     if ShowModal = mrOk then begin
+      NewBday := False;
       if Modified then with ListContacts do begin
         // apply total updates
         BeginUpdate;
@@ -2072,6 +2151,7 @@ begin
           else
             CheckDefaultDisplayName(@contact,LastFirst1.Checked);
           { copy all data }
+          NewBday := (Trunc(Selcontact^.Birthday) = 0) and (Trunc(contact.Birthday) <> 0);
           Selcontact^ := contact;
           if IsNew then begin
             // new node, update IDs
@@ -2082,6 +2162,9 @@ begin
           if State = 4 then Selcontact^.stateindex := 0;
           if (State > 0) and (ContactData = nil) then
             UndoLastChange1.Visible := True;   // undo not works on new contact
+          Selcontact^.Modified := Now;
+          { save call notes to DB }
+          SetContactNotes(Selcontact,ContactNotes);
           Result := True;
         finally
           RenderGUIDs;
@@ -2108,6 +2191,15 @@ begin
           SyncChanges;
         end;
       end;
+      if NewBday and Form1.FCalAutoBirthday then
+        case MessageDlgW(WideFormat(_('Do you want to create Calendar entry for %s''s birthday?'),
+          [GetContactDisplayName(SelContact)]), mtConfirmation, MB_YESNO) of
+          ID_YES:
+            DoAddCalendarBirthday;
+          ID_NO:
+            if not Form1.FStartupOptions.NoBaloons then
+              Form1.ShowBaloonInfo(_('You can disable Calendar Birthdays in Tools | Options | Synchronization | Events and  Tasks.'));
+        end;
     end;
   finally
     Free;
@@ -2797,31 +2889,103 @@ begin
     if WideCompareStr(ConflictVCardPhone.Email,ConflictVCardPC.Email) <> 0 then
       AddChange(_('Email'),ConflictVCardPhone.Email,ConflictVCardPC.Email);
 
+    if WideCompareStr(ConflictVCardPhone.URL,ConflictVCardPC.URL) <> 0 then
+      AddChange(_('URL'),ConflictVCardPhone.URL,ConflictVCardPC.URL);
+
+    if ConflictVCardPhone.BDay <> ConflictVCardPC.BDay then
+      AddChange(_('Birthday'),DateToStr(ConflictVCardPhone.BDay),DateToStr(ConflictVCardPC.BDay));
+
     if WideCompareStr(ConflictVCardPhone.Title,ConflictVCardPC.Title) <> 0 then
       AddChange(_('Title'),ConflictVCardPhone.Title,ConflictVCardPC.Title);
 
     if WideCompareStr(ConflictVCardPhone.Org,ConflictVCardPC.Org) <> 0 then
       AddChange(_('Company'),ConflictVCardPhone.Org,ConflictVCardPC.Org);
 
-    if WideCompareStr(ConflictVCardPhone.Street,ConflictVCardPC.Street) <> 0 then
-      AddChange(_('Street'),ConflictVCardPhone.Street,ConflictVCardPC.Street);
+    if WideCompareStr(ConflictVCardPhone.homeAddress.Street,ConflictVCardPC.homeAddress.Street) <> 0 then
+      AddChange(_('Street'),ConflictVCardPhone.homeAddress.Street,ConflictVCardPC.homeAddress.Street);
 
-    if WideCompareStr(ConflictVCardPhone.City,ConflictVCardPC.City) <> 0 then
-      AddChange(_('City'),ConflictVCardPhone.City,ConflictVCardPC.City);
+    if WideCompareStr(ConflictVCardPhone.homeAddress.City,ConflictVCardPC.homeAddress.City) <> 0 then
+      AddChange(_('City'),ConflictVCardPhone.homeAddress.City,ConflictVCardPC.homeAddress.City);
 
-    if WideCompareStr(ConflictVCardPhone.Region,ConflictVCardPC.Region) <> 0 then
-      AddChange(_('Region'),ConflictVCardPhone.Region,ConflictVCardPC.Region);
+    if WideCompareStr(ConflictVCardPhone.homeAddress.Region,ConflictVCardPC.homeAddress.Region) <> 0 then
+      AddChange(_('Region'),ConflictVCardPhone.homeAddress.Region,ConflictVCardPC.homeAddress.Region);
 
-    if WideCompareStr(ConflictVCardPhone.PostalCode,ConflictVCardPC.PostalCode) <> 0 then
-      AddChange(_('Postal Code'),ConflictVCardPhone.PostalCode,ConflictVCardPC.PostalCode);
+    if WideCompareStr(ConflictVCardPhone.homeAddress.PostalCode,ConflictVCardPC.homeAddress.PostalCode) <> 0 then
+      AddChange(_('Postal Code'),ConflictVCardPhone.homeAddress.PostalCode,ConflictVCardPC.homeAddress.PostalCode);
 
-    if WideCompareStr(ConflictVCardPhone.Country,ConflictVCardPC.Country) <> 0 then
-      AddChange(_('Country'),ConflictVCardPhone.Country,ConflictVCardPC.Country);
+    if WideCompareStr(ConflictVCardPhone.homeAddress.Country,ConflictVCardPC.homeAddress.Country) <> 0 then
+      AddChange(_('Country'),ConflictVCardPhone.homeAddress.Country,ConflictVCardPC.homeAddress.Country);
+
+    if WideCompareStr(ConflictVCardPhone.workAddress.Street,ConflictVCardPC.workAddress.Street) <> 0 then
+      AddChange(_('Work Street'),ConflictVCardPhone.workAddress.Street,ConflictVCardPC.workAddress.Street);
+
+    if WideCompareStr(ConflictVCardPhone.workAddress.City,ConflictVCardPC.workAddress.City) <> 0 then
+      AddChange(_('Work City'),ConflictVCardPhone.workAddress.City,ConflictVCardPC.workAddress.City);
+
+    if WideCompareStr(ConflictVCardPhone.workAddress.Region,ConflictVCardPC.workAddress.Region) <> 0 then
+      AddChange(_('Work Region'),ConflictVCardPhone.workAddress.Region,ConflictVCardPC.workAddress.Region);
+
+    if WideCompareStr(ConflictVCardPhone.workAddress.PostalCode,ConflictVCardPC.workAddress.PostalCode) <> 0 then
+      AddChange(_('Work Postal Code'),ConflictVCardPhone.workAddress.PostalCode,ConflictVCardPC.workAddress.PostalCode);
+
+    if WideCompareStr(ConflictVCardPhone.workAddress.Country,ConflictVCardPC.workAddress.Country) <> 0 then
+      AddChange(_('Work Country'),ConflictVCardPhone.workAddress.Country,ConflictVCardPC.workAddress.Country);
 
     if ChangeCount <> 0 then ShowModal
       else MessageDlgW(_('No changes found.'), mtInformation, MB_OK);
   finally
     Free;
+  end;
+end;
+
+procedure TfrmSyncPhonebook.DoAddCalendarBirthday;
+var
+  dY,dM,dD: Word;
+  Bday: TDateTime;
+  AEntity: TVCalEntity;
+  sl: TStringList;
+begin
+  if Assigned(SelContact) then begin
+    { Create the EVENT in this year instead of the actual Birthday one }
+    DecodeDate(SelContact^.Birthday,dY,dM,dD);
+    Bday := Trunc(EncodeDate(CurrentYear,dM,dD));
+    //Bday := Trunc(SelContact^.Birthday);
+    { Show Calendar for that very day }
+    Form1.SetExplorerNode(Form1.FNodeCalendar);
+    Form1.frmCalendarView.VpDayView.Date := Bday;
+    Application.ProcessMessages;
+    {}
+    AEntity := TVCalEntity.Create;
+    try
+      { Add it to current Calendar items... }
+      sl := TStringList.Create;
+      try
+        sl.Add('BEGIN:VEVENT');
+        sl.Add('DTSTART:'+FormatDateTime('yyyymmdd',Bday)+'T000100'); // Add 'Z' to make it UTC
+        sl.Add('DTEND:'+FormatDateTime('yyyymmdd',Bday)+'T235900');
+        sl.Add('SUMMARY:'+GetContactDisplayName(SelContact));
+        sl.Add('LOCATION:'+GetContactHomeAdr(SelContact));
+        sl.Add('AALARM:'+FormatDateTime('yyyymmdd',Bday)+'T093000');
+        sl.Add('CATEGORIES:ANNIVERSARY');
+        sl.Add('CLASS:PUBLIC');
+        sl.Add('END:VEVENT');
+        AEntity.Raw := sl;
+      finally
+        sl.Free;
+      end;
+      { ...and mark this item as New }
+      AEntity.VFmaState := 0; // UserField9 := '0';
+      Form1.frmCalendarView.DB.Connected := False;
+      try
+        Form1.frmCalendarView.DB.vCalendar.Add(AEntity);
+        Form1.frmCalendarView.DB.RefreshEvents;
+        Form1.frmCalendarView.DB.RefreshResource;
+      finally
+        Form1.frmCalendarView.DB.Connected := True;
+      end;
+    except
+      AEntity.Free;
+    end;
   end;
 end;
 

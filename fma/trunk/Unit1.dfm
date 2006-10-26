@@ -7534,6 +7534,10 @@ object Form1: TForm1
       item
         Name = 'Ask Cal Recurr'
         Value = True
+      end
+      item
+        Name = 'Calendar Birthday'
+        Value = True
       end>
     Left = 472
     Top = 368

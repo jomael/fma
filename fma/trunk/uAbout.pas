@@ -80,7 +80,7 @@ end;
 
 function GetBuildVersion: widestring;
 begin
-  Result := ExtractFileVersionInfo(Application.ExeName,'FileVersion') + ' R' + IntToStr(SvnRevision); // do not localize
+  Result := ExtractFileVersionInfo(Application.ExeName,'FileVersion') + '.R' + IntToStr(SvnRevision); // do not localize
 end;
 
 { TfrmAbout }

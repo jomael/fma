@@ -253,12 +253,20 @@ constructor TFMAContactFieldMapper.Create;
 begin
   inherited;
 
+  { REFFERENCE !!!
+    TBaseContact = class;
+    TFMAContactFieldMapper.Create;
+    TContactFieldMapper.LoadStandardFields;
+    TOutlookContactSource.Read/Write();
+  }
+
   Fields.Add('Title');
   Fields.Add('Name');
   Fields.Add('SurName');
   Fields.Add('DisplayName');
   Fields.Add('Org');
   Fields.Add('EMail');
+  Fields.Add('URL');
   Fields.Add('Home');
   Fields.Add('Work');
   Fields.Add('Cell');
@@ -269,8 +277,16 @@ begin
   Fields.Add('Region');
   Fields.Add('PostalCode');
   Fields.Add('Country');
+  {
+  Fields.Add('WorkStreet');
+  Fields.Add('WorkCity');
+  Fields.Add('WorkRegion');
+  Fields.Add('WorkPostalCode');
+  Fields.Add('WorkCountry');
+  }
+  Fields.Add('Birthday');
 
-  MappedFields.Add('Title=Title');
+    MappedFields.Add('Title=Title');
   MappedFields.Add('Name=Name');
   MappedFields.Add('SurName=SurName');
   MappedFields.Add('Organization=Org');
@@ -285,6 +301,8 @@ begin
   MappedFields.Add('Region=Region');
   MappedFields.Add('PostalCode=PostalCode');
   MappedFields.Add('Country=Country');
+  
+  MappedFields.Add('Birthday=Birthday');
 end;
 
 function TFMAContactFieldMapper.GetValue(Field: String): String;
@@ -299,6 +317,8 @@ begin
     Result := FFMAContact.Org
   else if Field = 'EMail' then
     Result := FFMAContact.EMail
+  else if Field = 'URL' then
+    Result := FFMAContact.homepage
   else if Field = 'Home' then
     Result := FFMAContact.Home
   else if Field = 'Work' then
@@ -310,15 +330,27 @@ begin
   else if Field = 'Other' then
     Result := FFMAContact.Other
   else if Field = 'Street' then
-    Result := FFMAContact.Street
+    Result := FFMAContact.homeAddress.Street
   else if Field = 'City' then
-    Result := FFMAContact.City
+    Result := FFMAContact.homeAddress.City
   else if Field = 'Region' then
-    Result := FFMAContact.Region
+    Result := FFMAContact.homeAddress.Region
   else if Field = 'PostalCode' then
-    Result := FFMAContact.PostalCode
+    Result := FFMAContact.homeAddress.PostalCode
   else if Field = 'Country' then
-    Result := FFMAContact.Country;
+    Result := FFMAContact.homeAddress.Country
+  else if Field = 'WorkStreet' then
+    Result := FFMAContact.workAddress.Street
+  else if Field = 'WorkCity' then
+    Result := FFMAContact.workAddress.City
+  else if Field = 'WorkRegion' then
+    Result := FFMAContact.workAddress.Region
+  else if Field = 'WorkPostalCode' then
+    Result := FFMAContact.workAddress.PostalCode
+  else if Field = 'WorkCountry' then
+    Result := FFMAContact.workAddress.Country
+  else if Field = 'Birthday' then
+    Result := DateToStr(FFMAContact.Birthday);
 end;
 
 procedure TFMAContactFieldMapper.SetValue(Field: String; const Value: String);
@@ -333,6 +365,8 @@ begin
     FFMAContact.Org := Value
   else if Field = 'EMail' then
     FFMAContact.EMail := Value
+  else if Field = 'URL' then
+    FFMAContact.homepage := Value
   else if Field = 'Home' then
     FFMAContact.Home := Value
   else if Field = 'Work' then
@@ -344,15 +378,27 @@ begin
   else if Field = 'Other' then
     FFMAContact.Other := Value
   else if Field = 'Street' then
-    FFMAContact.Street := Value
+    FFMAContact.homeAddress.Street := Value
   else if Field = 'City' then
-    FFMAContact.City := Value
+    FFMAContact.homeAddress.City := Value
   else if Field = 'Region' then
-    FFMAContact.Region := Value
+    FFMAContact.homeAddress.Region := Value
   else if Field = 'PostalCode' then
-    FFMAContact.PostalCode := Value
+    FFMAContact.homeAddress.PostalCode := Value
   else if Field = 'Country' then
-    FFMAContact.Country := Value;
+    FFMAContact.homeAddress.Country := Value
+  else if Field = 'WorkStreet' then
+    FFMAContact.workAddress.Street := Value
+  else if Field = 'WorkCity' then
+    FFMAContact.workAddress.City := Value
+  else if Field = 'WorkRegion' then
+    FFMAContact.workAddress.Region := Value
+  else if Field = 'WorkPostalCode' then
+    FFMAContact.workAddress.PostalCode := Value
+  else if Field = 'WorkCountry' then
+    FFMAContact.workAddress.Country := Value
+  else if Field = 'Birthday' then
+    FFMAContact.Birthday := StrToDate(Value);
 end;
 
 end.

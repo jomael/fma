@@ -19,6 +19,8 @@ interface
 uses
   Classes, TntClasses;
 
+function WideConcatList(Left,Right: WideString; delimiter: WideString = ''): WideString;
+
 function WideTrim(str: WideString): WideString;
 function WideLeftTrim(str: WideString): WideString;
 function WideRightTrim(str: WideString): WideString;
@@ -51,6 +53,21 @@ uses
   SysUtils, TntSysUtils, TntWideStrings;
 
 (* Unicode *)
+
+function WideConcatList(Left,Right,delimiter: WideString): WideString;
+begin
+  Left := WideTrim(Left);
+  Right := WideTrim(Right);
+  if Left <> '' then begin
+    Result := Left;
+    if Right <> '' then begin
+      Result := Result + delimiter; // might include space chars
+      Result := Result + Right;
+    end;
+  end
+  else
+    Result := Right;
+end;
 
 function WidePos(substr,str: WideString; startpos: Integer): Integer;
 var

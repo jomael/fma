@@ -19,11 +19,19 @@ interface
 uses Classes, TntClasses, SysUtils, TntSysUtils, Jpeg, RxGif, Graphics, TntGraphics;
 
 type
+  TPostalAddress = record
+    Street: Widestring;
+    City: Widestring;
+    Region: Widestring;
+    PostalCode: Widestring;
+    Country: Widestring;
+  end;
+
   TVCard = class(TObject)
   private
     { Private declarations }
     Grouping,PropertyName: Widestring;
-    sl: TStringList;
+    sl,mails: TStringList;
     function GetRaw: TStrings;
     procedure SetRaw(const ValueRaw: TStrings);
     procedure setProperty(Value: String);
@@ -31,6 +39,8 @@ type
     procedure RemoveSoftLineBrakes(var Value: TStringList);
     function DecodePropertyValue(const PParams, PValue: String): WideString;
     function GetLDIF: TStrings;
+    function GetMail: TStrings;
+    procedure SetMail(const Value: TStrings);
   public
     { Public declarations }
     Name: Widestring;
@@ -39,6 +49,7 @@ type
     TelFax: Widestring;
     TelCell: Widestring;
     TelOther: Widestring;
+    URL: Widestring;
     Email: Widestring;
     Title: Widestring;
     Org: Widestring;
@@ -54,17 +65,16 @@ type
     TelPref: string; // H = HOME, W = Work, F = Fax, M = CELL, O = Other
     UID: string;
     ModifiedDate: TDateTime;
-    Street: Widestring;
-    City: Widestring;
-    Region: Widestring;
-    PostalCode: Widestring;
-    Country: Widestring;
+    HomeAddress: TPostalAddress;
+    WorkAddress: TPostalAddress;
+    BDay: TDateTime;
     constructor Create;
     destructor Destroy; override;
     procedure Clear;
-    function LoadFromLDIF(ldif: TStrings):boolean;
+    function LoadFromLDIF(ldif: TStrings): boolean;
   published
     property Raw: TStrings read GetRaw write SetRaw;
+    property MoreEmails: TStrings read GetMail write SetMail;
     property LDIF: TStrings read GetLDIF;
   end;
 
@@ -98,30 +108,40 @@ begin
     VType:='';
     Version:='';
     DisplayName := '';
-    PhotoType := 0;
-    FreeAndNil(Photo);
     Grouping := '';
     PropertyName := '';
     UID := '';
     Notes := '';
+    URL := '';
+    HomeAddress.Street:='';
+    HomeAddress.City:='';
+    HomeAddress.Region:='';
+    HomeAddress.PostalCode:='';
+    HomeAddress.Country:='';
+    WorkAddress.Street:='';
+    WorkAddress.City:='';
+    WorkAddress.Region:='';
+    WorkAddress.PostalCode:='';
+    WorkAddress.Country:='';
     ModifiedDate := 0;
+    BDay := 0;
+    PhotoType := 0;
+    FreeAndNil(Photo);
+    mails.Clear;
     sl.Clear;
-    Street:='';
-    City:='';
-    Region:='';
-    PostalCode:='';
-    Country:='';
 end;
 
 constructor TVCard.Create;
 begin
   inherited;
   sl := TStringList.Create;
+  mails := TStringList.Create;
 end;
 
 destructor TVCard.Destroy;
 begin
   Clear;
+  mails.Free;
   sl.Free;
   inherited;
 end;
@@ -131,7 +151,37 @@ var
   strTemp : string;
   strN : WideString;
   i: integer;
+  bY,bM,bD: word;
   //tz: TTimeZoneInformation;
+  procedure slAddAdr(AName: string; Adr: TPostalAddress);
+  begin
+    with Adr do
+    if (Street <> '') or
+      (City <> '') or
+      (Region <> '') or
+      (PostalCode <> '') or
+      (Country <> '')  then begin
+       strTemp :=  WideStringToUTF8(Street + City + Region + PostalCode + Country);
+       if not Form1.FUseUTF8 or (strTemp = Street + City + Region + PostalCode + Country) then begin
+         strTemp := Str2QP(Street + City + Region + PostalCode + Country);
+         if (Street + City + Region + PostalCode + Country) = strTemp then
+            sl.add('ADR;'+AName+':;;' + Street + ';' + City + ';' + Region + ';' + PostalCode + ';' + Country)
+         else
+            sl.Add('ADR;ENCODING=QUOTED-PRINTABLE;'+AName+':;;'
+              + Str2QP(Street) + ';'
+              + Str2QP(City) + ';'
+              + Str2QP(Region) + ';'
+              + Str2QP(PostalCode) + ';'
+              + Str2QP(Country));
+       end else
+         sl.Add('ADR;CHARSET=UTF-8;'+AName+':;;'
+           + WideStringToUTF8(Street) + ';'
+           + WideStringToUTF8(City) + ';'
+           + WideStringToUTF8(Region) + ';'
+           + WideStringToUTF8(PostalCode) + ';'
+           + WideStringToUTF8(Country));
+    end;
+  end;
 begin
   sl.Clear;
   if VType = '' then
@@ -223,8 +273,24 @@ begin
        sl.Add('ORG;CHARSET=UTF-8:' + strTemp);
   end;
 
-  if Email <> '' then begin
-     sl.add('EMAIL;INTERNET;PREF:' + Email)
+  if Email <> '' then
+    sl.add('EMAIL;INTERNET;PREF:' + Email);
+  for i := 0 to mails.Count-1 do
+    sl.add('EMAIL;INTERNET:' + mails[i]);
+
+  DecodeDate(BDay,bY,bM,bD);
+  sl.add(Format('BDAY:%.4d%.2d%.2d',[bY,bM,bD]));
+
+  if URL <> '' then begin
+    strTemp := WideStringToUTF8(URL);
+    if not Form1.FUseUTF8 or (strTemp = URL) then begin
+       strTemp := Str2QP(URL);
+       if URL = strTemp then
+          sl.add('URL:' + URL)
+       else
+          sl.Add('URL;ENCODING=QUOTED-PRINTABLE:' + strTemp);
+     end else
+       sl.Add('URL;CHARSET=UTF-8:' + strTemp);
   end;
 
   if TelHome <> '' then begin
@@ -258,31 +324,8 @@ begin
       sl.add('TEL;PREF:' + TelOther)
   end;
 
-  if (Street <> '') or
-    (City <> '') or
-    (Region <> '') or
-    (PostalCode <> '') or
-    (Country <> '')  then begin
-     strTemp :=  WideStringToUTF8(Street + City + Region + PostalCode + Country);
-     if not Form1.FUseUTF8 or (strTemp = Street + City + Region + PostalCode + Country) then begin
-       strTemp := Str2QP(Street + City + Region + PostalCode + Country);
-       if (Street + City + Region + PostalCode + Country) = strTemp then
-          sl.add('ADR;HOME:;;' + Street + ';' + City + ';' + Region + ';' + PostalCode + ';' + Country)
-       else
-          sl.Add('ADR;ENCODING=QUOTED-PRINTABLE;HOME:;;'
-            + Str2QP(Street) + ';'
-            + Str2QP(City) + ';'
-            + Str2QP(Region) + ';'
-            + Str2QP(PostalCode) + ';'
-            + Str2QP(Country));
-     end else
-       sl.Add('ADR;CHARSET=UTF-8;HOME:;;'
-         + WideStringToUTF8(Street) + ';'
-         + WideStringToUTF8(City) + ';'
-         + WideStringToUTF8(Region) + ';'
-         + WideStringToUTF8(PostalCode) + ';'
-         + WideStringToUTF8(Country));
-  end;
+  slAddAdr('HOME',HomeAddress);
+  slAddAdr('WORK',WorkAddress);
 
   // TODO: Optional, add support for photo image
 
@@ -323,6 +366,46 @@ var
     j := Length(Value);
     Result := (Pos(FName,Value) = 1) and ((i = j) or
       (Value[i+1] in [';',':']) or (FName[i] in [';',':']));
+  end;
+
+  procedure ProcessAdr(AName: string; var Adr: TPostalAddress; var Value: WideString);
+  begin
+    with Adr do
+      if Pos(AName,PParams) <> 0 then begin
+          str := Value;
+
+          // skip POST OFFICE ADDRESS
+          if pos(';', str) > 0 then
+             str := copy(str, pos(';', str) + 1, length(str));
+          // skip EXTENDED ADDDRESS
+          if pos(';', str) > 0 then
+             str := copy(str, pos(';', str) + 1, length(str));
+          // Street
+          if pos(';', str) > 0 then begin
+             Street := copy(str, 0, pos(';', str) - 1);
+             str := copy(str, pos(';', str) + 1, length(str));
+          end;
+          // City
+          if pos(';', str) > 0 then begin
+             City := copy(str, 0, pos(';', str) - 1);
+             str := copy(str, pos(';', str) + 1, length(str));
+          end;
+          // Region
+          if pos(';', str) > 0 then begin
+             Region := copy(str, 0, pos(';', str) - 1);
+             str := copy(str, pos(';', str) + 1, length(str));
+          end;
+          // PostalCode
+          if pos(';', str) > 0 then begin
+             PostalCode := copy(str, 0, pos(';', str) - 1);
+             str := copy(str, pos(';', str) + 1, length(str));
+          end;
+          // Country
+          if pos(';', str) > 0 then
+             Country := copy(str, 0, pos(';', str) - 1)
+          else if length(str) > 0 then
+             Country := str;
+      end;
   end;
 
   procedure ProcessRaw(var Value: String);
@@ -453,11 +536,27 @@ var
       // check for params
       PWValue := DecodePropertyValue(PParams,PValue);
       // PWValue should now contain decoded value (widestring)
-      if (Pos('INTERNET',PParams) <> 0) and (Pos('PREF',PParams) <> 0) then begin
-        Email := PWValue;
+      if Pos('INTERNET',PParams) <> 0 then begin
+        if Pos('PREF',PParams) <> 0 then
+          Email := PWValue
+        else
+          mails.Add(PWValue);
       end;
     end
 
+    { BDAY:19730205 }
+    else if CompareStr('BDAY',PName) = 0 then begin
+      PWValue := DecodePropertyValue(PParams,PValue);
+      BDay := EncodeDate(StrToInt(Copy(PWValue,1,4)),StrToInt(Copy(PWValue,5,2)),StrToInt(Copy(PWValue,7,2)));
+    end
+
+    { URL;CHARSET=UTF-8:http://www.5group.com }
+    else if CompareStr('URL',PName) = 0 then begin
+      PWValue := DecodePropertyValue(PParams,PValue);
+      URL := PWValue;
+    end
+
+    { NOTE;CHARSET=UTF-8:Me me me }
     else if CompareStr('NOTE',PName) = 0 then begin
       {  Schnorbsl : check and decode in this order 'QP', 'UTF-7', 'UTF-8' }
       // check for params
@@ -472,41 +571,8 @@ var
       PWValue := DecodePropertyValue(PParams,PValue);
       // PWValue should now contain decoded value (widestring)
 
-      if Pos('HOME',PParams) <> 0 then begin
-          str := PWValue;
-
-          // skip POST OFFICE ADDRESS
-          if pos(';', str) > 0 then
-             str := copy(str, pos(';', str) + 1, length(str));
-          // skip EXTENDED ADDDRESS
-          if pos(';', str) > 0 then
-             str := copy(str, pos(';', str) + 1, length(str));
-          // Street
-          if pos(';', str) > 0 then begin
-             Street := copy(str, 0, pos(';', str) - 1);
-             str := copy(str, pos(';', str) + 1, length(str));
-          end;
-          // City
-          if pos(';', str) > 0 then begin
-             City := copy(str, 0, pos(';', str) - 1);
-             str := copy(str, pos(';', str) + 1, length(str));
-          end;
-          // Region
-          if pos(';', str) > 0 then begin
-             Region := copy(str, 0, pos(';', str) - 1);
-             str := copy(str, pos(';', str) + 1, length(str));
-          end;
-          // PostalCode
-          if pos(';', str) > 0 then begin
-             PostalCode := copy(str, 0, pos(';', str) - 1);
-             str := copy(str, pos(';', str) + 1, length(str));
-          end;
-          // Country
-          if pos(';', str) > 0 then
-             Country := copy(str, 0, pos(';', str) - 1)
-          else if length(str) > 0 then
-             Country := str;
-      end;
+      ProcessAdr('HOME',HomeAddress,PWValue);
+      ProcessAdr('WORK',WorkAddress,PWValue);
     end
 
     { TODO: Add ModifiedDate support }
@@ -893,31 +959,31 @@ var
     end
     else if (WideCompareStr(PName, 'homeStreet')=0) then
     begin
-      Street := PValue;
+      HomeAddress.Street := PValue;
     end
     else if (WideCompareStr(PName, 'homePostalAddress')=0) then
     begin // seems older versions of Thunderbird use this
-      Street := PValue;
+      HomeAddress.Street := PValue;
     end
     else if (WideCompareStr(PName, 'mozillaHomeStreet2')=0) then
     begin
-      Street := Street + ' ' + PValue;
+      HomeAddress.Street := HomeAddress.Street + ' ' + PValue;
     end
     else if (WideCompareStr(PName, 'mozillaHomeLocalityName')=0) then
     begin
-      City := PValue;
+      HomeAddress.City := PValue;
     end
     else if (WideCompareStr(PName, 'mozillaHomeState')=0) then
     begin
-      Region := PValue;
+      HomeAddress.Region := PValue;
     end
     else if (WideCompareStr(PName, 'mozillaHomePostalCode')=0) then
     begin
-      PostalCode := PValue;
+      HomeAddress.PostalCode := PValue;
     end
     else if (WideCompareStr(PName, 'mozillaHomeCountryName')=0) then
     begin
-      Country := PValue;
+      HomeAddress.Country := PValue;
     end
     else if (WideCompareStr(PName, 'company')=0) then
     begin
@@ -936,13 +1002,14 @@ var
 
 begin
   validPersonEntry := false;
-  for i:=0 to ldif.Count-1 do
+  for i := 0 to ldif.Count-1 do
     ProcessRaw(ldif.Strings[i]);
-  if (validPersonEntry) then
-  begin
-    if (Name='') then
+  if validPersonEntry then begin
+    if Name = '' then begin
       Name := DisplayName;
-    if (Name<>'')and(Surname<>'') then
+      //FullName := DisplayName;
+    end;
+    if (Name <> '') and (Surname <> '') then
       FullName := Name +';'+ Surname;
   end;
 
@@ -1021,16 +1088,16 @@ begin
     sl.Add(PNameValueEncode('pager', TelOther));
   if TelCell <> '' then
     sl.Add(PNameValueEncode('mobile', TelCell));
-  if Street <> '' then
-    sl.Add(PNameValueEncode('homePostalAddress', Street));
-  if City <> '' then
-    sl.Add(PNameValueEncode('mozillaHomeLocalityName', City));
-  if Region <> '' then
-    sl.Add(PNameValueEncode('mozillaHomeState', Region));
-  if PostalCode <> '' then
-    sl.Add(PNameValueEncode('mozillaHomePostalCode', PostalCode));
-  if Country <> '' then
-    sl.Add(PNameValueEncode('mozillaHomeCountryName', Country));
+  if HomeAddress.Street <> '' then
+    sl.Add(PNameValueEncode('homePostalAddress', HomeAddress.Street));
+  if HomeAddress.City <> '' then
+    sl.Add(PNameValueEncode('mozillaHomeLocalityName', HomeAddress.City));
+  if HomeAddress.Region <> '' then
+    sl.Add(PNameValueEncode('mozillaHomeState', HomeAddress.Region));
+  if HomeAddress.PostalCode <> '' then
+    sl.Add(PNameValueEncode('mozillaHomePostalCode', HomeAddress.PostalCode));
+  if HomeAddress.Country <> '' then
+    sl.Add(PNameValueEncode('mozillaHomeCountryName', HomeAddress.Country));
   if Org <> '' then
     sl.Add(PNameValueEncode('company', Org));
   if Notes <> '' then
@@ -1041,6 +1108,16 @@ begin
   // TODO: support modifyTime
   sl.Add('modifytimestamp: 0Z');
   Result := sl;
+end;
+
+function TVCard.GetMail: TStrings;
+begin
+  Result := mails;
+end;
+
+procedure TVCard.SetMail(const Value: TStrings);
+begin
+  mails.Text := Value.Text;
 end;
 
 end.

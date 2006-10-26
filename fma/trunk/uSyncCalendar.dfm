@@ -408,6 +408,7 @@ object frmCalendarView: TfrmCalendarView
     end
     object ImportCalendar1: TTntMenuItem
       Action = Form1.ActionToolsImportCalendar
+      OnClick = ImportCalendar1Click
     end
     object ExportCalendar1: TTntMenuItem
       Action = Form1.ActionToolsExportCalendar

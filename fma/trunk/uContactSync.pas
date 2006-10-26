@@ -53,8 +53,15 @@ type
     FCountry: WideString;
     FStreet: WideString;
     FPostalCode: WideString;
+    FBirthday: WideString;
     function GetFullName: WideString;
   public
+  { REFFERENCE !!!
+    TBaseContact = class;
+    TFMAContactFieldMapper.Create;
+    TContactFieldMapper.LoadStandardFields;
+    TOutlookContactSource.Read/Write();
+  }
     property Title: WideString read FTitle write FTitle;
     property Name: WideString read FName write FName;
     property SurName: WideString read FSurName write FSurName;
@@ -70,6 +77,8 @@ type
     property Region: WideString read FRegion write FRegion;
     property PostalCode: WideString read FPostalCode write FPostalCode;
     property Country: WideString read FCountry write FCountry;
+
+    property Birthday: WideString read FBirthday write FBirthday;
 
     property FullName: WideString read GetFullName;
   end;
@@ -175,6 +184,9 @@ type
     procedure SetFields(const Value: TStrings);
 
     procedure LoadStandardFields;
+    
+    function GetBirthday: WideString;
+    procedure SetBirthday(const Value: WideString);
   protected
     function GetValue(Field: String): String; virtual; abstract;
     procedure SetValue(Field: String; const Value: String); virtual; abstract;
@@ -197,6 +209,8 @@ type
     property Region: WideString read GetRegion write SetRegion;
     property PostalCode: WideString read GetPostalCode write SetPostalCode;
     property Country: WideString read GetCountry write SetCountry;
+
+    property Birthday: WideString read GetBirthday write SetBirthday;
 
     property Fields: TStrings read FFields write SetFields;
     property MappedField[Field: String]: String read GetMappedField;
@@ -764,6 +778,9 @@ begin
   if Contact.Country = OtherContact.Country then
     Inc(Result, 1);
 
+  if Contact.Birthday = OtherContact.Birthday then
+    Inc(Result, 100);
+
   if Contact.Name = OtherContact.SurName then
     Inc(Result, 100);
   if Contact.SurName = OtherContact.Name then
@@ -838,6 +855,8 @@ begin
   PostalCode := Value.PostalCode;
   Country := Value.Country;
 
+  Birthday := Value.Birthday;
+
   SyncID := Value.SyncID;
   ID := Unassigned;
   SyncHash := Hash;
@@ -876,7 +895,7 @@ begin
   Result := FTitle + '|' + FCellPhone + '|' + FFaxPhone + '|' + FOtherPhone + '|' +
             FOrganization + '|' + FEmail + '|' + FName + '|' + FWorkPhone + '|' +
             FSurName + '|' +FHomePhone + '|' + FStreet + '|' + FCity + '|' +
-            FRegion + '|' + FPostalCode + '|' + FCountry;
+            FRegion + '|' + FPostalCode + '|' + FCountry + '|' + FBirthday;
 end;
 
 function TContact.IsChanged: Boolean;
@@ -1134,6 +1153,11 @@ begin
   inherited;
 end;
 
+function TContactFieldMapper.GetBirthday: WideString;
+begin
+  Result := MappedValue['Birthday'];
+end;
+
 function TContactFieldMapper.GetCellPhone: WideString;
 begin
   Result := MappedValue['CellPhone'];
@@ -1221,6 +1245,14 @@ end;
 
 procedure TContactFieldMapper.LoadStandardFields;
 begin
+
+  { REFFERENCE !!!
+
+    TFMAContactFieldMapper.Create;
+    TContactFieldMapper.LoadStandardFields;
+    TOutlookContactSource.Read/Write();
+  }
+
   FStandardFields.Add('Title');
   FStandardFields.Add('Name');
   FStandardFields.Add('SurName');
@@ -1236,6 +1268,19 @@ begin
   FStandardFields.Add('Region');
   FStandardFields.Add('PostalCode');
   FStandardFields.Add('Country');
+  {
+  Fields.Add('WorkStreet');
+  Fields.Add('WorkCity');
+  Fields.Add('WorkRegion');
+  Fields.Add('WorkPostalCode');
+  Fields.Add('WorkCountry');
+  }
+  FStandardFields.Add('Birthday');
+end;
+
+procedure TContactFieldMapper.SetBirthday(const Value: WideString);
+begin
+  MappedValue['Birthday'] := Value;
 end;
 
 procedure TContactFieldMapper.SetCellPhone(const Value: WideString);

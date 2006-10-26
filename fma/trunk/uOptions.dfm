@@ -2674,7 +2674,7 @@ object frmOptions: TfrmOptions
         Left = 4
         Top = 0
         Width = 397
-        Height = 89
+        Height = 109
         Caption = 'Calendar'
         TabOrder = 0
         object cbCalWideMode: TTntCheckBox
@@ -2705,6 +2705,16 @@ object frmOptions: TfrmOptions
           Checked = True
           State = cbChecked
           TabOrder = 2
+        end
+        object cbCalBirthday: TTntCheckBox
+          Left = 10
+          Top = 80
+          Width = 375
+          Height = 17
+          Caption = 'Enable Auto-Birthday creation'
+          Checked = True
+          State = cbChecked
+          TabOrder = 3
         end
       end
     end

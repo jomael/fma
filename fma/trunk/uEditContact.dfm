@@ -1,6 +1,6 @@
 object frmEditContact: TfrmEditContact
-  Left = 461
-  Top = 83
+  Left = 600
+  Top = 183
   BorderStyle = bsDialog
   Caption = 'Contact'
   ClientHeight = 471
@@ -198,9 +198,9 @@ object frmEditContact: TfrmEditContact
       object Label5: TTntLabel
         Left = 8
         Top = 172
-        Width = 31
+        Width = 41
         Height = 13
-        Caption = 'E-mail:'
+        Caption = 'Birthday:'
       end
       object Bevel2: TTntBevel
         Left = 8
@@ -274,22 +274,13 @@ object frmEditContact: TfrmEditContact
         OnChange = txtChangeEditAs
         OnEnter = OnChangeAsEnter
       end
-      object txtEmail: TTntEdit
-        Left = 96
-        Top = 168
-        Width = 253
-        Height = 21
-        MaxLength = 50
-        TabOrder = 4
-        OnChange = txtChange
-      end
       object txtHome: TTntEdit
         Left = 96
         Top = 220
         Width = 253
         Height = 21
         MaxLength = 40
-        TabOrder = 5
+        TabOrder = 6
         OnChange = txtPhoneChange
         OnEnter = txtPhoneEnter
         OnKeyPress = txtTelKeyPress
@@ -300,7 +291,7 @@ object frmEditContact: TfrmEditContact
         Width = 253
         Height = 21
         MaxLength = 40
-        TabOrder = 6
+        TabOrder = 7
         OnChange = txtPhoneChange
         OnEnter = txtPhoneEnter
         OnKeyPress = txtTelKeyPress
@@ -311,7 +302,7 @@ object frmEditContact: TfrmEditContact
         Width = 253
         Height = 21
         MaxLength = 40
-        TabOrder = 7
+        TabOrder = 8
         OnChange = txtPhoneChange
         OnEnter = txtPhoneEnter
         OnKeyPress = txtTelKeyPress
@@ -322,7 +313,7 @@ object frmEditContact: TfrmEditContact
         Width = 253
         Height = 21
         MaxLength = 40
-        TabOrder = 8
+        TabOrder = 9
         OnChange = txtPhoneChange
         OnEnter = txtPhoneEnter
         OnKeyPress = txtTelKeyPress
@@ -333,7 +324,7 @@ object frmEditContact: TfrmEditContact
         Width = 253
         Height = 21
         MaxLength = 40
-        TabOrder = 9
+        TabOrder = 10
         OnChange = txtPhoneChange
         OnEnter = txtPhoneEnter
         OnKeyPress = txtTelKeyPress
@@ -346,6 +337,26 @@ object frmEditContact: TfrmEditContact
         ItemHeight = 13
         TabOrder = 0
         OnChange = txtDisplayAsChange
+      end
+      object txtBirthday: TTntDateTimePicker
+        Left = 96
+        Top = 168
+        Width = 177
+        Height = 21
+        Date = 39015.646253206020000000
+        Time = 39015.646253206020000000
+        DateMode = dmUpDown
+        TabOrder = 4
+        OnChange = txtBirthdayChange
+      end
+      object BirthdayDeleteButton: TTntButton
+        Left = 280
+        Top = 168
+        Width = 69
+        Height = 25
+        Caption = '&Remove'
+        TabOrder = 5
+        OnClick = BirthdayDeleteButtonClick
       end
     end
     object TabSheet2: TTntTabSheet
@@ -464,7 +475,7 @@ object frmEditContact: TfrmEditContact
           Top = 156
           Width = 133
           Height = 25
-          Caption = 'Select From List '#187
+          Caption = '&Select From List '#187
           TabOrder = 1
           OnClick = btnPicSelClick
         end
@@ -474,7 +485,7 @@ object frmEditContact: TfrmEditContact
           Width = 69
           Height = 25
           Hint = 'Send to Phone'
-          Caption = 'Upload...'
+          Caption = '&Upload...'
           TabOrder = 2
           OnClick = btnUploadClick
         end
@@ -483,7 +494,7 @@ object frmEditContact: TfrmEditContact
           Top = 156
           Width = 69
           Height = 25
-          Caption = 'Remove'
+          Caption = '&Remove'
           TabOrder = 3
           OnClick = btnPicDelClick
         end
@@ -562,7 +573,7 @@ object frmEditContact: TfrmEditContact
           Width = 69
           Height = 25
           Hint = 'Send to Phone'
-          Caption = 'Upload...'
+          Caption = 'U&pload...'
           TabOrder = 0
           OnClick = btnUploadClick
         end
@@ -571,7 +582,7 @@ object frmEditContact: TfrmEditContact
           Top = 124
           Width = 69
           Height = 25
-          Caption = 'Remove'
+          Caption = 'Re&move'
           TabOrder = 1
           OnClick = btnSndDelClick
         end
@@ -580,14 +591,14 @@ object frmEditContact: TfrmEditContact
           Top = 124
           Width = 133
           Height = 25
-          Caption = 'Select From List '#187
+          Caption = 'Select &From List '#187
           TabOrder = 2
           OnClick = btnSndSelClick
         end
         object MediaPlayer1: TMediaPlayer
           Left = 276
           Top = 20
-          Width = -1
+          Width = 57
           Height = 25
           Enabled = False
           VisibleButtons = [btPlay, btStop]
@@ -645,7 +656,7 @@ object frmEditContact: TfrmEditContact
           Width = 229
           Height = 21
           Style = csDropDownList
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 0
           OnChange = txtCustomChange
         end
@@ -770,7 +781,7 @@ object frmEditContact: TfrmEditContact
         Top = 344
         Width = 69
         Height = 25
-        Caption = 'Clear All'
+        Caption = 'Clea&r All'
         TabOrder = 0
         OnClick = btNotesClearClick
       end
@@ -779,7 +790,7 @@ object frmEditContact: TfrmEditContact
         Top = 344
         Width = 69
         Height = 25
-        Caption = 'Export...'
+        Caption = '&Export...'
         TabOrder = 1
         OnClick = btNotesSaveClick
       end
@@ -798,35 +809,35 @@ object frmEditContact: TfrmEditContact
       ImageIndex = 6
       object Label28: TTntLabel
         Left = 8
-        Top = 76
+        Top = 108
         Width = 31
         Height = 13
         Caption = 'Street:'
       end
       object Label30: TTntLabel
         Left = 8
-        Top = 108
+        Top = 140
         Width = 20
         Height = 13
         Caption = 'City:'
       end
       object Label31: TTntLabel
         Left = 8
-        Top = 140
+        Top = 172
         Width = 37
         Height = 13
         Caption = 'Region:'
       end
       object Label32: TTntLabel
         Left = 8
-        Top = 172
+        Top = 204
         Width = 60
         Height = 13
         Caption = 'Postal Code:'
       end
       object Label33: TTntLabel
         Left = 8
-        Top = 204
+        Top = 236
         Width = 39
         Height = 13
         Caption = 'Country:'
@@ -852,16 +863,41 @@ object frmEditContact: TfrmEditContact
         Height = 13
         Caption = '<name>'
       end
-      object txtStreet: TTntEdit
-        Left = 96
-        Top = 72
-        Width = 253
-        Height = 21
-        MaxLength = 25
-        TabOrder = 0
-        OnChange = txtChange
+      object TntLabel6: TTntLabel
+        Left = 8
+        Top = 76
+        Width = 27
+        Height = 13
+        Caption = 'Type:'
       end
-      object txtCity: TTntEdit
+      object TntBevel8: TTntBevel
+        Left = 8
+        Top = 268
+        Width = 341
+        Height = 9
+        Shape = bsTopLine
+      end
+      object TntLabel10: TTntLabel
+        Left = 8
+        Top = 280
+        Width = 341
+        Height = 37
+        AutoSize = False
+        Caption = 
+          'Your phone might support multiple postal addresses. You can swit' +
+          'ch between them using Type drop-down list box above.'
+        WordWrap = True
+      end
+      object lblDisabledPostal: TTntLabel
+        Left = 8
+        Top = 356
+        Width = 269
+        Height = 13
+        Caption = 'This page is disabled because phone does not support it.'
+        Enabled = False
+        Visible = False
+      end
+      object txtStreet: TTntEdit
         Left = 96
         Top = 104
         Width = 253
@@ -870,7 +906,7 @@ object frmEditContact: TfrmEditContact
         TabOrder = 1
         OnChange = txtChange
       end
-      object txtRegion: TTntEdit
+      object txtCity: TTntEdit
         Left = 96
         Top = 136
         Width = 253
@@ -879,7 +915,7 @@ object frmEditContact: TfrmEditContact
         TabOrder = 2
         OnChange = txtChange
       end
-      object txtPostalCode: TTntEdit
+      object txtRegion: TTntEdit
         Left = 96
         Top = 168
         Width = 253
@@ -888,7 +924,7 @@ object frmEditContact: TfrmEditContact
         TabOrder = 3
         OnChange = txtChange
       end
-      object txtCountry: TTntEdit
+      object txtPostalCode: TTntEdit
         Left = 96
         Top = 200
         Width = 253
@@ -897,9 +933,165 @@ object frmEditContact: TfrmEditContact
         TabOrder = 4
         OnChange = txtChange
       end
+      object txtCountry: TTntEdit
+        Left = 96
+        Top = 232
+        Width = 253
+        Height = 21
+        MaxLength = 25
+        TabOrder = 5
+        OnChange = txtChange
+      end
+      object txtAddressType: TTntComboBox
+        Left = 96
+        Top = 72
+        Width = 177
+        Height = 21
+        Style = csDropDownList
+        ItemHeight = 13
+        ItemIndex = 0
+        TabOrder = 0
+        Text = 'Home'
+        OnChange = txtAddressTypeChange
+        Items.Strings = (
+          'Home'
+          'Work')
+      end
+      object PostalDeleteButton: TTntButton
+        Left = 280
+        Top = 72
+        Width = 69
+        Height = 25
+        Caption = '&Remove'
+        TabOrder = 6
+        OnClick = PostalDeleteButtonClick
+      end
+    end
+    object TntTabSheet1: TTntTabSheet
+      Caption = 'Internet Address'
+      object TntImage5: TTntImage
+        Left = 8
+        Top = 12
+        Width = 32
+        Height = 32
+        Transparent = True
+      end
+      object TntLabel7: TTntLabel
+        Left = 99
+        Top = 23
+        Width = 38
+        Height = 13
+        Caption = '<name>'
+      end
+      object TntBevel5: TTntBevel
+        Left = 8
+        Top = 56
+        Width = 341
+        Height = 9
+        Shape = bsTopLine
+      end
+      object TntLabel8: TTntLabel
+        Left = 8
+        Top = 76
+        Width = 58
+        Height = 13
+        Caption = 'Home page:'
+      end
+      object TntLabel9: TTntLabel
+        Left = 8
+        Top = 108
+        Width = 36
+        Height = 13
+        Caption = 'E-mails:'
+      end
+      object TntBevel9: TTntBevel
+        Left = 8
+        Top = 296
+        Width = 341
+        Height = 9
+        Shape = bsTopLine
+      end
+      object TntLabel11: TTntLabel
+        Left = 8
+        Top = 308
+        Width = 341
+        Height = 37
+        AutoSize = False
+        Caption = 
+          'Your phone might support several E-mail addresses. You should se' +
+          'lect one as a prefered one from the list above.'
+        WordWrap = True
+      end
+      object txtURL: TTntEdit
+        Left = 96
+        Top = 72
+        Width = 253
+        Height = 21
+        MaxLength = 25
+        TabOrder = 0
+        OnChange = txtChange
+      end
+      object lvEmails: TTntListView
+        Left = 96
+        Top = 104
+        Width = 253
+        Height = 141
+        Columns = <
+          item
+            Caption = 'Address'
+            Width = 248
+          end>
+        ColumnClick = False
+        ReadOnly = True
+        ShowColumnHeaders = False
+        SmallImages = ImageList1
+        TabOrder = 1
+        ViewStyle = vsReport
+        OnDblClick = lvEmailsDblClick
+        OnSelectItem = lvEmailsSelectItem
+      end
+      object MailAddButton: TTntButton
+        Left = 96
+        Top = 252
+        Width = 73
+        Height = 25
+        Caption = '&New'
+        TabOrder = 2
+        OnClick = MailAddButtonClick
+      end
+      object MailEditButton: TTntButton
+        Left = 176
+        Top = 252
+        Width = 73
+        Height = 25
+        Caption = 'C&hange'
+        Enabled = False
+        TabOrder = 3
+        OnClick = MailEditButtonClick
+      end
+      object MailDelButton: TTntButton
+        Left = 276
+        Top = 252
+        Width = 73
+        Height = 25
+        Caption = '&Delete'
+        Enabled = False
+        TabOrder = 4
+        OnClick = MailDelButtonClick
+      end
+      object MailPrefButton: TTntButton
+        Left = 248
+        Top = 344
+        Width = 101
+        Height = 25
+        Caption = 'Set as &Prefered'
+        Enabled = False
+        TabOrder = 5
+        OnClick = MailPrefButtonClick
+      end
     end
     object TabSheet5: TTntTabSheet
-      Caption = 'Outlook Synchronization'
+      Caption = 'Outlook'
       ImageIndex = 4
       object TntImage2: TTntImage
         Left = 8
@@ -933,7 +1125,7 @@ object frmEditContact: TfrmEditContact
         Left = 8
         Top = 296
         Width = 341
-        Height = 45
+        Height = 49
         AutoSize = False
         Caption = 
           'You can break up current Contact'#39's linking to an existing Outloo' +
@@ -978,7 +1170,7 @@ object frmEditContact: TfrmEditContact
         Top = 344
         Width = 101
         Height = 25
-        Caption = 'Unlink Contact'
+        Caption = '&Unlink Contact'
         TabOrder = 1
         OnClick = UnlinkOutlookButtonClick
       end
@@ -1010,20 +1202,20 @@ object frmEditContact: TfrmEditContact
         Left = 8
         Top = 120
         Width = 341
-        Height = 57
+        Height = 61
         AutoSize = False
         Caption = 
           'Each contact'#39's phone number has an unique position in phone'#39's ph' +
           'onebook memory. When you'#39're adding a contact to group or so, thi' +
-          's position (index) is used. Ir order to speed up these operation' +
-          's Fma is maintaining a cache with positions.'
+          's position is used. Ir order to speed up these operations FMA is' +
+          ' maintaining a cache with positions.'
         WordWrap = True
       end
       object Label19: TTntLabel
         Left = 8
         Top = 184
         Width = 341
-        Height = 45
+        Height = 57
         AutoSize = False
         Caption = 
           'From this button you can clear the cached information about this' +
@@ -1031,15 +1223,15 @@ object frmEditContact: TfrmEditContact
           'ceive an inccorect name for this contact in the phone groups.'
         WordWrap = True
       end
-      object NBLabel: TTntLabel
+      object Label34: TTntLabel
         Left = 8
         Top = 68
         Width = 341
-        Height = 45
+        Height = 49
         AutoSize = False
         Caption = 
           'Please note that settings for Personalize, Call Prefferences and' +
-          ' Outlook Synchronization are Fma specific and will not be synchr' +
+          ' Outlook Synchronization are FMA specific and will not be synchr' +
           'onized with phone data.'
         WordWrap = True
       end
@@ -1066,10 +1258,10 @@ object frmEditContact: TfrmEditContact
       end
       object ResetButton: TTntButton
         Left = 248
-        Top = 236
+        Top = 244
         Width = 101
         Height = 25
-        Caption = 'Reset Positions'
+        Caption = '&Reset Positions'
         TabOrder = 0
         OnClick = ResetButtonClick
       end
@@ -1117,5 +1309,147 @@ object frmEditContact: TfrmEditContact
     Title = 'Save Notes...'
     Left = 40
     Top = 440
+  end
+  object ImageList1: TImageList
+    Left = 72
+    Top = 440
+    Bitmap = {
+      494C010102000400040010001000FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      0000000000003600000028000000400000001000000001002000000000000010
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000005A5D5A00000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000848484000000000000000000000000000000000000000000000000005A5D
+      5A000000000000000000000000005A5D5A000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000848484008484
+      8400848484000000000000000000000000000000000000000000000000000000
+      00005A5D5A0000000000000000005A5D5A000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000008484840084848400D6D6D600DEDE
+      DE00848484008484840000000000000000005A5D5A0000000000000000000000
+      00005A5D5A000000000000000000000000005A5D5A0000000000000000000000
+      00005A5D5A000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000008484840084848400CECECE00D6D6D600D6D6D600DEDE
+      DE00E7E7E700848484000000000000000000000000005A5D5A00000000000000
+      0000000000005A5D5A00000000000000000000000000000000005A5D5A005A5D
+      5A005A5D5A000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00008484840084848400C6C6C600CECECE00CECECE00D6D6D600D6D6D600DEDE
+      DE00E7E7E700848484000000000000000000000000005A5D5A00000000000000
+      0000000000000000000000000000000000005A5D5A005A5D5A00FFDF9C00FFE3
+      AD005A595A005A595A0000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000848484008484
+      8400B5B5B500BDBDBD00C6C6C600CECECE00CECECE00D6D6D600D6D6D600DEDE
+      DE00E7E7E700EFEFEF00848484000000000000000000000000005A5D5A000000
+      000000000000000000005A5D5A005A5D5A00FFD78400FFDB8C00FFDF9C00FFE3
+      AD00FFE7BD005A595A0000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000008484840084848400ADADAD00B5B5
+      B500B5B5B500BDBDBD00C6C6C600848484008484840084848400848484008484
+      8400848484008484840084848400000000000000000000000000000000000000
+      00005A5D5A005A5D5A00FFCB6300FFCF7300FFD78400FFDB8C00FFDF9C00FFE3
+      AD00FFE7BD005A595A0000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000084848400ADADAD00B5B5
+      B500B5B5B500BDBDBD0084848400DEDEDE00E7E7E700E7E7E700E7E7E700E7E7
+      E700E7E7E700EFEFEF00848484008484840000000000000000005A595A005A5D
+      5A00FFC34200FFC75200FFCB6300FFCF7300FFD78400FFDB8C00FFDF9C00FFE3
+      AD00FFE7BD00FFEFCE005A595A00000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000084848400ADADAD00B5B5
+      B500B5B5B50084848400DEDEDE00DEDEDE00E7E7E700E7E7E700E7E7E700E7E7
+      E700848484008484840000000000000000005A595A005A595A00FFB62100FFBA
+      3100FFC34200FFC75200FFCB63005A5D5A005A5D5A005A5D5A005A5D5A005A5D
+      5A005A5D5A005A5D5A005A595A00000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000000084848400B5B5
+      B50084848400DEDEDE00DEDEDE00DEDEDE00E7E7E70084848400848484008484
+      840000000000000000000000000000000000000000005A595A00FFB62100FFBA
+      3100FFC34200FFC752005A5D5A00C6E3E700CEE7E700D6E7E700DEE7DE00E7E7
+      DE00EFEBD600F7EBD6005A595A005A595A000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000848484008484
+      8400DEDEDE00DEDEDE00DEDEDE00848484008484840000000000000000000000
+      000000000000000000000000000000000000000000005A595A00FFB62100FFBA
+      3100FFC342005A5D5A00BDE3EF00C6E3E700CEE7E700D6E7E700DEE7DE00E7E7
+      DE005A595A005A595A0000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000008484
+      8400DEDEDE008484840084848400000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000000000005A595A00FFBA
+      31005A5D5A00B5E3EF00BDE3EF00C6E3E700CEE7E7005A595A005A595A005A59
+      5A00000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000008484
+      8400848484000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000000000005A595A005A59
+      5A00ADDFF700B5E3EF00BDE3EF005A595A005A595A0000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000005A59
+      5A00ADDFF7005A595A005A595A00000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000005A59
+      5A005A595A000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000424D3E000000000000003E000000
+      2800000040000000100000000100010000000000800000000000000000000000
+      000000000000000000000000FFFFFF00FFFFFDFF00000000FFF7EEFF00000000
+      FFC7F6FF00000000FF03777700000000FC03BBC700000000F003BF0300000000
+      C001DC03000000000001F003000000008000C001000000008003000100000000
+      C00F800000000000C07F800300000000E1FFC00F00000000E7FFC07F00000000
+      FFFFE1FF00000000FFFFE7FF00000000}
   end
 end

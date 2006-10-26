@@ -354,6 +354,7 @@ type
     cbCalWideMode: TTntCheckBox;
     cbCalRecurrence: TTntCheckBox;
     cbCalRecurrAsk: TTntCheckBox;
+    cbCalBirthday: TTntCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);

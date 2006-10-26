@@ -341,6 +341,13 @@ procedure TOutlookContactSource.Read(Contact: TOutlookContact; OutlookContact: C
 begin
   (FieldMapper as TOutlookContactFieldMapper).OutlookContact := OutlookContact;
 
+  { REFFERENCE !!!
+
+    TFMAContactFieldMapper.Create;
+    TContactFieldMapper.LoadStandardFields;
+    TOutlookContactSource.Read/Write();
+  }
+
   with FieldMapper do begin
     Contact.Title := Title;
     Contact.Name := Name;
@@ -357,6 +364,8 @@ begin
     Contact.Region := Region;
     Contact.PostalCode := PostalCode;
     Contact.Country := Country;
+
+    Contact.Birthday := Birthday;
   end;
 end;
 
@@ -364,6 +373,13 @@ procedure TOutlookContactSource.Write(Contact: TContact; OutlookContact: Contact
 begin
   (FieldMapper as TOutlookContactFieldMapper).OutlookContact := OutlookContact;
 
+  { REFFERENCE !!!
+    TBaseContact = class;
+    TFMAContactFieldMapper.Create;
+    TContactFieldMapper.LoadStandardFields;
+    TOutlookContactSource.Read/Write();
+  }
+  
   with FieldMapper do begin
     Title := Contact.Title;
     Name := Contact.Name;
@@ -380,6 +396,8 @@ begin
     Region := Contact.Region;
     PostalCode := Contact.PostalCode;
     Country := Contact.Country;
+
+    Birthday := Contact.Birthday;
 
     OutlookContact.Save;
   end;
@@ -528,6 +546,13 @@ begin
   Fields.Add('YomiFirstName');
   Fields.Add('YomiLastName');
 
+  { REFFERENCE !!!
+    TBaseContact = class;
+    TFMAContactFieldMapper.Create;
+    TContactFieldMapper.LoadStandardFields;
+    TOutlookContactSource.Read/Write();
+  }
+
   MappedFields.Add('Title=Title');
   MappedFields.Add('Name=FirstName');
   MappedFields.Add('SurName=LastName');
@@ -543,6 +568,8 @@ begin
   MappedFields.Add('Region=HomeAddressState');
   MappedFields.Add('PostalCode=HomeAddressPostalCode');
   MappedFields.Add('Country=HomeAddressCountry');
+
+  MappedFields.Add('Birthday=Birthday');
 end;
 
 function TOutlookContactFieldMapper.GetValue(Field: String): String;
