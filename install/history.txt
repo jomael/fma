@@ -61,6 +61,10 @@ The following is a brief list of most important but not all
 changes in FMA Beta 4 release. You can explore it searching
 for more. Here we go:
 
+- Full K610 phones contacts support with auto-birthdays.
+
+- Text Messages Explorer tree Drag-and-Drop support.
+
 - Text Messages folders splitted to FMA and Phone ones.
 
 - Upload message to Phone will update Phone folders.
@@ -283,5 +287,27 @@ FMA Beta 3. The change log is following:
 - Fixed: Some Text Message optimizations (mhr).
 - Fixed: Downloading multiple files GUI lock.
 - Fixed: Detection of different SE phone brands.
+- Fixed: Do not check COM port on very first run.
+- Fixed: Detection of different SE phone brands.
+- Fixed: Event Viewer unicode improvements (mhr).
+- Fixed: 3CC issue on database save, finally (mhr).
+- Fixed: Switched to SVN Revision numbering (v.ox).
+- Fixed: Disable Bookmarks for New phones (K610).
+- Fixed: OBEX "Wrong Who Received" issue (mhr).
+- Fixed: Repair Phone Database files (mhr).
+- Fixed: SetToken will Quote tokens if needed.
+- Fixed: Invalid "\" character in Device name.
+- Fixed: Invalid "\" character in new Phone name.
+- Fixed: Sanity check for new Phone/Folder name.
+- Fixed: Show NoItemsPanel after Delete Messages.
+- Fixed: Update Phone folders on Sent to phone.
+- Changed: Split Text Messages treeview node (mhr).
+- Changed: Browse for Folder implementation (mhr).
+- Added: Rename of Custom Text Messages Folders.
+- Added: Fix Delivery Rules on folders relocate.
+- Added: Update Delivery Rules on folder rename.
+- Added: Full contact editing support K610 phones.
+- Added: Create birthday event after contact edit.
+- Added: Text Messages Drag-and-Drop support (mhr).
 
 The FMA Team
