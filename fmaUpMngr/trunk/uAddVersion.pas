@@ -31,7 +31,7 @@ type
     btnClose: TButton;
     Label3: TLabel;
     edPatchChar: TEdit;
-    cbUsePatchChar: TCheckBox;
+    cbUsePatchSuffix: TCheckBox;
     UpDown1: TUpDown;
     btnOptions: TButton;
     ActionList1: TActionList;
@@ -43,9 +43,14 @@ type
     StatusBar1: TStatusBar;
     lblDetails: TLabel;
     cbDoIncUpdates: TCheckBox;
+    Label5: TLabel;
+    edSVNRev: TEdit;
+    UpDown2: TUpDown;
+    rbAddLetter: TRadioButton;
+    rbAddSVNRev: TRadioButton;
     procedure btnFromClick(Sender: TObject);
     procedure ActionVerBuildUpdate(Sender: TObject);
-    procedure cbUsePatchCharClick(Sender: TObject);
+    procedure cbUsePatchSuffixClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure ActionVerBuildExecute(Sender: TObject);
@@ -54,6 +59,11 @@ type
     procedure UpDown1Click(Sender: TObject; Button: TUDBtnType);
     procedure UpDown1ChangingEx(Sender: TObject; var AllowChange: Boolean;
       NewValue: Smallint; Direction: TUpDownDirection);
+    procedure UpDown2Click(Sender: TObject; Button: TUDBtnType);
+    procedure UpDown2ChangingEx(Sender: TObject; var AllowChange: Boolean;
+      NewValue: Smallint; Direction: TUpDownDirection);
+    procedure edSVNRevExit(Sender: TObject);
+    procedure edPatchCharExit(Sender: TObject);
   private
     { Private declarations }
   public
@@ -109,12 +119,20 @@ begin
   cbDoIncUpdates.Visible := not cbUseAppDeployment.Checked;
 end;
 
-procedure TfrmAddVersion.cbUsePatchCharClick(Sender: TObject);
+procedure TfrmAddVersion.cbUsePatchSuffixClick(Sender: TObject);
 begin
-  if cbUsePatchChar.Checked and (edPatchChar.Text = '') then begin
-    UpDown1.Position := 0;
-    edPatchChar.Text := 'a';
+  if cbUsePatchSuffix.Checked then begin
+    if rbAddLetter.Checked and (edPatchChar.Text = '') then begin
+      UpDown1.Position := 0;
+      edPatchChar.Text := 'a';
+    end;
+    if rbAddSVNRev.Checked and (edSVNRev.Text = '') then begin
+      UpDown2.Position := 0;
+      edSVNRev.Text := '1';
+    end;
   end;
+  rbAddLetter.Enabled := cbUsePatchSuffix.Checked;
+  rbAddSVNRev.Enabled := cbUsePatchSuffix.Checked;
 end;
 
 procedure TfrmAddVersion.FormShow(Sender: TObject);
@@ -123,8 +141,9 @@ begin
   StatusBar1.Panels[1].Text := '';
   btnClose.Caption := '&Cancel';
   UpDown1.Position := 0;
-  cbUsePatchChar.Checked := False;
+  cbUsePatchSuffix.Checked := False;
   edPatchChar.Text := '';
+  edSVNRev.Text := '';
   if FileExists(edFromExe.Text) then
     edVersion.Text := ExtractFileVersionInfo(edFromExe.Text,'FileVersion') // do not localize
   else
@@ -140,7 +159,12 @@ end;
 function TfrmAddVersion.GetVersionLabel: string;
 begin
   Result := edVersion.Text;
-  if cbUsePatchChar.Checked then Result := Result + edPatchChar.Text;
+  if cbUsePatchSuffix.Checked then begin
+    if rbAddLetter.Checked then
+      Result := Result + edPatchChar.Text;
+    if rbAddSVNRev.Checked then
+      Result := Result + '.R' + edSVNRev.Text;
+  end;
 end;
 
 procedure TfrmAddVersion.ActionVerBuildExecute(Sender: TObject);
@@ -153,10 +177,18 @@ begin
     for i := 0 to Form1.TreeView1.Items[0].Count-1 do
       if AnsiCompareText(Form1.TreeView1.Items[0].Item[i].Text,ver) = 0 then
         raise Exception.Create('This version already exists');
+    if frmDeployOptions.rbPassWord.Checked and (frmDeployOptions.Secret = '') and
+      (MessageDlg('Your update protection password is not set. Cancel build?',
+      mtConfirmation,[mbYes,mbNo],0) = ID_YES) then
+      Abort;
+    if frmDeployOptions.rbPassWord.Checked and // TODO: Remove when implemented
+      (MessageDlg('Current FMA builds do not support Password. Cancel build?',
+      mtConfirmation,[mbYes,mbNo],0) = ID_YES) then
+      Abort;
     if frmDeployOptions.rbCompressNone.Checked and
       (MessageDlg('Update compression is off, increasing size. Cancel build?',
       mtConfirmation,[mbYes,mbNo],0) = ID_YES) then
-      exit;
+      Abort;
     if MessageDlg('Start building update files now (Might take few minutes)?',
       mtConfirmation,[mbYes,mbNo],0) <> ID_YES then
       Abort;
@@ -228,7 +260,8 @@ procedure TfrmAddVersion.UpDown1ChangingEx(Sender: TObject;
 begin
   if edPatchChar.Text = '' then begin
     edPatchChar.Text := 'a';
-    cbUsePatchChar.Checked := True;
+    cbUsePatchSuffix.Checked := True;
+    rbAddLetter.Checked := True;
     AllowChange := False;
   end
   else
@@ -251,6 +284,55 @@ end;
 function TfrmAddVersion.GetAppFileName: string;
 begin
   Result := edFromExe.Text;
+end;
+
+procedure TfrmAddVersion.UpDown2Click(Sender: TObject; Button: TUDBtnType);
+begin
+  edSVNRev.Text := IntToStr(UpDown2.Position);
+end;
+
+procedure TfrmAddVersion.UpDown2ChangingEx(Sender: TObject;
+  var AllowChange: Boolean; NewValue: Smallint;
+  Direction: TUpDownDirection);
+begin
+  if edSVNRev.Text = '' then begin
+    edSVNRev.Text := '1';
+    cbUsePatchSuffix.Checked := True;
+    rbAddSVNRev.Checked := True;
+    AllowChange := False;
+  end
+  else
+    AllowChange := (NewValue >= UpDown2.Min) and (NewValue <= UpDown2.Max);
+end;
+
+procedure TfrmAddVersion.edSVNRevExit(Sender: TObject);
+begin
+  try
+    UpDown2.Position := StrToInt(edSVNRev.Text);
+  except
+    UpDown2Click(nil,btNext);
+  end;
+end;
+
+procedure TfrmAddVersion.edPatchCharExit(Sender: TObject);
+var
+  c: Char;
+begin
+  try
+    if Length(edPatchChar.Text) = 1 then begin
+      c := edPatchChar.Text[1];
+      if c in ['a'..'z'] then begin
+        UpDown1.Position := Ord(c) - Ord('a');
+        edPatchChar.Text := c;
+      end
+      else
+        Abort;
+    end
+    else
+      Abort;
+  except
+    UpDown1Click(nil,btNext);
+  end;
 end;
 
 end.

@@ -216,9 +216,10 @@ type
     About1: TTntMenuItem;
     N1: TTntMenuItem;
     CheckforUpdates1: TTntMenuItem;
-    N3: TTntMenuItem;
     HomePage1: TTntMenuItem;
     NoItemsPanel: TPanel;
+    ActionViewParent: TAction;
+    ToolButton20: TToolButton;
     procedure TreeView1Change(Sender: TObject; Node: TTreeNode);
     procedure Exit1Click(Sender: TObject);
     procedure ActionAddUpdateUpdate(Sender: TObject);
@@ -283,6 +284,8 @@ type
     procedure CheckforUpdates1Click(Sender: TObject);
     procedure ListViewAfterDraw(Sender: TCustomListView;
       const ARect: TRect; var DefaultDraw: Boolean);
+    procedure ActionViewParentUpdate(Sender: TObject);
+    procedure ActionViewParentExecute(Sender: TObject);
   private
     { Private declarations }
     FSyncingCode,FLoadingFile,FModified,FInitialized: boolean;
@@ -367,7 +370,7 @@ end;
 
 procedure TForm1.UpdateDetails;
 var
-  i,k: integer;
+  i: integer;
   sl: TStringList;
   tover: string;
   pinfo: TuolPatchInfo;
@@ -385,10 +388,10 @@ begin
         ListView1.Columns[0].Caption := 'Target version';
         StatusBar1.Panels[1].Text := IntToStr(TreeView1.Selected.Count)+' targets';
       end;
-      if TreeView1.Selected = TreeView1.Items[0] then k := 18 else k := 29;
+      //if TreeView1.Selected = TreeView1.Items[0] then k := 18 else k := 29;
       for i := 0 to TreeView1.Selected.Count-1 do
         with ListView1.Items.Add do begin
-          ImageIndex := k;
+          ImageIndex := TreeView1.Selected.Item[i].ImageIndex;
           Caption := TreeView1.Selected.Item[i].Text;
           SubItems.Add('');
           SubItems.Add('');
@@ -403,7 +406,7 @@ begin
         FUpdates.FindBestPath(TreeView1.Selected.Parent.Text,tover,sl);
         for i := 0 to sl.Count-1 do begin
           pinfo := GetUpdateInfo(sl[i]);
-          if Assigned(pinfo) then begin
+          if Assigned(pinfo) then
             with ListView1.Items.Add do begin
               ImageIndex := 28;
               Caption := pinfo.NeedPatchEngines;
@@ -411,8 +414,6 @@ begin
               SubItems.Add(Format('%.0n',[1.0*pinfo.PatchSize]));
               SubItems.Add(pinfo.PatchMD5);
             end;
-            break;
-          end;
         end;
         StatusBar1.Panels[1].Text := IntToStr(sl.Count)+' updates';
       finally
@@ -578,8 +579,9 @@ var
   Found,InMain: boolean;
 begin
   if not IsUOLDiffAvailable then begin
-    MessageDlg('In order to use Update Manager, you have to download '+sLinebreak+'a small library '+
-      'UOLDIFF.DLL from FMA web site'+sLinebreak+sLinebreak+'http://fma.sourceforge.net/'+sLinebreak+sLinebreak+
+    MessageDlg('In order to use Update Manager, you have to download '+sLinebreak+
+      'a small library UOLDIFF.DLL from FMA web site'+sLinebreak+sLinebreak+
+      'http://fma.sourceforge.net/'+sLinebreak+sLinebreak+
       'Place it in Update Manager folder and restart application.',mtInformation, [mbOK], 0);
     exit;
   end;
@@ -986,7 +988,7 @@ end;
 procedure TForm1.CheckScriptSave;
 begin
   if ScriptChanged then
-    case MessageDlg('Updates Index has been changed. Save changes now?',mtConfirmation,[mbYes,mbNo,mbCancel],0) of
+    case MessageDlg('Script has been modified. Save changes now?',mtConfirmation,[mbYes,mbNo,mbCancel],0) of
       ID_YES: begin
         ActionSave.Execute;
         if ScriptChanged then Abort;
@@ -1014,6 +1016,7 @@ begin
     frmAddVersion.edFromExe.Text := ReadString('manager','Version Dir','C:\Projects\FMA\fma\trunk\MobileAgent.exe');
     frmAddVersion.cbUseAppDeployment.Checked := ReadBool('manager','Full Update',False);
     frmAddVersion.cbDoIncUpdates.Checked := ReadBool('manager','Do Updates',True);
+    frmAddVersion.rbAddSVNRev.Checked := ReadBool('manager','Use SVNRev',True);
 
     { default to ZLib }
     frmDeployOptions.rbCompressNone.Checked := ReadInteger('manager','Version Compression',1) = 0;
@@ -1067,6 +1070,7 @@ begin
     WriteString('manager','Version Dir',frmAddVersion.edFromExe.Text);
     WriteBool('manager','Full Update',frmAddVersion.cbUseAppDeployment.Checked);
     WriteBool('manager','Do Updates',frmAddVersion.cbDoIncUpdates.Checked);
+    WriteBool('manager','Use SVNRev',frmAddVersion.rbAddSVNRev.Checked);
 
     i := 0; // HACK!
 
@@ -1521,6 +1525,7 @@ begin
     'Version Dir='+sLinebreak+
     'Full Update=0'+sLinebreak+
     'Do Updates=1'+sLinebreak+
+    'Use SVNRev=1'+sLinebreak+
     'Version Compression=1'+sLinebreak+
     'Version Encryption=0'+sLinebreak+
     'Compression=1'+sLinebreak+
@@ -1777,9 +1782,9 @@ begin
     dec(i);
   end;
   { Check filter restrictions }
-  if Pos(FFilter,s) <> 1 then
-    MessageDlg('This version will not be visible once update is created '+
-      'due to current Filter settings.', mtWarning, [mbOk], 0);
+  if (FFilter <> '') and (Pos(FFilter,s) <> 1) then
+    MessageDlg('This version will not be visible once update is created due to current Filter settings.',
+      mtWarning,[mbOk],0);
   if DoUpdates then begin
     ActionAddUpdate.Update;
     ActionAddUpdate.Execute;
@@ -1831,6 +1836,17 @@ procedure TForm1.ListViewAfterDraw(Sender: TCustomListView;
   const ARect: TRect; var DefaultDraw: Boolean);
 begin
   NoItemsPanel.Visible := (Sender as TListView).Items.Count = 0;
+end;
+
+procedure TForm1.ActionViewParentUpdate(Sender: TObject);
+begin
+  ActionViewParent.Enabled := Assigned(TreeView1.Selected) and (TreeView1.Selected <> TreeView1.Items[0]) and
+    ((ActiveControl = ListView1) or (ActiveControl = TreeView1));
+end;
+
+procedure TForm1.ActionViewParentExecute(Sender: TObject);
+begin
+  TreeView1.Selected := TreeView1.Selected.Parent;
 end;
 
 end.

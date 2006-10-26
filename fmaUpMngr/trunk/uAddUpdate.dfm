@@ -81,7 +81,7 @@ object frmAddUpdate: TfrmAddUpdate
     Top = 100
     Width = 297
     Height = 21
-    TabOrder = 4
+    TabOrder = 5
     Text = 'C:\Projects\FMA\fma\trunk\MobileAgent.exe'
   end
   object btnTo: TButton
@@ -90,7 +90,7 @@ object frmAddUpdate: TfrmAddUpdate
     Width = 77
     Height = 25
     Caption = 'Browse...'
-    TabOrder = 5
+    TabOrder = 6
     OnClick = btnToClick
   end
   object edToVer: TComboBox
@@ -109,7 +109,7 @@ object frmAddUpdate: TfrmAddUpdate
     Width = 77
     Height = 25
     Action = ActionDiffBuild
-    TabOrder = 11
+    TabOrder = 12
   end
   object btnClose: TButton
     Left = 360
@@ -118,7 +118,7 @@ object frmAddUpdate: TfrmAddUpdate
     Height = 25
     Cancel = True
     Caption = '&Cancel'
-    TabOrder = 12
+    TabOrder = 13
     OnClick = btnCloseClick
   end
   object cbDoReverse: TCheckBox
@@ -129,7 +129,7 @@ object frmAddUpdate: TfrmAddUpdate
     Caption = 'Also do a reverse update'
     Checked = True
     State = cbChecked
-    TabOrder = 6
+    TabOrder = 4
   end
   object edHistory: TEdit
     Left = 12
@@ -145,7 +145,7 @@ object frmAddUpdate: TfrmAddUpdate
     Width = 77
     Height = 25
     Caption = 'Browse...'
-    TabOrder = 8
+    TabOrder = 10
     OnClick = btnHistoryClick
   end
   object StatusBar1: TStatusBar
@@ -170,7 +170,7 @@ object frmAddUpdate: TfrmAddUpdate
     Caption = 'Include history notes'
     Checked = True
     State = cbChecked
-    TabOrder = 9
+    TabOrder = 8
   end
   object Button6: TButton
     Left = 12
@@ -178,12 +178,21 @@ object frmAddUpdate: TfrmAddUpdate
     Width = 101
     Height = 25
     Caption = '&Set Options...'
-    TabOrder = 10
+    TabOrder = 11
     OnClick = Button6Click
   end
-  object ActionList1: TActionList
-    Left = 260
+  object btnEdit: TButton
+    Left = 268
     Top = 200
+    Width = 77
+    Height = 25
+    Caption = 'Edit...'
+    TabOrder = 9
+    OnClick = btnEditClick
+  end
+  object ActionList1: TActionList
+    Left = 152
+    Top = 252
     object ActionDiffBuild: TAction
       Caption = '&Build...'
       OnExecute = ActionDiffBuildExecute
@@ -193,7 +202,7 @@ object frmAddUpdate: TfrmAddUpdate
   object OpenDialog1: TOpenDialog
     Filter = 'Executale Files|*.exe|All Files|*.*'
     Title = 'Select...'
-    Left = 292
-    Top = 200
+    Left = 184
+    Top = 252
   end
 end

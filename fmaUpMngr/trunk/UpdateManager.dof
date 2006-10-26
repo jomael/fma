@@ -111,11 +111,11 @@ ProjectLang=
 RootDir=C:\Program Files\Borland\Delphi6\Bin\
 [Version Info]
 IncludeVerInfo=1
-AutoIncBuild=0
+AutoIncBuild=1
 MajorVer=1
 MinorVer=0
-Release=8
-Build=50
+Release=9
+Build=57
 Debug=0
 PreRelease=0
 Special=0
@@ -124,9 +124,9 @@ DLL=0
 Locale=1026
 CodePage=1251
 [Version Info Keys]
-CompanyName=5Group & Co.
+CompanyName=floAts
 FileDescription=FMA Update Manager
-FileVersion=1.0.8.50
+FileVersion=1.0.9.57
 InternalName=UpdateManager
 LegalCopyright=(C) 1996-2006 by 5Group & Co.
 LegalTrademarks=None
@@ -140,6 +140,7 @@ HomePage=http://fma.sourceforge.net/
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 [HistoryLists\hlSearchPath]
-Count=2
-Item0=C:\Projects\cvsroot\fma
-Item1=..\
+Count=3
+Item0=..\fma_2_2
+Item1=C:\Projects\cvsroot\fma
+Item2=..\

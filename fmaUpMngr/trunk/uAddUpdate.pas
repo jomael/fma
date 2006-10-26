@@ -73,6 +73,7 @@ type
     StatusBar1: TStatusBar;
     cbDoHistory: TCheckBox;
     Button6: TButton;
+    btnEdit: TButton;
     procedure btnCloseClick(Sender: TObject);
     procedure ActionDiffBuildUpdate(Sender: TObject);
     procedure btnFromClick(Sender: TObject);
@@ -84,6 +85,7 @@ type
     procedure edToVerChange(Sender: TObject);
     procedure ActionDiffBuildExecute(Sender: TObject);
     procedure Button6Click(Sender: TObject);
+    procedure btnEditClick(Sender: TObject);
   private
     { Private declarations }
     ReverseDif,DosRunning: boolean;
@@ -177,18 +179,18 @@ begin
   if frmDiffOptions.rbPassWord.Checked and (frmDiffOptions.Secret = '') and
     (MessageDlg('Your update protection password is not set. Cancel build?',
     mtConfirmation,[mbYes,mbNo],0) = ID_YES) then
-    exit;
+    Abort;
   if frmDiffOptions.rbPassWord.Checked and // TODO: Remove when implemented
     (MessageDlg('Current FMA builds do not support Password. Cancel build?',
     mtConfirmation,[mbYes,mbNo],0) = ID_YES) then
-    exit;
+    Abort;
   if frmDiffOptions.rbCompressNone.Checked and
     (MessageDlg('Update compression is off, increasing size. Cancel build?',
     mtConfirmation,[mbYes,mbNo],0) = ID_YES) then
-    exit;
+    Abort;
   if MessageDlg('Start building update files now (Might take few minutes)?',
     mtConfirmation,[mbYes,mbNo],0) <> ID_YES then
-    exit;
+    Abort;
   { Build }
   Button3.Enabled := False;
   Button6.Enabled := False;
@@ -217,6 +219,11 @@ end;
 procedure TfrmAddUpdate.Button6Click(Sender: TObject);
 begin
   frmDiffOptions.ShowModal;
+end;
+
+procedure TfrmAddUpdate.btnEditClick(Sender: TObject);
+begin
+  ShellExecute(Handle,'open','notepad',PChar(edHistory.Text),'',SW_SHOWNORMAL);
 end;
 
 end.
