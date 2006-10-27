@@ -19,6 +19,11 @@ interface
 uses
   Classes, TntClasses;
 
+const
+  EmptyDate = 949998; // for Outlook compatability
+
+function IsEmptyDate(ADate: TDateTime): boolean;
+
 function WideConcatList(Left,Right: WideString; delimiter: WideString = ''): WideString;
 
 function WideTrim(str: WideString): WideString;
@@ -51,6 +56,11 @@ implementation
 uses
   gnugettext,
   SysUtils, TntSysUtils, TntWideStrings;
+
+function IsEmptyDate(ADate: TDateTime): boolean;
+begin
+  Result := Trunc(ADate) = EmptyDate;
+end;  
 
 (* Unicode *)
 

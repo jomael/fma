@@ -53,7 +53,7 @@ type
     FCountry: WideString;
     FStreet: WideString;
     FPostalCode: WideString;
-    FBirthday: WideString;
+    FBirthday: TDateTime;
     function GetFullName: WideString;
   public
   { REFFERENCE !!!
@@ -78,7 +78,7 @@ type
     property PostalCode: WideString read FPostalCode write FPostalCode;
     property Country: WideString read FCountry write FCountry;
 
-    property Birthday: WideString read FBirthday write FBirthday;
+    property Birthday: TDateTime read FBirthday write FBirthday;
 
     property FullName: WideString read GetFullName;
   end;
@@ -179,17 +179,16 @@ type
 
     function GetMappedField(Field: String): String;
     procedure SetMappedFields(const Value: TStrings);
-    function GetMappedValue(Field: String): String;
-    procedure SetMappedValue(Field: String; const AValue: String);
+    function GetMappedValue(Field: String): Variant;
+    procedure SetMappedValue(Field: String; const AValue: Variant);
     procedure SetFields(const Value: TStrings);
 
     procedure LoadStandardFields;
-    
-    function GetBirthday: WideString;
-    procedure SetBirthday(const Value: WideString);
+    function GetBirthday: TDateTime;
+    procedure SetBirthday(const Value: TDateTime);
   protected
-    function GetValue(Field: String): String; virtual; abstract;
-    procedure SetValue(Field: String; const Value: String); virtual; abstract;
+    function GetVariant(Field: String): Variant; virtual; abstract;
+    procedure SetVariant(Field: String; const Value: Variant); virtual; abstract;
   public
     constructor Create;
     destructor Destroy; override;
@@ -210,13 +209,13 @@ type
     property PostalCode: WideString read GetPostalCode write SetPostalCode;
     property Country: WideString read GetCountry write SetCountry;
 
-    property Birthday: WideString read GetBirthday write SetBirthday;
+    property Birthday: TDateTime read GetBirthday write SetBirthday;
 
     property Fields: TStrings read FFields write SetFields;
     property MappedField[Field: String]: String read GetMappedField;
     property MappedFields: TStrings read FMappedFields write SetMappedFields;
-    property Value[Field: String]: String read GetValue write SetValue;
-    property MappedValue[Field: String]: String read GetMappedValue write SetMappedValue;
+    property VariantValue[Field: String]: Variant read GetVariant write SetVariant;
+    property MappedValue[Field: String]: Variant read GetMappedValue write SetMappedValue;
     property StandardFields: TStrings read FStandardFields;
   end;
 
@@ -895,7 +894,7 @@ begin
   Result := FTitle + '|' + FCellPhone + '|' + FFaxPhone + '|' + FOtherPhone + '|' +
             FOrganization + '|' + FEmail + '|' + FName + '|' + FWorkPhone + '|' +
             FSurName + '|' +FHomePhone + '|' + FStreet + '|' + FCity + '|' +
-            FRegion + '|' + FPostalCode + '|' + FCountry + '|' + FBirthday;
+            FRegion + '|' + FPostalCode + '|' + FCountry + '|' + DateToStr(FBirthday);
 end;
 
 function TContact.IsChanged: Boolean;
@@ -1153,7 +1152,7 @@ begin
   inherited;
 end;
 
-function TContactFieldMapper.GetBirthday: WideString;
+function TContactFieldMapper.GetBirthday: TDateTime;
 begin
   Result := MappedValue['Birthday'];
 end;
@@ -1191,11 +1190,14 @@ end;
 function TContactFieldMapper.GetMappedField(Field: String): String;
 begin
   Result := FMappedFields.Values[Field];
+  if Result = '' then
+    { If not match found, use direct name mapping }
+    Result := Field;
 end;
 
-function TContactFieldMapper.GetMappedValue(Field: String): String;
+function TContactFieldMapper.GetMappedValue(Field: String): Variant;
 begin
-  Result := Value[MappedField[Field]];
+  Result := VariantValue[MappedField[Field]];
 end;
 
 function TContactFieldMapper.GetName: WideString;
@@ -1278,7 +1280,7 @@ begin
   FStandardFields.Add('Birthday');
 end;
 
-procedure TContactFieldMapper.SetBirthday(const Value: WideString);
+procedure TContactFieldMapper.SetBirthday(const Value: TDateTime);
 begin
   MappedValue['Birthday'] := Value;
 end;
@@ -1323,9 +1325,9 @@ begin
   FMappedFields.Assign(Value);
 end;
 
-procedure TContactFieldMapper.SetMappedValue(Field: String; const AValue: String);
+procedure TContactFieldMapper.SetMappedValue(Field: String; const AValue: Variant);
 begin
-  Value[MappedField[Field]] := AValue;
+  VariantValue[MappedField[Field]] := AValue;
 end;
 
 procedure TContactFieldMapper.SetName(const Value: WideString);

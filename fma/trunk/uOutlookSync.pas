@@ -32,8 +32,8 @@ type
   private
     FOutlookContact: ContactItem;
   protected
-    function GetValue(Field: String): String; override;
-    procedure SetValue(Field: String; const Value: String); override;
+    function GetVariant(Field: String): Variant; override;
+    procedure SetVariant(Field: String; const Value: Variant); override;
   public
     constructor Create;
 
@@ -109,12 +109,12 @@ begin
   DispParam.rgdispidNamedArgs := nil;
   DispParam.cArgs := (High(Par) + 1);
 
-  if PropertySet then
-  begin
+  if PropertySet then begin
     Param := DISPATCH_PROPERTYPUT;
     DispParam.cNamedArgs := 1;
     DispParam.rgdispidNamedArgs := @DispPropertyPut;
-  end else
+  end
+  else
     Param := DISPATCH_METHOD or DISPATCH_PROPERTYGET;
 
   WSFreeList := TList.Create;
@@ -122,33 +122,28 @@ begin
     GetMem(DispParam.rgvarg, sizeof(TVariantArg) * (High(Par) + 1));
     FillCHar(DispParam.rgvarg^, sizeof(TVariantArg) * (High(Par) + 1), 0);
     try
-      for i := 0 to High(Par)  do
-      begin
-        if PVarData(@Par[i]).VType = varString then
-        begin
+      for i := 0 to High(Par) do begin
+        if PVarData(@Par[i]).VType = varString then begin
           DispParam.rgvarg[i].vt := VT_BSTR;
           DispParam.rgvarg[i].bstrVal := StringToOleStr(Par[i]);
           WSFreeList.Add(DispParam.rgvarg[i].bstrVal);
-        end else
-        begin
+        end
+        else begin
           DispParam.rgvarg[i].vt := VT_VARIANT or VT_BYREF;
           New(POleVariant(DispParam.rgvarg[i].pvarVal));
           POleVariant(DispParam.rgvarg[i].pvarVal)^ := Par[i];
         end;
       end;
       i :=Self.Invoke(DispatchId, GUID_NULL, LOCALE_SYSTEM_DEFAULT, Param, DispParam, @Result, @ExceptInfo, @ArgErr);
-      if not Succeeded(i) then
-      begin
+      if not Succeeded(i) then begin
         if i = DISP_E_EXCEPTION then
           raise Exception.Create(ExceptInfo.bstrSource+': '+ExceptInfo.bstrDescription)
         else
           raise Exception.Create(SysErrorMessage(i));
       end;
     finally
-      for i := 0 to High(Par)  do
-      begin
-        if DispParam.rgvarg[i].vt = (VT_VARIANT or VT_BYREF) then
-        begin
+      for i := 0 to High(Par) do begin
+        if DispParam.rgvarg[i].vt = (VT_VARIANT or VT_BYREF) then begin
           if POleVariant(DispParam.rgvarg[i].pvarVal) <> nil then
             Dispose(POleVariant(DispParam.rgvarg[i].pvarVal));
         end;
@@ -572,12 +567,13 @@ begin
   MappedFields.Add('Birthday=Birthday');
 end;
 
-function TOutlookContactFieldMapper.GetValue(Field: String): String;
+function TOutlookContactFieldMapper.GetVariant(Field: String): Variant;
 begin
   Result := IDispatchInvoke(FOutlookContact, False, Field, []);
 end;
 
-procedure TOutlookContactFieldMapper.SetValue(Field: String; const Value: String);
+procedure TOutlookContactFieldMapper.SetVariant(Field: String;
+  const Value: Variant);
 begin
   IDispatchInvoke(FOutlookContact, True, Field, [Value]);
 end;

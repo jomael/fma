@@ -143,7 +143,7 @@ type
   private
     { Private declarations }
     FConnectionType: byte;
-    FCanceled,FExiting,FReceived: boolean;
+    FCanceled,FExiting,FReceived,FSearchCompleted: boolean;
     FRxBuffer: TStringList;
     FMessageBuf: string;
     FSelected: TSelectedDeviceInfo;
@@ -282,6 +282,7 @@ const
   sTab = '    ';
 var
   s: WideString;
+  b: Boolean;
 begin
   case nbWizard.PageIndex of
     piWelcome: begin { welcome }
@@ -295,13 +296,15 @@ begin
       PreviousButton.Enabled := True;
       NextButton.Caption := _('&Search');
       CancelButton.Caption := _('&Cancel');
+      b := FSearchCompleted;
       cbDeviceReadyClick(cbDeviceReady);
+      FSearchCompleted := b;
     end;
     piSearch: begin
       if NextButton.Enabled then NextButton.SetFocus;
       NextButton.Caption := _('&Next >');
       lvDevicesSelectItem(lvDevices,nil,False);
-      if lvDevices.Items.Count = 0 then DoSearch;
+      if not FSearchCompleted then DoSearch;
     end;
     piName: begin
       NextButton.Caption := _('&Next >');
@@ -548,6 +551,8 @@ begin
       except
       end;
     end;
+
+    FSearchCompleted := not FCanceled;
   finally
     if Assigned(IrDevices) then IrDevices.Free;
     if Assigned(BtDevices) then BtDevices.Free;
@@ -761,6 +766,7 @@ end;
 
 procedure TfrmNewDeviceWizard.cbDeviceReadyClick(Sender: TObject);
 begin
+  FSearchCompleted := False;
   NextButton.Enabled := cbDeviceReady.Checked and
     (cbSearchBT.Checked or cbSearchIR.Checked or cbSearchCOM.Checked);
   NextButton.Default := NextButton.Enabled;

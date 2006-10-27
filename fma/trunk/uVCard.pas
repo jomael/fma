@@ -87,7 +87,7 @@ implementation
 
 uses
   cUnicodeCodecs, uGlobal,
-  Unit1, TntSystem, uVBase, uLogger;
+  Unit1, TntSystem, uVBase, uLogger, Variants;
 
 { TVCard }
 
@@ -123,8 +123,8 @@ begin
     WorkAddress.Region:='';
     WorkAddress.PostalCode:='';
     WorkAddress.Country:='';
-    ModifiedDate := 0;
-    BDay := 0;
+    ModifiedDate := EmptyDate;
+    BDay := EmptyDate;
     PhotoType := 0;
     FreeAndNil(Photo);
     mails.Clear;
@@ -278,8 +278,10 @@ begin
   for i := 0 to mails.Count-1 do
     sl.add('EMAIL;INTERNET:' + mails[i]);
 
-  DecodeDate(BDay,bY,bM,bD);
-  sl.add(Format('BDAY:%.4d%.2d%.2d',[bY,bM,bD]));
+  if BDay <> EmptyDate then begin
+    DecodeDate(BDay,bY,bM,bD);
+    sl.add(Format('BDAY:%.4d%.2d%.2d',[bY,bM,bD]));
+  end;
 
   if URL <> '' then begin
     strTemp := WideStringToUTF8(URL);
@@ -338,9 +340,9 @@ begin
   end;
 
   // REV:20040701T095208Z
-  //GetTimeZoneInformation(tz);
-  //sl.add('REV:'+FormatDateTime('yyyymmdd"T"hhnn',ModifiedDate)+Format('%.2dZ',[-tz.Bias div 15]));
-  sl.add('REV:'+FormatDateTime('yyyymmdd"T"hhnnss"Z"',ModifiedDate));
+  if ModifiedDate <> EmptyDate then begin
+    sl.add('REV:'+FormatDateTime('yyyymmdd"T"hhnnss',ModifiedDate)); // Add "Z" for UTC
+  end;
 
   if VType = '' then
      sl.Add('END:VCARD')

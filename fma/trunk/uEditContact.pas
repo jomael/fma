@@ -1392,14 +1392,14 @@ end;
 procedure TfrmEditContact.BirthdayDeleteButtonClick(Sender: TObject);
 begin
   if MessageDlgW(_('Clear birthday setting?'),mtConfirmation,MB_YESNO or MB_DEFBUTTON2) = ID_YES then begin
-    txtBirthday.Date := 0;
+    txtBirthday.Date := EmptyDate;
     txtBirthdayChange(nil);
   end;
 end;
 
 procedure TfrmEditContact.txtBirthdayChange(Sender: TObject);
 begin
-  BirthdayDeleteButton.Enabled := txtBirthday.Enabled and (Trunc(txtBirthday.Date) <> 0);
+  BirthdayDeleteButton.Enabled := txtBirthday.Enabled and not IsEmptyDate(txtBirthday.Date);
   DoSetModified;
 end;
 

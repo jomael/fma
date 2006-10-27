@@ -40,12 +40,15 @@ type
   private
     FFMAContact: PContactData;
   protected
-    function GetValue(Field: String): String; override;
-    procedure SetValue(Field: String; const Value: String); override;
+    function GetValue(Field: String): String;
+    procedure SetValue(Field: String; const Value: String);
+    function GetVariant(Field: String): Variant; override;
+    procedure SetVariant(Field: String; const Value: Variant); override;
   public
     constructor Create;
 
     property FMAContact: PContactData read FFMAContact write FFMAContact;
+    property StringValue[Field: String]: String read GetValue write SetValue;
   end;
 
   TFMAContactSource = class(TContactSource)
@@ -68,7 +71,7 @@ type
 implementation
 
 uses
-  gnugettext, gnugettexthelpers, uLogger, uConnProgress,
+  gnugettext, gnugettexthelpers, uLogger, uConnProgress, 
   Unit1, VirtualTrees, Dialogs, TntDialogs, SysUtils, TntSysUtils, Forms, TntForms;
 
 { TFMAContactSource }
@@ -185,6 +188,8 @@ begin
     Contact.Region := Region;
     Contact.PostalCode := PostalCode;
     Contact.Country := Country;
+
+    Contact.Birthday := Birthday;
   end;
 end;
 
@@ -208,6 +213,8 @@ begin
     Region := Contact.Region;
     PostalCode := Contact.PostalCode;
     Country := Contact.Country;
+
+    Birthday := Contact.Birthday;
   end;
 end;
 
@@ -348,9 +355,15 @@ begin
   else if Field = 'WorkPostalCode' then
     Result := FFMAContact.workAddress.PostalCode
   else if Field = 'WorkCountry' then
-    Result := FFMAContact.workAddress.Country
-  else if Field = 'Birthday' then
-    Result := DateToStr(FFMAContact.Birthday);
+    Result := FFMAContact.workAddress.Country;
+end;
+
+function TFMAContactFieldMapper.GetVariant(Field: String): Variant;
+begin
+  if Field = 'Birthday' then
+    Result := FFMAContact.Birthday
+  else
+    Result := StringValue[Field];
 end;
 
 procedure TFMAContactFieldMapper.SetValue(Field: String; const Value: String);
@@ -396,9 +409,15 @@ begin
   else if Field = 'WorkPostalCode' then
     FFMAContact.workAddress.PostalCode := Value
   else if Field = 'WorkCountry' then
-    FFMAContact.workAddress.Country := Value
-  else if Field = 'Birthday' then
-    FFMAContact.Birthday := StrToDate(Value);
+    FFMAContact.workAddress.Country := Value;
+end;
+
+procedure TFMAContactFieldMapper.SetVariant(Field: String; const Value: Variant);
+begin
+  if Field = 'Birthday' then
+    FFMAContact.Birthday := Value
+  else
+    StringValue[Field] := Value;
 end;
 
 end.

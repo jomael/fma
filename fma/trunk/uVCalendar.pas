@@ -382,8 +382,7 @@ begin
 
   FCategories := [];
 
-  for I := 0 to Attribs.Count - 1 do
-  begin
+  for I := 0 to Attribs.Count - 1 do begin
     case PosStrInArray(Attribs[I], CategoriesAttributes) of
       { APPOINTMENT }
       0: FCategories := FCategories + [tcaAppointment];
@@ -746,8 +745,7 @@ function TVCalendar.GetCalEntityByLuid(const Value: WideString): TVCalEntity;
     ACalEntity: TVCalEntity;
 begin
   Result := nil;
-  for I := 0 to Count - 1 do
-  begin
+  for I := 0 to Count - 1 do begin
     ACalEntity := TVCalEntity(Items[I]);
     if ACalEntity.VIrmcLUID.PropertyValue = Value then
     begin

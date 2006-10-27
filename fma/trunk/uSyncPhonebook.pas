@@ -341,7 +341,8 @@ begin
     4: s := _('Other');
   end;
   Notes.Add(_('Default phone:')+' '+s);
-  Notes.Add(_('Birthday:')+' '+DateToStr(contact^.Birthday));
+  if contact^.Birthday <> EmptyDate then
+    Notes.Add(_('Birthday:')+' '+DateToStr(contact^.Birthday));
   Notes.Add(_('Home page:')+' '+contact^.homepage);
   Notes.Add(_('E-mail:')+' '+contact^.email);
   sl := TTntStringList.Create;
@@ -352,6 +353,8 @@ begin
   finally
     sl.Free;
   end;
+  if contact^.Modified <> EmptyDate then
+    Notes.Add(_('Modified:')+' '+DateTimeToStr(contact^.Modified));
   Result := True;
 end;
 
@@ -363,8 +366,10 @@ var
 begin
   Section := GetContactFmaid(contact);
   DBName := Form1.GetDatabasePath+'CallNotes.dat'; // do not localize
-  if not FileExists(DBName) then
+  if not FileExists(DBName) then begin
+    ForceDirectories(ExtractFileDir(DBName));
     with TFileStream.Create(DBName,fmCreate) do Free;
+  end;
   with TIniFile.Create(DBName) do
     try
       sl := TStringList.Create;
@@ -389,8 +394,10 @@ var
 begin
   Section := GetContactFmaid(contact);
   DBName := Form1.GetDatabasePath+'CallNotes.dat'; // do not localize
-  if not FileExists(DBName) then
+  if not FileExists(DBName) then begin
+    ForceDirectories(ExtractFileDir(DBName));
     with TFileStream.Create(DBName,fmCreate) do Free;
+  end;
   with TIniFile.Create(DBName) do
     try
       EraseSection(Section);
@@ -1067,8 +1074,9 @@ begin
         { Personal }
         try
           contact.Birthday := StrToInt(WideStringToLongString(GetFirstToken(s)));
+          if contact.Birthday = 0 then Abort; // pre-release beta 4 fix
         except
-          contact.Birthday := 0;
+          contact.Birthday := EmptyDate;
         end;
       except
         ListContacts.DeleteNode(Node);
@@ -2151,7 +2159,7 @@ begin
           else
             CheckDefaultDisplayName(@contact,LastFirst1.Checked);
           { copy all data }
-          NewBday := (Trunc(Selcontact^.Birthday) = 0) and (Trunc(contact.Birthday) <> 0);
+          NewBday := IsEmptyDate(Selcontact^.Birthday) and not IsEmptyDate(contact.Birthday);
           Selcontact^ := contact;
           if IsNew then begin
             // new node, update IDs
@@ -2858,6 +2866,10 @@ end;
 
 procedure TfrmSyncPhonebook.OnConflictChanges(Sender: TObject;
   const TargetName, Option1Name, Option2Name: WideString);
+  function DateToStr(ADate: TDateTime): string;
+  begin
+    if IsEmptyDate(ADate) then Result := '' else Result := SysUtils.DateToStr(ADate);
+  end;
 begin
   with TfrmConflictChanges.Create(nil) do
   try
@@ -2949,7 +2961,7 @@ begin
     { Create the EVENT in this year instead of the actual Birthday one }
     DecodeDate(SelContact^.Birthday,dY,dM,dD);
     Bday := Trunc(EncodeDate(CurrentYear,dM,dD));
-    //Bday := Trunc(SelContact^.Birthday);
+    //Bday := Trunc(SelContact^.Birthday); // use real date instead
     { Show Calendar for that very day }
     Form1.SetExplorerNode(Form1.FNodeCalendar);
     Form1.frmCalendarView.VpDayView.Date := Bday;
