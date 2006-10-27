@@ -603,7 +603,7 @@ object Form1: TForm1
         Control = tbMainMenu
         ImageIndex = -1
         MinHeight = 21
-        Width = 601
+        Width = 599
       end
       item
         Break = False
@@ -611,7 +611,7 @@ object Form1: TForm1
         ImageIndex = -1
         MinHeight = 22
         Visible = False
-        Width = 125
+        Width = 123
       end
       item
         Break = False
@@ -619,7 +619,7 @@ object Form1: TForm1
         ImageIndex = -1
         MinHeight = 24
         Visible = False
-        Width = 146
+        Width = 150
       end
       item
         Control = tbStandard
@@ -747,9 +747,9 @@ object Form1: TForm1
       end
     end
     object tbProfile: TToolBar
-      Left = 617
+      Left = 615
       Top = 1
-      Width = 111
+      Width = 110
       Height = 22
       AutoSize = True
       ButtonWidth = 25
@@ -913,7 +913,7 @@ object Form1: TForm1
     object tbMainMenu: TToolBar
       Left = 12
       Top = 1
-      Width = 587
+      Width = 585
       Height = 21
       AutoSize = True
       ButtonHeight = 21
@@ -930,9 +930,9 @@ object Form1: TForm1
       OnCustomDrawButton = tbMainMenuCustomDrawButton
     end
     object tbPhone: TToolBar
-      Left = 746
+      Left = 742
       Top = 0
-      Width = 132
+      Width = 136
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -8806,7 +8806,7 @@ object Form1: TForm1
     OnError = FmaWebUpdate1Error
     OnBeforeUpdate = FmaWebUpdate1BeforeUpdate
     OnAfterUpdate = FmaWebUpdate1AfterUpdate
-    Position = poDesigned
+    Position = poScreenCenter
     Left = 568
     Top = 400
   end
