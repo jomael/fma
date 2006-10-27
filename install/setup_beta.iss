@@ -390,3 +390,5 @@ Name: {userappdata}\FMA; Type: dirifempty
 
 [_ISTool]
 UseAbsolutePaths=false
+[InstallDelete]
+Name: {app}\sframework; Type: filesandordirs
