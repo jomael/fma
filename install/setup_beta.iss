@@ -52,6 +52,7 @@ Name: defsounds; Description: Default FMA Sound Scheme; GroupDescription: Instal
 Name: msscriptctrl; Description: Microsoft Script Control; GroupDescription: Install also:; Components: ms
 Name: msscript56; Description: Microsoft Script 5.6; GroupDescription: Install also:; Components: ms
 Name: msxmlsp2; Description: Microsoft XML 4.0 SP2; GroupDescription: Install also:
+Name: deloldsf; Description: Delete previous Scripting Framework installation; GroupDescription: "Additional tasks:"; Components: ms/sframe
 
 [Files]
 Source: ..\fma\trunk\MobileAgent.exe; DestDir: {app}; Flags: ignoreversion uninsremovereadonly; Components: bin
@@ -135,6 +136,7 @@ Source: ..\scripts\sframework\trunk\plugins\MediaPlayerClassic.vbs; DestDir: {ap
 Source: ..\scripts\sframework\trunk\plugins\MoreTV.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
 Source: ..\scripts\sframework\trunk\plugins\Mouse.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
 Source: ..\scripts\sframework\trunk\plugins\MousePlus.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
+Source: ..\scripts\sframework\trunk\plugins\MoosePlusPlus.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
 Source: ..\scripts\sframework\trunk\plugins\OnCallPauseWA.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
 Source: ..\scripts\sframework\trunk\plugins\PluginInfo.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
 Source: ..\scripts\sframework\trunk\plugins\PowerDVD5.vbs; DestDir: {app}\sframework\plugins; Components: ms\sframe
@@ -391,4 +393,4 @@ Name: {userappdata}\FMA; Type: dirifempty
 [_ISTool]
 UseAbsolutePaths=false
 [InstallDelete]
-Name: {app}\sframework; Type: filesandordirs
+Name: {app}\sframework; Type: filesandordirs; Tasks: deloldsf
