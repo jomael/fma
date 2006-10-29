@@ -590,8 +590,8 @@ var
   item: PListData;
   sl: TStringList;
   wl: TTntStringList;
-  t,s,str: WideString;
-  ss: String;
+  t: WideString;
+  s,ss,str: String;
   Ref, Tot, N, i: Integer;
 begin
   if FileType <> 1 then begin
@@ -690,7 +690,7 @@ begin
                  else
                    str := str + '<msg>' + HTMLEncode(WideStringToUTF8String(item.msg),False) + '</msg>'; // do not localize
                  if item.date > 0 then
-                   str := str + '<date>' + HTMLEncode(WideStringToUTF8String(DateTimeToStr(item.date)),False) + '</date>' // do not localize
+                   str := str + '<date>' + HTMLEncode(DateTimeToStr(item.date),False) + '</date>' // do not localize
                  else
                    str := str + '<date/>'; // do not localize
                  str := str + '</sms>'; // do not localize
@@ -733,7 +733,7 @@ begin
                  else
                    str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(item.msg),False) + '</TD>'; // do not localize
                  if item.date > 0 then
-                   str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(DateTimeToStr(item.date)),False) + '</TD>' // do not localize
+                   str := str + '<TD>' + HTMLEncode(DateTimeToStr(item.date),False) + '</TD>' // do not localize
                  else
                    str := str + '<TD></TD>'; // do not localize
                  str := str + '</TR>'; // do not localize
