@@ -49,16 +49,16 @@ CopyrightFontName=Tahoma
 Name: desktopicon; Description: Create a &Desktop FMA icon; GroupDescription: Additional icons:; Components: bin
 Name: quickicon; Description: Create a &Quick Launch FMA icon; Components: bin; GroupDescription: Additional icons:
 Name: defsounds; Description: Default FMA Sound Scheme; GroupDescription: Install also:; Components: bin
+Name: msxmlsp2; Description: Microsoft XML 4.0 SP2; GroupDescription: Install also:; Components: bin
 Name: msscriptctrl; Description: Microsoft Script Control; GroupDescription: Install also:; Components: ms
-Name: msscript56; Description: Microsoft Script 5.6; GroupDescription: Install also:; Components: ms
-Name: msxmlsp2; Description: Microsoft XML 4.0 SP2; GroupDescription: Install also:
-Name: deloldsf; Description: Delete previous Scripting Framework installation; GroupDescription: "Additional tasks:"; Components: ms/sframe
+Name: msscript56; Description: Microsoft Script Engine 5.6; GroupDescription: Install also:; Components: ms
+Name: deloldsf; Description: Delete previous Scripting Framework installation; GroupDescription: Additional tasks:; Components: ms\sframe
 
 [Files]
 Source: ..\fma\trunk\MobileAgent.exe; DestDir: {app}; Flags: ignoreversion uninsremovereadonly; Components: bin
 Source: ..\fma\trunk\UOLPatch.dll; DestDir: {app}; Components: tools
 Source: ..\fma\trunk\isxdl.dll; DestDir: {app}; Components: tools
-Source: {sys}\COMDLG32.OCX; DestDir: {sys}; Flags: regserver uninsneveruninstall external dontcopy
+Source: {sys}\COMDLG32.OCX; DestDir: {sys}; Flags: regserver uninsneveruninstall external dontcopy; Components: bin
 Source: General Public License.rtf; DestDir: {app}
 Source: history.txt; DestDir: {app}; Components: bin; Tasks: 
 Source: ..\sounds\newmsg.wav; DestDir: {app}\sounds; Components: sound
@@ -70,7 +70,7 @@ Source: ..\sounds\sentmsg.wav; DestDir: {app}\sounds; Components: sound
 Source: redist\script56.chm; DestDir: {app}\help; Components: ms\scripts ms\sframe
 Source: ..\scripts\CarpeDi3m1687.vbs; DestDir: {app}; Components: ms\scripts
 Source: ..\scripts\CarpediWebMouse.vbs; DestDir: {app}; Components: ms\scripts
-Source: ..\floAtMixer\trunk\floAtMediaCtrl.exe; DestDir: {app}; Flags: sharedfile; Tasks: 
+Source: ..\floAtMixer\trunk\floAtMediaCtrl.exe; DestDir: {app}; Flags: sharedfile; Tasks: ; Components: bin
 Source: ..\winampCOMlib\trunk\WinampCOMLib.dll; DestDir: {app}\sframework\helper; Flags: regserver sharedfile; Components: ms\sframe
 Source: ..\scripts\sframework\trunk\fma-scripting-framework.vbs; DestDir: {app}\sframework; Components: ms\sframe
 Source: ..\scripts\sframework\trunk\fma.settings-default; DestDir: {app}\sframework; DestName: fma.settings; Components: ms\sframe
@@ -322,7 +322,7 @@ Source: redist\scripten-me.exe; DestDir: {tmp}; Components: ms; Flags: deleteaft
 Source: redist\scripten-xp.exe; DestDir: {tmp}; Components: ms; Flags: deleteafterinstall; DestName: scripten.exe; MinVersion: 0,5.0.2195; OnlyBelowVersion: 0,5.2
 Source: redist\scripten-srv.exe; DestDir: {tmp}; Components: ms; Flags: deleteafterinstall; DestName: scripten.exe; MinVersion: 0,5.2
 Source: redist\sct10en.exe; DestDir: {tmp}; Components: ms; Flags: deleteafterinstall
-Source: redist\msxml.msi; DestDir: {tmp}; Flags: deleteafterinstall
+Source: redist\msxml.msi; DestDir: {tmp}; Flags: deleteafterinstall; Components: bin
 Source: ..\fma\help\MobileAgent.chm; DestDir: {app}\help; Components: bin
 
 [Icons]
@@ -332,17 +332,17 @@ Name: {group}\floAt's Mobile Agent; Filename: {app}\MobileAgent.exe; WorkingDir:
 Name: {group}\floAt's Mobile Agent in Debug Mode; Filename: {app}\MobileAgent.exe; Parameters: -debug -debugobex; IconIndex: 0; WorkingDir: {app}; Flags: createonlyiffileexists; Components: bin; Comment: Opens floAt's Mobile Agent application in debug mode. Useful if you have experienced some problems using FMA.
 Name: {group}\floAt's Mobile Agent Help; Filename: {app}\help\MobileAgent.chm; WorkingDir: {app}\help; Comment: Opens floAt's Mobile Agent help file.; Flags: createonlyiffileexists; Components: bin
 Name: {group}\General Public License; Filename: {app}\General Public License.rtf; WorkingDir: {app}; Comment: Opens floAt's Mobile Agent license agreement file.; Flags: createonlyiffileexists
-Name: {group}\Media Control Management; Filename: {app}\floAtMediaCtrl.exe; WorkingDir: {app}; Comment: Starts Media Control application in system tray area.; Flags: createonlyiffileexists; IconIndex: 0; Components: ms\sframe
-Name: {group}\Project Compile Notes; Filename: {app}\ide-howto.txt; WorkingDir: {app}; Comment: Opens floAt's Mobile Agent Delphi project IDE Howto file.; Flags: createonlyiffileexists
-Name: {group}\Project Localization Notes; Filename: {app}\L10n-howto.txt; WorkingDir: {app}; Comment: Opens floAt's Mobile Agent Delphi project L18N Howto file.; Flags: createonlyiffileexists
-Name: {group}\Project Release Notes; Filename: {app}\history.txt; WorkingDir: {app}; Comment: Opens floAt's Mobile Agent release notes file.; Flags: createonlyiffileexists
+Name: {group}\Media Control Management; Filename: {app}\floAtMediaCtrl.exe; WorkingDir: {app}; Comment: Starts Media Control application in system tray area.; Flags: createonlyiffileexists; IconIndex: 0; Components: bin
+Name: {group}\Project Compile Notes; Filename: {app}\ide-howto.txt; WorkingDir: {app}; Comment: Opens floAt's Mobile Agent Delphi project IDE Howto file.; Flags: createonlyiffileexists; Components: src
+Name: {group}\Project Localization Notes; Filename: {app}\L10n-howto.txt; WorkingDir: {app}; Comment: Opens floAt's Mobile Agent Delphi project L18N Howto file.; Flags: createonlyiffileexists; Components: src
+Name: {group}\Project Release Notes; Filename: {app}\history.txt; WorkingDir: {app}; Comment: Opens floAt's Mobile Agent release notes file.; Flags: createonlyiffileexists; Components: bin
 Name: {group}\Scripting Technologies Help; Filename: {app}\help\script56.chm; WorkingDir: {app}\help; Comment: Opens Microsoft Scripting Technologies Help file.; Flags: createonlyiffileexists; Components: ms\scripts ms\sframe
 Name: {group}\Uninstall floAt's Mobile Agent; Filename: {uninstallexe}; Flags: createonlyiffileexists; Comment: Uninstalls floAt's Mobile Agent application.
 
 [Run]
 Filename: {app}\MobileAgent.exe; Description: Launch floAt's Mobile Agent; Flags: nowait skipifsilent skipifdoesntexist postinstall; Components: bin; WorkingDir: {app}
-Filename: {app}\floAtMediaCtrl.exe; WorkingDir: {app}; Flags: nowait skipifsilent skipifdoesntexist; Tasks: 
-Filename: msiexec; Flags: runminimized; Parameters: "/quiet /norestart /i ""{tmp}\msxml.msi"""; StatusMsg: Installing XML Parser...; Tasks: msxmlsp2
+Filename: {app}\floAtMediaCtrl.exe; WorkingDir: {app}; Flags: nowait skipifsilent skipifdoesntexist; Tasks: ; Components: bin
+Filename: msiexec; Flags: runminimized; Parameters: "/quiet /norestart /i ""{tmp}\msxml.msi"""; StatusMsg: Installing XML Parser...; Tasks: msxmlsp2; Components: bin
 Filename: {tmp}\sct10en.exe; Components: ms; Tasks: msscriptctrl; Parameters: /q; StatusMsg: Installing Script Control...; Flags: runminimized
 Filename: {tmp}\scripten.exe; Components: ms; Parameters: /q; StatusMsg: Installing Script Engine...; Flags: runminimized; Tasks: msscript56
 
@@ -369,7 +369,7 @@ Name: {userappdata}\FMA; Flags: uninsneveruninstall; Components: bin
 Name: {app}\locale; Components: bin
 Name: {app}\locale\en; Components: bin
 Name: {app}\locale\en\LC_MESSAGES; Components: bin
-Name: {app}\help
+Name: {app}\help; Components: bin
 
 [Registry]
 Root: HKCU; SubKey: AppEvents\Schemes\Apps\MobileAgent\FMA_MEConnected\.current; ValueType: string; ValueData: {app}\Sounds\online.wav; Flags: createvalueifdoesntexist uninsdeletevalue uninsdeletekeyifempty; Components: sound; Tasks: defsounds
@@ -381,16 +381,17 @@ Root: HKCU; SubKey: AppEvents\Schemes\Apps\MobileAgent\FMA_SMSSent\.current; Val
 Root: HKCU; Subkey: Software\floAt\MobileAgent; ValueType: string; ValueName: ScriptFile; ValueData: {app}\sframework\fma-scripting-framework.vbs; Flags: uninsdeletekeyifempty uninsdeletevalue createvalueifdoesntexist; Components: ms\sframe
 
 [UninstallDelete]
-Name: {app}\*.dif; Type: files
-Name: {app}\*.rev; Type: files
-Name: {app}\update.txt; Type: files
-Name: {app}\MobileAgent.lst; Type: files
-Name: {app}\data; Type: dirifempty
-Name: {app}\locale; Type: filesandordirs
-Name: {userappdata}\FMA\default.tmp; Type: filesandordirs
-Name: {userappdata}\FMA; Type: dirifempty
+Name: {app}\*.dif; Type: files; Components: tools
+Name: {app}\*.rev; Type: files; Components: tools
+Name: {app}\update.txt; Type: files; Components: tools
+Name: {app}\MobileAgent.lst; Type: files; Components: tools
+Name: {app}\data; Type: dirifempty; Components: bin
+Name: {app}\locale; Type: filesandordirs; Components: lang
+Name: {userappdata}\FMA\default.tmp; Type: filesandordirs; Components: bin
+Name: {userappdata}\FMA; Type: dirifempty; Components: bin
+
+[InstallDelete]
+Name: {app}\sframework; Type: filesandordirs; Tasks: deloldsf; Components: ms\sframe
 
 [_ISTool]
 UseAbsolutePaths=false
-[InstallDelete]
-Name: {app}\sframework; Type: filesandordirs; Tasks: deloldsf
