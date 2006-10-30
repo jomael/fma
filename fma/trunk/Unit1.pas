@@ -948,7 +948,7 @@ type
     FSyncBookmarksIE,FSyncBookmarksFirefox,FSyncBookmarksOpera: boolean;
     FBookmarkRootFolder: string;
     FOutlookSyncConflict: Integer;
-    FOutlookConfirmAdding, FOutlookConfirmUpdating, FOutlookConfirmDeleting: Boolean;
+    FOutlookConfirmAdding, FOutlookConfirmUpdating, FOutlookConfirmDeleting, FOutlookNoSyncAll: Boolean;
     FOutlookNewAction: Integer;
     FOutlookCategories, FOutlookFieldMappings,
     FSelectedOutlookContactFolders, FSelectedOutlookCalendarFolders, FSelectedOutlookTaskFolders,
@@ -4749,6 +4749,7 @@ begin
     FOutlookConfirmUpdating := FormStorage1.StoredValue['Outlook Sync Confirm Updating']; // do not localize
     FOutlookConfirmDeleting := FormStorage1.StoredValue['Outlook Sync Confirm Deleting']; // do not localize
     FOutlookNewAction := FormStorage1.StoredValue['Outlook New Action']; // do not localize
+    FOutlookNoSyncAll := FormStorage1.StoredValue['Outlook No SyncAll']; // do not localize
 
 //  FConnectOnLaunch := FormStorage1.StoredValue['ConnectOnLaunch']; // do not localize
 //  FAutoReconnect := FormStorage1.StoredValue['AutoReconnect']; // do not localize
@@ -4898,6 +4899,7 @@ begin
       0: rbOutlookNewActionLinkTo.Checked := True;
       1: rbOutlookNewActionAsNew.Checked := True;
     end;
+    cbOutlookNoSyncAll.Checked := FOutlookNoSyncAll;
     SelectedOutlookContactFolders := FSelectedOutlookContactFolders;
     OutlookNewContactsFolder := FOutlookNewContactsFolder;
     SelectedOutlookCalendarFolders := FSelectedOutlookCalendarFolders;
@@ -5247,6 +5249,8 @@ begin
       FOutlookFieldMappings := OutlookFieldMappings;
       FOutlookNewAction := byte(rbOutlookNewActionAsNew.Checked);
       FormStorage1.StoredValue['Outlook New Action'] := FOutlookNewAction; // do not localize
+      FOutlookNoSyncAll := cbOutlookNoSyncAll.Checked;
+      FormStorage1.StoredValue['Outlook No SyncAll'] := FOutlookNoSyncAll; // do not localize
 
       //Chat
       FChatNick := edChatName.Text;

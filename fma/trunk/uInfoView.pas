@@ -812,7 +812,7 @@ begin
     if Form1.CanShowProgress then
       dlg.ShowProgress;
     { First sync with phone... }
-    dlg.Initialize(6,_('Synchronization in progress'));
+    dlg.Initialize(4 + 2*byte(not Form1.FOutlookNoSyncAll),_('Synchronization in progress'));
     Form1.ActionSyncClock.Execute;
     dlg.IncProgress(1,tid);
     linkGetMessagesClick(nil);
@@ -822,16 +822,18 @@ begin
     linkSyncPhonebookClick(nil);
     dlg.IncProgress(1,tid);
     linkSyncCalendarClick(nil);
-    { ...then sync changes to Outlook... }
-    dlg.IncProgress(1,tid);
-    linkSyncOutlookClick(nil);
-    { ...and finaly apply changes back to phone }
-    dlg.IncProgress(1,tid);
-    linkSyncPhonebookClick(nil);
-    {
-    dlg.IncProgress(1,tid);
-    linkSyncCalendarClick(nil);
-    }
+    if not Form1.FOutlookNoSyncAll then begin
+      { ...then sync changes to Outlook... }
+      dlg.IncProgress(1,tid);
+      linkSyncOutlookClick(nil);
+      { ...and finaly apply changes back to phone }
+      dlg.IncProgress(1,tid);
+      linkSyncPhonebookClick(nil);
+      {
+      dlg.IncProgress(1,tid);
+      linkSyncCalendarClick(nil);
+      }
+    end;
   finally
     linkSyncAll.Enabled := True;
     FreeProgressDialog;

@@ -355,6 +355,8 @@ type
     cbCalRecurrence: TTntCheckBox;
     cbCalRecurrAsk: TTntCheckBox;
     cbCalBirthday: TTntCheckBox;
+    TntGroupBox16: TTntGroupBox;
+    cbOutlookNoSyncAll: TTntCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);

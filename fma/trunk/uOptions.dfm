@@ -109,7 +109,7 @@ object frmOptions: TfrmOptions
     Top = 40
     Width = 413
     Height = 317
-    ActivePage = tabStartup
+    ActivePage = tabOutlook
     Anchors = [akTop, akRight, akBottom]
     MultiLine = True
     Style = tsButtons
@@ -749,6 +749,22 @@ object frmOptions: TfrmOptions
           Height = 17
           Caption = 'Always Add as New'
           TabOrder = 1
+        end
+      end
+      object TntGroupBox16: TTntGroupBox
+        Left = 4
+        Top = 256
+        Width = 397
+        Height = 45
+        Caption = 'Synchronize All'
+        TabOrder = 2
+        object cbOutlookNoSyncAll: TTntCheckBox
+          Left = 10
+          Top = 18
+          Width = 375
+          Height = 17
+          Caption = 'Do not include Outlook Sync when performing Sync All operation'
+          TabOrder = 0
         end
       end
     end
