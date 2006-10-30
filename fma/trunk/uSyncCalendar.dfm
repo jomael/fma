@@ -99,6 +99,7 @@ object frmCalendarView: TfrmCalendarView
       DrawingStyle = dsFlat
       ShowResourceName = False
       PopupMenuAdd = True
+      BeforeEdit = VpTaskListBeforeEdit
       OnOwnerEditTask = VpTaskListOwnerEditTask
     end
   end
@@ -183,6 +184,7 @@ object frmCalendarView: TfrmCalendarView
     DefaultTopHour = h_07
     TimeFormat = tf24Hour
     PopupMenuAdd = True
+    BeforeEdit = VpDayViewBeforeEdit
     OnDrawIcons = VpDayViewDrawIcons
     OnOwnerEditEvent = VpDayViewOwnerEditEvent
   end
@@ -408,7 +410,6 @@ object frmCalendarView: TfrmCalendarView
     end
     object ImportCalendar1: TTntMenuItem
       Action = Form1.ActionToolsImportCalendar
-      OnClick = ImportCalendar1Click
     end
     object ExportCalendar1: TTntMenuItem
       Action = Form1.ActionToolsExportCalendar
@@ -484,14 +485,18 @@ object frmCalendarView: TfrmCalendarView
   end
   object OpenDialog1: TTntOpenDialog
     DefaultExt = '.vcs'
-    Filter = 'vCalendar Files (*.vcs)|*.vcs|All Files|*.*'
+    Filter = 
+      'vCalendar Files (*.vcs)|*.vcs|iCalendar Files (*.ics)|*.ics|All ' +
+      'Files|*.*'
     Title = 'Import Calendar...'
     Left = 128
     Top = 116
   end
   object TntSaveDialog1: TTntSaveDialog
     DefaultExt = '.vcs'
-    Filter = 'vCalendar Files (*.vcs)|*.vcs'
+    Filter = 
+      'vCalendar Files (*.vcs)|*.vcs|iCalendar Files (*.ics)|*.ics|All ' +
+      'Files|*.*'
     Options = [ofOverwritePrompt, ofHideReadOnly, ofPathMustExist, ofEnableSizing]
     Title = 'Export Entire Calendar...'
     Left = 96

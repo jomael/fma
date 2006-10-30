@@ -285,12 +285,12 @@ begin
   SDate := Copy(Value, 1, Pos('T', UpperCase(Value)) - 1);
   STime := Copy(Value, Pos('T', UpperCase(Value)) + 1, Length(Value));
 
-  if Pos('Z', UpperCase(STime)) > 0 then
-  begin
+  if Pos('Z', UpperCase(STime)) > 0 then begin
     FIsUtc := True;
     Delete(STime, Length(STime), 1);
   end
-  else FIsUtc := False;
+  else
+    FIsUtc := False;
 
   try
     NDate := StrToInt(SDate);

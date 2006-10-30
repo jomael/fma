@@ -109,7 +109,7 @@ object frmOptions: TfrmOptions
     Top = 40
     Width = 413
     Height = 317
-    ActivePage = tabOutlook
+    ActivePage = tabStartup
     Anchors = [akTop, akRight, akBottom]
     MultiLine = True
     Style = tsButtons
@@ -763,7 +763,7 @@ object frmOptions: TfrmOptions
           Top = 18
           Width = 375
           Height = 17
-          Caption = 'Do not include Outlook Sync when performing Sync All operation'
+          Caption = 'Do not do Outlook Sync when performing Sync All operation'
           TabOrder = 0
         end
       end

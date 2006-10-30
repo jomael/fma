@@ -87,6 +87,10 @@ type
     procedure ImportCalendar1Click(Sender: TObject);
     procedure btnSYNCClick(Sender: TObject);
     procedure Properties2Click(Sender: TObject);
+    procedure VpDayViewBeforeEdit(Sender: TObject; Event: TVpEvent;
+      var AllowIt: Boolean);
+    procedure VpTaskListBeforeEdit(Sender: TObject; Task: TVpTask;
+      var AllowIt: Boolean);
   private
     { Private declarations }
     ConflictVCalPhone,ConflictVCalPC: TVCalEntity;
@@ -121,7 +125,7 @@ type
 implementation
 
 uses
-  gnugettext, gnugettexthelpers, DateUtils,
+  gnugettext, gnugettexthelpers, DateUtils, 
   Unit1, uLogger, VpMisc, uPromptConflict, uEditEvent, uEditTask, uConflictChanges, uDialogs;
 
 {$R *.dfm}
@@ -179,7 +183,7 @@ begin
     txtLocation.Text := Event.UserField0;
 
     TntComboBoxCategories.ItemIndex := Event.Category;
-
+    { old way
     if Event.UserField1 <> '' then begin
       TntRadioGroupReminder.ItemIndex := 7;
 
@@ -187,10 +191,13 @@ begin
       TntTimePickerReminder.DateTime := TntDatePickerRemider.DateTime;
     end
     else TntRadioGroupReminder.ItemIndex := 0;
+    }
+    if Event.AlarmSet then TntRadioGroupReminder.ItemIndex := 7
+      else TntRadioGroupReminder.ItemIndex := 0;
+    AdvMins := Event.AlarmAdv;
+    AdvType := Event.AlarmAdvType;
 
     if Event.UserField9 = '' then Event.UserField9 := '0';
-    
-    TntRadioGroupReminderClick(Self);
 
     // edit event
     if ShowModal = mrOk then begin
@@ -206,7 +213,7 @@ begin
 
       if TntComboBoxCategories.ItemIndex >= 0 then Event.Category := TntComboBoxCategories.ItemIndex
       else Event.Category := 0;
-
+      { old way
       if TntRadioGroupReminder.ItemIndex <> 0 then begin
         Event.UserField1 := DateTimeToStr(DateOf(TntDatePickerRemider.DateTime) + TimeOf(TntTimePickerReminder.DateTime));
         Event.AlarmSet := True;
@@ -215,9 +222,14 @@ begin
         Event.UserField1 := '';
         Event.AlarmSet := False;
       end;
-
-      if Event.Changed and (Event.UserField9 <> '0') then Event.UserField9 := '1';
+      }
+      Event.AlarmSet := TntRadioGroupReminder.ItemIndex <> 0;
+      Event.AlarmAdv := AdvMins;
+      Event.AlarmAdvType := AdvType;
+      Event.UserField1 := DateTimeToStr(DateOf(TntDatePickerRemider.DateTime) + TimeOf(TntTimePickerReminder.DateTime));
       
+      if Event.Changed and (Event.UserField9 <> '0') then Event.UserField9 := '1';
+
       AllowIt := True;
     end;
   finally
@@ -683,6 +695,7 @@ begin
       Log.AddSynchronizationMessage('Calendar Full Refresh: Storage = ' + inttostr(vStorage.Count), lsDebug); // do not localize debug
       if vStorage.Count = 1 then FCalendar.Raw := (vStorage[0] as TVCalendar).Raw
       else begin
+        FCalendar.Clear;
         for I := 0 to vStorage.Count - 1 do begin
           ANewCal.Raw := (vStorage[i] as TVCalendar).Raw;
           if ANewCal.Count = 1 then begin
@@ -745,13 +758,13 @@ var
   ANewCal: TVCalendar;
   fn: WideString;
 begin
-  if IntoCal = nil then IntoCal := FCalendar;
+  if not Assigned(IntoCal) then IntoCal := FCalendar;
     
   sl := TStringList.Create;
   vStorage := TVObjStorage.Create;
   ANewCal := TVCalendar.Create;
   try
-    VpDB.Connected := False;
+    if IntoCal = FCalendar then VpDB.Connected := False;
     try
       vStorage.LoadFromFile(FileName);
       Log.AddSynchronizationMessage('Loading Calendar: Storage = ' + inttostr(vStorage.Count), lsDebug); // do not localize debug
@@ -769,7 +782,7 @@ begin
       end;
       Log.AddSynchronizationMessage('Loading Calendar: Items = ' + inttostr(IntoCal.count), lsDebug); // do not localize debug
     finally
-      VpDB.Connected := True;
+      if IntoCal = FCalendar then VpDB.Connected := True;
     end;
     { Should we load Sync Index too? }
     if IntoCal = FCalendar then begin
@@ -788,15 +801,14 @@ begin
   end;
 end;
 
-function TfrmCalendarView.FindCalObj(LUID: Widestring;
-  var ACalEntity: TVCalEntity): Boolean;
+function TfrmCalendarView.FindCalObj(LUID: Widestring; var ACalEntity: TVCalEntity): Boolean;
 var
   I: Integer;
   AEntity: TVCalEntity;
 begin
   Result := False;
 
-  if FCalendar.Count > 0 then begin
+  if (LUID <> '') and (FCalendar.Count > 0) then begin
     for I := 0 to FCalendar.Count - 1 do begin
       AEntity := FCalendar[I] as TVCalEntity;
 
@@ -1251,7 +1263,7 @@ var
   dlg: TfrmConnect;
   Modified: Integer;
   ACalendar: TVCalendar;
-  AEntity: TVCalEntity;
+  AEntity,NewEntity: TVCalEntity;
 begin
   if not OpenDialog1.Execute then exit;
   if Visible then Update;
@@ -1273,10 +1285,11 @@ begin
 
       for j := 0 to ACalendar.Count-1 do begin
         { Object already exists? }
-        if not FindCalObj((ACalendar[j] as TVCalEntity).VIrmcLUID.PropertyValue,AEntity) then begin
+        NewEntity := ACalendar[j] as TVCalEntity;
+        if not FindCalObj(NewEntity.VIrmcLUID.PropertyValue,AEntity) then begin
           { Nop, add it to current Calendar items... }
           AEntity := TVCalEntity.Create;
-          AEntity.Raw := (ACalendar[j] as TVCalEntity).Raw;
+          AEntity.Raw := NewEntity.Raw;
           { ...and mark this item as New }
           AEntity.VFmaState := 0; // UserField9 := '0';
           VpDB.vCalendar.Add(AEntity);
@@ -1328,6 +1341,17 @@ procedure TfrmCalendarView.Properties2Click(Sender: TObject);
 begin
   if PopupMenuTaskList.Items.Count > 12 then
     PopupMenuTaskList.Items[1].Click; // HACK! Second popup menu item is "Edit Task..."
+end;
+
+procedure TfrmCalendarView.VpDayViewBeforeEdit(Sender: TObject; Event: TVpEvent; var AllowIt: Boolean);
+begin
+  AllowIt := False; // no inline editing!
+end;
+
+procedure TfrmCalendarView.VpTaskListBeforeEdit(Sender: TObject;
+  Task: TVpTask; var AllowIt: Boolean);
+begin
+  AllowIt := False; // no inline editing!
 end;
 
 end.

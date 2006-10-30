@@ -16,9 +16,9 @@ unit uEditEvent;
 interface
 
 uses
-  Windows, TntWindows, Messages, SysUtils, TntSysUtils, Variants, Classes, TntClasses, Graphics, TntGraphics, Controls, TntControls, Forms, TntForms,
-  Dialogs, TntDialogs, ExtCtrls, TntExtCtrls, StdCtrls, TntStdCtrls, ComCtrls, TntComCtrls, UniTntCtrls, Buttons, TntButtons,
-  Menus, TntMenus;
+  Windows, TntWindows, Messages, SysUtils, TntSysUtils, Variants, Classes, TntClasses, Graphics, TntGraphics,
+  Controls, TntControls, Forms, TntForms, Dialogs, TntDialogs, ExtCtrls, TntExtCtrls, StdCtrls, TntStdCtrls,
+  ComCtrls, TntComCtrls, UniTntCtrls, Buttons, TntButtons, Menus, TntMenus, VpData, VpMisc;
 
 type
   TfrmEditEvent = class(TTntForm)
@@ -75,9 +75,15 @@ type
     procedure TntDatePickerRemiderChange(Sender: TObject);
   private
     { Private declarations }
+    FAlarmAdv: integer;
+    FAlarmAdvType: TVpAlarmAdvType;
     procedure DoSanityCheck;
   public
     { Public declarations }
+    procedure UpdateAlarm;
+    procedure UpdateAlarmAdv;
+    property AdvMins: Integer read FAlarmAdv write FAlarmAdv;
+    property AdvType: TVpAlarmAdvType read FAlarmAdvType write FAlarmAdvType;
   end;
 
 var
@@ -162,6 +168,8 @@ begin
          TntTimePickerReminder.DateTime := TntDatePickerStart.DateTime;
        end;
   end;
+
+  UpdateAlarmAdv;
 end;
 
 procedure TfrmEditEvent.DurationChange(Sender: TObject);
@@ -201,6 +209,7 @@ begin
   TntTimePickerEnd.MinDate := DateTimeStart;
 
   DurationChange(Self);
+  UpdateAlarm;
 end;
 
 procedure TfrmEditEvent.EndDateTimeChange(Sender: TObject);
@@ -226,6 +235,75 @@ end;
 procedure TfrmEditEvent.TntDatePickerRemiderChange(Sender: TObject);
 begin
   TntRadioGroupReminder.ItemIndex := 7;
+end;
+
+procedure TfrmEditEvent.UpdateAlarm;
+var
+  StartTime,AdvanceTime,AlarmTime: TDateTime;
+begin
+  if not Visible then exit;
+
+  StartTime := DateOf(TntDatePickerStart.DateTime) + TimeOf(TntTimePickerStart.DateTime);
+  
+  if TntRadioGroupReminder.ItemIndex <> 0 then begin
+    AdvanceTime := GetAlarmAdvanceTime(FAlarmAdv, FAlarmAdvType);
+    case FAlarmAdvType of
+      atMinutes: begin
+        if FAlarmAdv =  0 then TntRadioGroupReminder.ItemIndex := 1;
+        if FAlarmAdv =  5 then TntRadioGroupReminder.ItemIndex := 2;
+        if FAlarmAdv = 10 then TntRadioGroupReminder.ItemIndex := 3;
+        if FAlarmAdv = 15 then TntRadioGroupReminder.ItemIndex := 4;
+        if FAlarmAdv = 30 then TntRadioGroupReminder.ItemIndex := 5;
+      end;
+      atHours:
+        if FAlarmAdv =  1 then TntRadioGroupReminder.ItemIndex := 6;
+    end;
+    AlarmTime := StartTime - AdvanceTime;
+  end
+  else
+    AlarmTime := StartTime;
+
+  TntRadioGroupReminderClick(Self);
+  
+  TntDatePickerRemider.DateTime := AlarmTime;
+  TntTimePickerReminder.DateTime := AlarmTime;
+end;
+
+procedure TfrmEditEvent.UpdateAlarmAdv;
+begin
+  if not Visible then exit;
+
+  case TntRadioGroupReminder.ItemIndex of
+    1: begin
+         FAlarmAdvType := atMinutes;
+         FAlarmAdv := 0;
+       end;
+    2: begin
+         FAlarmAdvType := atMinutes;
+         FAlarmAdv := 5;
+       end;
+    3: begin
+         FAlarmAdvType := atMinutes;
+         FAlarmAdv := 10;
+       end;
+    4: begin
+         FAlarmAdvType := atMinutes;
+         FAlarmAdv := 15;
+       end;
+    5: begin
+         FAlarmAdvType := atMinutes;
+         FAlarmAdv := 30;
+       end;
+    6: begin
+         FAlarmAdvType := atHours;
+         FAlarmAdv := 1;
+       end;
+    7: begin
+         FAlarmAdvType := atMinutes;
+         FAlarmAdv := Round(((DateOf(TntDatePickerStart.DateTime) + TimeOf(TntTimePickerStart.DateTime)) -
+           (DateOf(TntDatePickerRemider.DateTime) + TimeOf(TntTimePickerReminder.DateTime)))*MinsPerDay);
+       end;
+  end;
 end;
 
 end.

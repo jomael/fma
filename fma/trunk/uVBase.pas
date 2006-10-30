@@ -107,8 +107,6 @@ type
     function GetRaw: TStrings; virtual;
     procedure SetRaw(const Value: TStrings); virtual;
 
-    function UnfoldLines(Value: TStrings; var CurrPos: Integer): String;
-    function RemoveSoftLineBreakes(Value1: String; Value: TStrings; var CurrPos: Integer): String;
     procedure SetProperty(AProp: TVProperty); virtual;
 
     // Returns newly created children entity TVBaseObject of specified type
@@ -172,11 +170,47 @@ type
   { Warning! Next function returns a new instance of stream! }
   function B642Str(instr: TStream): TStream;
 
+  function UnfoldLines(Value: TStrings; var CurrPos: Integer): String;
+  function RemoveSoftLineBreakes(Value1: String; Value: TStrings; var CurrPos: Integer): String;
+
 implementation
 
 uses
   cUnicodeCodecs,
   TntSystem, SysUtils, TntSysUtils, uVCalendar, uVCard;
+
+function UnfoldLines(Value: TStrings; var CurrPos: Integer): String;
+begin
+  Result := '';
+  Inc(CurrPos);
+  try
+    while (CurrPos < Value.Count) and ((Length(Value[CurrPos] ) > 0) and
+      (Value[CurrPos][1] = ' ' )) do begin
+      Result := Result + ' ' + Trim(Value[CurrPos]);
+      Inc(CurrPos);
+    end;
+  finally
+    // Correct for increment in the main while loop
+    Dec(CurrPos);
+  end;
+end;
+
+function RemoveSoftLineBreakes(Value1: String; Value: TStrings; var CurrPos: Integer): String;
+begin
+  { schnorbsl: now check for softbreaklines }
+  Result := Value1;
+  Inc(CurrPos);
+  try
+    while (CurrPos < Value.Count) and ((Length(Result) > 0) and
+      (Result[Length(Result)] = '=' )) do begin
+      Result := Copy(Result, 1, Length(Result)-1) + Value[CurrPos];
+      Inc(CurrPos);
+    end;
+  finally
+    // Correct for increment in the main while loop
+    Dec(CurrPos);
+  end;
+end;
 
 { Returns position of searched string in array }
 function PosStrInArray(const SearchStr: WideString; Contents: array of WideString; const CaseSensitive: Boolean = False): Integer;
@@ -437,25 +471,25 @@ begin
   PropText := Trim(Value);
   StrLen := Length(PropText);
 
-  if StrLen > 0 then
-  begin
+  if StrLen > 0 then begin
     FIsSet := True;
 
     ParamStart := Pos(';', PropText);
     ParamEnd := Pos(':', PropText);
 
-    if (ParamStart = 0) or (ParamStart > ParamEnd) then
-    begin
+    if (ParamStart = 0) or (ParamStart > ParamEnd) then begin
       ParamStart := ParamEnd;
       PropertyParams.Text := '';
     end
-    else PropertyParams.DelimitedText := UpperCase(Copy(PropText, ParamStart + 1, ParamEnd - ParamStart - 1));
+    else
+      PropertyParams.DelimitedText := UpperCase(Copy(PropText, ParamStart + 1, ParamEnd - ParamStart - 1));
 
-    PropertyName := WideUpperCase(Copy(PropText, 1, ParamStart - 1));
+    { Use Trim() here to correct any Unfolded "name :value" }
+    PropertyName := Trim(WideUpperCase(Copy(PropText, 1, ParamStart - 1)));
     PropertyValue := Copy(PropText, ParamEnd + 1, StrLen - ParamEnd);
-
   end
-  else FIsSet := False;
+  else
+    FIsSet := False;
 end;
 
 function TVProperty.GetEncodedText: WideString;
@@ -651,8 +685,7 @@ procedure TVBaseObj.Clear;
 begin
   inherited;
 
-  if not isDestroying then
-  begin
+  if not isDestroying then begin
     FItemIndex := 0;
     FItemCounter := 0;
 
@@ -674,42 +707,42 @@ begin
 end;
 
 function TVBaseObj.GetRaw: TStrings;
-  var
-    I: Integer;
-    AItem: TVBaseObj;
-    OutStrList: TStrings;
+var
+  I: Integer;
+  AItem: TVBaseObj;
+  OutStrList: TStrings;
 begin
   OutStrList := TStringList.Create;
+  try
+    OutStrList.Add('BEGIN:' + VType.PropertyValue);
 
-  OutStrList.Add('BEGIN:' + VType.PropertyValue);
+    if VVersion <> '' then OutStrList.Add('VERSION:' + VVersion);
+    if FStrList.Text <> '' then OutStrList.Add(TrimRight(FStrList.Text));
+    if VFmaState <> 3 then OutStrList.Add('X-FMA-STATE:' + IntToStr(VFmaState));
 
-  if VVersion <> '' then OutStrList.Add('VERSION:' + VVersion);
-  if FStrList.Text <> '' then OutStrList.Add(TrimRight(FStrList.Text));
-  if VFmaState <> 3 then OutStrList.Add('X-FMA-STATE:' + IntToStr(VFmaState));
+    for I := 0 to Count - 1 do begin
+      AItem := (Items[I] as TVBaseObj);
 
-  for I := 0 to Count - 1 do
-  begin
-    AItem := (Items[I] as TVBaseObj);
+      OutStrList.Add(TrimRight(AItem.Raw.Text));
+    end;
 
-    OutStrList.Add(TrimRight(AItem.Raw.Text));
+    OutStrList.Add('END:' + VType.PropertyValue);
+
+    FStrList.Text := OutStrList.Text;
+    Result := FStrList;
+  finally
+    OutStrList.Free;
   end;
-
-  OutStrList.Add('END:' + VType.PropertyValue);
-
-  FStrList.Text := OutStrList.Text;
-  Result := FStrList;
-
-  OutStrList.Free;
 end;
 
 procedure TVBaseObj.SetRaw(const Value: TStrings);
-  var
-    CurrPos: Integer;
-    EmbeddedStrList: TStrings;
-    Prop: TVProperty;
-    AItem: TVBaseObj;
-    isEmbedded: Boolean;
-    QPData: String;
+var
+  CurrPos: Integer;
+  EmbeddedStrList: TStrings;
+  Prop: TVProperty;
+  AItem: TVBaseObj;
+  isEmbedded: Boolean;
+  QPData: String;
 begin
   Clear;
 
@@ -782,35 +815,6 @@ begin
 
   EmbeddedStrList.Free;
   Prop.Free;
-end;
-
-function TVBaseObj.UnfoldLines(Value: TStrings; var CurrPos: Integer): String;
-begin
-  Result := '';
-  Inc ( CurrPos );
-  while (CurrPos < Value.Count) and ((Length(Value[CurrPos] ) > 0) and
-    (Value[CurrPos][1] = ' ' )) do
-  begin
-    Result := Result + ' ' + Trim(Value[CurrPos]);
-    Inc(CurrPos);
-  end;
-  // Correct for increment in the main while loop
-  Dec(CurrPos);
-end;
-
-function TVBaseObj.RemoveSoftLineBreakes(Value1: String; Value: TStrings; var CurrPos: Integer): String;
-begin
-  { schnorbsl: now check for softbreaklines }
-  Result := Value1;
-  Inc(CurrPos);
-  while (CurrPos < Value.Count) and ((Length(Result) > 0) and
-    (Result[Length(Result)] = '=' ))  do
-  begin
-    Result := copy (Result, 1, Length(Result)-1) + Value[CurrPos];
-    Inc(CurrPos);
-  end;
-  // Correct for increment in the main while loop
-  Dec(CurrPos);
 end;
 
 procedure TVBaseObj.SetProperty(AProp: TVProperty);
@@ -959,15 +963,26 @@ begin
 end;
 
 procedure TVObjStorage.LoadFromFile(const FileName: string);
-  var
-    sl: TStrings;
+var
+  sl,unfoldersl: TStrings;
+  pos: integer;
 begin
   sl := TStringList.Create;
+  unfoldersl := TStringList.Create;
+  try
+    sl.LoadFromFile(FileName);
 
-  sl.LoadFromFile(FileName);
-  Raw := sl;
-
-  sl.Free;
+    pos := 0;
+    while pos < sl.Count do begin
+      unfoldersl.Add(sl[pos] + UnfoldLines(sl,pos));
+      inc(pos);
+    end;
+    
+    Raw := unfoldersl;
+  finally
+    unfoldersl.Free;
+    sl.Free;
+  end;
 end;
 
 function TVObjStorage.CreateVObject(Value: WideString): TVBaseObj;

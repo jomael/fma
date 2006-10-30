@@ -2135,6 +2135,7 @@ begin
     // update contact state
     if IsNew then begin
       FillChar(contact,SizeOf(contact),0);
+      contact.Birthday := EmptyDate;
       contact.cell := NewNumber;
     end
     else
@@ -2155,6 +2156,7 @@ begin
             // create new node
             FocusedNode := AddChild(nil);
             Selcontact := ListContacts.GetNodeData(FocusedNode);
+            Selcontact^.Birthday := EmptyDate;
           end
           else
             CheckDefaultDisplayName(@contact,LastFirst1.Checked);
@@ -2972,14 +2974,28 @@ begin
       { Add it to current Calendar items... }
       sl := TStringList.Create;
       try
+        {
+        BEGIN:VEVENT
+        DTSTART:20061029T220000Z
+        DTEND:20061030T215900Z
+        SUMMARY:TEST
+        RRULE:YM1 10 #0
+        CATEGORIES:MISCELLANEOUS
+        LAST-MODIFIED:20061030T134234Z
+        X-SONYERICSSON-DST:0
+        X-IRMC-LUID:00000001006D
+        END:VEVENT
+        }
         sl.Add('BEGIN:VEVENT');
-        sl.Add('DTSTART:'+FormatDateTime('yyyymmdd',Bday)+'T000100'); // Add 'Z' to make it UTC
+        sl.Add('DTSTART:'+FormatDateTime('yyyymmdd',Bday)+'T000000'); // Add 'Z' to make it UTC
         sl.Add('DTEND:'+FormatDateTime('yyyymmdd',Bday)+'T235900');
-        sl.Add('SUMMARY:'+GetContactDisplayName(SelContact));
-        sl.Add('LOCATION:'+GetContactHomeAdr(SelContact));
+        sl.Add('SUMMARY;CHARSET=UTF-8:'+WideStringToUTF8String(GetContactDisplayName(SelContact)));
+        if Form1.IsK610orBetter then sl.Add('RRULE:YM1 10 #0'); // Reccurence set to 1 year
+        sl.Add('LOCATION;CHARSET=UTF-8:'+WideStringToUTF8String(GetContactHomeAdr(SelContact)));
+        //sl.Add('DALARM:'+FormatDateTime('yyyymmdd',Bday)+'T093000');
         sl.Add('AALARM:'+FormatDateTime('yyyymmdd',Bday)+'T093000');
         sl.Add('CATEGORIES:ANNIVERSARY');
-        sl.Add('CLASS:PUBLIC');
+        sl.Add('LAST-MODIFIED:'+FormatDateTime('yyyymmdd"T"hhnn00',Now));
         sl.Add('END:VEVENT');
         AEntity.Raw := sl;
       finally
