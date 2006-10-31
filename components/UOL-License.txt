@@ -1,10 +1,7 @@
 This license agreement refers to these files:
-- uolInetGet.pas
-- uolPatch.pas
-- uolSelectPatchPath.pas
-- WebUpdate.pas
-- WebUpdateWizard.pas
+- DosPatch.exe
 - uolPatch.dll
+- uolDiff.dll
 
 		  GNU LESSER GENERAL PUBLIC LICENSE
 		       Version 2.1, February 1999
