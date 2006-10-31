@@ -573,7 +573,8 @@ end;
 
 procedure TVpDvInPlaceEdit.WMKillFocus(var Msg : TWMKillFocus);
 begin
-  TVpDayView(Owner).EndEdit(self);
+  if ComponentState = [] then
+    TVpDayView(Owner).EndEdit(self);
 end;
 {=====}
 
@@ -2188,7 +2189,11 @@ begin
 
   if AllowIt then begin
     { create and spawn the in-place editor }
-    dvInPlaceEditor := TVpDvInPlaceEdit.Create(Self);
+    if dvInplaceEditor = nil then
+      dvInPlaceEditor := TVpDvInPlaceEdit.Create(Self)
+    else
+      dvInplaceEditor.Visible := True;
+
     dvInPlaceEditor.Parent := self;
     dvInPlaceEditor.OnExit := EndEdit;
     dvInPlaceEditor.Move (Rect (dvActiveIconRec.Right + FGutterWidth +   
@@ -2209,7 +2214,7 @@ begin
     Exit;                                                                
   dvEndingEditing := True;                                               
   try                                                                    
-    if dvInPlaceEditor <> nil then begin
+    if (dvInPlaceEditor <> nil) and (dvInPlaceEditor.visible) then begin
       if dvInPlaceEditor.Text <> FActiveEvent.Description then begin
         FActiveEvent.Description := dvInPlaceEditor.Text;
         FActiveEvent.Changed := true;
@@ -2217,12 +2222,7 @@ begin
         if Assigned(FAfterEdit) then
           FAfterEdit(self, FActiveEvent);
       end;
-      try
-        dvInPlaceEditor.Free;
-        dvInPlaceEditor := nil;
-      except
-        // The editor was already freed.
-      end;
+      dvInPlaceEditor.visible := False;
       Invalidate;
     end;
   finally                                                                
@@ -2287,7 +2287,7 @@ begin
   { for simplicity, bail out of editing while scrolling. }
   EndEdit(Self);
 
-  if dvInPlaceEditor <> nil then Exit;
+  if (dvInPlaceEditor <> nil) and (dvInPlaceEditor.visible) then Exit;
 
   case Msg.ScrollCode of
     SB_LINEUP    : dvScrollVertical(-1);
@@ -3676,8 +3676,8 @@ begin
                   DataStore.CategoryColorMap.Category0.BackgroundColor;  
           1 : RenderCanvas.Brush.Color :=                                
                   DataStore.CategoryColorMap.Category1.BackgroundColor;  
-          2 : RenderCanvas.Brush.Color :=                                
-                  DataStore.CategoryColorMap.Category2.BackgroundColor;  
+          2 : RenderCanvas.Brush.Color :=
+                  DataStore.CategoryColorMap.Category2.BackgroundColor;
           3 : RenderCanvas.Brush.Color :=                                
                   DataStore.CategoryColorMap.Category3.BackgroundColor;  
           4 : RenderCanvas.Brush.Color :=                                
@@ -3752,7 +3752,7 @@ begin
 
       RenderCanvas.Brush.Color := WindowColor;
 
-      if (dvInPlaceEditor <> nil) then begin                             
+      if (dvInPlaceEditor <> nil) and (dvInPlaceEditor.visible) then begin
         if FActiveEvent = Event then                                     
           EventIsEditing := True                                         
         else                                                             
@@ -3936,7 +3936,7 @@ begin
     if Assigned (FActiveEvent) then
       OKToDrawEditFrame := not (FActiveEvent.AllDayEvent);
 
-    if (dvInPlaceEditor <> nil) and (OKToDrawEditFrame) then begin
+    if (dvInPlaceEditor <> nil) and (dvInPlaceEditor.visible) and (OKToDrawEditFrame) then begin
       { paint extra borders around the editor }
       if Assigned (DataStore) then                                       
         RenderCanvas.Brush.Color := DataStore.CategoryColorMap.GetColor(

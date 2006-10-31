@@ -86,6 +86,10 @@ type
     property Owner: TObject read FOwner;
   end;
 
+  TTasksDirtyNotify = procedure (Sender : TObject;
+                                 Event  : TVpTask;
+                                 Dirty  : Boolean) of object;
+
   TVpResource = class
   protected{private}
     FLoading : Boolean;
@@ -2033,7 +2037,7 @@ begin
   if Value <> FChanged then begin
     FChanged := Value;
     if FChanged then
-      Owner.FOwner.TasksDirty := true;                                   
+      Owner.FOwner.TasksDirty := true;
   end;
 end;
 {=====}

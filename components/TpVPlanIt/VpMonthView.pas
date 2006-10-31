@@ -731,7 +731,8 @@ var
 
     I := 0;
     // The DayNumber can be only in range (-6; 0)
-    // That means the week, where the new month starts, could started 6 day before the mont start.
+    // That means the week, where the new month starts, could started 6 day before
+    // the mont start.
     DayNumber := (DayOffset + 1 - 7) mod 7;
 
     { iterate through each column, row by row, drawing each day in numerical }

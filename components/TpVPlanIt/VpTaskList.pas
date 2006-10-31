@@ -129,7 +129,24 @@ type
   end;
 
   { Task List }
+  TVpDVIconData = record                                                 
+    Show   : Boolean;                                                    
+    Bitmap : TBitmap;                                                    
+  end;                                                                   
+  TVpDVIconTypes = (itAlarm, itRecurring, itCategory, itCustom);         
+  TVpDVIcons = array [itAlarm..itCustom] of TVpDVIconData;               
+
+  TVpOnDVDrawIcons = procedure (Sender : TObject;
+                                Task   : TVpTask;
+                            var Icons  : TVpDVIcons) of object;
+
+  TVpOnCompleteChanged = procedure (Sender : TObject;
+                                    Task   : TVpTask) of object;
+
   TVpTaskList = class(TVpLinkableControl)
+  private
+    FOnDrawIcons: TVpOnDVDrawIcons;
+    FOnCompleteChange: TVpOnCompleteChanged;
   protected{ private }
     FColor             : TColor;
     FCaption           : string;
@@ -258,6 +275,10 @@ type
       read FBeforeEdit write FBeforeEdit;
     property AfterEdit : TVpAfterEditTask
       read FAfterEdit write FAfterEdit;
+    property OnDrawIcons : TVpOnDVDrawIcons
+      read FOnDrawIcons Write FOnDrawIcons;
+    property OnCompleteChange : TVpOnCompleteChanged
+      read FOnCompleteChange Write FOnCompleteChange;
     property OnOwnerEditTask: TVpEditTask
       read FOwnerEditTask write FOwnerEditTask;
   end;
@@ -683,6 +704,20 @@ var
   RealNormalColor        : TColor;
   TaskHeadAttrColor      : TColor;
 
+  dvBmpRecurring     : TBitmap;
+  dvBmpCategory      : TBitmap;
+  dvBmpAlarm         : TBitmap;
+  dvBmpCustom        : TBitmap;
+  RecurringW         : Integer;
+  RecurringH         : Integer;
+  CategoryW          : Integer;
+  CategoryH          : Integer;
+  AlarmW             : Integer;
+  AlarmH             : Integer;
+  CustomW            : Integer;
+  CustomH            : Integer;
+  IconsMargin        : Integer;
+
   procedure DrawLines;
   var
     LinePos: Integer;
@@ -799,7 +834,7 @@ var
               TPSLineTo (RenderCanvas, Angle, RenderIn,                  
                          CR.Right, CR.Top + 1);                          
 
-              TPSMoveTo (RenderCanvas, Angle, RenderIn, CR.Left,         
+              TPSMoveTo (RenderCanvas, Angle, RenderIn, CR.Left,
                          CR.Bottom - ((CR.Bottom - cr.Top) div 4) - 2);  
               TPSLineTo (RenderCanvas, Angle, RenderIn,                  
                          CR.Left + ((CR.Right - CR.Left) div 4),         
@@ -826,13 +861,116 @@ var
     result := cr;
   end;
 
+  procedure CreateBitmaps;
+  begin
+    dvBmpRecurring := TBitmap.Create;
+    dvBmpCategory  := TBitmap.Create;
+    dvBmpAlarm     := TBitmap.Create;
+    dvBmpCustom    := TBitmap.Create;
+  end;
+
+  procedure FreeBitmaps;
+  begin
+    dvBmpRecurring.Free;
+    dvBmpCategory.Free;
+    dvBmpAlarm.Free;
+    dvBmpCustom.Free;
+  end;
+
+  function DrawIcons(IconRect: TRect; Icons: TVpDVIcons): integer;
+  var                                                                  
+    DrawPos : Integer;
+  begin
+    DrawPos := 1;
+
+    if Icons[itCustom].Show then begin
+      RenderCanvas.StretchDraw(Rect (IconRect.Left + 1,
+                               IconRect.Top + 4,
+                               IconRect.Left + CustomW + 1,
+                               IconRect.Top + CustomH + 4), dvBmpCustom);
+      DrawPos := CustomW + 1;
+    end;
+
+    if Icons[itCategory].Show then begin
+      RenderCanvas.CopyRect (Rect (IconRect.Left + DrawPos,
+                             IconRect.Top + 4,
+                             IconRect.Left + DrawPos + CategoryW + 1,
+                             IconRect.Top + CategoryH + 4),
+                       dvBmpCategory.Canvas,
+                       Rect (0,
+                             0,
+                             dvBmpCategory.Width,
+                             dvBmpCategory.Height));
+      DrawPos := DrawPos + CategoryW;
+    end;
+
+    if Icons[itAlarm].Show then begin
+      RenderCanvas.StretchDraw(Rect (IconRect.Left + DrawPos,
+                             IconRect.Top + 4,
+                             IconRect.Left + DrawPos + AlarmW + 1,
+                             IconRect.Top + AlarmH + 4), dvBmpAlarm);
+      DrawPos := DrawPos + AlarmW;
+    end;
+
+    if Icons[itRecurring].Show then begin
+      RenderCanvas.StretchDraw(Rect (IconRect.Left + DrawPos,
+                             IconRect.Top + 4,
+                             IconRect.Left + DrawPos + RecurringW + 1,
+                             IconRect.Top + RecurringH + 4), dvBmpRecurring);
+      DrawPos := DrawPos + RecurringW;
+    end;
+    
+    Result := DrawPos - 1;
+  end;
+
+  procedure ScaleIcons (EventRect : TRect);                            
+  begin                                                                
+    if (dvBmpAlarm.Height >                                            
+        EventRect.Bottom - EventRect.Top - 4) and                      
+       (dvBmpAlarm.Height * dvBmpAlarm.Width <> 0) then begin          
+      AlarmW := Trunc (((EventRect.Bottom - EventRect.Top - 4) /       
+                               dvBmpAlarm.Height) *                    
+                              dvBmpAlarm.Width);                       
+      AlarmH := EventRect.Bottom - EventRect.Top - 4;                  
+    end;                                                               
+
+    if (dvBmpRecurring.Height >                                        
+        EventRect.Bottom - EventRect.Top - 4) and                      
+       (dvBmpRecurring.Height * dvBmpRecurring.Width <> 0) then begin  
+      RecurringW := Trunc (((EventRect.Bottom - EventRect.Top - 4) /   
+                               dvBmpRecurring.Height) *                
+                              dvBmpRecurring.Width);                   
+      RecurringH := EventRect.Bottom - EventRect.Top - 4;              
+    end;                                                               
+
+    if (dvBmpCategory.Height >
+        EventRect.Bottom - EventRect.Top - 4) and                      
+       (dvBmpCategory.Height * dvBmpCategory.Width <> 0) then begin    
+      CategoryW := Trunc (((EventRect.Bottom - EventRect.Top - 4) /    
+                               dvBmpCategory.Height) *                 
+                              dvBmpCategory.Width);                    
+      CategoryH := EventRect.Bottom - EventRect.Top - 4;               
+    end;                                                               
+
+    if (dvBmpCustom.Height >                                           
+        EventRect.Bottom - EventRect.Top - 4) and                      
+       (dvBmpCustom.Height * dvBmpCustom.Width <> 0) then begin        
+      CustomW := Trunc (((EventRect.Bottom - EventRect.Top - 4) /      
+                               dvBmpCustom.Height) *                   
+                              dvBmpCustom.Width);                      
+      CustomH := EventRect.Bottom - EventRect.Top - 4;                 
+    end;                                                               
+  end;                                                                 
+
   procedure DrawTasks;
   var
     I           : Integer;
     Task        : TVpTask;
+    IconsRect   : TRect;
     LineRect    : TRect;
     CheckRect   : TRect;
     DisplayStr  : string;
+    Icons       : TVpDVIcons;
   begin
     if (DataStore = nil) or                                              
        (DataStore.Resource = nil) or                                     
@@ -883,10 +1021,19 @@ var
         { if this is the selected task and we are not in edit mode, }
         { then set background selection                             }
         if (Task = FActiveTask) and (tlInPlaceEditor = nil)
-        and (not DisplayOnly) and Focused then begin     
+        and (not DisplayOnly) and Focused then begin
+          IconsRect := LineRect;
+          IconsRect.Left := IconsRect.Right - TextMargin;
           RenderCanvas.Brush.Color := BackgroundSelHighlight;
-          RenderCanvas.FillRect(LineRect);
+          RenderCanvas.FillRect(IconsRect);
           RenderCanvas.Brush.Color := RealColor;
+        end
+        else begin
+          RenderCanvas.Pen.Color := BackgroundSelHighlight;
+          RenderCanvas.Pen.Style := psSolid;
+          TPSMoveTo (RenderCanvas, Angle, RenderIn, RealRight - TextMargin - 2, LineRect.Top);
+          TPSLineTo (RenderCanvas, Angle, RenderIn, RealRight - TextMargin - 2, LineRect.Bottom);
+          RenderCanvas.Pen.Color := RealLineColor;
         end;
 
         { draw the checkbox }
@@ -908,10 +1055,11 @@ var
         end;
 
         { if this is the selected task, set highlight text color }
+        (*
         if (Task = FActiveTask) and (tlInPlaceEditor = nil)
-        and (not DisplayOnly) and Focused then  
+        and (not DisplayOnly) and Focused then
           RenderCanvas.Font.Color := ForegroundSelHighlight;
-
+        *)
         { build display string }
         DisplayStr := '';
         if (FDisplayOptions.ShowDueDate) and
@@ -925,9 +1073,46 @@ var
         DisplayStr := GetDisplayString(RenderCanvas, DisplayStr, 3,
           LineRect.Right - LineRect.Left - CheckRect.Right - TextMargin);
 
+        { draw any icons }
+        if Assigned (FOnDrawIcons) then begin
+          CreateBitmaps;
+          try
+            Icons[itAlarm].Show := False;
+            Icons[itAlarm].Bitmap := dvBmpAlarm;
+            Icons[itRecurring].Show := False;
+            Icons[itRecurring].Bitmap := dvBmpRecurring;
+            Icons[itCategory].Show := False;
+            Icons[itCategory].Bitmap := dvBmpCategory;
+            Icons[itCustom].Show := False;
+            Icons[itCustom].Bitmap := dvBmpCustom;
+
+            FOnDrawIcons (Self, Task, Icons);
+
+            AlarmW     := dvBmpAlarm.Width;
+            RecurringW := dvBmpRecurring.Width;
+            CategoryW  := dvBmpCategory.Width;
+            CustomW    := dvBmpCustom.Width;
+            AlarmH     := dvBmpAlarm.Height;
+            RecurringH := dvBmpRecurring.Height;
+            CategoryH  := dvBmpCategory.Height;
+            CustomH    := dvBmpCustom.Height;
+
+            IconsRect  := LineRect;
+            IconsRect.Left := CheckRect.Right + TextMargin - 2;
+
+            ScaleIcons(IconsRect);
+
+            IconsMargin := DrawIcons(IconsRect, Icons);
+          finally
+            FreeBitmaps;
+          end;
+        end
+        else
+          IconsMargin := 0;
+
         { paint the text }
-        TPSTextOut(RenderCanvas, Angle, RenderIn, CheckRect.Right
-          + TextMargin * 2, LineRect.Top + TextMargin, DisplayStr);
+        TPSTextOut(RenderCanvas, Angle, RenderIn, CheckRect.Right + TextMargin * 2 + IconsMargin,
+          LineRect.Top + TextMargin, DisplayStr);
 
         { store the tasks drawing details }
         tlVisibleTaskArray[tlVisibleItems].Task := Task;
@@ -1550,6 +1735,10 @@ begin
     VK_SPACE  :
       if Assigned (FActiveTask) then begin
         FActiveTask.Complete := not FActiveTask.Complete;
+
+        if Assigned(FOnCompleteChange) then
+          FOnCompleteChange(Self, FActiveTask);
+          
         Invalidate;
       end;
     VK_TAB   :
@@ -1675,11 +1864,14 @@ begin
       if not ReadOnly then begin                                         
         { toggle the complete flag. }
         FActiveTask.Complete := not FActiveTask.Complete;
-        FActiveTask.Changed := true;
+
+        if Assigned(FOnCompleteChange) then
+          FOnCompleteChange(Self, FActiveTask);
+
         DataStore.Resource.TasksDirty := true;
         DataStore.PostTasks;
         Invalidate;
-      end;                                                               
+      end;
       Exit;
     end;
 
