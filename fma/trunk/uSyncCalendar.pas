@@ -245,8 +245,9 @@ end;
 
 procedure TfrmCalendarView.VpTaskListOwnerEditTask(Sender: TObject;
   Task: TVpTask; Resource: TVpResource; var AllowIt: Boolean);
-  var
-    AAlarm: String;
+var
+  AAlarm: String;
+  DtDone: TDateTime;
 begin
   inherited;
   AllowIt := False;
@@ -292,19 +293,10 @@ begin
     if ShowModal = mrOk then begin
       Task.Description := txtSubject.Text;
 
-      if txtNumber.Text <> '' then Task.Category := 1
-      else Task.Category := 0;
-
-      if chbCompleted.Checked then begin
-        try
-          Task.CompletedOn := StrToDateTime(txtCompleted.Text);
-          Task.Complete := True;
-        except
-        end;
-      end
-      else begin
-        Task.Complete := False;
-      end;
+      if txtNumber.Text <> '' then
+        Task.Category := 1
+      else
+        Task.Category := 0;
 
       if chbReminder.Checked then begin
         try
@@ -316,8 +308,23 @@ begin
         except
         end;
       end
-      else
+      else begin
         Task.UserField0 := '';
+        Task.Changed := True;
+      end;
+
+      if chbCompleted.Checked then begin
+        try
+          DtDone := StrToDateTime(txtCompleted.Text);
+          if DtDone <> Task.CompletedOn then begin
+            Task.CompletedOn := DtDone;
+            Task.Complete := True;
+          end;
+        except
+        end;
+      end
+      else
+        Task.Complete := False;
 
       if Task.Changed and (Task.UserField9 <> '0') then Task.UserField9 := '1';
 
