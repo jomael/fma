@@ -91,6 +91,9 @@ type
       var AllowIt: Boolean);
     procedure VpTaskListBeforeEdit(Sender: TObject; Task: TVpTask;
       var AllowIt: Boolean);
+    procedure VpTaskListDrawIcons(Sender: TObject; Task: TVpTask;
+      var Icons: TVpDVIcons);
+    procedure VpTaskListCompleteChange(Sender: TObject; Task: TVpTask);
   private
     { Private declarations }
     ConflictVCalPhone,ConflictVCalPC: TVCalEntity;
@@ -226,7 +229,10 @@ begin
       Event.AlarmSet := TntRadioGroupReminder.ItemIndex <> 0;
       Event.AlarmAdv := AdvMins;
       Event.AlarmAdvType := AdvType;
-      Event.UserField1 := DateTimeToStr(DateOf(TntDatePickerRemider.DateTime) + TimeOf(TntTimePickerReminder.DateTime));
+      if Event.AlarmSet then
+        Event.UserField1 := DateTimeToStr(DateOf(TntDatePickerRemider.DateTime) + TimeOf(TntTimePickerReminder.DateTime))
+      else
+        Event.UserField1 := '';
       
       if Event.Changed and (Event.UserField9 <> '0') then Event.UserField9 := '1';
 
@@ -309,7 +315,9 @@ begin
           end;
         except
         end;
-      end;
+      end
+      else
+        Task.UserField0 := '';
 
       if Task.Changed and (Task.UserField9 <> '0') then Task.UserField9 := '1';
 
@@ -868,7 +876,7 @@ begin
 
   if Event.UserField9 <> '' then begin
     Icons[itCustom].Show := True;
-    
+
     case StrToInt(Event.UserField9) of
       0: ImageListCalPopup.GetBitmap(0, Icons[itCustom].Bitmap);
       1: ImageListCalPopup.GetBitmap(1, Icons[itCustom].Bitmap);
@@ -876,10 +884,11 @@ begin
     else
       Icons[itCustom].Show := False;
     end;
-    
+
     Icons[itCustom].Bitmap.Transparent := True;
   end
-  else Icons[itCustom].Show := False;
+  else
+    Icons[itCustom].Show := False;
 end;
 
 procedure TfrmCalendarView.VpBDAlert(Sender: TObject; Event: TVpEvent);
@@ -1352,6 +1361,38 @@ procedure TfrmCalendarView.VpTaskListBeforeEdit(Sender: TObject;
   Task: TVpTask; var AllowIt: Boolean);
 begin
   AllowIt := False; // no inline editing!
+end;
+
+procedure TfrmCalendarView.VpTaskListDrawIcons(Sender: TObject;
+  Task: TVpTask; var Icons: TVpDVIcons);
+begin
+  if Task.UserField0 <> '' then begin
+    ImageListCalPopup.GetBitmap(3, Icons[itAlarm].Bitmap);
+    Icons[itAlarm].Show := True;
+    Icons[itAlarm].Bitmap.Transparent := True;
+  end
+  else
+    Icons[itAlarm].Show := False;
+
+  if Task.UserField9 <> '' then begin
+    Icons[itCustom].Show := True;
+    case StrToInt(Task.UserField9) of
+      0: ImageListCalPopup.GetBitmap(0, Icons[itCustom].Bitmap);
+      1: ImageListCalPopup.GetBitmap(1, Icons[itCustom].Bitmap);
+      2: ImageListCalPopup.GetBitmap(2, Icons[itCustom].Bitmap);
+    else
+      Icons[itCustom].Show := False;
+    end;
+    Icons[itCustom].Bitmap.Transparent := True;
+  end
+  else
+    Icons[itCustom].Show := False;
+end;
+
+procedure TfrmCalendarView.VpTaskListCompleteChange(Sender: TObject;
+  Task: TVpTask);
+begin
+  if Task.Changed and (Task.UserField9 <> '0') then Task.UserField9 := '1';
 end;
 
 end.

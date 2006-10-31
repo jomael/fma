@@ -1385,7 +1385,6 @@ begin
               AsNew := True;
             //Get new VCard
             Form1.ObexGetObject('telecom/pb/luid/' + LUID + '.vcf',sl); // do not localize
-            VCard.Clear;
             VCard.Raw := sl;
 
             ShowProgressTarget(GetvCardFullName(VCard));

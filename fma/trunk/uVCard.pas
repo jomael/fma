@@ -154,32 +154,25 @@ var
   bY,bM,bD: word;
   //tz: TTimeZoneInformation;
   procedure slAddAdr(AName: string; Adr: TPostalAddress);
+  var
+    Str: WideString;
   begin
-    with Adr do
-    if (Street <> '') or
-      (City <> '') or
-      (Region <> '') or
-      (PostalCode <> '') or
-      (Country <> '')  then begin
-       strTemp :=  WideStringToUTF8(Street + City + Region + PostalCode + Country);
-       if not Form1.FUseUTF8 or (strTemp = Street + City + Region + PostalCode + Country) then begin
-         strTemp := Str2QP(Street + City + Region + PostalCode + Country);
-         if (Street + City + Region + PostalCode + Country) = strTemp then
+    with Adr do begin
+      Str := Street + City + Region + PostalCode + Country;
+      if Trim(Str) <> '' then begin
+        strTemp :=  WideStringToUTF8(Str);
+        if not Form1.FUseUTF8 or (strTemp = Str) then begin
+          strTemp := Str2QP(Str);
+          if strTemp = Str then
             sl.add('ADR;'+AName+':;;' + Street + ';' + City + ';' + Region + ';' + PostalCode + ';' + Country)
-         else
-            sl.Add('ADR;ENCODING=QUOTED-PRINTABLE;'+AName+':;;'
-              + Str2QP(Street) + ';'
-              + Str2QP(City) + ';'
-              + Str2QP(Region) + ';'
-              + Str2QP(PostalCode) + ';'
-              + Str2QP(Country));
-       end else
-         sl.Add('ADR;CHARSET=UTF-8;'+AName+':;;'
-           + WideStringToUTF8(Street) + ';'
-           + WideStringToUTF8(City) + ';'
-           + WideStringToUTF8(Region) + ';'
-           + WideStringToUTF8(PostalCode) + ';'
-           + WideStringToUTF8(Country));
+          else
+            sl.Add('ADR;ENCODING=QUOTED-PRINTABLE;'+AName+':;;' + Str2QP(Street) + ';' + Str2QP(City) + ';' +
+              Str2QP(Region) + ';' + Str2QP(PostalCode) + ';' + Str2QP(Country));
+        end
+        else
+          sl.Add('ADR;CHARSET=UTF-8;'+AName+':;;' + WideStringToUTF8(Street) + ';' + WideStringToUTF8(City) + ';' +
+            WideStringToUTF8(Region) + ';' + WideStringToUTF8(PostalCode) + ';' + WideStringToUTF8(Country));
+      end;
     end;
   end;
 begin
