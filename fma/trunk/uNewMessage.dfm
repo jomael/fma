@@ -18,7 +18,6 @@ object frmNewMessage: TfrmNewMessage
   ParentFont = True
   FormStyle = fsStayOnTop
   OldCreateOrder = False
-  Position = poDefaultPosOnly
   ShowHint = True
   OnActivate = OnMouseEnter
   OnClose = FormClose

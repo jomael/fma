@@ -123,6 +123,7 @@ begin
             ACalEntity.VDtStart.GetLocal, ACalEntity.VDtEnd.GetLocal);
           if Event <> nil then begin
             Event.Loading := true;
+            Event.AlertDisplayed := ACalEntity.VAlertShown.Text = '1';
 
             Event.Description := ACalEntity.VSummary.PropertyValue;
             // Use UserField0 for location value
@@ -143,6 +144,17 @@ begin
               Event.UserField1 := DateTimeToStr(ACalEntity.VAAlarm.GetLocal);
               Event.AlarmSet := True;
             end;
+
+            case ACalEntity.VRRule.Reccurence of
+              rrNone:    Event.RepeatCode := rtNone;
+              rrDaily:   Event.RepeatCode := rtDaily;
+              rrWeekly:  Event.RepeatCode := rtWeekly;
+              rrMonthly: Event.RepeatCode := rtMonthlyByDay;
+              rrYearly:  Event.RepeatCode := rtYearlyByDay;
+            end;
+            // Use UserField8 for Weekly reccurence 
+            Event.UserField8 := ACalEntity.VRRule.WeekDays;
+            Event.RepeatRangeEnd := ACalEntity.VRRule.EndDate;
 
             // Use UserField9 for FMA Event State
             Event.UserField9 := IntToStr(ACalEntity.VFmaState);
@@ -263,6 +275,14 @@ begin
         Continue;
       end
 
+      else if not Event.Changed then begin
+        if Event.RecordID <> 0 then begin
+          ACalEntity := FCalendar.GetCalEntityByItemIndex(Event.RecordID - 1);
+          // FMA specific
+          ACalEntity.VAlertShown.Text := IntToStr(byte(Event.AlertDisplayed)); // save Alerted state
+        end;
+      end
+
       else if Event.Changed then begin
         if Event.RecordID = 0 then
         begin
@@ -281,6 +301,8 @@ begin
 
           if ACalEntity.VIrmcLUID.PropertyValue = '' then Event.UserField9 := IntToStr(0);
         end;
+
+        ACalEntity.VAlertShown.Text := IntToStr(byte(Event.AlertDisplayed));
 
         ACalEntity.VDtStart.IsUtc := False;
         ACalEntity.VDtStart.DateTime := Event.StartTime;
@@ -311,6 +333,22 @@ begin
           ACalEntity.VAAlarm.LocalToUtc;
         end
         else ACalEntity.VAAlarm.IsSet := False;
+
+        case Event.RepeatCode of
+          rtDaily:
+            ACalEntity.VRRule.Reccurence := rrDaily;
+          rtWeekly:
+            ACalEntity.VRRule.Reccurence := rrWeekly;
+          rtMonthlyByDay:
+            ACalEntity.VRRule.Reccurence := rrMonthly;
+          rtYearlyByDay:
+            ACalEntity.VRRule.Reccurence := rrYearly;
+          else
+            ACalEntity.VRRule.Reccurence := rrNone;
+        end;
+        // Use UserField8 for Weekly reccurence
+        ACalEntity.VRRule.WeekDays := Event.UserField8;
+        ACalEntity.VRRule.EndDate := Event.RepeatRangeEnd;
 
         ACalEntity.VFmaState := StrToInt(Event.UserField9);
 

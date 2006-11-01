@@ -123,12 +123,13 @@ type
     procedure SaveCalendar(FileName: WideString; SaveCC: Boolean = True);
     { Properties }
     property DB: TVpVDataStore read VpDB;
+    property Cal: TVCalendar read FCalendar;
   end;
 
 implementation
 
 uses
-  gnugettext, gnugettexthelpers, DateUtils, 
+  gnugettext, gnugettexthelpers, DateUtils, uGlobal, uNewAlarm,
   Unit1, uLogger, VpMisc, uPromptConflict, uEditEvent, uEditTask, uConflictChanges, uDialogs;
 
 {$R *.dfm}
@@ -181,24 +182,41 @@ begin
     TntDatePickerEnd.DateTime := Event.EndTime;
     TntTimePickerEnd.DateTime := Event.EndTime;
 
+    UpdateDudation;
+
     txtSubject.Text := Event.Description;
     // Use UserField0 for location value
     txtLocation.Text := Event.UserField0;
 
     TntComboBoxCategories.ItemIndex := Event.Category;
-    { old way
-    if Event.UserField1 <> '' then begin
-      TntRadioGroupReminder.ItemIndex := 7;
 
-      TntDatePickerRemider.DateTime := StrToDateTime(Event.UserField1);
-      TntTimePickerReminder.DateTime := TntDatePickerRemider.DateTime;
-    end
-    else TntRadioGroupReminder.ItemIndex := 0;
-    }
-    if Event.AlarmSet then TntRadioGroupReminder.ItemIndex := 7
-      else TntRadioGroupReminder.ItemIndex := 0;
+    if Event.AlarmSet then
+      TntRadioGroupReminder.ItemIndex := 7
+    else
+      TntRadioGroupReminder.ItemIndex := 0;
     AdvMins := Event.AlarmAdv;
     AdvType := Event.AlarmAdvType;
+
+    case Event.RepeatCode of
+      rtDaily:
+        TntRadioGroupReccurence.ItemIndex := 1;
+      rtWeekly:
+        TntRadioGroupReccurence.ItemIndex := 2;
+      rtMonthlyByDay:
+        TntRadioGroupReccurence.ItemIndex := 3;
+      rtYearlyByDay:
+        TntRadioGroupReccurence.ItemIndex := 4;
+      else
+        TntRadioGroupReccurence.ItemIndex := 0;
+    end;
+    TntDatePickerReccurence.DateTime := Event.RepeatRangeEnd;
+    TntTimePickerReccurence.DateTime := Event.RepeatRangeEnd;
+    if Event.RepeatRangeEnd <> EmptyDate then
+      TntComboBoxRangeEnd.ItemIndex := 1
+    else
+      TntComboBoxRangeEnd.ItemIndex := 0;
+
+    WeekDays := Event.UserField8;
 
     if Event.UserField9 = '' then Event.UserField9 := '0';
 
@@ -214,25 +232,37 @@ begin
         Event.Changed := True;
       end;
 
-      if TntComboBoxCategories.ItemIndex >= 0 then Event.Category := TntComboBoxCategories.ItemIndex
-      else Event.Category := 0;
-      { old way
-      if TntRadioGroupReminder.ItemIndex <> 0 then begin
-        Event.UserField1 := DateTimeToStr(DateOf(TntDatePickerRemider.DateTime) + TimeOf(TntTimePickerReminder.DateTime));
-        Event.AlarmSet := True;
-      end
-      else begin
-        Event.UserField1 := '';
-        Event.AlarmSet := False;
+      case TntRadioGroupReccurence.ItemIndex of
+        0: Event.RepeatCode := rtNone;
+        1: Event.RepeatCode := rtDaily;
+        2: Event.RepeatCode := rtWeekly;
+        3: Event.RepeatCode := rtMonthlyByDay;
+        4: Event.RepeatCode := rtYearlyByDay;
       end;
-      }
+      if TntComboBoxRangeEnd.ItemIndex = 1 then
+        Event.RepeatRangeEnd := TntDatePickerReccurence.DateTime
+      else
+        Event.RepeatRangeEnd := EmptyDate;
+
+      if TntComboBoxCategories.ItemIndex >= 0 then
+        Event.Category := TntComboBoxCategories.ItemIndex
+      else
+        Event.Category := 0;
+
+      if Event.UserField8 <> WeekDays then begin
+        Event.UserField8 := WeekDays;
+        Event.Changed := True;
+      end;
+
       Event.AlarmSet := TntRadioGroupReminder.ItemIndex <> 0;
       Event.AlarmAdv := AdvMins;
       Event.AlarmAdvType := AdvType;
       if Event.AlarmSet then
-        Event.UserField1 := DateTimeToStr(DateOf(TntDatePickerRemider.DateTime) + TimeOf(TntTimePickerReminder.DateTime))
+        Event.UserField1 := DateTimeToStr(TntDatePickerReminder.DateTime)
       else
         Event.UserField1 := '';
+
+      Event.AlertDisplayed := False;
       
       if Event.Changed and (Event.UserField9 <> '0') then Event.UserField9 := '1';
 
@@ -301,7 +331,7 @@ begin
       if chbReminder.Checked then begin
         try
           AAlarm := FloatToStr(DateOf(dtpDate.Date) + TimeOf(dtpTime.Time));
-          if AAlarm <> Task.UserField0 then begin
+          if Task.UserField0 <> AAlarm then begin
             Task.UserField0 := AAlarm;
             Task.Changed := True;
           end;
@@ -578,11 +608,8 @@ begin
               AOutEntity := TVCalEntity.Create;
 
               // TODO: Check the output encoding
-//              if Form1.FUseUTF8 then AOutCal.OutputCharSet := tecUtf8
-//              else AOutCal.OutputCharSet := tecAscii;
-
-              // TODO: Use Utf-8 and Ascii for all phones if possible.
-              AOutCal.OutputCharSet := tecUtf8Ascii;
+              if Form1.FUseUTF8 then AOutCal.OutputCharSet := tecUtf8Ascii
+              else AOutCal.OutputCharSet := tecAscii;
 
               // Create copy of entity
               AOutEntity.Raw := AEntity.Raw;
@@ -746,6 +773,9 @@ begin
   sl := TStringList.Create;
   try
     if VpDB.vCalendar <> nil then begin
+      VpDB.PostTasks;
+      VpDB.PostEvents;
+
       // TODO: Check the output encoding
       if Form1.FUseUTF8 then
         FCalendar.OutputCharSet := tecUtf8
@@ -879,7 +909,25 @@ end;
 procedure TfrmCalendarView.VpDayViewDrawIcons(Sender: TObject;
   Event: TVpEvent; var Icons: TVpDVIcons);
 begin
-  Icons[itAlarm].Bitmap.Transparent := True;
+  if Event.RepeatCode <> rtNone then begin
+    Icons[itRecurring].Show := True;
+
+    ImageListCalPopup.GetBitmap(4, Icons[itRecurring].Bitmap);
+
+    Icons[itRecurring].Bitmap.Transparent := True;
+  end
+  else
+    Icons[itRecurring].Show := False;
+
+  if Event.AlarmSet then begin
+    Icons[itAlarm].Show := True;
+
+    ImageListCalPopup.GetBitmap(3, Icons[itAlarm].Bitmap);
+
+    Icons[itAlarm].Bitmap.Transparent := True;
+  end
+  else
+    Icons[itAlarm].Show := False;
 
   if Event.UserField9 <> '' then begin
     Icons[itCustom].Show := True;
@@ -896,11 +944,6 @@ begin
   end
   else
     Icons[itCustom].Show := False;
-end;
-
-procedure TfrmCalendarView.VpBDAlert(Sender: TObject; Event: TVpEvent);
-begin
-//
 end;
 
 procedure TfrmCalendarView.ForceAsNotModifieDvClick(Sender: TObject);
@@ -1029,13 +1072,15 @@ begin
 
     if WideCompareStr(ConflictVCalPhone.VRelatedTo,ConflictVCalPC.VRelatedTo) <> 0 then
       AddChange(_('Related To'),ConflictVCalPhone.VRelatedTo,ConflictVCalPC.VRelatedTo);
-
+    {
     if WideCompareStr(ConflictVCalPhone.VExRule,ConflictVCalPC.VExRule) <> 0 then
       AddChange(_('VExRule'),ConflictVCalPhone.VExRule,ConflictVCalPC.VExRule);
-    if WideCompareStr(ConflictVCalPhone.VRRule,ConflictVCalPC.VRRule) <> 0 then
-      AddChange(_('VRRule'),ConflictVCalPhone.VRRule,ConflictVCalPC.VRRule);
+    }
+    if WideCompareStr(ConflictVCalPhone.VRRule.Description,ConflictVCalPC.VRRule.Description) <> 0 then
+      AddChange(_('Reccurence'),ConflictVCalPhone.VRRule.Description,ConflictVCalPC.VRRule.Description);
+
     if WideCompareStr(ConflictVCalPhone.VURL,ConflictVCalPC.VURL) <> 0 then
-      AddChange(_('VURL'),ConflictVCalPhone.VURL,ConflictVCalPC.VURL);
+      AddChange(_('URL'),ConflictVCalPhone.VURL,ConflictVCalPC.VURL);
 
     if WideCompareStr(ConflictVCalPhone.VLocation.PropertyValue,ConflictVCalPC.VLocation.PropertyValue) <> 0 then
       AddChange(_('Location'),ConflictVCalPhone.VLocation.PropertyValue,ConflictVCalPC.VLocation.PropertyValue);
@@ -1052,11 +1097,13 @@ begin
 
     if ConflictVCalPhone.VCategories.PropertyValue <> ConflictVCalPC.VCategories.PropertyValue then
       AddChange(_('Categories'),ConflictVCalPhone.VCategories.PropertyValue,ConflictVCalPC.VCategories.PropertyValue);
+
     if ConflictVCalPhone.VClass.PropertyValue <> ConflictVCalPC.VClass.PropertyValue then
       AddChange(_('Class'),ConflictVCalPhone.VClass.PropertyValue,ConflictVCalPC.VClass.PropertyValue);
+
     if ConflictVCalPhone.VStatus.PropertyValue <> ConflictVCalPC.VStatus.PropertyValue then
       AddChange(_('Status'),ConflictVCalPhone.VStatus.PropertyValue,ConflictVCalPC.VStatus.PropertyValue);
-
+    {
     if ConflictVCalPhone.VDAlarm <> ConflictVCalPC.VDAlarm then
       AddChange(_('VDAlarm'),ConflictVCalPhone.VDAlarm,ConflictVCalPC.VDAlarm);
     if ConflictVCalPhone.VMAlarm <> ConflictVCalPC.VMAlarm then
@@ -1067,7 +1114,7 @@ begin
       AddChange(_('VExDate'),ConflictVCalPhone.VExDate,ConflictVCalPC.VExDate);
     if ConflictVCalPhone.VRDate <> ConflictVCalPC.VRDate then
       AddChange(_('VRDate'),ConflictVCalPhone.VRDate,ConflictVCalPC.VRDate);
-
+    }
     if ChangeCount <> 0 then ShowModal
       else MessageDlgW(_('No changes found.'), mtInformation, MB_OK);
   finally
@@ -1400,6 +1447,23 @@ procedure TfrmCalendarView.VpTaskListCompleteChange(Sender: TObject;
   Task: TVpTask);
 begin
   if Task.Changed and (Task.UserField9 <> '0') then Task.UserField9 := '1';
+end;
+
+procedure TfrmCalendarView.VpBDAlert(Sender: TObject; Event: TVpEvent);
+var
+  e: TVCalEntity;
+begin
+  Event.AlertDisplayed := True; // dismiss by default
+  e := FCalendar.GetCalEntityByItemIndex(Event.RecordID - 1);
+  if Assigned(e) then e.VAlertShown.Text := '1';
+
+  { Create Calendar events in new alarm dialog }
+  with TfrmNewAlarm.Create(nil) do
+  try
+    CreateEvent(Event.Description,255,Event.RecordID);
+  except
+    Free;
+  end;
 end;
 
 end.

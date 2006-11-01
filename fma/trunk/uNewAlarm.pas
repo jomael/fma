@@ -22,6 +22,7 @@ uses
 
 type
   TAlarmExitAction = (aaIgnore, aaPostpone, aaDismiss);
+  TAlarmOriginator = (aoPhone, aoFMA);
 
   TfrmNewAlarm = class(TForm)
     FormPlacement1: TFormPlacement;
@@ -40,11 +41,13 @@ type
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
-    FAlarmID: Integer;
+    FAlarmID,FAlertNum: Integer;
     FAction: TAlarmExitAction;
+    FCreator: TAlarmOriginator;
   public
     { Public declarations }
-    procedure CreateAlarm(Text: WideString; AlphaBlend,AlarmID: Integer);
+    procedure CreateAlarm(Text: WideString; AlphaBlend,AlarmID: Integer); // phone
+    procedure CreateEvent(Text: WideString; AlphaBlend,AlarmID: Integer); // FMA
   end;
 
 var
@@ -53,20 +56,26 @@ var
 implementation
 
 uses
-  gnugettext, gnugettexthelpers,
+  gnugettext, gnugettexthelpers, VpData, uVCalendar,
   uGlobal, Unit1, uThreadSafe, MMSystem;
 
 {$R *.dfm}
 
+const
+  AlertCount: integer = 0;
+
 procedure TfrmNewAlarm.CreateAlarm(Text: WideString; AlphaBlend,AlarmID: Integer);
 begin
   AlphaBlendValue := AlphaBlend;
+  FCreator := aoPhone;
   FAlarmID := AlarmID;
   lbText.Caption := Text;
   lbTime.Caption := DateTimeToStr(Now);
   FAction := aaDismiss; // default action
   AlarmTimer.Interval := 100;
   AlarmTimer.Enabled := True;
+  FAlertNum := AlertCount + 1;
+  AlertCount := FAlertNum;
   FormPlacement1.RestoreFormPlacement;
   Application.ProcessMessages;
   { Show window but not activate it
@@ -102,18 +111,53 @@ end;
 procedure TfrmNewAlarm.FormClose(Sender: TObject; var Action: TCloseAction);
 var
   s: String;
+  e: TVCalEntity;
 begin
-  case FAction of
-    aaDismiss:  s := 'AT+CAPD=0';   // dismisses the alarm
-    aaPostpone: s := 'AT+CAPD=540'; // postpone for 9 minutes
-    aaIgnore: Exit;
+  case FCreator of
+    aoPhone:
+      case FAction of
+        aaDismiss:
+          s := 'AT+CAPD=0';   // dismisses the alarm
+        aaPostpone:
+          s := 'AT+CAPD=540'; // postpone for 9 minutes
+        aaIgnore:
+          exit;
+      end;
+    aoFMA:
+      case FAction of
+        aaDismiss: ; // do nothing
+        aaPostpone:
+          try
+            e := Form1.frmCalendarView.Cal.GetCalEntityByItemIndex(FAlarmID - 1);
+            if Assigned(e) then e.VAlertShown.IsSet := False;
+            Form1.frmCalendarView.DB.LoadEvents;
+            {
+            with TVpEvent(Pointer(FAlarmID)) do begin
+              AlertDisplayed := False;
+              SnoozeTime := Now + 1/MinsPerDay;
+              //Owner.Owner.EventsDirty := True;
+            end;
+            }
+          except
+          end;
+        aaIgnore:
+          exit;  
+      end;
   end;
   { Postpone or dismiss alarm }
   FAction := aaIgnore;
   AlarmTimer.Enabled := False;
+  //EnterCriticalSection(c);
+  AlertCount := AlertCount - 1;
+  //LeaveCriticalSection(c);
   try
-    if Form1.FConnected and not Form1.FObex.Connected and not ThreadSafe.ObexConnecting then
-      Form1.TxAndWait(s);
+    case FCreator of
+      aoPhone:
+        if Form1.FConnected and not Form1.FObex.Connected and not ThreadSafe.ObexConnecting then
+          Form1.TxAndWait(s);
+      aoFMA:
+        Action := caFree; { Calendar events use new alarm dialog for each new event }
+    end;
   except
   end;
 end;
@@ -121,14 +165,24 @@ end;
 procedure TfrmNewAlarm.AlarmTimerTimer(Sender: TObject);
 begin
   AlarmTimer.Interval := 5000;
-  PlaySound(pChar('FMA_Alarm'), 0, SND_ASYNC or SND_APPLICATION or SND_NODEFAULT); // do not localize
+  if AlertCount = FAlertNum then // only one source at a time!
+    PlaySound(pChar('FMA_Alarm'), 0, SND_ASYNC or SND_APPLICATION or SND_NODEFAULT); // do not localize
 end;
 
 procedure TfrmNewAlarm.FormShow(Sender: TObject);
 begin
+  Left := 100 + 24 * (Screen.FormCount mod 10);
+  Top := Left + 24 * (Screen.FormCount div 10);
   SetWindowPos(Handle, HWND_TOPMOST,
     Top, Left, Width, Height,
     SWP_NOACTIVATE);
+end;
+
+procedure TfrmNewAlarm.CreateEvent(Text: WideString; AlphaBlend,
+  AlarmID: Integer);
+begin
+  CreateAlarm(Text,AlphaBlend,AlarmID);
+  FCreator := aoFMA;
 end;
 
 end.

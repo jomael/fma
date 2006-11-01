@@ -28,7 +28,9 @@ type
     tprAAlarm, tprCategories, tprClass, tprDAlarm, tprExDate, tprMAlarm,
     tprPAlarm, tprRDate, tprResources, tprStatus,
     // IrMC Specific
-    tprIrmcLuid
+    tprIrmcLuid,
+    // FMA specific
+    tprAlertShown
   );
 
   TVCalProperty = class(TVProperty)
@@ -129,6 +131,45 @@ type
     property Classification: TVCalClassType read FClass write SetClass default tclUnknown;
   end;
 
+  TVCalReccurenceType = (rrNone, rrDaily, rrWeekly, rrMonthly, rrYearly);
+  TVCalReccurenceDays = array[1..7] of Boolean;
+
+const
+  ReccurenceDayNames: array[1..7] of WideString = ('SA','MO','TU','WE','TH','FR','SU');
+
+type
+  { Encapsulates reccurence of vCalendar object }
+  TVCalReccurence = class(TVCalProperty)
+  private
+    function GetWeekDays: WideString;
+    procedure SetWeekDays(const Value: WideString);
+  protected
+    FReccurence: TVCalReccurenceType;
+    FRangeEnd: TVCalDateTime;
+    FReccurenceOn: Integer;
+    FReccurenceDays: TVCalReccurenceDays;
+
+    function GetReccurenceDays(Index: integer): Boolean;
+    procedure SetReccurenceDays(Index: integer; const Value: Boolean);
+    procedure SetReccurence(Value: TVCalReccurenceType);
+    procedure SetReccurenceOn(const Value: Integer);
+    procedure SetEndDate(const Value: TDateTime);
+    function GetEndDate: TDateTime;
+
+    function GetPropertyValue: WideString; override;
+    procedure SetPropertyValue(const Value: WideString); override;
+  public
+    constructor Create(Owner: TVBaseObj);
+    destructor Destroy; override;
+
+    function Description: WideString;
+    property WeekDays: WideString read GetWeekDays write SetWeekDays;
+    property Reccurence: TVCalReccurenceType read FReccurence write SetReccurence default rrNone;
+    property ReccurenceOn: Integer read FReccurenceOn write SetReccurenceOn;
+    property ReccurenceDays[Index: integer]: Boolean read GetReccurenceDays write SetReccurenceDays;
+    property EndDate: TDateTime read GetEndDate write SetEndDate;
+  end;
+
   TVCalEntity = class(TVBaseObj)
   protected
     { Protected declarations }
@@ -149,7 +190,7 @@ type
     VRNum: Integer;               // TODO: Use with RDate, RRule, ExDate and ExRule
     VPriority: TVProperty;
     VRelatedTo: WideString;
-    VRRule: WideString;           // TODO: Define own type
+    VRRule: TVCalReccurence;      
     VSequence: Integer;
     VDtStart: TVCalDateTime;
     VSummary: TVProperty;
@@ -171,6 +212,8 @@ type
 
     // IrMC specific
     VIrmcLUID: TVProperty;
+    // FMA specific
+    VAlertShown: TVProperty;
 
     constructor Create;
     destructor Destroy; override;
@@ -200,11 +243,11 @@ type
 implementation
 
 uses
-  Windows, TntWindows, SysUtils, TntSysUtils, DateUtils, Contnrs;
+  Windows, TntWindows, SysUtils, TntSysUtils, DateUtils, Contnrs, uGlobal;
 
 { TVCalProperty }
 
-const VCalEntProperties : array [0..30] of WideString = (
+const VCalEntProperties : array [0..31] of WideString = (
   'ATTACH', 'ATTENDEE', 'DCREATED', 'COMPLETED',
   'DESCRIPTION', 'DUE', 'DTEND', 'EXRULE', 'LAST-MODIFIED',
   'LOCATION', 'RNUM', 'PRIORITY', 'RELATED-TO', 'RRULE',
@@ -212,7 +255,9 @@ const VCalEntProperties : array [0..30] of WideString = (
   'AALARM', 'CATEGORIES', 'CLASS', 'DALARM', 'EXDATE', 'MALARM',
   'PALARM', 'RDATE', 'RESOURCES', 'STATUS',
   // IrMC Specific
-  'X-IRMC-LUID'
+  'X-IRMC-LUID',
+  // FMA specific
+  'X-ALERTED'
 );
 
 constructor TVCalProperty.Create(Owner: TVBaseObj; PropType: VCalEntPropertyType);
@@ -489,8 +534,8 @@ begin
 end;
 
 procedure TVCalClass.SetPropertyValue(const Value: WideString);
-  var
-    Pos: Integer;
+var
+  Pos: Integer;
 begin
   FIsSet := False;
 
@@ -525,8 +570,10 @@ begin
   VCategories := TVCalCategories.Create(Self);
   VClass := TVCalClass.Create(Self);
   VStatus := TVCalStatus.Create(Self);
+  VRRule := TVCalReccurence.Create(Self);
 
   VIrmcLUID := TVCalProperty.Create(Self, tprIrmcLuid);
+  VAlertShown := TVCalProperty.Create(Self, tprAlertShown);
 end;
 
 procedure TVCalEntity.Clear;
@@ -549,7 +596,7 @@ begin
     VRNum := 0;
     VPriority.IsSet := False;
     VRelatedTo := '';
-    VRRule := '';
+    VRRule.IsSet := False;
     VSequence := 0;
     VDtStart.IsSet := False;
     VSummary.IsSet := False;
@@ -569,6 +616,8 @@ begin
 
     // IrMC Specific
     VIrmcLUID.IsSet := False;
+    // FMA specific
+    VAlertShown.IsSet := False;
   end;
 end;
 
@@ -588,8 +637,10 @@ begin
   VCategories.Free;
   VClass.Free;
   VStatus.Free;
+  VRRule.Free;
 
   VIrmcLUID.Free;
+  VAlertShown.Free;
 
   inherited;
 end;
@@ -609,6 +660,9 @@ begin
   if VStatus.IsSet then FStrList.Add(VStatus.EncodedText);
   if VClass.IsSet then FStrList.Add(VClass.EncodedText);
   if VIrmcLUID.IsSet then FStrList.Add(VIrmcLUID.EncodedText);
+  if VAlertShown.IsSet then FStrList.Add(VAlertShown.EncodedText);
+
+  if VRRule.IsSet then FStrList.Add(VRRule.EncodedText);
 
   Result := inherited GetRaw;
 end;
@@ -645,7 +699,7 @@ begin
     // RELATED-TO
     12: ;
     // RRULE
-    13: ;
+    13: VRRule.Text := AProp.Text;
     // SEQUENCE
     14: ;
     // DTSTART
@@ -680,6 +734,8 @@ begin
     29: VStatus.Text := AProp.Text;
     // X-IRMC-LUID
     30: VIrmcLUID.Text := AProp.Text;
+    // X-ALERTED
+    31: VAlertShown.Text := AProp.Text;
   end;
 end;
 
@@ -770,5 +826,207 @@ begin
   end;
 end;
 
+
+{ TVCalReccurence }
+
+constructor TVCalReccurence.Create(Owner: TVBaseObj);
+begin
+  inherited Create(Owner, tprRRule);
+
+  FRangeEnd := TVCalDateTime.Create(Owner, tprRDate);
+  FRangeEnd.DateTime := EmptyDate;
+  FRangeEnd.IsSet := False;
+end;
+
+destructor TVCalReccurence.Destroy;
+begin
+  FRangeEnd.Free;
+  
+  inherited;
+end;
+
+function TVCalReccurence.GetEndDate: TDateTime;
+begin
+  if FRangeEnd.IsSet then
+    Result := FRangeEnd.DateTime
+  else
+    Result := EmptyDate;
+end;
+
+function TVCalReccurence.GetPropertyValue: WideString;
+var
+  w: WideString;
+begin
+  Result := '';
+
+  if FIsSet and (FReccurence <> rrNone) then begin
+    case FReccurence of
+      rrDaily:
+        Result := 'D1';
+      rrWeekly:
+        Result := 'W1 ' + WeekDays;
+      rrMonthly:
+        Result := 'MD1 ' + IntToStr(FReccurenceOn);
+      rrYearly:
+        Result := 'YM1 ' + IntToStr(FReccurenceOn);
+    end;
+    if FRangeEnd.IsSet then begin
+      w := FRangeEnd.Text;
+      Delete(w,1,Pos(':',w));
+      Result := Result + ' ' + w;
+    end
+    else
+      Result := Result + ' #0';
+  end;
+end;
+
+procedure TVCalReccurence.SetEndDate(const Value: TDateTime);
+begin
+  if Value = EmptyDate then
+    FRangeEnd.IsSet := False
+  else
+    FRangeEnd.DateTime := Value;
+end;
+
+procedure TVCalReccurence.SetPropertyValue(const Value: WideString);
+var
+  k: Integer;
+  w: WideString;
+  StartDt: TVCalDateTime;
+  procedure GetReccurenceOn;
+  var
+    i: Integer;
+    d: WideString;
+  begin
+    i := Pos(' ',w);
+    if i <> 0 then begin
+      Delete(w,1,i);
+      repeat
+        i := Pos(' ',w);
+        if i = 0 then break;
+        
+        d := Copy(w,1,i-1);
+        Delete(w,1,i);
+
+        if FReccurence <> rrWeekly then begin
+          FReccurenceOn := StrToInt(d);
+          break;
+        end
+        else
+          for i := 1 to 7 do
+            if ReccurenceDayNames[i] = d then
+              FReccurenceDays[i] := True;
+      until False;
+    end;
+  end;
+begin
+  FIsSet := False;
+
+  if Value = '' then Exit;
+
+  FReccurence := rrNone;
+  FReccurenceOn := 0;
+  for k := 1 to 7 do FReccurenceDays[k] := False;
+
+  w := Value;
+
+  if Copy(w,1,1) = 'D'  then FReccurence := rrDaily;
+  if Copy(w,1,1) = 'W'  then FReccurence := rrWeekly;
+  if Copy(w,1,2) = 'MD' then FReccurence := rrMonthly;
+  if Copy(w,1,2) = 'YM' then FReccurence := rrYearly;
+
+  if Ord(FReccurence) > Ord(rrDaily) then begin
+    GetReccurenceOn;
+    StartDt := (Owner as TVCalEntity).VDtStart;
+    if StartDt.IsSet then
+      FReccurenceOn := DayOfWeek(StartDt.DateTime);
+  end;
+
+  if w = '#0' then begin
+    FRangeEnd.DateTime := EmptyDate;
+    FRangeEnd.IsSet := False;
+  end
+  else
+    FRangeEnd.Text := w;
+
+  if FReccurence <> rrNone then FIsSet := True;
+end;
+
+procedure TVCalReccurence.SetReccurence(Value: TVCalReccurenceType);
+var
+  StartDt: TVCalDateTime;
+begin
+  FIsSet := False;
+
+  StartDt := (Owner as TVCalEntity).VDtStart;
+  if StartDt.IsSet then begin
+    FReccurence := Value;
+
+    case FReccurence of
+      rrNone,
+      rrDaily:   FReccurenceOn := 0;
+      rrWeekly:  FReccurenceOn := DayOfWeek(StartDt.DateTime);
+      rrMonthly: FReccurenceOn := DayOfTheMonth(StartDt.DateTime);
+      rrYearly:  FReccurenceOn := MonthOfTheYear(StartDt.DateTime);
+    end;
+
+    if FReccurence <> rrNone then FIsSet := True;
+  end;
+end;
+
+procedure TVCalReccurence.SetReccurenceOn(const Value: Integer);
+begin
+  FReccurenceOn := Value;
+end;
+
+function TVCalReccurence.Description: WideString;
+begin
+  Result := '';
+  if FIsSet then
+    case FReccurence of
+      rrDaily:
+        Result := 'Daily';
+      rrWeekly:
+        Result := 'Weekly on ' + ReccurenceDayNames[FReccurenceOn];
+      rrMonthly:
+        Result := 'Monthly on day ' + IntToStr(FReccurenceOn);
+      rrYearly:
+        Result := 'Yearly on month ' + IntToStr(FReccurenceOn);
+    end;
+    if FRangeEnd.IsSet then
+      Result := Result + ', ends on ' + DateTimeToStr(FRangeEnd.DateTime);
+end;
+
+function TVCalReccurence.GetReccurenceDays(Index: integer): Boolean;
+begin
+  Result := FReccurenceDays[Index] or (Index = FReccurenceOn);
+end;
+
+procedure TVCalReccurence.SetReccurenceDays(Index: integer;
+  const Value: Boolean);
+begin
+  if Index <> FReccurenceOn then
+    FReccurenceDays[Index] := Value;
+end;
+
+function TVCalReccurence.GetWeekDays: WideString;
+var
+  i: Integer;
+begin
+  Result := '';
+  for i := 1 to 7 do
+    if ReccurenceDays[i] then begin // do not use FReccurenceDays here!
+      if Result <> '' then Result := Result + ' ';
+      Result := Result + ReccurenceDayNames[i];
+    end;
+end;
+
+procedure TVCalReccurence.SetWeekDays(const Value: WideString);
+var
+  i: Integer;
+begin
+  for i := 1 to 7 do
+    FReccurenceDays[i] := Pos(ReccurenceDayNames[i],Value) <> 0;
+end;
 
 end.

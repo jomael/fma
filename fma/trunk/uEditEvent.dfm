@@ -357,11 +357,25 @@ object frmEditEvent: TfrmEditEvent
         Height = 9
         Shape = bsTopLine
       end
+      object Label26: TTntLabel
+        Left = 8
+        Top = 180
+        Width = 49
+        Height = 13
+        Caption = 'Start date:'
+      end
+      object Label10: TTntLabel
+        Left = 8
+        Top = 212
+        Width = 47
+        Height = 13
+        Caption = 'Start time:'
+      end
       object TntRadioGroupReminder: TTntRadioGroup
         Left = 8
         Top = 68
         Width = 341
-        Height = 97
+        Height = 93
         Caption = 'Reminder'
         Columns = 2
         ItemIndex = 0
@@ -377,48 +391,281 @@ object frmEditEvent: TfrmEditEvent
         TabOrder = 0
         OnClick = TntRadioGroupReminderClick
       end
-      object TntGroupBoxOther: TTntGroupBox
-        Left = 8
-        Top = 176
-        Width = 341
-        Height = 89
-        Caption = 'Other reminder'
+      object TntTimePickerReminder: TTntDateTimePicker
+        Left = 96
+        Top = 208
+        Width = 253
+        Height = 21
+        Date = 38161.606045011600000000
+        Time = 38161.606045011600000000
+        Kind = dtkTime
         TabOrder = 1
-        object Label10: TTntLabel
-          Left = 10
-          Top = 56
-          Width = 47
+        OnChange = TntDatePickerReminderChange
+      end
+      object TntDatePickerReminder: TTntDateTimePicker
+        Left = 96
+        Top = 176
+        Width = 253
+        Height = 21
+        Date = 38161.606045011600000000
+        Time = 38161.606045011600000000
+        TabOrder = 2
+        OnChange = TntDatePickerReminderChange
+      end
+      object GroupBox2: TTntGroupBox
+        Left = 8
+        Top = 240
+        Width = 341
+        Height = 125
+        Caption = 'Sound'
+        Enabled = False
+        TabOrder = 3
+        object Label14: TTntLabel
+          Left = 12
+          Top = 72
+          Width = 31
           Height = 13
-          Caption = 'Start time:'
+          Caption = 'Name:'
+          Enabled = False
         end
-        object Label26: TTntLabel
-          Left = 10
-          Top = 24
-          Width = 49
+        object Label16: TTntLabel
+          Left = 12
+          Top = 96
+          Width = 23
           Height = 13
-          Caption = 'Start date:'
+          Caption = 'Size:'
+          Enabled = False
         end
-        object TntDatePickerRemider: TTntDateTimePicker
-          Left = 96
+        object Label17: TTntLabel
+          Left = 12
           Top = 20
-          Width = 233
-          Height = 21
-          Date = 38161.606045011600000000
-          Time = 38161.606045011600000000
+          Width = 88
+          Height = 13
+          Caption = 'Sound information:'
+          Enabled = False
+        end
+        object imgSnd: TTntImage
+          Left = 12
+          Top = 46
+          Width = 16
+          Height = 16
+          AutoSize = True
+          Picture.Data = {
+            07544269746D6170F6000000424DF60000000000000076000000280000001000
+            0000100000000100040000000000800000000000000000000000100000000000
+            0000000000000000800000800000008080008000000080008000808000008080
+            8000C0C0C0000000FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFF
+            FF00F00000000000000FF0FFFFFFFFFFFF0FF0FFFFFFFFFFFF0FF0FFFFFFFFFF
+            FF0FF0FFFFFFFFFFFF0FF0F7F70007F70F0FF0F0F0FFF0F0FF0FF0F0F0FFF0F0
+            FF0FF0F707FFF707FF0FF0FFFFFFFFFFFF0FF0FFFFFFFFFFFF0FF0FFFFFFFF70
+            000FF0FFFFFFFF7FFF0FF0FFFFFFFF7FF0FFF0FFFFFFFF7F0FFFF00000000000
+            FFFF}
+          Transparent = True
+        end
+        object lblSndType: TTntLabel
+          Left = 36
+          Top = 48
+          Width = 297
+          Height = 13
+          AutoSize = False
+          Enabled = False
+        end
+        object lblSndName: TTntLabel
+          Left = 48
+          Top = 72
+          Width = 285
+          Height = 13
+          AutoSize = False
+          Enabled = False
+        end
+        object lblSndSize: TTntLabel
+          Left = 40
+          Top = 96
+          Width = 293
+          Height = 13
+          AutoSize = False
+          Enabled = False
+        end
+        object TntButton1: TTntButton
+          Left = 260
+          Top = 16
+          Width = 73
+          Height = 25
+          Caption = 'Select '#187
+          Enabled = False
           TabOrder = 0
-          OnChange = TntDatePickerRemiderChange
+          OnClick = TntButton1Click
         end
-        object TntTimePickerReminder: TTntDateTimePicker
-          Left = 96
-          Top = 52
-          Width = 233
-          Height = 21
-          Date = 38161.606045011600000000
-          Time = 38161.606045011600000000
-          Kind = dtkTime
-          TabOrder = 1
-          OnChange = TntDatePickerRemiderChange
-        end
+      end
+    end
+    object TabSheet3: TTntTabSheet
+      Caption = 'Reccurence'
+      object TntBevel1: TTntBevel
+        Left = 8
+        Top = 56
+        Width = 341
+        Height = 9
+        Shape = bsTopLine
+      end
+      object Image4: TTntImage
+        Left = 8
+        Top = 12
+        Width = 32
+        Height = 32
+        Transparent = True
+      end
+      object lblName4: TTntLabel
+        Left = 64
+        Top = 20
+        Width = 9
+        Height = 13
+        Caption = '   '
+      end
+      object lblDisabledReccurence: TTntLabel
+        Left = 8
+        Top = 352
+        Width = 269
+        Height = 13
+        Caption = 'This page is disabled because phone does not support it.'
+        Enabled = False
+        Visible = False
+      end
+      object TntLabel3: TTntLabel
+        Left = 8
+        Top = 167
+        Width = 56
+        Height = 13
+        Caption = 'Range end:'
+      end
+      object TntLabel2: TTntLabel
+        Left = 8
+        Top = 212
+        Width = 46
+        Height = 13
+        Caption = 'End date:'
+      end
+      object TntLabel1: TTntLabel
+        Left = 8
+        Top = 244
+        Width = 44
+        Height = 13
+        Caption = 'End time:'
+      end
+      object TntLabel4: TTntLabel
+        Left = 8
+        Top = 288
+        Width = 57
+        Height = 13
+        Caption = 'Week days:'
+      end
+      object TntRadioGroupReccurence: TTntRadioGroup
+        Left = 8
+        Top = 68
+        Width = 341
+        Height = 74
+        Caption = 'Reccurence'
+        Columns = 2
+        ItemIndex = 0
+        Items.Strings = (
+          'None'
+          'Daily'
+          'Weekly'
+          'Monthly'
+          'Yearly')
+        TabOrder = 0
+        OnClick = TntRadioGroupReccurenceClick
+      end
+      object TntComboBoxRangeEnd: TTntComboBox
+        Left = 96
+        Top = 164
+        Width = 253
+        Height = 21
+        Style = csDropDownList
+        ItemHeight = 13
+        ItemIndex = 0
+        TabOrder = 1
+        Text = 'None'
+        OnChange = TntComboBoxRangeEndChange
+        Items.Strings = (
+          'None'
+          'Date')
+      end
+      object TntDatePickerReccurence: TTntDateTimePicker
+        Left = 96
+        Top = 208
+        Width = 253
+        Height = 21
+        Date = 38161.606045011600000000
+        Time = 38161.606045011600000000
+        TabOrder = 2
+        OnChange = TntDatePickerReccurenceChange
+      end
+      object TntTimePickerReccurence: TTntDateTimePicker
+        Left = 96
+        Top = 240
+        Width = 253
+        Height = 21
+        Date = 38161.606045011600000000
+        Time = 38161.606045011600000000
+        Kind = dtkTime
+        TabOrder = 3
+        OnChange = TntDatePickerReccurenceChange
+      end
+      object TntCheckBox1: TTntCheckBox
+        Left = 96
+        Top = 287
+        Width = 122
+        Height = 17
+        Caption = 'Monday'
+        TabOrder = 4
+      end
+      object TntCheckBox2: TTntCheckBox
+        Left = 96
+        Top = 307
+        Width = 122
+        Height = 17
+        Caption = 'Tuesday'
+        TabOrder = 5
+      end
+      object TntCheckBox3: TTntCheckBox
+        Left = 96
+        Top = 327
+        Width = 122
+        Height = 17
+        Caption = 'Wednesday'
+        TabOrder = 6
+      end
+      object TntCheckBox4: TTntCheckBox
+        Left = 96
+        Top = 347
+        Width = 122
+        Height = 17
+        Caption = 'Thursday'
+        TabOrder = 7
+      end
+      object TntCheckBox7: TTntCheckBox
+        Left = 228
+        Top = 327
+        Width = 122
+        Height = 17
+        Caption = 'Saturday'
+        TabOrder = 10
+      end
+      object TntCheckBox6: TTntCheckBox
+        Left = 228
+        Top = 307
+        Width = 122
+        Height = 17
+        Caption = 'Sunday'
+        TabOrder = 9
+      end
+      object TntCheckBox5: TTntCheckBox
+        Left = 228
+        Top = 287
+        Width = 122
+        Height = 17
+        Caption = 'Friday'
+        TabOrder = 8
       end
     end
     object TabSheet5: TTntTabSheet

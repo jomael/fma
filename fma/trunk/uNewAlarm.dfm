@@ -11,7 +11,6 @@ object frmNewAlarm: TfrmNewAlarm
   ParentFont = True
   FormStyle = fsStayOnTop
   OldCreateOrder = False
-  Position = poDefaultPosOnly
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
@@ -5110,18 +5109,18 @@ object frmNewAlarm: TfrmNewAlarm
       C000DBFFE001E5FFF007C5FF}
   end
   object PostponeButton: TTntButton
-    Left = 119
+    Left = 104
     Top = 112
-    Width = 58
+    Width = 65
     Height = 21
     Caption = 'Postpone'
     TabOrder = 0
     OnClick = PostponeButtonClick
   end
   object CloseButton: TTntButton
-    Left = 183
+    Left = 176
     Top = 112
-    Width = 58
+    Width = 65
     Height = 21
     Caption = 'Dismiss'
     TabOrder = 1

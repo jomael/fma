@@ -128,6 +128,8 @@ end;
 
 procedure TfrmCalling.FormShow(Sender: TObject);
 begin
+  Left := 100 + 24 * (Screen.FormCount mod 10);
+  Top := Left + 24 * (Screen.FormCount div 10);
   SetWindowPos(Handle, HWND_TOPMOST,
     Top, Left, Width, Height,
     SWP_NOACTIVATE or SWP_NOSIZE);

@@ -19,7 +19,6 @@ object frmCalling: TfrmCalling
   ParentFont = True
   FormStyle = fsStayOnTop
   OldCreateOrder = False
-  Position = poDefaultPosOnly
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate

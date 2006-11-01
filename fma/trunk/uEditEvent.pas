@@ -18,7 +18,8 @@ interface
 uses
   Windows, TntWindows, Messages, SysUtils, TntSysUtils, Variants, Classes, TntClasses, Graphics, TntGraphics,
   Controls, TntControls, Forms, TntForms, Dialogs, TntDialogs, ExtCtrls, TntExtCtrls, StdCtrls, TntStdCtrls,
-  ComCtrls, TntComCtrls, UniTntCtrls, Buttons, TntButtons, Menus, TntMenus, VpData, VpMisc;
+  ComCtrls, TntComCtrls, UniTntCtrls, Buttons, TntButtons, Menus, TntMenus, VpData, VpMisc,
+  MPlayer;
 
 type
   TfrmEditEvent = class(TTntForm)
@@ -52,11 +53,6 @@ type
     Label9: TTntLabel;
     TabSheet2: TTntTabSheet;
     TntRadioGroupReminder: TTntRadioGroup;
-    TntGroupBoxOther: TTntGroupBox;
-    Label10: TTntLabel;
-    Label26: TTntLabel;
-    TntDatePickerRemider: TTntDateTimePicker;
-    TntTimePickerReminder: TTntDateTimePicker;
     lblName: TTntLabel;
     Image2: TTntImage;
     lblName2: TTntLabel;
@@ -64,6 +60,39 @@ type
     Image3: TTntImage;
     lblName3: TTntLabel;
     Bevel4: TTntBevel;
+    TabSheet3: TTntTabSheet;
+    TntBevel1: TTntBevel;
+    Image4: TTntImage;
+    lblName4: TTntLabel;
+    TntRadioGroupReccurence: TTntRadioGroup;
+    lblDisabledReccurence: TTntLabel;
+    TntLabel3: TTntLabel;
+    TntComboBoxRangeEnd: TTntComboBox;
+    Label26: TTntLabel;
+    Label10: TTntLabel;
+    TntTimePickerReminder: TTntDateTimePicker;
+    TntDatePickerReminder: TTntDateTimePicker;
+    TntLabel2: TTntLabel;
+    TntDatePickerReccurence: TTntDateTimePicker;
+    TntTimePickerReccurence: TTntDateTimePicker;
+    TntLabel1: TTntLabel;
+    TntLabel4: TTntLabel;
+    TntCheckBox1: TTntCheckBox;
+    TntCheckBox2: TTntCheckBox;
+    TntCheckBox3: TTntCheckBox;
+    TntCheckBox4: TTntCheckBox;
+    TntCheckBox7: TTntCheckBox;
+    TntCheckBox6: TTntCheckBox;
+    TntCheckBox5: TTntCheckBox;
+    GroupBox2: TTntGroupBox;
+    Label14: TTntLabel;
+    Label16: TTntLabel;
+    Label17: TTntLabel;
+    imgSnd: TTntImage;
+    lblSndType: TTntLabel;
+    lblSndName: TTntLabel;
+    lblSndSize: TTntLabel;
+    TntButton1: TTntButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure OkButtonClick(Sender: TObject);
@@ -72,18 +101,37 @@ type
     procedure StartDateTimeChange(Sender: TObject);
     procedure EndDateTimeChange(Sender: TObject);
     procedure txtSubjectChange(Sender: TObject);
-    procedure TntDatePickerRemiderChange(Sender: TObject);
+    procedure TntDatePickerReminderChange(Sender: TObject);
+    procedure TntRadioGroupReccurenceClick(Sender: TObject);
+    procedure TntComboBoxRangeEndChange(Sender: TObject);
+    procedure TntDatePickerReccurenceChange(Sender: TObject);
+    procedure TntButton1Click(Sender: TObject);
   private
     { Private declarations }
-    FAlarmAdv: integer;
+    FAlarmAdv,FPrevWeekDay: integer;
     FAlarmAdvType: TVpAlarmAdvType;
+    function GetDayCheck(Day: Integer): TTntCheckbox;
     procedure DoSanityCheck;
+    function GetReminderStartVisible: boolean;
+    procedure SetReminderStartVisible(const Value: boolean);
+    function GetReccurenceEndVisible: boolean;
+    procedure SetReccurenceEndVisible(const Value: boolean);
+    function GetReccuWeekDaysVisible: boolean;
+    procedure SetReccuWeekDaysVisible(const Value: boolean);
+    function GetWeekDays: WideString;
+    procedure SetWeekDays(const Value: WideString);
   public
     { Public declarations }
     procedure UpdateAlarm;
     procedure UpdateAlarmAdv;
+    procedure UpdateDudation;
+    procedure UpdateWeekDays;
+    property WeekDays: WideString read GetWeekDays write SetWeekDays;
     property AdvMins: Integer read FAlarmAdv write FAlarmAdv;
     property AdvType: TVpAlarmAdvType read FAlarmAdvType write FAlarmAdvType;
+    property ReminderStartVisible: boolean read GetReminderStartVisible write SetReminderStartVisible;
+    property ReccurenceEndVisible: boolean read GetReccurenceEndVisible write SetReccurenceEndVisible;
+    property ReccuWeekDaysVisible: boolean read GetReccuWeekDaysVisible write SetReccuWeekDaysVisible;
   end;
 
 var
@@ -93,28 +141,44 @@ implementation
 
 uses
   gnugettext, gnugettexthelpers,
-  DateUtils, Math, Unit1;
+  DateUtils, Math, Unit1, uVCalendar;
 
 {$R *.dfm}
 
 procedure TfrmEditEvent.FormCreate(Sender: TObject);
 begin
   gghTranslateComponent(self);
+  lblSndType.Left := imgSnd.Left + imgSnd.Width + 4;
+  lblSndName.Left := Label14.Left + Label14.Width + 4;
+  lblSndSize.Left := Label16.Left + Label16.Width + 4;
+
+  lblSndType.Caption := _('(polyphonic stereo sound, supported by phone)');
+  lblSndName.Caption := '';
+  lblSndSize.Caption := _('0,0 KB (0 bytes)');
 
   // gghTranslateComponent changing combo item index :/ set it manually.
   TntComboBoxDuration.ItemIndex := 4;
+  TntComboBoxRangeEnd.ItemIndex := 0;
+
+  Image2.Picture.Assign(Image1.Picture);
+  Image3.Picture.Assign(Image1.Picture);
+  Image4.Picture.Assign(Image1.Picture);
 
 {$IFNDEF VER150}
   Form1.ThemeManager1.CollectForms(Self);
 {$ENDIF}
-  Image2.Picture.Assign(Image1.Picture);
-  Image3.Picture.Assign(Image1.Picture);
 end;
 
 procedure TfrmEditEvent.FormShow(Sender: TObject);
 begin
   PageControl1.ActivePageIndex := 0;
-  StartDateTimeChange(Self);
+  FPrevWeekDay := 0;
+
+  TabSheet3.Enabled := Form1.IsK610orBetter;
+  lblDisabledReccurence.Visible := not TabSheet3.Enabled;
+  StartDateTimeChange(nil);
+  TntRadioGroupReccurenceClick(nil);
+
   txtSubject.SetFocus;
 end;
 
@@ -131,40 +195,39 @@ end;
 
 procedure TfrmEditEvent.TntRadioGroupReminderClick(Sender: TObject);
 begin
-  if TntRadioGroupReminder.ItemIndex = 0 then TntGroupBoxOther.Visible := False
-  else TntGroupBoxOther.Visible := True;
+  ReminderStartVisible := TntRadioGroupReminder.ItemIndex <> 0;
 
   case TntRadioGroupReminder.ItemIndex of
     0: begin
-         TntDatePickerRemider.DateTime := TntDatePickerStart.DateTime;
+         TntDatePickerReminder.DateTime := TntDatePickerStart.DateTime;
          TntTimePickerReminder.DateTime := TntDatePickerStart.DateTime;
        end;
     1: begin
-         TntDatePickerRemider.DateTime := TntDatePickerStart.DateTime;
+         TntDatePickerReminder.DateTime := TntDatePickerStart.DateTime;
          TntTimePickerReminder.DateTime := TntDatePickerStart.DateTime;
        end;
     2: begin
-         TntDatePickerRemider.DateTime := IncMinute(TntDatePickerStart.DateTime, -5);
+         TntDatePickerReminder.DateTime := IncMinute(TntDatePickerStart.DateTime, -5);
          TntTimePickerReminder.DateTime := IncMinute(TntDatePickerStart.DateTime, -5);
        end;
     3: begin
-         TntDatePickerRemider.DateTime := IncMinute(TntDatePickerStart.DateTime, -10);
+         TntDatePickerReminder.DateTime := IncMinute(TntDatePickerStart.DateTime, -10);
          TntTimePickerReminder.DateTime := IncMinute(TntDatePickerStart.DateTime, -10);
        end;
     4: begin
-         TntDatePickerRemider.DateTime := IncMinute(TntDatePickerStart.DateTime, -15);
+         TntDatePickerReminder.DateTime := IncMinute(TntDatePickerStart.DateTime, -15);
          TntTimePickerReminder.DateTime := IncMinute(TntDatePickerStart.DateTime, -15);
        end;
     5: begin
-         TntDatePickerRemider.DateTime := IncMinute(TntDatePickerStart.DateTime, -30);
+         TntDatePickerReminder.DateTime := IncMinute(TntDatePickerStart.DateTime, -30);
          TntTimePickerReminder.DateTime := IncMinute(TntDatePickerStart.DateTime, -30);
        end;
     6: begin
-         TntDatePickerRemider.DateTime := IncHour(TntDatePickerStart.DateTime, -1);
+         TntDatePickerReminder.DateTime := IncHour(TntDatePickerStart.DateTime, -1);
          TntTimePickerReminder.DateTime := IncHour(TntDatePickerStart.DateTime, -1);
        end;
     7: begin
-         TntDatePickerRemider.DateTime := TntDatePickerStart.DateTime;
+         TntDatePickerReminder.DateTime := TntDatePickerStart.DateTime;
          TntTimePickerReminder.DateTime := TntDatePickerStart.DateTime;
        end;
   end;
@@ -173,12 +236,15 @@ begin
 end;
 
 procedure TfrmEditEvent.DurationChange(Sender: TObject);
-  var
-    DateTimeEnd: TDateTime;
+var
+  DateTimeEnd: TDateTime;
 begin
+  TntDatePickerEnd.Enabled := TntComboBoxDuration.ItemIndex = 4;
+  TntTimePickerEnd.Enabled := TntDatePickerEnd.Enabled;
+  Label7.Enabled := TntDatePickerEnd.Enabled;
+  Label8.Enabled := TntDatePickerEnd.Enabled;
   // If Other duration is selected, do nothing
-  if TntComboBoxDuration.ItemIndex <> 4 then
-  begin
+  if TntComboBoxDuration.ItemIndex <> 4 then begin
     DateTimeEnd := TntDatePickerStart.DateTime;
     case TntComboBoxDuration.ItemIndex of
       // 30 minutes
@@ -196,8 +262,8 @@ begin
 end;
 
 procedure TfrmEditEvent.StartDateTimeChange(Sender: TObject);
-  var
-    DateTimeStart: TDateTime;
+var
+  DateTimeStart: TDateTime;
 begin
   // Synchronize DateTime of pickers
   DateTimeStart := DateOf(TntDatePickerStart.DateTime) + TimeOf(TntTimePickerStart.DateTime);
@@ -210,11 +276,12 @@ begin
 
   DurationChange(Self);
   UpdateAlarm;
+  UpdateWeekDays;
 end;
 
 procedure TfrmEditEvent.EndDateTimeChange(Sender: TObject);
-  var
-    DateTimeEnd: TDateTime;
+var
+  DateTimeEnd: TDateTime;
 begin
   // End date was changed, so change duration on other
   TntComboBoxDuration.ItemIndex := 4;
@@ -223,17 +290,27 @@ begin
   DateTimeEnd := DateOf(TntDatePickerEnd.DateTime) + TimeOf(TntTimePickerEnd.DateTime);
   TntDatePickerEnd.DateTime := DateTimeEnd;
   TntTimePickerEnd.DateTime := DateTimeEnd;
+
+  // UpdateDudation;
 end;
 
 procedure TfrmEditEvent.txtSubjectChange(Sender: TObject);
 begin
-  lblName.Caption := txtSubject.Text;
+  lblName.Caption  := txtSubject.Text;
   lblName2.Caption := lblName.Caption;
   lblName3.Caption := lblName.Caption;
+  lblName4.Caption := lblName.Caption;
 end;
 
-procedure TfrmEditEvent.TntDatePickerRemiderChange(Sender: TObject);
+procedure TfrmEditEvent.TntDatePickerReminderChange(Sender: TObject);
+var
+  DateTimeStart: TDateTime;
 begin
+  // Synchronize DateTime of pickers
+  DateTimeStart := DateOf(TntDatePickerReminder.DateTime) + TimeOf(TntTimePickerReminder.DateTime);
+  TntDatePickerReminder.DateTime := DateTimeStart;
+  TntTimePickerReminder.DateTime := DateTimeStart;
+
   TntRadioGroupReminder.ItemIndex := 7;
 end;
 
@@ -265,7 +342,7 @@ begin
 
   TntRadioGroupReminderClick(Self);
   
-  TntDatePickerRemider.DateTime := AlarmTime;
+  TntDatePickerReminder.DateTime := AlarmTime;
   TntTimePickerReminder.DateTime := AlarmTime;
 end;
 
@@ -301,9 +378,153 @@ begin
     7: begin
          FAlarmAdvType := atMinutes;
          FAlarmAdv := Round(((DateOf(TntDatePickerStart.DateTime) + TimeOf(TntTimePickerStart.DateTime)) -
-           (DateOf(TntDatePickerRemider.DateTime) + TimeOf(TntTimePickerReminder.DateTime)))*MinsPerDay);
+           (DateOf(TntDatePickerReminder.DateTime) + TimeOf(TntTimePickerReminder.DateTime)))*MinsPerDay);
        end;
   end;
+end;
+
+procedure TfrmEditEvent.TntRadioGroupReccurenceClick(Sender: TObject);
+begin
+  TntLabel3.Enabled := TntRadioGroupReccurence.ItemIndex <> 0;
+  TntComboBoxRangeEnd.Enabled := TntLabel3.Enabled;
+  TntComboBoxRangeEndChange(nil);
+
+  ReccuWeekDaysVisible := TntRadioGroupReccurence.ItemIndex = 2;
+end;
+
+procedure TfrmEditEvent.TntComboBoxRangeEndChange(Sender: TObject);
+begin
+  ReccurenceEndVisible := TntComboBoxRangeEnd.Enabled and (TntComboBoxRangeEnd.ItemIndex <> 0);
+end;
+
+function TfrmEditEvent.GetReminderStartVisible: boolean;
+begin
+  Result := TntDatePickerReminder.Enabled;
+end;
+
+procedure TfrmEditEvent.SetReminderStartVisible(const Value: boolean);
+begin
+  TntDatePickerReminder.Enabled := Value;
+  TntTimePickerReminder.Enabled := Value;
+  Label26.Enabled := Value;
+  Label10.Enabled := Value;
+end;
+
+function TfrmEditEvent.GetReccurenceEndVisible: boolean;
+begin
+  Result := TntDatePickerReccurence.Enabled;
+end;
+
+procedure TfrmEditEvent.SetReccurenceEndVisible(const Value: boolean);
+begin
+  TntDatePickerReccurence.Enabled := Value;
+  TntTimePickerReccurence.Enabled := Value;
+  TntLabel2.Enabled := Value;
+  TntLabel1.Enabled := Value;
+end;
+
+procedure TfrmEditEvent.TntDatePickerReccurenceChange(Sender: TObject);
+var
+  DateTimeStart: TDateTime;
+begin
+  // Synchronize DateTime of pickers
+  DateTimeStart := DateOf(TntDatePickerReccurence.DateTime) + TimeOf(TntTimePickerReccurence.DateTime);
+  TntDatePickerReccurence.DateTime := DateTimeStart;
+  TntTimePickerReccurence.DateTime := DateTimeStart;
+end;
+
+function TfrmEditEvent.GetReccuWeekDaysVisible: boolean;
+begin
+  Result := TntLabel4.Enabled;
+end;
+
+procedure TfrmEditEvent.SetReccuWeekDaysVisible(const Value: boolean);
+var
+  i: Integer;
+begin
+  TntLabel4.Enabled := Value;
+  for i := 1 to 7 do
+    with GetDayCheck(i) do
+      Enabled := Value;
+  if Value then UpdateWeekDays; // restore current week day settings
+end;
+
+procedure TfrmEditEvent.UpdateWeekDays;
+var
+  i: Integer;
+begin
+  if FPrevWeekDay <> 0 then
+    with GetDayCheck(FPrevWeekDay) do
+      Checked := Tag <> 0; // restore Checked state
+  for i := 1 to 7 do
+    with GetDayCheck(i) do begin
+      Enabled := True;
+      Tag := 0; // clean-up Checked state
+    end;
+  FPrevWeekDay := DayOfTheWeek(TntDatePickerStart.DateTime);
+  with GetDayCheck(FPrevWeekDay) do begin
+    Tag := byte(Checked); // remember Checked state
+    Checked := True;
+    Enabled := False;
+  end;
+end;
+
+function TfrmEditEvent.GetWeekDays: WideString;
+var
+  i: Integer;
+  procedure AddDay(Day: WideString);
+  begin
+    if Result <> '' then Result := Result + ' ';
+    Result := Result + Day;
+  end;
+begin
+  Result := '';
+  for i := 1 to 7 do
+    with GetDayCheck(i) do
+     if Checked then AddDay(ReccurenceDayNames[(i mod 7) + 1]);
+end;
+
+procedure TfrmEditEvent.SetWeekDays(const Value: WideString);
+var
+  i: Integer;
+begin
+  for i := 1 to 7 do
+    with GetDayCheck(i) do begin
+      Checked := Pos(ReccurenceDayNames[(i mod 7) + 1],Value) <> 0;
+      Tag := 0;
+    end;
+end;
+
+procedure TfrmEditEvent.UpdateDudation;
+var
+  DateTimeStart: TDateTime;
+begin
+  DateTimeStart := TntDatePickerStart.DateTime;
+  
+  // 30 minutes
+  if TntDatePickerEnd.DateTime = IncMinute(DateTimeStart, 30) then
+    TntComboBoxDuration.ItemIndex := 0;
+  // 1 hour
+  if TntDatePickerEnd.DateTime = IncHour(DateTimeStart) then
+    TntComboBoxDuration.ItemIndex := 1;
+  // 2 hours
+  if TntDatePickerEnd.DateTime = IncHour(DateTimeStart, 2) then
+    TntComboBoxDuration.ItemIndex := 2;
+  // 4 hours
+  if TntDatePickerEnd.DateTime = IncHour(DateTimeStart, 4) then
+    TntComboBoxDuration.ItemIndex := 3;
+
+  DurationChange(nil);
+end;
+
+function TfrmEditEvent.GetDayCheck(Day: Integer): TTntCheckbox;
+begin
+  Result := TTntCheckBox(FindComponent('TntCheckBox'+IntToStr(Day)));
+end;
+
+procedure TfrmEditEvent.TntButton1Click(Sender: TObject);
+begin
+  { TODO: Reminder WAV file support }
 end;
 
 end.

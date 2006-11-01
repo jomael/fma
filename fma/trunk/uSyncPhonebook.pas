@@ -2989,7 +2989,7 @@ begin
         sl.Add('DTSTART:'+FormatDateTime('yyyymmdd',Bday)+'T000000'); // Add 'Z' to make it UTC
         sl.Add('DTEND:'+FormatDateTime('yyyymmdd',Bday)+'T235900');
         sl.Add('SUMMARY;CHARSET=UTF-8:'+WideStringToUTF8String(GetContactDisplayName(SelContact)));
-        if Form1.IsK610orBetter then sl.Add('RRULE:YM1 10 #0'); // Reccurence set to 1 year
+        if Form1.IsK610orBetter then sl.Add('RRULE:YM1 '+IntToStr(dM)+' #0'); // Reccurence set to 1 year
         sl.Add('LOCATION;CHARSET=UTF-8:'+WideStringToUTF8String(GetContactHomeAdr(SelContact)));
         //sl.Add('DALARM:'+FormatDateTime('yyyymmdd',Bday)+'T093000');
         sl.Add('AALARM:'+FormatDateTime('yyyymmdd',Bday)+'T093000');
