@@ -1486,7 +1486,7 @@ end;
 procedure TfrmCalendarView.btnDELClick(Sender: TObject);
   procedure Confirm(DelName,DelWhat: WideString);
   begin
-    if MessageDlgW(WideFormat(_('Deleting %s "%s". Do you wish to continue (No Undo)?'),[DelName,DelWhat]),
+    if MessageDlgW(WideFormat(_('Deleting %s "%s". Do you wish to continue?'),[DelName,DelWhat]),
       mtConfirmation, MB_YESNO or MB_DEFBUTTON2) <> ID_YES then
       Abort;
   end;
@@ -1494,16 +1494,28 @@ begin
   if VpDayView.Focused then begin
     if VpDayView.ActiveEvent <> nil then begin
       Confirm('event',VpDayView.ActiveEvent.Description);
-      VpDayView.ActiveEvent.Deleted := True;
-      VpDayView.ActiveEvent.Changed := True;
+      if VpDayView.ActiveEvent.UserField9 <> '0' then begin
+        VpDayView.ActiveEvent.Deleted := True;
+        VpDayView.ActiveEvent.Changed := True;
+        VpDayView.ActiveEvent.UserField9 := '2';
+        VpDayView.Invalidate;
+      end
+      else
+        VpDayView.DeleteActiveEvent(False);
     end;
   end
   else
   if VpTaskList.Focused then begin
     if VpTaskList.ActiveTask <> nil then begin
       Confirm('task',VpTaskList.ActiveTask.Description);
-      VpTaskList.ActiveTask.Deleted := True;
-      VpTaskList.ActiveTask.Changed := True;
+      if VpTaskList.ActiveTask.UserField9 <> '0' then begin
+        VpTaskList.ActiveTask.Deleted := True;
+        VpTaskList.ActiveTask.Changed := True;
+        VpTaskList.ActiveTask.UserField9 := '2';
+        VpTaskList.Invalidate;
+      end
+      else
+        VpTaskList.DeleteActiveTask(False);
     end;
   end
   else
