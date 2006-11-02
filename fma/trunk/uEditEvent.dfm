@@ -378,7 +378,7 @@ object frmEditEvent: TfrmEditEvent
         Height = 93
         Caption = 'Reminder'
         Columns = 2
-        ItemIndex = 0
+        ItemIndex = 1
         Items.Strings = (
           'None'
           '0 min before'
@@ -565,7 +565,7 @@ object frmEditEvent: TfrmEditEvent
         Height = 74
         Caption = 'Reccurence'
         Columns = 2
-        ItemIndex = 0
+        ItemIndex = 2
         Items.Strings = (
           'None'
           'Daily'
@@ -582,9 +582,9 @@ object frmEditEvent: TfrmEditEvent
         Height = 21
         Style = csDropDownList
         ItemHeight = 13
-        ItemIndex = 0
+        ItemIndex = 1
         TabOrder = 1
-        Text = 'None'
+        Text = 'Date'
         OnChange = TntComboBoxRangeEndChange
         Items.Strings = (
           'None'

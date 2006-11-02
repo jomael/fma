@@ -21,7 +21,11 @@ uses
 
 type
   TVpVDataStore = class(TVpCustomDataStore)
+  private
+    function GetEventByID(ID: Integer): TVpEvent;
+    function GetTaskByID(ID: Integer): TVpTask;
   protected
+    FAutoIncr: Integer;
     FCalendar: TVCalendar;
     procedure SetConnected(const Value: boolean); override;
     procedure SetCalendar(const Value: TVCalendar);
@@ -31,23 +35,29 @@ type
     destructor Destroy; override;
 
     procedure Load; override;
+    procedure Save;
+    procedure PostEvents; override;
+    procedure PostTasks; override;
+
+    // Begin -- Override just to avoid warnings
     procedure PostResources; override;
+    procedure PostContacts; override;
 
     procedure PurgeResource(Res: TVpResource); override;
     procedure PurgeEvents(Res: TVpResource); override;
     procedure PurgeTasks(Res: TVpResource); override;
 
-    // Override just to avoid warnings
-    function GetNextID(TableName: string): integer; override;
     procedure LoadEvents; override;
     procedure LoadContacts; override;
     procedure LoadTasks; override;
-    procedure PostContacts; override;
-    procedure PostEvents; override;
-    procedure PostTasks; override;
+
+    function GetNextID(TableName: string): integer; override;
     procedure SetResourceByName(Value: string); override;
+    // End -- Override just to avoid warnings
 
     property vCalendar: TVCalendar read FCalendar write SetCalendar;
+    property vEvent[ID: Integer]: TVpEvent read GetEventByID;
+    property vTask[ID: Integer]: TVpTask read GetTaskByID;
   end;
 
 implementation
@@ -60,6 +70,7 @@ begin
   inherited;
 
   FCalendar := nil;
+  FAutoIncr := 0;
 end;
 
 destructor TVpVDataStore.Destroy;
@@ -97,13 +108,13 @@ begin
 end;
 
 procedure TVpVDataStore.Load;
-  var
-    I: Integer;
+var
+  I: Integer;
 
-    ACalEntity: TVCalEntity;
+  ACalEntity: TVCalEntity;
 
-    Event: TVpEvent;
-    Task: TVpTask;
+  Event: TVpEvent;
+  Task: TVpTask;
 begin
   Loading := true;
   try
@@ -117,20 +128,16 @@ begin
         ACalEntity := TVCalEntity(FCalendar[I]);
 
         // TODO: Display item state
-        if ACalEntity.VType.EntityType = tenVEvent then
-        begin
-          Event := Resource.Schedule.AddEvent(0,
-            ACalEntity.VDtStart.GetLocal, ACalEntity.VDtEnd.GetLocal);
-          if Event <> nil then begin
+        if ACalEntity.VType.EntityType = tenVEvent then begin
+          Event := Resource.Schedule.AddEvent(0, ACalEntity.VDtStart.GetLocal, ACalEntity.VDtEnd.GetLocal);
+          if Assigned(Event) then begin
             Event.Loading := true;
-            Event.AlertDisplayed := ACalEntity.VAlertShown.Text = '1';
 
             Event.Description := ACalEntity.VSummary.PropertyValue;
             // Use UserField0 for location value
             Event.UserField0 := ACalEntity.VLocation.PropertyValue;
 
-            if ACalEntity.VCategories.IsSet then
-            begin
+            if ACalEntity.VCategories.IsSet then begin
               if tcaAppointment in ACalEntity.VCategories.Categories then Event.Category := 1
               else if tcaDate in ACalEntity.VCategories.Categories then Event.Category := 2
               else if tcaTravel in ACalEntity.VCategories.Categories then Event.Category := 3
@@ -139,9 +146,9 @@ begin
               else Event.Category := 0
             end;
 
-            if ACalEntity.VAAlarm.IsSet then
-            begin
-              Event.UserField1 := DateTimeToStr(ACalEntity.VAAlarm.GetLocal);
+            if ACalEntity.VAAlarm.IsSet then begin
+              // Use UserField1 for alarm datetime
+              Event.UserField1 := ACalEntity.VAAlarm.AsString;
               Event.AlarmSet := True;
             end;
 
@@ -152,10 +159,14 @@ begin
               rrMonthly: Event.RepeatCode := rtMonthlyByDay;
               rrYearly:  Event.RepeatCode := rtYearlyByDay;
             end;
-            // Use UserField8 for Weekly reccurence 
-            Event.UserField8 := ACalEntity.VRRule.WeekDays;
+            // Use UserField2 for Weekly reccurence
+            Event.UserField2 := ACalEntity.VRRule.WeekDays;
             Event.RepeatRangeEnd := ACalEntity.VRRule.EndDate;
 
+            Event.AlertDisplayed := ACalEntity.VAlertShown.IsON;
+
+            inc(FAutoIncr);
+            Event.UserField8 := IntToStr(FAutoIncr);
             // Use UserField9 for FMA Event State
             Event.UserField9 := IntToStr(ACalEntity.VFmaState);
 
@@ -180,11 +191,12 @@ begin
               Task.Complete := (ACalEntity.VStatus.Status = tstCompleted);
               Task.CompletedOn := ACalEntity.VCompleted.GetLocal;
 
-              if ACalEntity.VAAlarm.Text <> '' then
-              begin
-                Task.UserField0 := FloatToStr(Double(ACalEntity.VAAlarm.GetLocal));
-              end;
+              if ACalEntity.VAAlarm.IsSet then
+                // Use UserField0 for alarm datetime
+                Task.UserField0 := ACalEntity.VAAlarm.AsString;
 
+              inc(FAutoIncr);
+              Task.UserField8 := IntToStr(FAutoIncr);  
               // Use UserField9 for FMA Task State
               Task.UserField9 := IntToStr(ACalEntity.VFmaState);
 
@@ -199,6 +211,13 @@ begin
     end;
   finally
     Loading := false;
+    { Update Events alert shown status -- NOT NEEDED
+    for I := pred(Resource.Schedule.EventCount) downto 0 do begin
+      Event := Resource.Schedule.GetEvent(I);
+      ACalEntity := FCalendar.GetCalEntityByItemIndex(Event.RecordID - 1);
+      Event.AlertDisplayed := ACalEntity.VAlertShown.IsON;
+    end;
+    }
   end;
 
   inherited;
@@ -247,50 +266,53 @@ begin
 end;
 
 procedure TVpVDataStore.PostEvents;
-  var
-    I: Integer;
-    ACalEntity: TVCalEntity;
-    Event: TVpEvent;
+var
+  I: Integer;
+  ACalEntity: TVCalEntity;
+  Event: TVpEvent;
 begin
   if (Resource <> nil) and Resource.EventsDirty then begin
     for I := pred(Resource.Schedule.EventCount) downto 0 do begin
       Event := Resource.Schedule.GetEvent(I);
       if Event.Deleted then begin
-        if Event.RecordID <> 0 then
-        begin
+        if Event.RecordID <> 0 then begin
           ACalEntity := FCalendar.GetCalEntityByItemIndex(Event.RecordID - 1);
 
-          if Event.UserField9 = '0' then
-          begin
+          if Event.UserField9 = '0' then begin
             FCalendar.Remove(ACalEntity);
             Event.Free;
           end
           else begin
             ACalEntity.VFmaState := 2;
-            Event.UserField9 := IntToStr(2);
+            Event.UserField9 := '2'; // FMA state flag
           end;
         end
-        else Event.Free;
+        else
+          Event.Free;
 
         Continue;
       end
 
+      { always save FMA specific fields }
       else if not Event.Changed then begin
         if Event.RecordID <> 0 then begin
           ACalEntity := FCalendar.GetCalEntityByItemIndex(Event.RecordID - 1);
-          // FMA specific
-          ACalEntity.VAlertShown.Text := IntToStr(byte(Event.AlertDisplayed)); // save Alerted state
+
+          if ACalEntity.VIrmcLUID.PropertyValue = '' then
+            Event.UserField9 := '0'; // No IRMC, so its new event
+
+          ACalEntity.VAlertShown.IsON := Event.AlertDisplayed; // save Alerted state
+          ACalEntity.VFmaState := StrToInt(Event.UserField9); // save FMA state
         end;
       end
 
       else if Event.Changed then begin
-        if Event.RecordID = 0 then
-        begin
+        if Event.RecordID = 0 then begin
           { RecordID = 0 => make new entry }
           ACalEntity := TVCalEntity.Create;
           ACalEntity.VType.EntityType := tenVEvent;
 
-          Event.UserField9 := IntToStr(0);
+          Event.UserField9 := '0'; // FMA state flag
 
           FCalendar.Add(ACalEntity);
 
@@ -299,10 +321,9 @@ begin
         else begin
           ACalEntity := FCalendar.GetCalEntityByItemIndex(Event.RecordID - 1);
 
-          if ACalEntity.VIrmcLUID.PropertyValue = '' then Event.UserField9 := IntToStr(0);
+          if ACalEntity.VIrmcLUID.PropertyValue = '' then
+            Event.UserField9 := '0'; // No IRMC, so its new event
         end;
-
-        ACalEntity.VAlertShown.Text := IntToStr(byte(Event.AlertDisplayed));
 
         ACalEntity.VDtStart.IsUtc := False;
         ACalEntity.VDtStart.DateTime := Event.StartTime;
@@ -312,6 +333,7 @@ begin
         ACalEntity.VDtEnd.LocalToUtc;
 
         ACalEntity.VSummary.PropertyValue := Event.Description;
+        
         // Use UserField0 for location value
         ACalEntity.VLocation.PropertyValue := Event.UserField0;
 
@@ -327,12 +349,10 @@ begin
         end;
 
         if Event.AlarmSet then
-        begin
-          ACalEntity.VAAlarm.IsUtc := False;
-          ACalEntity.VAAlarm.DateTime := StrToDateTime(Event.UserField1);
-          ACalEntity.VAAlarm.LocalToUtc;
-        end
-        else ACalEntity.VAAlarm.IsSet := False;
+          // Use UserField1 for alarm datetime
+          ACalEntity.VAAlarm.AsString := Event.UserField1
+        else
+          ACalEntity.VAAlarm.IsSet := False;
 
         case Event.RepeatCode of
           rtDaily:
@@ -346,9 +366,11 @@ begin
           else
             ACalEntity.VRRule.Reccurence := rrNone;
         end;
-        // Use UserField8 for Weekly reccurence
-        ACalEntity.VRRule.WeekDays := Event.UserField8;
+        // Use UserField2 for Weekly reccurence
+        ACalEntity.VRRule.WeekDays := Event.UserField2;
         ACalEntity.VRRule.EndDate := Event.RepeatRangeEnd;
+
+        ACalEntity.VAlertShown.IsON := Event.AlertDisplayed;
 
         ACalEntity.VFmaState := StrToInt(Event.UserField9);
 
@@ -372,33 +394,31 @@ begin
     for I := pred(Resource.Tasks.Count) downto 0 do begin
       Task := Resource.Tasks.GetTask(I);
       if Task.Deleted then begin
-        if Task.RecordID <> 0 then
-        begin
+        if Task.RecordID <> 0 then begin
           ACalEntity := FCalendar.GetCalEntityByItemIndex(Task.RecordID - 1);
 
-          if Task.UserField9 = '0' then
-          begin
+          if Task.UserField9 = '0' then begin
             FCalendar.Remove(ACalEntity);
             Task.Free;
           end
           else begin
             ACalEntity.VFmaState := 2;
-            Task.UserField9 := '2';
+            Task.UserField9 := '2'; // FMA state flag
           end;
         end
-        else Task.Free;
+        else
+          Task.Free;
 
         Continue;
       end
 
       else if Task.Changed then begin
-        if Task.RecordID = 0 then
-        begin
+        if Task.RecordID = 0 then begin
           { RecordID = 0 => make new entry }
           ACalEntity := TVCalEntity.Create;
           ACalEntity.VType.EntityType := tenVTodo;
 
-          Task.UserField9 := IntToStr(0);
+          Task.UserField9 := '0'; // FMA state flag
 
           FCalendar.Add(ACalEntity);
 
@@ -407,16 +427,18 @@ begin
         else begin
           ACalEntity := FCalendar.GetCalEntityByItemIndex(Task.RecordID - 1);
 
-          if ACalEntity.VIrmcLUID.PropertyValue = '' then Task.UserField9 := IntToStr(0);
+          if ACalEntity.VIrmcLUID.PropertyValue = '' then
+            Task.UserField9 := '0'; // No IRMC, so its new task 
         end;
 
         ACalEntity.VSummary.PropertyValue := Task.Description;
 
-        if Task.Category = 1 then ACalEntity.VCategories.Categories := [tcaPhoneCall]
-        else ACalEntity.VCategories.Categories := [tcaMiscellaneous];
+        if Task.Category = 1 then
+          ACalEntity.VCategories.Categories := [tcaPhoneCall]
+        else
+          ACalEntity.VCategories.Categories := [tcaMiscellaneous];
 
-        if Task.Complete then
-        begin
+        if Task.Complete then begin
           ACalEntity.VStatus.Status := tstCompleted;
 
           ACalEntity.VCompleted.IsUtc := False;
@@ -428,17 +450,11 @@ begin
           ACalEntity.VCompleted.Text := '';
         end;
 
-        ACalEntity.VAAlarm.Text := '';
-
         if Task.UserField0 <> '' then
-        begin
-          ACalEntity.VAAlarm.IsUtc := False;
-          try
-            ACalEntity.VAAlarm.DateTime := StrToFloat(Task.UserField0);
-            ACalEntity.VAAlarm.LocalToUtc;
-          except
-          end;
-        end;
+          // Use UserField0 for alarm datetime
+          ACalEntity.VAAlarm.AsString := Task.UserField0
+        else
+          ACalEntity.VAAlarm.IsSet := False;
 
         ACalEntity.VFmaState := StrToInt(Task.UserField9);
 
@@ -464,6 +480,44 @@ end;
 procedure TVpVDataStore.PurgeTasks(Res: TVpResource);
 begin
   inherited;
+end;
+
+function TVpVDataStore.GetEventByID(ID: Integer): TVpEvent;
+var
+  I: Integer;
+  Event: TVpEvent;
+begin
+  Result := nil;
+  if Assigned(Resource) then
+    for I := pred(Resource.Schedule.EventCount) downto 0 do begin
+      Event := Resource.Schedule.GetEvent(I);
+      if Event.UserField8 = IntToStr(ID) then begin
+        Result := Event;
+        break;
+      end;
+    end;
+end;
+
+function TVpVDataStore.GetTaskByID(ID: Integer): TVpTask;
+var
+  I: Integer;
+  Task: TVpTask;
+begin
+  Result := nil;
+  if Assigned(Resource) then
+    for I := pred(Resource.Tasks.Count) downto 0 do begin
+      Task := Resource.Tasks.GetTask(I);
+      if Task.UserField8 = IntToStr(ID) then begin
+        Result := Task;
+        break;
+      end;
+    end;
+end;
+
+procedure TVpVDataStore.Save;
+begin
+  PostTasks;
+  PostEvents;
 end;
 
 end.

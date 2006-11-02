@@ -458,7 +458,7 @@ begin
       Checked := Tag <> 0; // restore Checked state
   for i := 1 to 7 do
     with GetDayCheck(i) do begin
-      Enabled := True;
+      Enabled := TntRadioGroupReccurence.ItemIndex = 2;
       Tag := 0; // clean-up Checked state
     end;
   FPrevWeekDay := DayOfTheWeek(TntDatePickerStart.DateTime);

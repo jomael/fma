@@ -272,6 +272,7 @@ object frmEditTask: TfrmEditTask
         Time = 38161.606045011600000000
         Enabled = False
         TabOrder = 6
+        OnChange = ReminderDateTimeChange
       end
       object dtpTime: TTntDateTimePicker
         Left = 96
@@ -283,6 +284,7 @@ object frmEditTask: TfrmEditTask
         Enabled = False
         Kind = dtkTime
         TabOrder = 7
+        OnChange = ReminderDateTimeChange
       end
       object txtNumber: TTntEdit
         Left = 96

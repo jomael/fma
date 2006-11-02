@@ -59,6 +59,7 @@ type
     procedure chbCompletedClick(Sender: TObject);
     procedure txtSubjectChange(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure ReminderDateTimeChange(Sender: TObject);
   private
     { Private declarations }
     procedure DoSanityCheck;
@@ -72,7 +73,7 @@ var
 implementation
 
 uses
-  gnugettext, gnugettexthelpers,
+  gnugettext, gnugettexthelpers, DateUtils,
   Unit1, uGetContact;
 
 {$R *.dfm}
@@ -158,6 +159,16 @@ begin
     finally
       Free;
     end;
+end;
+
+procedure TfrmEditTask.ReminderDateTimeChange(Sender: TObject);
+var
+  DateTimeStart: TDateTime;
+begin
+  // Synchronize DateTime of pickers
+  DateTimeStart := DateOf(dtpDate.DateTime) + TimeOf(dtpTime.DateTime);
+  dtpDate.DateTime := DateTimeStart;
+  dtpTime.DateTime := DateTimeStart;
 end;
 
 end.

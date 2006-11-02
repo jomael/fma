@@ -45,6 +45,9 @@ type
 
   { Class for handling date infromations }
   TVCalDateTime = class(TVCalProperty)
+  private
+    function GetDTString: String;
+    procedure SetDTString(const Value: String);
   protected
     FDateTime: TDateTime;
     FIsUtc: Boolean;
@@ -66,6 +69,7 @@ type
 
     property IsUtc: Boolean read FIsUtc write FIsUtc;
     property DateTime: TDateTime read FDateTime write SetDateTime;
+    property AsString: String read GetDTString write SetDTString;
   end;
 
   TVCalCategoriesType = (
@@ -110,6 +114,21 @@ type
     constructor Create(Owner: TVBaseObj);
   published
     property Status: TVCalStatusType read FStatus write SetStatus default tstUnknown;
+  end;
+
+  { Encapsulates boolean property }
+  TVCalBoolean = class(TVCalProperty)
+  protected
+    FStatus: Boolean;
+
+    procedure SetStatus(Value: Boolean);
+
+    function GetPropertyValue: WideString; override;
+    procedure SetPropertyValue(const Value: WideString); override;
+  public
+    constructor Create(Owner: TVBaseObj; PropType: VCalEntPropertyType);
+  published
+    property IsON: Boolean read FStatus write SetStatus default False;
   end;
 
   TVCalClassType = (
@@ -213,7 +232,7 @@ type
     // IrMC specific
     VIrmcLUID: TVProperty;
     // FMA specific
-    VAlertShown: TVProperty;
+    VAlertShown: TVCalBoolean;
 
     constructor Create;
     destructor Destroy; override;
@@ -273,8 +292,8 @@ begin
 end;
 
 procedure TVCalProperty.SetPropertyName(const Value: WideString);
-  var
-    Index: Integer;
+var
+  Index: Integer;
 begin
   inherited;
 
@@ -285,12 +304,12 @@ end;
 { TVCalDateTime }
 
 constructor TVCalDateTime.Create(Owner: TVBaseObj; PropType: VCalEntPropertyType);
-  var
-    lpTimeZone: _TIME_ZONE_INFORMATION;
-    DayLight: LongWord;
+var
+  lpTimeZone: _TIME_ZONE_INFORMATION;
+  DayLight: LongWord;
 begin
   inherited;
-  
+
   FDateTime := 0;
   FIsUtc := False;
 
@@ -370,6 +389,18 @@ procedure TVCalDateTime.LocalToUtc;
 begin
   FDateTime := GetUtc;
   FIsUtc := True;
+end;
+
+function TVCalDateTime.GetDTString: String;
+begin
+  Result := FloatToStr(GetLocal);
+end;
+
+procedure TVCalDateTime.SetDTString(const Value: String);
+begin
+  IsUtc := False;
+  DateTime := StrToFloat(Value);
+  LocalToUtc;
 end;
 
 { TVCalCategories }
@@ -573,7 +604,7 @@ begin
   VRRule := TVCalReccurence.Create(Self);
 
   VIrmcLUID := TVCalProperty.Create(Self, tprIrmcLuid);
-  VAlertShown := TVCalProperty.Create(Self, tprAlertShown);
+  VAlertShown := TVCalBoolean.Create(Self, tprAlertShown);
 end;
 
 procedure TVCalEntity.Clear;
@@ -1027,6 +1058,50 @@ var
 begin
   for i := 1 to 7 do
     FReccurenceDays[i] := Pos(ReccurenceDayNames[i],Value) <> 0;
+end;
+
+{ TVCalBoolean }
+
+constructor TVCalBoolean.Create(Owner: TVBaseObj; PropType: VCalEntPropertyType);
+begin
+  inherited;
+
+  FStatus := False;
+end;
+
+function TVCalBoolean.GetPropertyValue: WideString;
+begin
+  if FIsSet then Result := IntToStr(Byte(FStatus))
+  else Result := '';
+end;
+
+procedure TVCalBoolean.SetPropertyValue(const Value: WideString);
+begin
+  FIsSet := False;
+
+  if Value = '' then Exit;
+
+  try
+    if (WideCompareText(Value,'true') = 0) or (WideCompareText(Value,'on') = 0) or
+      (WideCompareText(Value,'yes') = 0) then
+      FStatus := True
+    else
+    if (WideCompareText(Value,'false') = 0) or (WideCompareText(Value,'off') = 0) or
+      (WideCompareText(Value,'no') = 0) then
+      FStatus := False
+    else
+      FStatus := StrToInt(Value) <> 0; // '1' or '0'
+
+    FIsSet := True;
+  except
+  end;
+end;
+
+procedure TVCalBoolean.SetStatus(Value: Boolean);
+begin
+  FStatus := Value;
+
+  FIsSet := True;
 end;
 
 end.

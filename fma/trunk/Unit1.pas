@@ -3480,6 +3480,9 @@ begin
   else if frmMEEdit.Visible and frmMEEdit.ListNumbers.Focused then begin
     frmMEEdit.btnDELClick(nil);
   end
+  else if frmCalendarView.Visible then begin
+    frmCalendarView.btnDELClick(nil);
+  end
   else if frmExplore.Visible and frmExplore.ListItems.Focused then begin
     if (ExplorerNew.FocusedNode.Parent = FNodeGroups) or ExplorerNodeIsFileOrFolder(ExplorerNew.FocusedNode) then
       DoRemoveGroupMemberOrFile;
@@ -7943,11 +7946,11 @@ procedure TForm1.ActionEditCommonUpdate(Sender: TObject);
 begin
   with (Sender as TTntAction) do begin
     Enabled := frmMsgView.Visible or frmSyncPhonebook.Visible or frmSMEdit.Visible or frmMEEdit.Visible or
-      frmEditor.Visible or frmSyncBookmarks.Visible or
+               frmEditor.Visible or frmSyncBookmarks.Visible or frmCalendarView.Visible or
       (frmExplore.Visible and (ExplorerNew.FocusedNode = FNodeAlarms) and (frmExplore.ListItems.SelectedCount = 1)) or
       (frmExplore.Visible and (ExplorerNew.FocusedNode.Parent = FNodeGroups) and (frmExplore.ListItems.SelectedCount = 1)) or
       (frmExplore.Visible and (ExplorerNew.FocusedNode = FNodeGroups) and (frmExplore.ListItems.SelectedCount = 1)) or
-      (frmExplore.Visible  and (frmExplore.ListItems.SelectedCount <> 0) and (getExplorerSelectedNodeLevel1 = FNodeObex) );
+      (frmExplore.Visible and (frmExplore.ListItems.SelectedCount <> 0) and (getExplorerSelectedNodeLevel1 = FNodeObex) );
   end;
 end;
 
@@ -15015,6 +15018,8 @@ begin
 end;
 
 procedure TForm1.HandleCALV(AMsg: String);
+var
+  w: WideString;
 begin
 {
   Description: This unsolicited result code is returned when an alarm is activated. The
@@ -15027,8 +15032,8 @@ begin
 }
   Delete(AMsg,1,7);
 
-  frmNewAlarm.CreateAlarm(_('An phone alarm has been activated. You could Postpone it for up to a few minutes, or Dismiss it right now.'),
-    FAlphaCompose,StrToInt(AMsg));
+  w := _('An phone alarm has been activated. You could Postpone it for up to a few minutes, or Dismiss it right now.');
+  frmNewAlarm.CreateAlarm(w,255,StrToInt(AMsg)); // 255 = no Alpha
 end;
 
 function TForm1.OpenPhoneDataFiles(ID: string): boolean;

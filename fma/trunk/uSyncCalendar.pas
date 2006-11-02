@@ -86,6 +86,7 @@ type
     procedure Properties1Click(Sender: TObject);
     procedure ImportCalendar1Click(Sender: TObject);
     procedure btnSYNCClick(Sender: TObject);
+    procedure btnDELClick(Sender: TObject);
     procedure Properties2Click(Sender: TObject);
     procedure VpDayViewBeforeEdit(Sender: TObject; Event: TVpEvent;
       var AllowIt: Boolean);
@@ -116,8 +117,9 @@ type
     { Public declarations }
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    procedure OnConflictChanges(Sender: TObject; const TargetName, Option1Name, Option2Name: WideString);
     procedure OnConnected;
+    procedure OnConflictChanges(Sender: TObject; const TargetName, Option1Name, Option2Name: WideString);
+    procedure ClearAlertFlag(EventRecordID: Integer; PostponeTime: TDateTime = 0);
     procedure ClearAllData; // USE WITH CARE!
     procedure LoadCalendar(FileName: WideString; IntoCal: TVCalendar = nil);
     procedure SaveCalendar(FileName: WideString; SaveCC: Boolean = True);
@@ -171,6 +173,8 @@ end;
 
 procedure TfrmCalendarView.VpDayViewOwnerEditEvent(Sender: TObject;
   Event: TVpEvent; Resource: TVpResource; var AllowIt: Boolean);
+var
+  AAlarm: String;
 begin
   inherited;
   AllowIt := False;
@@ -190,6 +194,7 @@ begin
 
     TntComboBoxCategories.ItemIndex := Event.Category;
 
+    // Use UserField1 for alarm datetime -- use [AlarmSet, AlarmAdv, AlarmAdvType] instead!
     if Event.AlarmSet then
       TntRadioGroupReminder.ItemIndex := 7
     else
@@ -197,6 +202,7 @@ begin
     AdvMins := Event.AlarmAdv;
     AdvType := Event.AlarmAdvType;
 
+    { Reccurence }
     case Event.RepeatCode of
       rtDaily:
         TntRadioGroupReccurence.ItemIndex := 1;
@@ -216,7 +222,8 @@ begin
     else
       TntComboBoxRangeEnd.ItemIndex := 0;
 
-    WeekDays := Event.UserField8;
+    // Use UserField2 for Weekly reccurence  
+    WeekDays := Event.UserField2;
 
     if Event.UserField9 = '' then Event.UserField9 := '0';
 
@@ -228,9 +235,33 @@ begin
       Event.Description := txtSubject.Text;
 
       if Event.UserField0 <> txtLocation.Text then begin
+        // Use UserField0 for location
         Event.UserField0 := txtLocation.Text;
         Event.Changed := True;
       end;
+
+      if TntRadioGroupReminder.ItemIndex <> 0 then begin
+        AAlarm := FloatToStr(TntDatePickerReminder.DateTime);
+        Event.AlarmSet := True;
+      end
+      else begin
+        AAlarm := '';
+        Event.AlarmSet := False;
+      end;
+      Event.AlarmAdv := AdvMins;
+      Event.AlarmAdvType := AdvType;
+      // Use UserField1 for alarm datetime -- use [AlarmSet, AlarmAdv, AlarmAdvType] instead!
+      if Event.UserField1 <> AAlarm then begin
+        Event.UserField1 := AAlarm;
+        Event.Changed := True;
+      end;
+
+      Event.AlertDisplayed := False;
+
+      if TntComboBoxCategories.ItemIndex >= 0 then
+        Event.Category := TntComboBoxCategories.ItemIndex
+      else
+        Event.Category := 0;
 
       case TntRadioGroupReccurence.ItemIndex of
         0: Event.RepeatCode := rtNone;
@@ -244,26 +275,12 @@ begin
       else
         Event.RepeatRangeEnd := EmptyDate;
 
-      if TntComboBoxCategories.ItemIndex >= 0 then
-        Event.Category := TntComboBoxCategories.ItemIndex
-      else
-        Event.Category := 0;
-
-      if Event.UserField8 <> WeekDays then begin
-        Event.UserField8 := WeekDays;
+      if Event.UserField2 <> WeekDays then begin
+        // Use UserField2 for Weekly reccurence
+        Event.UserField2 := WeekDays;
         Event.Changed := True;
       end;
 
-      Event.AlarmSet := TntRadioGroupReminder.ItemIndex <> 0;
-      Event.AlarmAdv := AdvMins;
-      Event.AlarmAdvType := AdvType;
-      if Event.AlarmSet then
-        Event.UserField1 := DateTimeToStr(TntDatePickerReminder.DateTime)
-      else
-        Event.UserField1 := '';
-
-      Event.AlertDisplayed := False;
-      
       if Event.Changed and (Event.UserField9 <> '0') then Event.UserField9 := '1';
 
       AllowIt := True;
@@ -301,22 +318,16 @@ begin
 
     Task.DueDate := 0;
     
+    // Use UserField0 for reminder datetime
     if Task.UserField0 <> '' then begin
       chbReminder.Checked := True;
-
-      try
-        dtpDate.DateTime := StrToFloat(Task.UserField0);
-      except
-      end;
-
-      dtpTime.DateTime := dtpDate.DateTime;
+      dtpDate.DateTime := StrToFloat(Task.UserField0);
     end
     else begin
-      dtpDate.DateTime := Now;
-      dtpTime.DateTime := dtpDate.DateTime;
-
       chbReminder.Checked := False;
+      dtpDate.DateTime := Now;
     end;
+    dtpTime.DateTime := dtpDate.DateTime;
     chbReminderClick(self);
 
     // edit task
@@ -328,18 +339,13 @@ begin
       else
         Task.Category := 0;
 
-      if chbReminder.Checked then begin
-        try
-          AAlarm := FloatToStr(DateOf(dtpDate.Date) + TimeOf(dtpTime.Time));
-          if Task.UserField0 <> AAlarm then begin
-            Task.UserField0 := AAlarm;
-            Task.Changed := True;
-          end;
-        except
-        end;
-      end
-      else begin
-        Task.UserField0 := '';
+      if chbReminder.Checked then
+        AAlarm := FloatToStr(dtpDate.Date)
+      else
+        AAlarm := '';
+      if Task.UserField0 <> AAlarm then begin
+        // Use UserField0 for alarm datetime
+        Task.UserField0 := AAlarm;
         Task.Changed := True;
       end;
 
@@ -773,8 +779,8 @@ begin
   sl := TStringList.Create;
   try
     if VpDB.vCalendar <> nil then begin
-      VpDB.PostTasks;
-      VpDB.PostEvents;
+      { Save current changes }
+      VpDB.Save;
 
       // TODO: Check the output encoding
       if Form1.FUseUTF8 then
@@ -809,8 +815,11 @@ begin
   vStorage := TVObjStorage.Create;
   ANewCal := TVCalendar.Create;
   try
-    if IntoCal = FCalendar then VpDB.Connected := False;
+    if IntoCal = FCalendar then begin
+      VpDB.Connected := False;
+    end;
     try
+      IntoCal.Clear;
       vStorage.LoadFromFile(FileName);
       Log.AddSynchronizationMessage('Loading Calendar: Storage = ' + inttostr(vStorage.Count), lsDebug); // do not localize debug
       if vStorage.Count = 1 then
@@ -827,7 +836,9 @@ begin
       end;
       Log.AddSynchronizationMessage('Loading Calendar: Items = ' + inttostr(IntoCal.count), lsDebug); // do not localize debug
     finally
-      if IntoCal = FCalendar then VpDB.Connected := True;
+      if IntoCal = FCalendar then begin
+        VpDB.Connected := True;
+      end;
     end;
     { Should we load Sync Index too? }
     if IntoCal = FCalendar then begin
@@ -1259,10 +1270,7 @@ begin
       if Changed then
       try
         // Store changes and repaint
-        VpDB.RefreshEvents;
-        VpDB.RefreshContacts;
-        VpDB.RefreshTasks;
-        VpDB.RefreshResource;
+        VpDB.Load;
       except
       end;
     finally
@@ -1340,6 +1348,8 @@ begin
     Log.AddSynchronizationMessage(_('Import started'));
 
     Modified := 0;
+    { Save current changes }
+    if VpDB.vCalendar <> nil then VpDB.Save;
     VpDB.Connected := False;
     ACalendar := TVCalendar.Create;
     try
@@ -1368,11 +1378,7 @@ begin
     finally
       ACalendar.Free;
       if Modified <> 0 then begin
-        // Store changes and repaint
-        VpDB.RefreshEvents;
-        VpDB.RefreshContacts;
-        VpDB.RefreshTasks;
-        VpDB.RefreshResource;
+        if VpDB.vCalendar <> nil then VpDB.Load;
       end;
       VpDB.Connected := True;
       if Visible then Update;
@@ -1420,6 +1426,7 @@ end;
 procedure TfrmCalendarView.VpTaskListDrawIcons(Sender: TObject;
   Task: TVpTask; var Icons: TVpDVIcons);
 begin
+  // Use UserField0 for alarm datetime
   if Task.UserField0 <> '' then begin
     ImageListCalPopup.GetBitmap(3, Icons[itAlarm].Bitmap);
     Icons[itAlarm].Show := True;
@@ -1450,20 +1457,56 @@ begin
 end;
 
 procedure TfrmCalendarView.VpBDAlert(Sender: TObject; Event: TVpEvent);
-var
-  e: TVCalEntity;
 begin
-  Event.AlertDisplayed := True; // dismiss by default
-  e := FCalendar.GetCalEntityByItemIndex(Event.RecordID - 1);
-  if Assigned(e) then e.VAlertShown.Text := '1';
-
-  { Create Calendar events in new alarm dialog }
   with TfrmNewAlarm.Create(nil) do
   try
-    CreateEvent(Event.Description,255,Event.RecordID);
+    Event.AlertDisplayed := True; // dismiss by default
+
+    // Use UserField8 as unique ID for Event/Task 
+    CreateEvent(Event.Description,255,StrToInt(Event.UserField8)); // 255 = no Alpha
   except
     Free;
   end;
+end;
+
+procedure TfrmCalendarView.ClearAlertFlag(EventRecordID: Integer; PostponeTime: TDateTime);
+var
+  Event: TVpEvent;
+begin
+  Event := VpDB.vEvent[EventRecordID];
+  if Assigned(Event) then begin
+    Event.AlertDisplayed := False; // allow further alerts
+    
+    Event.Loading := True; // prevent "Event.Changed" modification
+    Event.SnoozeTime := PostponeTime;
+    Event.Loading := False;
+  end;
+end;
+
+procedure TfrmCalendarView.btnDELClick(Sender: TObject);
+  procedure Confirm(DelName,DelWhat: WideString);
+  begin
+    if MessageDlgW(WideFormat(_('Deleting %s "%s". Do you wish to continue (No Undo)?'),[DelName,DelWhat]),
+      mtConfirmation, MB_YESNO or MB_DEFBUTTON2) <> ID_YES then
+      Abort;
+  end;
+begin
+  if VpDayView.Focused then begin
+    if VpDayView.ActiveEvent <> nil then begin
+      Confirm('event',VpDayView.ActiveEvent.Description);
+      VpDayView.ActiveEvent.Deleted := True;
+      VpDayView.ActiveEvent.Changed := True;
+    end;
+  end
+  else
+  if VpTaskList.Focused then begin
+    if VpTaskList.ActiveTask <> nil then begin
+      Confirm('task',VpTaskList.ActiveTask.Description);
+      VpTaskList.ActiveTask.Deleted := True;
+      VpTaskList.ActiveTask.Changed := True;
+    end;
+  end
+  else
 end;
 
 end.

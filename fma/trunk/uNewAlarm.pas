@@ -39,6 +39,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure AlarmTimerTimer(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormHide(Sender: TObject);
   private
     { Private declarations }
     FAlarmID,FAlertNum: Integer;
@@ -56,7 +57,7 @@ var
 implementation
 
 uses
-  gnugettext, gnugettexthelpers, VpData, uVCalendar,
+  gnugettext, gnugettexthelpers, 
   uGlobal, Unit1, uThreadSafe, MMSystem;
 
 {$R *.dfm}
@@ -76,6 +77,7 @@ begin
   AlarmTimer.Enabled := True;
   FAlertNum := AlertCount + 1;
   AlertCount := FAlertNum;
+  { Restore form position }
   FormPlacement1.RestoreFormPlacement;
   Application.ProcessMessages;
   { Show window but not activate it
@@ -91,6 +93,8 @@ end;
 
 procedure TfrmNewAlarm.FormCreate(Sender: TObject);
 begin
+  Left := 100 + 24 * (Screen.FormCount mod 10);
+  Top := Left + 24 * (Screen.FormCount div 10);
   gghTranslateComponent(self);
 
   Image1.Picture.Assign(Form1.CommonBitmaps.Bitmap[1]);
@@ -111,7 +115,7 @@ end;
 procedure TfrmNewAlarm.FormClose(Sender: TObject; var Action: TCloseAction);
 var
   s: String;
-  e: TVCalEntity;
+
 begin
   case FCreator of
     aoPhone:
@@ -128,16 +132,8 @@ begin
         aaDismiss: ; // do nothing
         aaPostpone:
           try
-            e := Form1.frmCalendarView.Cal.GetCalEntityByItemIndex(FAlarmID - 1);
-            if Assigned(e) then e.VAlertShown.IsSet := False;
-            Form1.frmCalendarView.DB.LoadEvents;
-            {
-            with TVpEvent(Pointer(FAlarmID)) do begin
-              AlertDisplayed := False;
-              SnoozeTime := Now + 1/MinsPerDay;
-              //Owner.Owner.EventsDirty := True;
-            end;
-            }
+            // postpone for 9 minutes
+            Form1.frmCalendarView.ClearAlertFlag(FAlarmID, Now + 9/MinsPerDay);
           except
           end;
         aaIgnore:
@@ -171,8 +167,6 @@ end;
 
 procedure TfrmNewAlarm.FormShow(Sender: TObject);
 begin
-  Left := 100 + 24 * (Screen.FormCount mod 10);
-  Top := Left + 24 * (Screen.FormCount div 10);
   SetWindowPos(Handle, HWND_TOPMOST,
     Top, Left, Width, Height,
     SWP_NOACTIVATE);
@@ -183,6 +177,11 @@ procedure TfrmNewAlarm.CreateEvent(Text: WideString; AlphaBlend,
 begin
   CreateAlarm(Text,AlphaBlend,AlarmID);
   FCreator := aoFMA;
+end;
+
+procedure TfrmNewAlarm.FormHide(Sender: TObject);
+begin
+  FormPlacement1.SaveFormPlacement;
 end;
 
 end.
