@@ -1725,7 +1725,7 @@ begin
         TaskIndex := 0;                                                  
     VK_HOME   : TaskIndex := 0;
     VK_END    : TaskIndex := Pred(DataStore.Resource.Tasks.Count);
-    VK_DELETE : DeleteActiveTask(true);
+//  VK_DELETE : if not ReadOnly then DeleteActiveTask(true);
     VK_RETURN : tlSpawnTaskEditDialog (False);
     VK_INSERT : tlSpawnTaskEditDialog (True);
     VK_F2     : if Assigned (DataStore) then begin

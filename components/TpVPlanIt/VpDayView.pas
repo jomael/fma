@@ -2246,8 +2246,7 @@ begin
     VK_RIGHT   : Date := Date + 1;
     VK_HOME    : ActiveRow := 0;
     VK_END     : ActiveRow := LineCount;
-    VK_DELETE  : if not ReadOnly then
-                  DeleteActiveEvent(true);
+//  VK_DELETE  : if not ReadOnly then DeleteActiveEvent(true);
     VK_TAB     :
       if ssShift in Shift then
         Windows.SetFocus (GetNextDlgTabItem(GetParent(Handle), Handle, False))
