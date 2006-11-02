@@ -128,10 +128,8 @@ end;
 
 procedure TfrmCalling.FormShow(Sender: TObject);
 begin
-  Left := 100 + 24 * (Screen.FormCount mod 10);
-  Top := Left + 24 * (Screen.FormCount div 10);
   SetWindowPos(Handle, HWND_TOPMOST,
-    Top, Left, Width, Height,
+    Left, Top, Width, Height,
     SWP_NOACTIVATE or SWP_NOSIZE);
 end;
 
@@ -264,14 +262,6 @@ begin
   CloseCall(false);
 end;
 
-procedure TfrmCalling.FormCreate(Sender: TObject);
-begin
-  gghTranslateComponent(self);
-
-  lbAlpha.Font.Style := lbAlpha.Font.Style + [fsBold];
-  Image1.Picture.Assign(Form1.CommonBitmaps.Bitmap[1]);
-end;
-
 procedure TfrmCalling.TimeTimerTimer(Sender: TObject);
 begin
   { This timer will be triggered once a call is active
@@ -350,7 +340,12 @@ begin
   { Resize form }
   DoResizeWide;
   Height := Constraints.MinHeight;
-  { Show window but not activate it
+  FCreated := True;
+  if not Popup then exit;
+  { Show window but not activate it }
+  SetWindowPos(Handle, HWND_TOPMOST,
+    Left, Top, Width, Height,
+    SWP_NOACTIVATE or SWP_NOSIZE);
   ShowWindow(Handle,SW_SHOWNOACTIVATE);
   ShowWindow(HeadsetButton.Handle,SW_SHOWNOACTIVATE);
   ShowWindow(AnswerButton.Handle,SW_SHOWNOACTIVATE);
@@ -358,23 +353,34 @@ begin
   ShowWindow(Memo.Handle,SW_SHOWNOACTIVATE);
   ShowWindow(ImagePanel.Handle,SW_SHOWNOACTIVATE);
   ShowWindow(Image32.Handle,SW_SHOWNOACTIVATE);
-  {}
-  if Popup then
-    Show;
-  FCreated := True;
+end;
+
+procedure TfrmCalling.FormCreate(Sender: TObject);
+begin
+  Left := (Screen.Width - Width) div 2;
+  Top := (Screen.Height - Height) div 2;
+  gghTranslateComponent(self);
+
+  lbAlpha.Font.Style := lbAlpha.Font.Style + [fsBold];
+  Image1.Picture.Assign(Form1.CommonBitmaps.Bitmap[1]);
 end;
 
 procedure TfrmCalling.DoResizeWide;
 var
-  wide: integer;
+  wide,dif: integer;
 begin
   wide := lbAlpha.Width;
   if lbNumber.Width > wide then wide := lbNumber.Width;
   wide := wide + lbAlpha.Left - 4;
-  if wide > (Constraints.MinWidth-16) then
-    ClientWidth := wide + 8
-  else
+  if wide > (Constraints.MinWidth-16) then begin
+    dif := (wide + 8) - ClientWidth;
+    ClientWidth := wide + 8;
+  end
+  else begin
+    dif := Constraints.MinWidth - Width;
     Width := Constraints.MinWidth;
+  end;
+  Left := Left - dif div 2;
 end;
 
 procedure TfrmCalling.Set_CustomImage(const Value: Boolean);
@@ -439,8 +445,9 @@ begin
     DoExiting;
     TimeTimer.Enabled := False;
     Image32.Bitmap.Clear;
+    FormPlacement1.SaveFormPlacement;
   end;
-  if CanClose then Close; // could cause stack overflow
+  if CanClose then Close; // No stack overflow coz CanClose is false in Close().
 end;
 
 end.

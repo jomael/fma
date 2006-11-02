@@ -39,7 +39,6 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure AlarmTimerTimer(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure FormHide(Sender: TObject);
   private
     { Private declarations }
     FAlarmID,FAlertNum: Integer;
@@ -80,21 +79,19 @@ begin
   { Restore form position }
   FormPlacement1.RestoreFormPlacement;
   Application.ProcessMessages;
-  { Show window but not activate it
+  { Show window but not activate it }
   SetWindowPos(Handle, HWND_TOPMOST,
-    Top, Left, Width, Height,
+    Left + 24 * ((Screen.FormCount-2) mod 10), Top + 24 * (Screen.FormCount div 10), Width, Height,
     SWP_NOACTIVATE);
   ShowWindow(Handle,SW_SHOWNOACTIVATE);
   ShowWindow(PostponeButton.Handle,SW_SHOWNOACTIVATE);
   ShowWindow(CloseButton.Handle,SW_SHOWNOACTIVATE);
-  }
-  Show;
 end;
 
 procedure TfrmNewAlarm.FormCreate(Sender: TObject);
 begin
-  Left := 100 + 24 * (Screen.FormCount mod 10);
-  Top := Left + 24 * (Screen.FormCount div 10);
+  Left := (Screen.Width - Width) div 2;
+  Top := (Screen.Height - Height) div 2;
   gghTranslateComponent(self);
 
   Image1.Picture.Assign(Form1.CommonBitmaps.Bitmap[1]);
@@ -115,7 +112,6 @@ end;
 procedure TfrmNewAlarm.FormClose(Sender: TObject; var Action: TCloseAction);
 var
   s: String;
-
 begin
   case FCreator of
     aoPhone:
@@ -156,6 +152,7 @@ begin
     end;
   except
   end;
+  FormPlacement1.SaveFormPlacement;
 end;
 
 procedure TfrmNewAlarm.AlarmTimerTimer(Sender: TObject);
@@ -168,7 +165,7 @@ end;
 procedure TfrmNewAlarm.FormShow(Sender: TObject);
 begin
   SetWindowPos(Handle, HWND_TOPMOST,
-    Top, Left, Width, Height,
+    Left, Top, Width, Height,
     SWP_NOACTIVATE);
 end;
 
@@ -177,11 +174,6 @@ procedure TfrmNewAlarm.CreateEvent(Text: WideString; AlphaBlend,
 begin
   CreateAlarm(Text,AlphaBlend,AlarmID);
   FCreator := aoFMA;
-end;
-
-procedure TfrmNewAlarm.FormHide(Sender: TObject);
-begin
-  FormPlacement1.SaveFormPlacement;
 end;
 
 end.

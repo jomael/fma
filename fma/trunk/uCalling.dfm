@@ -134,6 +134,7 @@ object frmCalling: TfrmCalling
     Visible = False
   end
   object FormPlacement1: TFormPlacement
+    Active = False
     IniFileName = 'Software\floAt\MobileAgent'
     IniSection = 'NewCallWindow'
     UseRegistry = True

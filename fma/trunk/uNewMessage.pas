@@ -126,9 +126,9 @@ begin
   { Restore form position }
   FormPlacement1.RestoreFormPlacement;
   Application.ProcessMessages;
+  { Resize form }
   Constraints.MinHeight := 32;
   ClientHeight := 137;
-  { Resize form to fit message }
   lbText.WordWrap := False;
   lbText.AutoSize := True;
   lbText.Caption := text;
@@ -166,7 +166,7 @@ begin
   DoPersonalize;
   { Show window but not activate it }
   SetWindowPos(Handle, HWND_TOPMOST,
-    Top, Left, Width, Height,
+    Left + 24 * ((Screen.FormCount-2) mod 10), Top + 24 * (Screen.FormCount div 10), Width, Height,
     SWP_NOACTIVATE);
   ShowWindow(Handle,SW_SHOWNOACTIVATE);
   ShowWindow(OkButton.Handle,SW_SHOWNOACTIVATE);
@@ -174,6 +174,16 @@ begin
   ShowWindow(AnswerButton.Handle,SW_SHOWNOACTIVATE);
   ShowWindow(ImagePanel.Handle,SW_SHOWNOACTIVATE);
   ShowWindow(Image32.Handle,SW_SHOWNOACTIVATE);
+end;
+
+procedure TfrmNewMessage.FormCreate(Sender: TObject);
+begin
+  Left := (Screen.Width - Width) div 2;
+  Top := (Screen.Height - Height) div 2;
+  gghTranslateComponent(self);
+
+  lbAlpha.Font.Style := lbAlpha.Font.Style + [fsBold];
+  Image1.Picture.Assign(Form1.CommonBitmaps.Bitmap[1]);
 end;
 
 procedure TfrmNewMessage.Timer1Timer(Sender: TObject);
@@ -189,15 +199,8 @@ end;
 procedure TfrmNewMessage.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
+  FormPlacement1.SaveFormPlacement;
   Action := caFree;
-end;
-
-procedure TfrmNewMessage.FormCreate(Sender: TObject);
-begin
-  gghTranslateComponent(self);
-
-  lbAlpha.Font.Style := lbAlpha.Font.Style + [fsBold];
-  Image1.Picture.Assign(Form1.CommonBitmaps.Bitmap[1]);
 end;
 
 procedure TfrmNewMessage.OkButtonClick(Sender: TObject);
@@ -385,10 +388,8 @@ end;
 
 procedure TfrmNewMessage.FormShow(Sender: TObject);
 begin
-  Left := 100 + 24 * (Screen.FormCount mod 10);
-  Top := Left + 24 * (Screen.FormCount div 10);
   SetWindowPos(Handle, HWND_TOPMOST,
-    Top, Left, Width, Height,
+    Left, Top, Width, Height,
     SWP_NOACTIVATE);
 end;
 

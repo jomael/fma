@@ -13,7 +13,6 @@ object frmNewAlarm: TfrmNewAlarm
   OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
-  OnHide = FormHide
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -5131,6 +5130,7 @@ object frmNewAlarm: TfrmNewAlarm
     Active = False
     IniFileName = 'Software\floAt\MobileAgent'
     IniSection = 'NewAlarmWindow'
+    Options = [fpPosition]
     UseRegistry = True
     Left = 212
     Top = 4

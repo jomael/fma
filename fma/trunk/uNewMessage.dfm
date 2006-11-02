@@ -111,8 +111,10 @@ object frmNewMessage: TfrmNewMessage
     OnClick = ReplyBackClick
   end
   object FormPlacement1: TFormPlacement
+    Active = False
     IniFileName = 'Software\floAt\MobileAgent'
     IniSection = 'NewMsgWindow'
+    Options = [fpPosition]
     UseRegistry = True
     Left = 256
     Top = 16
