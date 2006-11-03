@@ -61,7 +61,13 @@ The following is a brief list of most important but not all
 changes in FMA Beta 4 release. You can explore it searching
 for more. Here we go:
 
+- Full K610 calendar support with event reccurence.
+
 - Full K610 phones contacts support with auto-birthdays.
+
+- FMA only support for Voice Mail number lookups.
+
+- Phone book Contacts history for old phone numbers.
 
 - Text Messages Explorer tree Drag-and-Drop support.
 
@@ -309,5 +315,23 @@ FMA Beta 3. The change log is following:
 - Added: Full contact editing support K610 phones.
 - Added: Create birthday event after contact edit.
 - Added: Text Messages Drag-and-Drop support (mhr).
+- Fixed: Web Update form initial position (mhr).
+- Fixed: Exporting Text Messages 3CC issue (mhr).
+- Added: Remove previous sframework on install.
+- Added: Sync All include optional Outlook Sync.
+- Fixed: Disabled is inline editing in Calendar.
+- Fixed: Importing Calendar from iCalendar file.
+- Fixed: Clear Calendar before full refreshing.
+- Fixed: Calendar Event Alarm Time management.
+- Fixed: Calendar Task Reminder uncheck setting.
+- Added: Calendar Tasks status/alarm list icons.
+- Added: Show FMA Calendar event alerting dialog.
+- Added: Calendar Event reccurence support (K610).
+- Added: Edit and lookup for Voice Mail number.
+- Added: Lookup contact phone number from History.
+- Added: Display number of Messages in status bar.
+- Added: Create contact with Company name only.
+- Fixed: Upload contact without names to phone.
+- Fixed: Deleting missing contacts/events/tasks.
 
 The FMA Team
