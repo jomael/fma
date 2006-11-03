@@ -12,7 +12,7 @@ unit MobileAgent_TLB;
 // ************************************************************************ //
 
 // PASTLWTR : 1.2
-// File generated on 03.11.2006 14:41:21 from Type Library described below.
+// File generated on 03.11.2006 16:17:33 from Type Library described below.
 
 // ************************************************************************  //
 // Type Lib: C:\Projects\FMA\fma\trunk\MobileAgent.tlb (1)
