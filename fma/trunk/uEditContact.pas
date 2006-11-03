@@ -162,6 +162,7 @@ type
     BirthdayDeleteButton: TTntButton;
     lblDisabledPostal: TTntLabel;
     PostalDeleteButton: TTntButton;
+    NumbersHistoryButton: TTntButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure txtCustomChange(Sender: TObject);
@@ -202,12 +203,13 @@ type
     procedure BirthdayDeleteButtonClick(Sender: TObject);
     procedure txtBirthdayChange(Sender: TObject);
     procedure PostalDeleteButtonClick(Sender: TObject);
+    procedure NumbersHistoryButtonClick(Sender: TObject);
   private
     { Private declarations }
     FAddress: integer; // the index of last shown address
     FAddresses: array[0..1] of TPostalAddress;
     FPhonePrev: string;
-    FPrevChangeAs: WideString;
+    FPrevChangeAs,FMoreNumbers: WideString;
     FUseSIMMode,FLoadingData,FUseOwnMode: boolean;
     FCustomImage,FSwappingAdr: Boolean;
     function PhonesCount: integer;
@@ -228,6 +230,7 @@ type
     procedure SyncContactsConfirm(Sender: TObject; Contact: TContact;
       Action: TContactAction; const Description: WideString;
       var Confirmed: Boolean);
+    procedure SetCustomModified;
     procedure Set_UseSIMMode(const Value: boolean);
     procedure Set_UseOwnMode(const Value: boolean);
     procedure Set_CustomImage(const Value: Boolean);
@@ -251,7 +254,7 @@ implementation
 
 uses
   gnugettext, gnugettexthelpers,
-  uGlobal, uLogger, Unit1, uFiles, uDialogs, uImg32Helper, uInputQuery;
+  uGlobal, uLogger, Unit1, uFiles, uDialogs, uImg32Helper, uInputQuery, uPhoneHistory;
 
 {$R *.dfm}
 
@@ -302,6 +305,8 @@ begin
   if not Form1.IsK610orBetter then begin
     txtURL.Enabled := False;
     txtAddressType.Enabled := False;
+  end;
+  if not Form1.IsK750orBetter then begin
     txtBirthday.Enabled := False;
   end;
   ResetButton.Enabled := not IsNew;
@@ -350,6 +355,7 @@ begin
     FillInternetAdrs;
     ShowFullName;
     FillDisplayNameList;
+    FMoreNumbers := contact.morenums;
     if not (FUseSIMMode or FUseOwnMode) then begin
       // Personalize, will fill data on tabsheet open
       btnPicDel.Click;
@@ -436,6 +442,7 @@ begin
   txtAddressTypeChange(nil); // save current changes to FAddresses
   contact.homeAddress := FAddresses[0];
   contact.workAddress := FAddresses[1];
+  contact.morenums := FMoreNumbers;
   //See SyncPhonebook to save notes. SetContactNotes(@contact,MemoNotes.Lines);
   if not (FUseSIMMode or FUseOwnMode) then begin
     contact.DefaultIndex := cbDefaultNum.ItemIndex;
@@ -487,8 +494,7 @@ begin
     mtConfirmation, MB_YESNO or MB_DEFBUTTON2) = ID_YES then begin
     ResetButton.Enabled := False;
     FillChar(contact.Position,SizeOf(contact.Position),0);
-    ApplyButton.Enabled := not IsNew;
-    customModified := True;
+    SetCustomModified;
   end;  
 end;
 
@@ -517,8 +523,7 @@ end;
 
 procedure TfrmEditContact.txtCustomChange(Sender: TObject);
 begin
-  ApplyButton.Enabled := not IsNew;
-  customModified := True;
+  SetCustomModified;
 end;
 
 procedure TfrmEditContact.txtPhoneChange(Sender: TObject);
@@ -750,8 +755,7 @@ begin
       32: lblPicPal.Caption := _('True-Color (32-bit colors)');
       else lblPicPal.Caption := _('Low-Color (<256 colors)');
     end;
-    ApplyButton.Enabled := not IsNew;
-    customModified := True;
+    SetCustomModified;
   finally
     btnPicSel.Enabled := True;
     btnSndSel.Enabled := True;
@@ -799,8 +803,7 @@ begin
       lblSndType.Caption := _('Unknown (Unsupported format)');
       MediaPlayer1.Enabled := False;
     end;
-    ApplyButton.Enabled := not IsNew;
-    customModified := True;
+    SetCustomModified;
   finally
     btnPicSel.Enabled := True;
     btnSndSel.Enabled := True;
@@ -813,8 +816,7 @@ begin
   if FLoadingData or (MessageDlgW(_('Remove personalized picture?'),
     mtConfirmation, MB_YESNO or MB_DEFBUTTON2) = ID_YES) then begin
     if lblPicName.Caption <> '' then begin
-      ApplyButton.Enabled := not IsNew;
-      customModified := True;
+      SetCustomModified;
     end;
     lblPicDim.Caption := _('128x127 (0x0 pixels)');
     lblPicName.Caption := '';
@@ -831,8 +833,7 @@ begin
   if FLoadingData or (MessageDlgW(_('Remove personalized sound?'),
     mtConfirmation, MB_YESNO or MB_DEFBUTTON2) = ID_YES) then begin
     if lblSndName.Caption <> '' then begin
-      ApplyButton.Enabled := not IsNew;
-      customModified := True;
+      SetCustomModified;
     end;
     lblSndType.Caption := _('(polyphonic stereo sound, supported by phone)');
     lblSndName.Caption := '';
@@ -957,20 +958,23 @@ end;
 procedure TfrmEditContact.DoSanityCheck;
 var
   TelCnt: integer;
+  s: WideString;
 begin
+  s := Trim(txtName.Text);
+  if (s = '') and (Trim(txtOrganization.Text) <> '') then s := Trim(txtOrganization.Text);
   { check name }
-  if Trim(txtName.Text) = '' then begin
-    MessageDlgW(_('You have to enter contact name.'), mtError, MB_OK);
+  if s = '' then begin
+    MessageDlgW(_('You have to enter contact or company name.'), mtError, MB_OK);
     Abort;
   end;
-  if Pos('"',txtName.Text) <> 0 then begin
+  if Pos('"',s) <> 0 then begin
     if FUseSIMMode then begin
       MessageDlgW(_('Quotes are not allowed in SIM contact name.'), mtError, MB_OK);
       Abort;
     end;
   end;
   if Trim(txtDisplayAs.Text) = '' then
-    txtDisplayAs.Text := txtName.Text;
+    txtDisplayAs.Text := s;
   { check numbers }
   TelCnt := PhonesCount;
   if FUseSIMMode and (TelCnt = 0) then begin
@@ -982,7 +986,7 @@ begin
     Abort;
   end;
   { check date }
-  if txtBirthday.Date >= Now then begin
+  if BirthdayDeleteButton.Enabled and (txtBirthday.Date >= Now) then begin
     MessageDlgW(_('You have to enter valid birthday date.'), mtError, MB_OK);
     Abort;
   end;
@@ -992,26 +996,35 @@ procedure TfrmEditContact.FillDisplayNameList;
 var
   w,s: WideString;
   i: integer;
+  IgnoreOrg: boolean;
 begin
+  IgnoreOrg := False;
   txtDisplayAs.Items.Clear;
-  if txtName.Text <> '' then begin
+  s := Trim(txtName.Text);
+  if (s = '') and (Trim(txtOrganization.Text) <> '') then begin
+    s := Trim(txtOrganization.Text);
+    IgnoreOrg := True;
+  end;
+  if s <> '' then begin
     { Move surname in front }
-    w := txtName.Text;
-    i := Length(w);
-    while (i >= 1) and (w[i] <> ' ') do dec(i);
-    s := Copy(w,1,i-1);
-    w := Copy(w,i+1,Length(w));
-    if s <> '' then w := w + ', ' + Trim(s);
+    w := s;
+    if not IgnoreOrg then begin
+      i := Length(w);
+      while (i >= 1) and (w[i] <> ' ') do dec(i);
+      s := Copy(w,1,i-1);
+      w := Copy(w,i+1,Length(w));
+      if s <> '' then w := w + ', ' + Trim(s);
+    end;
     { Fill list }
-    txtDisplayAs.Items.Add(txtName.Text);
-    if txtOrganization.Text <> '' then
+    txtDisplayAs.Items.Add(s);
+    if not IgnoreOrg and (txtOrganization.Text <> '') then
       txtDisplayAs.Items.Add(txtName.Text + ' ' + txtOrganization.Text);
-    if WideCompareText(w,txtName.Text) <> 0 then begin
+    if WideCompareText(w,s) <> 0 then begin
       txtDisplayAs.Items.Add(w);
-      if txtOrganization.Text <> '' then
+      if not IgnoreOrg and (txtOrganization.Text <> '') then
         txtDisplayAs.Items.Add(w + ' ' + txtOrganization.Text);
     end;
-    if txtTitle.Text <> '' then begin
+    if not IgnoreOrg and (txtTitle.Text <> '') then begin
       txtDisplayAs.Items.Add(txtTitle.Text + ' ' + txtName.Text);
       if txtOrganization.Text <> '' then
         txtDisplayAs.Items.Add(txtTitle.Text + ' ' + txtName.Text + ' ' + txtOrganization.Text);
@@ -1030,6 +1043,7 @@ var
   i,j: integer;
 begin
   s := Trim(txtName.Text);
+  if (s = '') and (Trim(txtOrganization.Text) <> '') then s := Trim(txtOrganization.Text);
   if txtDisplayAs.Text = '' then
     txtDisplayAs.Text := s;
   { Update DisplayAs default patterns }
@@ -1054,9 +1068,9 @@ begin
     { do not remove next sanity check, its used when an used field is changed }
     if (i >= 0) and (i < txtDisplayAs.Items.Count) then
       { Set to new predefined value }
-      txtDisplayAs.ItemIndex := i; 
+      txtDisplayAs.ItemIndex := i;
   end;
-  { Udate dialog caption }
+  { Update dialog caption }
   if s <> '' then
     if FUseOwnMode then
       Caption := WideFormat(_('Own Business Card - %s'),[s])
@@ -1413,6 +1427,23 @@ begin
     txtPostalCode.Text := '';
     txtCountry.Text := '';
   end;
+end;
+
+procedure TfrmEditContact.NumbersHistoryButtonClick(Sender: TObject);
+begin
+  with TfrmPhoneHistory.Create(nil) do begin
+    Numbers := FMoreNumbers;
+    if (ShowModal = mrOk) and (WideCompareText(FMoreNumbers,Numbers) <> 0) then begin
+      FMoreNumbers := Numbers;
+      SetCustomModified;
+    end;
+  end;
+end;
+
+procedure TfrmEditContact.SetCustomModified;
+begin
+  ApplyButton.Enabled := not IsNew;
+  customModified := True;
 end;
 
 end.

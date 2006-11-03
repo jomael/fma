@@ -510,6 +510,8 @@ type
     ActionToolsImportCalendar: TTntAction;
     ImportCalendar1: TTntMenuItem;
     ExportCalendar1: TTntMenuItem;
+    VoiceMailNumber1: TTntMenuItem;
+    ActionEditVoiceMail: TTntAction;
     procedure ActionConnectionConnectExecute(Sender: TObject);
     procedure ActionConnectionDisconnectExecute(Sender: TObject);
     procedure ActionConnectionDownloadExecute(Sender: TObject);
@@ -767,6 +769,8 @@ type
       Source: TObject; DataObject: IDataObject; Formats: TFormatArray;
       Shift: TShiftState; Pt: TPoint; var Effect: Integer;
       Mode: TDropMode);
+    procedure ActionEditVoiceMailUpdate(Sender: TObject);
+    procedure ActionEditVoiceMailExecute(Sender: TObject);
   private
     { Private declarations }
     LastSMSSendFailure,LastSMSReceiveFailure: TDateTime;
@@ -960,7 +964,7 @@ type
     FEmergencyMode,FUseCNMIMode3,FStatusReport,FUseUTF8,FUseObex,FUseObexCompat,
     FUseEBCA,FUseScript,FUseCBC,FUseCSQ,FUseSilentMonitor,FUseMinuteMonitor,FUseKeylockMonitor,FUseScriptEditorExt: Boolean;
     FAutoConnectionError,FOnACPower,LoadingDBFiles,FChatLongSMS,FChatBold,FUseMediaPlayer: Boolean;
-    FSelOperator,FSelPhone,FChatNick: WideString;
+    FSelOperator,FSelPhone,FChatNick,FVoiceMail: WideString;
     FSupportedCS,FKeyActivity,FDatabaseVersion: String;
     FKeyInactivityTimeout: Integer;
     FFavoriteRecipients,FFavoriteCalls: TTntStringList;
@@ -3181,6 +3185,8 @@ begin
     else
       Result := FLookupList.Values[partialNumber];
   end;
+  if Result = '' then
+    if (Number = FVoiceMail) and (FVoiceMail <> '') then Result := _('Voice Mail');
   { return default name if not found }
   if Result = '' then Result := DefaultName;
 end;
@@ -5347,6 +5353,7 @@ begin
     WriteString('Global','Modified',IntToStr(Trunc(Date))); // do not localize
     WriteString('Global','DBVersion',WideStringToUTF8String(FDatabaseVersion)); // do not localize
     WriteString('Global','PhoneName',WideStringToUTF8String(FSelPhone)); // do not localize
+    WriteString('Global','VoiceMail',WideStringToUTF8String(FVoiceMail)); // do not localize
     WriteString('Global','PhoneBrand',WideStringToUTF8String(FPhoneModel)); // do not localize
     WriteBool('SMS','Reset',FSMSCounterReseted); // do not localize
     WriteInteger('SMS','Reset Day',FSMSCounterResetDay); // do not localize
@@ -7932,6 +7939,8 @@ begin
       end;
     end;
   end;
+  if (Result = '') and (FVoiceMail <> '') then
+    if Contact = _('Voice Mail') then Result := FVoiceMail;
 end;
 
 procedure TForm1.ActionBusyUpdate(Sender: TObject);
@@ -8736,6 +8745,7 @@ begin
           FSelPhone := w;
           WriteString('Global','PhoneName',WideStringToUTF8String(FSelPhone)); // do not localize
         end;
+        FVoiceMail := UTF8StringToWideString(ReadString('Global','VoiceMail','')); // do not localize
         FDatabaseVersion := UTF8StringToWideString(ReadString('Global','DBVersion','')); // do not localize
         FPhoneModel := UTF8StringToWideString(ReadString('Global','PhoneBrand','')); // do not localize
         FSMSCounterReseted := ReadBool('SMS','Reset',False); // do not localize
@@ -15341,6 +15351,28 @@ begin
       if frmMsgView.SendfromPhone1.Enabled then
         frmMsgView.SendfromPhone1Click(nil);
     end;
+  end;
+end;
+
+procedure TForm1.ActionEditVoiceMailUpdate(Sender: TObject);
+begin
+  ActionEditVoiceMail.Enabled := (FSelPhone <> '') or (PhoneIdentity <> '');
+end;
+
+procedure TForm1.ActionEditVoiceMailExecute(Sender: TObject);
+var
+  w: WideString;
+  i: Integer;
+begin
+  w := FVoiceMail;
+  if WideInputQuery(_('FMA Voice Mail'),_('Enter number:'),w) then begin
+    w := Trim(w);
+    for i := 1 to Length(w) do
+      if not (Char(w[i]) in ['+','0'..'9','#','*','p']) then begin // do not localize
+        MessageDlgW(_('Incorrect phone number specified!'),mtError,MB_OK);
+        Abort;
+      end;
+    FVoiceMail := w;
   end;
 end;
 

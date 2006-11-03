@@ -653,7 +653,9 @@ begin
                        Result := True;
                      end;
                   2: begin //deleted
-                       AEntity.VIrmcLUID.PropertyValue := Form1.ObexPutObject('telecom/cal/luid/' + AEntity.VIrmcLUID.PropertyValue + '.vcs', nil); //deletd LUID // do not localize
+                       if AEntity.VIrmcLUID.PropertyValue <> '' then
+                         AEntity.VIrmcLUID.PropertyValue := Form1.ObexPutObject('telecom/cal/luid/' + AEntity.VIrmcLUID.PropertyValue + '.vcs', nil); //deletd LUID // do not localize
+                       AEntity.VFmaState := 3; //entries synchronized
                        FCalendar.Delete(FCalendar.IndexOf(AEntity));
                        Log.AddSynchronizationMessage(Name + _(' deleted in phone by FMA.'), lsInformation);
                        Result := True;
@@ -1517,8 +1519,7 @@ begin
       else
         VpTaskList.DeleteActiveTask(False);
     end;
-  end
-  else
+  end;
 end;
 
 end.

@@ -321,7 +321,7 @@ object frmEditContact: TfrmEditContact
       object txtOther: TTntEdit
         Left = 96
         Top = 348
-        Width = 253
+        Width = 177
         Height = 21
         MaxLength = 40
         TabOrder = 10
@@ -357,6 +357,15 @@ object frmEditContact: TfrmEditContact
         Caption = '&Remove'
         TabOrder = 5
         OnClick = BirthdayDeleteButtonClick
+      end
+      object NumbersHistoryButton: TTntButton
+        Left = 280
+        Top = 348
+        Width = 69
+        Height = 25
+        Caption = '&History'
+        TabOrder = 11
+        OnClick = NumbersHistoryButtonClick
       end
     end
     object TabSheet2: TTntTabSheet
@@ -598,7 +607,7 @@ object frmEditContact: TfrmEditContact
         object MediaPlayer1: TMediaPlayer
           Left = 276
           Top = 20
-          Width = 57
+          Width = -1
           Height = 25
           Enabled = False
           VisibleButtons = [btPlay, btStop]
@@ -656,7 +665,7 @@ object frmEditContact: TfrmEditContact
           Width = 229
           Height = 21
           Style = csDropDownList
-          ItemHeight = 13
+          ItemHeight = 0
           TabOrder = 0
           OnChange = txtCustomChange
         end

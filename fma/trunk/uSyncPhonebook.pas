@@ -26,7 +26,7 @@ type
     home, work, cell, fax, other : integer;
   end;
   TContactData = Record
-    title, name, surname, displayname, org, homepage, email, moremails: WideString;
+    title, name, surname, displayname, org, homepage, email, moremails, morenums: WideString;
     home, work, cell, fax, other : WideString;
     homeAddress, workAddress: TPostalAddress;
     Birthday, Modified: TDate;
@@ -154,7 +154,7 @@ type
     procedure ExportList(FileType:Integer; Filename: WideString);
     procedure OnConnected;
     procedure OnConflictChanges(Sender: TObject; const TargetName, Option1Name, Option2Name: WideString);
-    function FindContact(Number: WideString): WideString; overload;
+    function FindContact(Number: WideString; CheckHistory: Boolean = False): WideString; overload;
     function FindContact(FullName: WideString; var AContact: PContactData): boolean; overload;
     function FindContact(FullName: WideString; var ANode: PVirtualNode): boolean; overload;
     { Edit contact. NewNumber and ContactData are for external (not Phonebook) contacts, as Own card, and
@@ -190,6 +190,7 @@ function GetContactHomeAdr(contact: PContactData): WideString;
 function GetContactWorkAdr(contact: PContactData): WideString;
 
 function IsContactPhone(contact: PContactData; Phone: string): boolean;
+function IsContactHistoryNumber(contact: PContactData; Phone: string): boolean;
 function GetContactPhoneType(contact: PContactData; Phone: string): string;
 function ReplaceContactDefPhone(contact: PContactData; Phone: string): string;
 
@@ -247,6 +248,23 @@ begin
       Result := True;
     end;
   end;
+end;
+
+function IsContactHistoryNumber(contact: PContactData; Phone: string): boolean;
+var
+  a,b,p: WideString;
+begin
+  Result := False;
+  p := Form1.GetPartialNumber(Phone);
+  a := contact^.morenums;
+  repeat
+    b := GetFirstToken(a,'|');
+    if b = '' then break;
+    if p = Form1.GetPartialNumber(b) then begin
+      Result := True;
+      exit;
+    end;
+  until a = '';
 end;
 
 { This will update DisplayName according to changes in NewContact and settings in OldContact,
@@ -615,6 +633,7 @@ begin
     end;
   end;
   Result := Trim(Result);
+  //if Result = '' then Result := contact^.org; // use Company name if no Name
 end;
 
 procedure SetContactFullName(contact: PContactData; FullName: WideString);
@@ -850,7 +869,10 @@ begin
       2: CellText := _('Del');
       else CellText := '';
     end
-  else if Column = 1 then CellText := GetContactFullName(contact,LastFirst1.Checked)
+  else if Column = 1 then begin
+    CellText := GetContactFullName(contact,LastFirst1.Checked);
+    if CellText = '' then CellText := contact.org;
+  end
   else if Column = 2 then CellText := contact.title
   else if Column = 3 then CellText := contact.org
   else if Column = 4 then CellText := contact.email
@@ -922,6 +944,7 @@ procedure TfrmSyncPhonebook.ListContactsCompareNodes(Sender: TBaseVirtualTree;
   Node1, Node2: PVirtualNode; Column: TColumnIndex; var Result: Integer);
 var
   contact1, contact2: PContactData;
+  a, b: WideString;
 begin
   contact1 := Sender.GetNodeData(Node1);
   contact2 := Sender.GetNodeData(Node2);
@@ -935,9 +958,13 @@ begin
       else
         Result := 0;
   end
-  else if Column = 1 then
-    Result := WideCompareStr(GetContactFullName(contact1,LastFirst1.Checked),
-                             GetContactFullName(contact2,LastFirst1.Checked))
+  else if Column = 1 then begin
+    a := GetContactFullName(contact1,LastFirst1.Checked);
+    if a = '' then a := contact1.org;
+    b := GetContactFullName(contact2,LastFirst1.Checked);
+    if b = '' then b := contact2.org;
+    Result := WideCompareStr(a,b);
+  end
   else if Column = 2 then Result := WideCompareStr(contact1.title, contact2.title)
   else if Column = 3 then Result := WideCompareStr(contact1.org,   contact2.org)
   else if Column = 4 then Result := WideCompareStr(contact1.email, contact2.email)
@@ -1078,6 +1105,7 @@ begin
         except
           contact.Birthday := EmptyDate;
         end;
+        contact.morenums := UTF8StringToWideString(HTMLDecode(WideStringToLongString(GetFirstToken(s))));
       except
         ListContacts.DeleteNode(Node);
         Log.AddMessageFmt(_('Database: Error loading data (DB Index %d)'), [i], lsError);
@@ -1142,6 +1170,8 @@ begin
           str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.homepage),False);
           str := str + '","' + HTMLEncode(WideStringToUTF8String(contact.moremails),False);
           str := str + '",' + IntToStr(Trunc(contact.Birthday));
+          str := str + ',"' + HTMLEncode(WideStringToUTF8String(contact.morenums),False);
+          str := str + '"';
           sl.Add(str);
         except
         end;
@@ -1481,13 +1511,17 @@ begin
             contact := ListContacts.GetNodeData(node);
             if contact.StateIndex <> 3 then begin // skip unmodified contacts
               Contact2vCard(contact,VCard);
+              if VCard.FullName = '' then VCard.Name := VCard.DisplayName; // use FileAs if no Name
+              if VCard.FullName = '' then VCard.Name := VCard.Org; // use Company's name if no Name
               // TODO: add picture and sound support here....
               stream := TMemoryStream.Create;
               try
                 VCard.Raw.SaveToStream(stream);
                 VCard.Clear;
                 stream.Seek(0, soFromBeginning);
+
                 F := GetContactFullName(contact);
+                if F = '' then F := contact.org;
 
                 ShowProgressTarget(F);
               
@@ -1513,7 +1547,8 @@ begin
                         Result := True;
                       end;
                    2: begin //deleted
-                        contact.LUID := Form1.ObexPutObject('telecom/pb/luid/' + contact.luid + '.vcf', nil); //deletd LUID // do not localize
+                        if contact.luid <> '' then
+                          contact.LUID := Form1.ObexPutObject('telecom/pb/luid/' + contact.luid + '.vcf', nil); //deletd LUID // do not localize
                         contact.StateIndex := 3; //entries syncronized
                         ListContacts.DeleteNode(Node);
                         Log.AddSynchronizationMessage(F + _(' deleted in phone by FMA.'), lsInformation);
@@ -2191,6 +2226,7 @@ begin
           Selcontact^.picture := contact.picture;
           Selcontact^.sound := contact.sound;
           SelContact^.CDID := contact.CDID;
+          Selcontact^.morenums := contact.morenums;
           if ContactData = nil then UndoLastChange1.Visible := True;
           { save call notes to DB }
           SetContactNotes(Selcontact,ContactNotes);
@@ -2690,7 +2726,7 @@ begin
     end;
 end;
 
-function TfrmSyncPhonebook.FindContact(Number: WideString): WideString;
+function TfrmSyncPhonebook.FindContact(Number: WideString; CheckHistory: Boolean): WideString;
 var
   Node :PVirtualNode;
   contact: PContactData;
@@ -2699,7 +2735,7 @@ begin
   Node := ListContacts.GetFirst;
   while Assigned(Node) do begin
     contact := ListContacts.GetNodeData(Node);
-    if IsContactPhone(contact,Number) then begin
+    if IsContactPhone(contact,Number) or (CheckHistory and IsContactHistoryNumber(contact,Number)) then begin
       Result := GetContactFullName(contact);
       break;
     end;
