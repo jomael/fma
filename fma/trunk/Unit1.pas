@@ -1036,7 +1036,7 @@ type
 
     function GetSMSDeliveryNode(Sender: WideString; CustomRules: WideString = '';
       AllowDefaultArchive: Boolean = True): PVirtualNode;
-    function GetNodeText(Node: PVirtualNode): WideString; 
+    function GetNodeText(Node: PVirtualNode): WideString;
     procedure EditSMSDeliveryRules(Node: PVirtualNode);
 
     procedure ClearExplorerViews;
@@ -10009,7 +10009,7 @@ begin
   sl := TStringList(EData.Data);
   EntryExist := False;
   if not AllowDuplicates then
-    for j := 0 to sl.count-1 do begin
+    for j := 0 to sl.Count-1 do begin
       if AnsiCompareText(GetToken(sl[j],5),PDU) = 0 then begin
         if OverwriteOld then begin
           { Mark message as new depending of AsNew }
@@ -11314,11 +11314,16 @@ begin
 end;
 
 procedure TForm1.DownloadMessages(Node: PVirtualNode);
+const
+  slProcessed  = $01;
 var
-  sl,nl: TStringList;
-  dlg: TfrmConnect;
-  i,NewCount,ModCount: Integer;
+  sl,nl,ml,movedMsgsList: TStringList;
+  updatedNodes: TList;
+  dlg,dlg2: TfrmConnect;
+  i,k,NewCount,ModCount,MovedCount: Integer;
   EData: PFmaExplorerNode;
+  found: boolean;
+
   function FindPDUinList(var AList: TStringList; AType, APDU: String; FixType: boolean): integer;
   var
     i: Integer;
@@ -11346,6 +11351,47 @@ var
       optimizer.Free;
     end;
   end;
+  procedure ApplyDeliveryRulesAndCopyMessage;
+  var
+    DeliveryNode: PVirtualNode;
+    j: integer;
+    who, sender: WideString;
+    sms: TSMS;
+  begin
+    DeliveryNode := FNodeMsgArchive;
+    j := 0;
+    while j < ml.Count do begin
+      sms := TSMS.Create;
+      try
+        sms.PDU := ml[j];
+        if j = 0 then begin
+        { First message part - extract sender information etc. }
+          if sms.Number <> '' then begin
+            who := LookupContact(sms.Number);
+            if who = '' then who := sUnknownContact;
+            sender := who + ' [' + sms.Number + ']';
+            DeliveryNode := GetSMSDeliveryNode(sender);
+          end;
+        end;
+      finally
+        sms.Free;
+      end;
+      inc(j);
+    end;
+    if j = ml.Count then begin
+    // is message complete?
+      for j := 0 to ml.Count-1 do begin
+        { File message part }
+        SaveMsgToFolder(DeliveryNode,ml[j],False,False,False); // put in archive
+        if Assigned(dlg2) then begin
+          dlg2.IncProgress(1);
+          Application.ProcessMessages;
+        end;
+        if updatedNodes.IndexOf(DeliveryNode) = -1 then
+          updatedNodes.Add(DeliveryNode);
+      end;
+    end;
+  end;
 begin
   AskRequestConnection;
   Status(_('Start Sync Text Messages...'));
@@ -11353,6 +11399,7 @@ begin
   frmInfoView.linkGetMessages.Enabled := False;
   NewCount := 0;
   ModCount := 0;
+  MovedCount := 0;
   nl := TStringList.Create;
   dlg := GetProgressDialog;
   try
@@ -11398,16 +11445,62 @@ begin
           DownloadSMS(2,'ME',nl,True); dlg.IncProgress(1);
         end;
     end;
+    Log.AddMessage('Moving deleted messages to FMA Text Folders', lsDebug); // do not localize debug
+    dlg2 := GetProgressDialog;
+    try
+      { move old sl messages to FMA Text Folders}
+      movedMsgsList := TStringList.Create;
+      try
+        i := 0;
+        while i < sl.Count do begin
+          if FindPDUinList(nl, GetToken(sl[i],0), GetToken(sl[i],5), False) = -1 then begin
+            // not needed anymore, msgs will be moved
+            { if GetToken(sl[i],0) <> '3' then begin
+              sl[i] := SetToken(sl[i],'3',0); // 3 = in PC
+            end; }
+            inc(MovedCount); // count of SMS messages no longer in ME/SM
+            movedMsgsList.AddObject(sl[i], nil);
+            sl.Delete(i);
+            Dec(i);
+          end;
+          Inc(i);
+        end;
+        dlg2.Initialize(MovedCount,_('Moving deleted messages to FMA Text Folders'));
+        // group long sms, move to proper folders
+        ml := TStringList.Create;
+        updatedNodes := TList.Create;
+        try
+          i := 0;
+          while i < movedMsgsList.Count do begin
+            if movedMsgsList.Objects[i] = nil then begin
+            { Check if entire message is here (in case of Long SMS) }
+              found := GetSMSMembers(i,movedMsgsList,ml);
+              { Mark parts as processed }
+              for k := 0 to ml.Count-1 do
+                movedMsgsList.Objects[Integer(ml.Objects[k])] := Pointer(slProcessed);
+
+              if found then begin
+                ApplyDeliveryRulesAndCopyMessage;
+              end;
+            end;
+            Inc(i);
+          end;
+          for k := 0 to updatedNodes.Count-1 do begin
+            // update views
+            UpdateNewMessagesCounter(updatedNodes[k]);
+          end;
+        finally
+          updatedNodes.Free;
+          ml.Free;
+        end;
+      finally
+        movedMsgsList.Free;
+      end;
+    finally
+      FreeProgressDialog;
+    end;
     dlg.SetDescr(_('Saving messages data'));
     Log.AddMessage('Saving messages data', lsDebug); // do not localize debug
-    { mark old sl messages as 'in PC only' }
-    for i := 0 to sl.Count-1 do
-      if FindPDUinList(nl, GetToken(sl[i],0), GetToken(sl[i],5), False) = -1 then begin
-        if GetToken(sl[i],0) <> '3' then begin
-          sl[i] := SetToken(sl[i],'3',0); // 3 = in PC
-          inc(ModCount); // count of SMS messages no longer in ME/SM
-        end;
-      end;
     { add new messages to sl }
     for i := 0 to nl.Count-1 do
       if FindPDUinList(sl, GetToken(nl[i],0), GetToken(nl[i],5), True) = -1 then begin
@@ -11415,11 +11508,11 @@ begin
         inc(NewCount);
       end;
     { done }
-    Log.AddSynchronizationMessageFmt(_('%d new and %d modified messages added to FMA by Phone.'),
-      [NewCount, ModCount], lsInformation);
-    i := NewCount + ModCount;
-    Log.AddSynchronizationMessageFmt('Processing folder %s: %d changed, %d skipped messages',
-      [EData.Text, i, sl.Count - ModCount], lsDebug); // do not localize debug
+    Log.AddSynchronizationMessageFmt(_('%d new messages added to FMA by Phone.'),
+      [NewCount], lsInformation);
+    i := NewCount + ModCount; // ModCount will be prolly 0
+    Log.AddSynchronizationMessageFmt('Processing folder %s: %d new, %d moved messages',
+      [EData.Text, i, MovedCount], lsDebug); // do not localize debug
     UpdateNewMessagesCounter(Node);
     { Update view }
     if frmMsgView.Visible and (ExplorerNew.FocusedNode = Node) then

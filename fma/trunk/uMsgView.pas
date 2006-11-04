@@ -497,7 +497,12 @@ begin
       ListMsg.Sort(nil, ListMsg.Header.SortColumn, ListMsg.Header.SortDirection);
       ListMsg.EndUpdate;
       UpdatePropertiesStatus;
-      i := ListMsg.ChildCount[nil];
+      i := 0;
+      Node := ListMsg.GetFirstVisible;
+        while Assigned(Node) do begin
+          Inc(i);
+          Node := ListMsg.GetNextVisible(Node);
+        end;
       Form1.Status(WideFormat(_('%d %s'),[i,ngettext('message','messages',i)]));
     end;
   finally
