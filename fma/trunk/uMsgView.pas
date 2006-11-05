@@ -503,7 +503,7 @@ begin
           Inc(i);
           Node := ListMsg.GetNextVisible(Node);
         end;
-      Form1.Status(WideFormat(_('%d %s'),[i,ngettext('message','messages',i)]));
+      Form1.Status(WideFormat(_('%d %s'),[i,ngettext('message','messages',i)]),False);
     end;
   finally
     Sem := False;

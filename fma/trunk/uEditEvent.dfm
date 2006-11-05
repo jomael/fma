@@ -532,28 +532,28 @@ object frmEditEvent: TfrmEditEvent
       end
       object TntLabel3: TTntLabel
         Left = 8
-        Top = 167
+        Top = 159
         Width = 56
         Height = 13
         Caption = 'Range end:'
       end
       object TntLabel2: TTntLabel
         Left = 8
-        Top = 212
+        Top = 192
         Width = 46
         Height = 13
         Caption = 'End date:'
       end
       object TntLabel1: TTntLabel
         Left = 8
-        Top = 244
+        Top = 224
         Width = 44
         Height = 13
         Caption = 'End time:'
       end
       object TntLabel4: TTntLabel
         Left = 8
-        Top = 288
+        Top = 252
         Width = 57
         Height = 13
         Caption = 'Week days:'
@@ -577,7 +577,7 @@ object frmEditEvent: TfrmEditEvent
       end
       object TntComboBoxRangeEnd: TTntComboBox
         Left = 96
-        Top = 164
+        Top = 156
         Width = 253
         Height = 21
         Style = csDropDownList
@@ -592,7 +592,7 @@ object frmEditEvent: TfrmEditEvent
       end
       object TntDatePickerReccurence: TTntDateTimePicker
         Left = 96
-        Top = 208
+        Top = 188
         Width = 253
         Height = 21
         Date = 38161.606045011600000000
@@ -602,7 +602,7 @@ object frmEditEvent: TfrmEditEvent
       end
       object TntTimePickerReccurence: TTntDateTimePicker
         Left = 96
-        Top = 240
+        Top = 220
         Width = 253
         Height = 21
         Date = 38161.606045011600000000
@@ -613,7 +613,7 @@ object frmEditEvent: TfrmEditEvent
       end
       object TntCheckBox1: TTntCheckBox
         Left = 96
-        Top = 287
+        Top = 251
         Width = 122
         Height = 17
         Caption = 'Monday'
@@ -621,7 +621,7 @@ object frmEditEvent: TfrmEditEvent
       end
       object TntCheckBox2: TTntCheckBox
         Left = 96
-        Top = 307
+        Top = 271
         Width = 122
         Height = 17
         Caption = 'Tuesday'
@@ -629,7 +629,7 @@ object frmEditEvent: TfrmEditEvent
       end
       object TntCheckBox3: TTntCheckBox
         Left = 96
-        Top = 327
+        Top = 291
         Width = 122
         Height = 17
         Caption = 'Wednesday'
@@ -637,7 +637,7 @@ object frmEditEvent: TfrmEditEvent
       end
       object TntCheckBox4: TTntCheckBox
         Left = 96
-        Top = 347
+        Top = 311
         Width = 122
         Height = 17
         Caption = 'Thursday'
@@ -645,7 +645,7 @@ object frmEditEvent: TfrmEditEvent
       end
       object TntCheckBox7: TTntCheckBox
         Left = 228
-        Top = 327
+        Top = 271
         Width = 122
         Height = 17
         Caption = 'Saturday'
@@ -653,15 +653,15 @@ object frmEditEvent: TfrmEditEvent
       end
       object TntCheckBox6: TTntCheckBox
         Left = 228
-        Top = 307
+        Top = 251
         Width = 122
         Height = 17
         Caption = 'Sunday'
         TabOrder = 9
       end
       object TntCheckBox5: TTntCheckBox
-        Left = 228
-        Top = 287
+        Left = 96
+        Top = 331
         Width = 122
         Height = 17
         Caption = 'Friday'

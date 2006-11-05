@@ -11351,7 +11351,7 @@ var
       optimizer.Free;
     end;
   end;
-  procedure ApplyDeliveryRulesAndCopyMessage;
+  procedure ApplyDeliveryRulesAndCopyMessage(var ml: TStringList);
   var
     DeliveryNode: PVirtualNode;
     j: integer;
@@ -11383,13 +11383,9 @@ var
       for j := 0 to ml.Count-1 do begin
         { File message part }
         SaveMsgToFolder(DeliveryNode,ml[j],False,False,False); // put in archive
-        if Assigned(dlg2) then begin
-          dlg2.IncProgress(1);
-          Application.ProcessMessages;
-        end;
-        if updatedNodes.IndexOf(DeliveryNode) = -1 then
-          updatedNodes.Add(DeliveryNode);
       end;
+      if updatedNodes.IndexOf(DeliveryNode) = -1 then // remember changed node
+        updatedNodes.Add(DeliveryNode);
     end;
   end;
 begin
@@ -11480,7 +11476,10 @@ begin
                 movedMsgsList.Objects[Integer(ml.Objects[k])] := Pointer(slProcessed);
 
               if found then begin
-                ApplyDeliveryRulesAndCopyMessage;
+                ApplyDeliveryRulesAndCopyMessage(ml); // ml = entire message's pdus
+                
+                dlg2.IncProgress(ml.Count);
+                Application.ProcessMessages;
               end;
             end;
             Inc(i);
