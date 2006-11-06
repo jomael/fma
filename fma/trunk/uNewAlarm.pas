@@ -39,6 +39,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure AlarmTimerTimer(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
     FAlarmID,FAlertNum: Integer;
@@ -174,6 +175,14 @@ procedure TfrmNewAlarm.CreateEvent(Text: WideString; AlphaBlend,
 begin
   CreateAlarm(Text,AlphaBlend,AlarmID);
   FCreator := aoFMA;
+end;
+
+procedure TfrmNewAlarm.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #27 then
+  begin
+    CloseButtonClick(Self);
+  end;
 end;
 
 end.

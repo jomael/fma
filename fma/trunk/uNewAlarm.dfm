@@ -10,9 +10,11 @@ object frmNewAlarm: TfrmNewAlarm
   Color = clBtnFace
   ParentFont = True
   FormStyle = fsStayOnTop
+  KeyPreview = True
   OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
+  OnKeyPress = FormKeyPress
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
