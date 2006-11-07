@@ -285,9 +285,8 @@ Class Winamp
 	
 	Sub LoadPlaylist()
 		If PluginManager.IsLoaded("FileExplorer") Then
-			'Create a new FileExplorer and browse the playlist folder from the settings
-			Set playlistExplorer = Util.CreateObject("FileExplorer", Self & ".playlistExplorer")
-			playlistExplorer.ShowDir Settings(Me, "PlaylistFolder"), 0
+			'Create FileExplorer and browse the playlist folder from the settings
+			PluginManager("FileExplorer").ShowDir Settings(Me, "PlaylistFolder"), 0
 		Else
 			Debug.ErrorMsg Self & "You will need the FileExplorer plugin to select playlists!"
 		End If
