@@ -289,6 +289,8 @@ Class Winamp
 			PluginManager("FileExplorer").ShowDir Settings(Me, "PlaylistFolder"), 0
 		Else
 			Debug.ErrorMsg Self & "You will need the FileExplorer plugin to select playlists!"
+			Util.DisplayMsgBox "You have to enable FileExplorer plugin to use this feature!", 5, ""
+			am.Update
 		End If
 	End Sub
 	
