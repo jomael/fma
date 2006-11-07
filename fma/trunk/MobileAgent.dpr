@@ -88,7 +88,8 @@ uses
   uPassword in 'uPassword.pas' {frmPassword},
   uImg32Helper in 'uImg32Helper.pas',
   uRegistry in 'uRegistry.pas',
-  uPhoneHistory in 'uPhoneHistory.pas' {frmPhoneHistory};
+  uPhoneHistory in 'uPhoneHistory.pas' {frmPhoneHistory},
+  uMessageData in 'uMessageData.pas';
 
 {$R *.TLB}
 

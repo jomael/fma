@@ -1025,6 +1025,11 @@ type
     function PhoneExists(AName: WideString): boolean;
     function PhoneUnique(AName,AIdentity: WideString): boolean;
 
+    procedure LoadSMSMessages(sl: TStrings; APath: String);
+    procedure SaveSMSMessages(sl: TStrings; APath: String);
+    procedure ClearSMSMessages(sl: TStrings); overload;
+    procedure ClearSMSMessages(Node: PVirtualNode); overload;
+
     function LoadPhoneDataFiles(ID: string = ''; ShowStatus: Boolean = True; ShowProgress: Boolean = False): boolean;
     function OpenPhoneDataFiles(ID: string = ''): boolean;
     procedure DeletePhoneDataFiles(ID: string; Wnd: THandle = 0);
@@ -1256,7 +1261,7 @@ uses
   uFolderProps, Types, uOfflineProfile, uFMASync, uOutlookSync, uPromptConflict, uChooseLink, uLogObserverWriter,
   uOrganizeFavs, uCallContact, uAddToPhonebook, StrUtils, uLogWriters, janXMLParser2, uInputQuery,
   uVBase, uVCalendar, uSplash, uConflictChanges, jclShell, MobileAgent_TLB, UrlMOn, uDialogs, uNewDeviceWizard,
-  uWelcome, LMDGradient, uBrowseFolders, JwaHtmlHelp, uPassword;
+  uWelcome, LMDGradient, uBrowseFolders, JwaHtmlHelp, uPassword, uMessageData;
 
 {$R *.dfm}
 
@@ -5406,15 +5411,15 @@ begin
   FNewMessageList.SaveToFile(Fullpath + 'SMSIncoming.Index.dat'); // do not localize
 
   EData := ExplorerNew.GetNodeData(FNodeMsgInbox);
-  TStrings(EData.Data).SaveToFile(Fullpath + 'SMSInbox.dat'); // do not localize
+  SaveSMSMessages(EData.Data, Fullpath + 'SMSInbox.dat'); // do not localize
   EData := ExplorerNew.GetNodeData(FNodeMsgOutbox);
-  TStrings(EData.Data).SaveToFile(Fullpath + 'SMSOutbox.dat'); // do not localize
+  SaveSMSMessages(EData.Data, Fullpath + 'SMSOutbox.dat'); // do not localize
   EData := ExplorerNew.GetNodeData(FNodeMsgSent);
-  TStrings(EData.Data).SaveToFile(Fullpath + 'SMSSent.dat'); // do not localize
+  SaveSMSMessages(EData.Data, Fullpath + 'SMSSent.dat'); // do not localize
   EData := ExplorerNew.GetNodeData(FNodeMsgArchive);
-  TStrings(EData.Data).SaveToFile(Fullpath + 'SMSArchive.dat'); // do not localize
+  SaveSMSMessages(EData.Data, Fullpath + 'SMSArchive.dat'); // do not localize
   EData := ExplorerNew.GetNodeData(FNodeMsgDrafts);
-  TStrings(EData.Data).SaveToFile(Fullpath + 'SMSDrafts.dat'); // do not localize
+  SaveSMSMessages(EData.Data, Fullpath + 'SMSDrafts.dat'); // do not localize
   EData := ExplorerNew.GetNodeData(FNodeContactsME);
   TStrings(EData.Data).SaveToFile(Fullpath + 'Contacts.ME.dat'); // do not localize
   EData := ExplorerNew.GetNodeData(FNodeContactsSM);
@@ -8422,6 +8427,7 @@ var
   header,pdu: String;
   ml: TStringList;
   AsNew: boolean;
+  md: TFmaMessageData;
 begin
   if frmInfoView.Visible then EBCAState(False); // disable EBCA to avoid unsolicited msg
   if memLocation = 'ME' then memType := 1 // do not localize
@@ -8452,7 +8458,9 @@ begin
             if (ATot > 1) and (An <> 1) then
               AsNew := False;
           end;
-          sl.Add(IntToStr(memType) + ',' + header + ',' + pdu + ',,' + IntToStr(byte(AsNew)));
+          md := TFmaMessageData.Create;
+          md.AsString := IntToStr(memType) + ',' + header + ',' + pdu + ',,' + IntToStr(byte(AsNew));
+          sl.AddObject(md.PDU, md);
         end;
       end;
     finally
@@ -8555,6 +8563,59 @@ begin
   // Reload all data
   if ID = PhoneIdentity then
     LoadPhoneDataFiles(ID);
+end;
+
+procedure TForm1.LoadSMSMessages(sl: TStrings; APath: String); // do not localize
+var
+  md: TFmaMessageData;
+  savedFile: TStrings;
+  j: integer;
+begin
+  savedFile := TStringList.Create;
+  try
+    savedFile.LoadFromFile(APath);
+    for j:=0 to savedFile.Count-1 do begin
+      md := TFmaMessageData.Create(savedFile[j]);
+      sl.AddObject(md.PDU, md);
+    end;
+  finally
+    savedFile.Free;
+  end;
+end;
+
+procedure TForm1.SaveSMSMessages(sl: TStrings; APath: String);
+var
+  i: integer;
+  savedFile: TStrings;
+  md: TFmaMessageData;
+begin
+  savedFile := TStringList.Create;
+  try
+    for i:=0 to sl.Count-1 do begin
+      md := TFmaMessageData(sl.Objects[i]);
+      savedFile.Add(md.AsString);
+    end;
+    savedFile.SaveToFile(APath);
+  finally
+    savedFile.Free;
+  end;
+end;
+
+procedure TForm1.ClearSMSMessages(sl: TStrings);
+var
+  i: integer;
+begin
+  for i:=0 to sl.Count-1 do
+    if Assigned(sl.Objects[i]) then TFmaMessageData(sl.Objects[i]).Free;
+  sl.Clear;
+end;
+
+procedure TForm1.ClearSMSMessages(Node: PVirtualNode);
+var
+  EData: PFmaExplorerNode;
+begin
+  EData := ExplorerNew.GetNodeData(Node);
+  ClearSMSMessages(THashedStringList(EData.Data));
 end;
 
 function TForm1.LoadPhoneDataFiles(ID: string; ShowStatus,ShowProgress: Boolean): boolean;
@@ -8708,7 +8769,7 @@ begin
 
       { Use database in AppData folder? }
       w := GetAppDataPath+'FMA\'+ID+'\dat'; // do not localize
-      if DirectoryExists(w) then Fullpath := w+'\'; 
+      if DirectoryExists(w) then Fullpath := w+'\';
     end;
   end
   else begin
@@ -8910,8 +8971,8 @@ begin
   try
     Log.AddMessage('Database: Loading SMS Inbox', lsDebug); // do not localize debug
     data := ExplorerNew.GetNodeData(FNodeMsgInbox);
-    TStrings(data.Data).Clear;
-    TStrings(data.Data).LoadFromFile(Fullpath + 'SMSInbox.dat'); // do not localize
+    ClearSMSMessages(FNodeMsgInbox);
+    LoadSMSMessages(data.Data, Fullpath + 'SMSInbox.dat'); // do not localize
     UpdateNewMessagesCounter(FNodeMsgInbox);
   except
     Result := False;
@@ -8920,8 +8981,9 @@ begin
   try
     Log.AddMessage('Database: Loading SMS Outbox', lsDebug); // do not localize debug
     data := ExplorerNew.GetNodeData(FNodeMsgOutbox);
-    TStrings(data.Data).Clear;
-    TStrings(data.Data).LoadFromFile(Fullpath + 'SMSOutbox.dat'); // do not localize
+    THashedStringList(data.Data).Clear;
+    ClearSMSMessages(FNodeMsgOutbox);
+    LoadSMSMessages(data.Data, Fullpath + 'SMSOutbox.dat'); // do not localize
     DoCleanupOutbox;
     UpdateNewMessagesCounter(FNodeMsgOutbox);
   except
@@ -8931,8 +8993,8 @@ begin
   try
     Log.AddMessage('Database: Loading SMS Sent Items', lsDebug); // do not localize debug
     data := ExplorerNew.GetNodeData(FNodeMsgSent);
-    TStrings(data.Data).Clear;
-    TStrings(data.Data).LoadFromFile(Fullpath + 'SMSSent.dat'); // do not localize
+    ClearSMSMessages(FNodeMsgSent);
+    LoadSMSMessages(data.Data, Fullpath + 'SMSSent.dat'); // do not localize
     UpdateNewMessagesCounter(FNodeMsgSent);
   except
     Result := False;
@@ -8941,8 +9003,8 @@ begin
   try
     Log.AddMessage('Database: Loading SMS Archive', lsDebug); // do not localize debug
     data := ExplorerNew.GetNodeData(FNodeMsgArchive);
-    TStrings(data.Data).Clear;
-    TStrings(data.Data).LoadFromFile(Fullpath + 'SMSArchive.dat'); // do not localize
+    ClearSMSMessages(FNodeMsgArchive);
+    LoadSMSMessages(data.Data, Fullpath + 'SMSArchive.dat'); // do not localize
     UpdateNewMessagesCounter(FNodeMsgArchive);
   except
     Result := False;
@@ -8951,8 +9013,8 @@ begin
   try
     Log.AddMessage('Database: Loading SMS Drafts', lsDebug); // do not localize debug
     data := ExplorerNew.GetNodeData(FNodeMsgDrafts);
-    TStrings(data.Data).Clear;
-    TStrings(data.Data).LoadFromFile(Fullpath + 'SMSDrafts.dat'); // do not localize
+    ClearSMSMessages(FNodeMsgDrafts);
+    LoadSMSMessages(data.Data, Fullpath + 'SMSDrafts.dat'); // do not localize
     UpdateNewMessagesCounter(FNodeMsgDrafts);
   except
     Result := False;
@@ -9646,11 +9708,10 @@ end;
 
 function TForm1.UpdateNewMessagesCounter(rootNode: PVirtualNode; ModifyPDU: string; MarkAsRead: boolean): integer;
 var
-  cnt,i,stat: integer;
+  cnt,i: integer;
+  stat: boolean;
   sl: TStrings;
-  flag: string;
   data: PFmaExplorerNode;
-  wl: TTntStringList;
   s: WideString;
 begin
   Result := 0;
@@ -9659,46 +9720,27 @@ begin
     exit; // this works only for Text Message folders
 
   cnt := 0;
-  sl := TStrings(data.data);
+  sl := THashedStringList(data.data);
   for i := 0 to sl.Count-1 do begin
-    wl := TTntStringList.Create;
+    if Assigned(sl.Objects[i]) then
     try
-      GetTokenList(wl, sl[i]);
-      if wl.Count < 6 then
-        continue;
-      { Should we upgrade DB? }
-      if wl.Count < 8 then begin
-        if wl.Count = 6 then begin
-          { DB upgrade 0.10.29 build, where count is changed from 6 to 8 }
-          wl.Add(''); // set date field as empty (unknown)
-        end;
-        if wl.Count = 7 then begin
-          wl.Add(IntToStr(byte(not MarkAsRead))); // set the new message flag
-        end;
-        sl[i] := GetTokenListText(wl); // save DB changes
-      end;
       { Counts new messages }
-      try
-        flag := wl[7];
-        stat := StrToInt(flag);
-        if stat <> byte(not MarkAsRead) then begin
-          if AnsiCompareStr(ModifyPDU,wl[5]) = 0 then begin // should we modify the item?
-            wl[7] := IntToStr(byte(not MarkAsRead)); // set the new message flag
-            if not MarkAsRead then inc(cnt);
-            sl[i] := GetTokenListText(wl); // save DB changes
-            continue;
-          end;
-        end;
-        if stat <> 0 then inc(cnt);
-      except
-        Log.AddMessageFmt(_('Database: Error loading data (DB Index %d)'), [i], lsError);
-        if FindCmdLineSwitch('FIXDB') then begin
-          sl[i] := '';
-          Log.AddMessageFmt(_('Database: Removed incorrect data (DB Index: %d)'), [i], lsInformation);
+      stat := TFmaMessageData(sl.Objects[i]).IsNew;
+      if stat then
+        Inc(cnt);
+      if stat <> (not MarkAsRead) then begin
+        if sl[i] = ModifyPDU then begin
+          TFmaMessageData(sl.Objects[i]).IsNew := not MarkAsRead;
+          if not MarkAsRead then Inc(cnt)
+          else Dec(cnt);
         end;
       end;
-    finally
-      wl.Free;
+    except
+      Log.AddMessageFmt(_('Database: Error loading data (DB Index %d)'), [i], lsError);
+      if FindCmdLineSwitch('FIXDB') then begin
+        sl[i] := '';
+        Log.AddMessageFmt(_('Database: Removed incorrect data (DB Index: %d)'), [i], lsInformation);
+      end;
     end;
   end;
   { Update explorer data }
@@ -9958,13 +10000,13 @@ procedure TForm1.SaveMsgToFolder(var rootNode: PVirtualNode; PDU: String; Overwr
   AsNew,UpdateView: boolean; ForceIndex: Integer; ForceDate: TDateTime; AllowDuplicates: Boolean);
 var
   ARef, ATot, An: Integer;
-  flag,buffer: String;
+  buffer: String;
   sms: TSMS;
   EntryExist: Boolean;
-  j: Integer;
   dt: TDateTime;
   sl: TStringList;
   EData: PFmaExplorerNode;
+  md: TFmaMessageData;
 begin
   EData := ExplorerNew.GetNodeData(rootNode);
   if not Assigned(rootNode) or (EData.StateIndex and FmaMessagesRootMask <> FmaMessagesRootFlag) then
@@ -10008,13 +10050,19 @@ begin
   { TODO: Optimize for speed }
   sl := TStringList(EData.Data);
   EntryExist := False;
-  if not AllowDuplicates then
+  if not AllowDuplicates then begin
+    EntryExist := sl.IndexOf(PDU) <> -1;
+    if EntryExist and OverwriteOld then begin
+      md := TFmaMessageData(sl.Objects[sl.IndexOf(PDU)]);
+      md.AsString := buffer; // that should do it
+    end;
+    {
     for j := 0 to sl.Count-1 do begin
       if AnsiCompareText(GetToken(sl[j],5),PDU) = 0 then begin
         if OverwriteOld then begin
-          { Mark message as new depending of AsNew }
+          // Mark message as new depending of AsNew
           buffer := sl[j];
-          { DB upgrade 0.10.29 build, where count is changed from 6 to 8 }
+          // DB upgrade 0.10.29 build, where count is changed from 6 to 8
           if GetTokenCount(buffer) = 6 then
             buffer := buffer + ',"' + DateTimeToStr(dt) + '",' + IntToStr(Byte(AsNew))
           else begin
@@ -10033,9 +10081,12 @@ begin
         EntryExist := True;
         break;
       end;
-    end;
-  if not EntryExist then
-    sl.Add(buffer);
+    end;}
+  end;
+  if not EntryExist then begin
+    md := TFmaMessageData.Create(buffer);
+    sl.AddObject(md.PDU, md);
+  end;
 
   if UpdateView then begin
     UpdateNewMessagesCounter(rootNode);
@@ -10125,7 +10176,7 @@ var
                 { Analize phone response here:
                   <mr>
                   GSM 03.40 TP-Message-Reference in integer format.
-                  <ackpdu> 
+                  <ackpdu>
                   Optionally (when AT+CSMS <service> value is 1 and network supports) "ackpdu" is returned.
                   Values can be used to identify message upon unsolicited delivery status report result code.
                   GSM 03.40 RP-User-Data element of RP-ACK PDU; format is same as for <pdu> in case of SMS,
@@ -10340,16 +10391,17 @@ begin
     exit;
 
   sl := TStringList(data.Data);
-  for j := 0 to sl.count-1 do begin
-    if AnsiCompareText(GetToken(sl[j],5), PDU) = 0 then begin
-      { If deleteing from Outbox, notify and enable Chat window }
-      if UpdateView and (rootNode = FNodeMsgOutbox) then
-        ChatNotifyDel(PDU);
-      { Delete msg }
-      sl.Delete(j);
-      Result := True;
-      break;
-    end;
+
+  // we can use IndexOf
+  j := sl.IndexOf(PDU);
+  if j <> -1 then begin
+    { If deleteing from Outbox, notify and enable Chat window }
+    if UpdateView and (rootNode = FNodeMsgOutbox) then
+      ChatNotifyDel(PDU);
+    { Delete msg }
+    TFmaMessageData(sl.Objects[j]).Free;
+    sl.Delete(j);
+    Result := True;
   end;
 
   if UpdateView and Result then begin
@@ -11322,33 +11374,26 @@ var
   dlg,dlg2: TfrmConnect;
   i,k,NewCount,ModCount,MovedCount: Integer;
   EData: PFmaExplorerNode;
+  md: TFmaMessageData;
   found: boolean;
 
-  function FindPDUinList(var AList: TStringList; AType, APDU: String; FixType: boolean): integer;
+  function FindPDUinList(var AList: TStringList; AType: Integer; APDU: String; FixType: boolean): integer;
   var
     i: Integer;
-    optimizer: TTntStringList;
+    md2: TFmaMessageData;
   begin
-    Result := -1;
-    optimizer := TTntStringList.Create;
-    try
-      for i := 0 to AList.Count-1 do begin
-        GetTokenList(optimizer, AList[i]);
-        if optimizer.Count < 6 then continue;
-        { compare pdu data, if equal compare message type,
-          will be considered as found if message type equals AType OR '3'}
-        if (AnsiCompareStr(APDU, optimizer[5]) = 0) then
-          if (optimizer[0] = AType) or (optimizer[0] = '3') then begin
-            Result := i;
-            if FixType and (optimizer[0] <> AType) then begin
-              AList[i] := SetToken(AList[i],AType,0);
-              inc(ModCount);
-            end;
-            break;
-          end;
-      end;
-    finally
-      optimizer.Free;
+    i := AList.IndexOf(APDU);
+    Result := i;
+    if (i <> -1) then begin
+      md2 := TFmaMessageData(AList.Objects[i]);
+      if (Ord(md2.Location) = AType) or (Ord(md2.Location) = 3) then begin
+        if FixType and (Ord(md2.Location) <> AType) then begin
+          md2.Location := TMessageLocation(AType);
+          Inc(ModCount);
+        end;
+      end
+      else
+        Result := -1;
     end;
   end;
   procedure ApplyDeliveryRulesAndCopyMessage(var ml: TStringList);
@@ -11449,13 +11494,15 @@ begin
       try
         i := 0;
         while i < sl.Count do begin
-          if FindPDUinList(nl, GetToken(sl[i],0), GetToken(sl[i],5), False) = -1 then begin
+          md := TFmaMessageData(sl.Objects[i]);
+          if FindPDUinList(nl, Ord(md.Location), sl[i], False) = -1 then begin
             // not needed anymore, msgs will be moved
             { if GetToken(sl[i],0) <> '3' then begin
               sl[i] := SetToken(sl[i],'3',0); // 3 = in PC
             end; }
             inc(MovedCount); // count of SMS messages no longer in ME/SM
-            movedMsgsList.AddObject(sl[i], nil);
+            movedMsgsList.AddObject(md.AsString, nil);
+            md.Free;
             sl.Delete(i);
             Dec(i);
           end;
@@ -11477,7 +11524,7 @@ begin
 
               if found then begin
                 ApplyDeliveryRulesAndCopyMessage(ml); // ml = entire message's pdus
-                
+
                 dlg2.IncProgress(ml.Count);
                 Application.ProcessMessages;
               end;
@@ -11501,11 +11548,16 @@ begin
     dlg.SetDescr(_('Saving messages data'));
     Log.AddMessage('Saving messages data', lsDebug); // do not localize debug
     { add new messages to sl }
-    for i := 0 to nl.Count-1 do
-      if FindPDUinList(sl, GetToken(nl[i],0), GetToken(nl[i],5), True) = -1 then begin
-        sl.Add(nl[i]);
+    for i := 0 to nl.Count-1 do begin
+    // TODO: -omhr: fix!!!
+      md := TFmaMessageData(nl.Objects[i]);
+      if FindPDUinList(sl, Ord(md.Location), nl[i], True) = -1 then begin
+        sl.AddObject(md.PDU, md);
         inc(NewCount);
-      end;
+      end
+      else // dispose TFmaMessageData object
+        md.Free;
+    end;
     { done }
     Log.AddSynchronizationMessageFmt(_('%d new messages added to FMA by Phone.'),
       [NewCount], lsInformation);
@@ -13645,7 +13697,9 @@ end;
 
 procedure TForm1.LoadUserFoldersData(DBPath: string; ShowUnreadFolders: Boolean);
 var
-  sl,dl,nl: TStringList;
+  sl,dl: TStringList;
+  nl: THashedStringList;
+  md: TFmaMessageData;
   Node: PVirtualNode;
   EData: PFmaExplorerNode;
   NodePath,OldPath,NewPath: WideString;
@@ -13683,7 +13737,7 @@ begin
             DBMigrated := True;
           end;
           Node := FNodeMsgArchive;
-          if MessageDlgW(WideFormat(_('You have to relocate your old folder "%s" under FMA Text Folders.'),[NodePath])+ 
+          if MessageDlgW(WideFormat(_('You have to relocate your old folder "%s" under FMA Text Folders.'),[NodePath])+
             sLineBreak + _('Click OK to select relocate target folder, or Cancel to use FMA Archive instead.'),
             mtWarning, MB_OKCANCEL) = ID_OK then begin
             with TfrmBrowseFolders.Create(nil) do
@@ -13710,7 +13764,7 @@ begin
         { update explorer view }
         if Node = nil then Continue;
         EData := ExplorerNew.GetNodeData(Node);
-        nl := TStringList(EData.Data);
+        nl := EData.Data;
         if RelocateFolder then begin
           { Update Delivery Rules with new relocated path }
           if NewPath <> '' then begin
@@ -13735,10 +13789,12 @@ begin
         end
         else begin
           { don't clear if user is migrating/relocating data }
-          nl.Clear;
+          ClearSMSMessages(nl);
         end;
-        for j := 1 to dl.Count-1 do // ignore Value[0] since it is the 'Path' one
-          nl.Add(dl.Values[dl.Names[j]]);
+        for j := 1 to dl.Count-1 do begin // ignore Value[0] since it is the 'Path' one
+          md := TFmaMessageData.Create(dl.Values[dl.Names[j]]);
+          nl.AddObject(md.PDU, md);
+        end;
         if UpdateNewMessagesCounter(Node) <> 0 then
           if ShowUnreadFolders then
             ExplorerNew.Expanded[Node.Parent] := true;
@@ -13763,7 +13819,7 @@ end;
 procedure TForm1.SaveUserFoldersData(DBPath: string);
 var
   db: TIniFile;
-  sl: TStringList;
+  sl: TStrings;
   i,cnt: Integer;
   procedure SearchUserFolders(Root: PVirtualNode);
   var
@@ -13787,9 +13843,9 @@ var
         NodePath := ExplorerNodePath(itNode,'\',2);
         db.WriteString(s,'Path','\'+WideStringToUTF8String(NodePath)); // do not localize
         { add folder data next }
-        sl := TStringList(EData.Data);
+        sl := THashedStringList(EData.Data);
         for j := 0 to sl.Count-1 do
-          db.WriteString(s,'Line '+IntToStr(j),sl[j]); // do not localize
+          db.WriteString(s,'Line '+IntToStr(j),TFmaMessageData(sl.Objects[j]).AsString); // do not localize
       except
       end;
       itNode := itNode.NextSibling;
@@ -14479,7 +14535,7 @@ begin
       //data.SpecialImages := $3F400041;
       //data.SpecialImagesFlags := $07;
       data.SpecialImagesFlags := $80;
-      data.Data := TStringList.Create;
+      data.Data := THashedStringList.Create;
 
       FNodeMsgSent := ExplorerNew.AddChild(FNodeMsgPhoneRoot);
       data := ExplorerNew.GetNodeData(FNodeMsgSent);
@@ -14489,7 +14545,7 @@ begin
       //data.SpecialImages := $3F400041;
       //data.SpecialImagesFlags := $07;
       data.SpecialImagesFlags := $80;
-      data.Data := TStringList.Create;
+      data.Data := THashedStringList.Create;
 
     FNodeMsgFmaRoot := ExplorerNew.AddChild(root);
     data := ExplorerNew.GetNodeData(FNodeMsgFmaRoot);
@@ -14503,7 +14559,7 @@ begin
       data.ImageIndex := 56;
       data.StateIndex := FmaMessagesFmaRootFlag or $A0000;
       data.SpecialImagesFlags := $80;
-      data.Data := TStringList.Create;
+      data.Data := THashedStringList.Create;
 
       FNodeMsgDrafts := ExplorerNew.AddChild(FNodeMsgFmaRoot);
       data := ExplorerNew.GetNodeData(FNodeMsgDrafts);
@@ -14513,7 +14569,7 @@ begin
       //data.SpecialImages := $3D00003D;
       //data.SpecialImagesFlags := $65;
       data.SpecialImagesFlags := $80;
-      data.Data := TStringList.Create;
+      data.Data := THashedStringList.Create;
 
       FNodeMsgArchive := ExplorerNew.AddChild(FNodeMsgFmaRoot);
       data := ExplorerNew.GetNodeData(FNodeMsgArchive);
@@ -14521,7 +14577,7 @@ begin
       data.ImageIndex := 3;
       data.StateIndex := FmaMessagesFmaRootFlag or $B0000;
       data.SpecialImagesFlags := $80;
-      data.Data := TStringList.Create;
+      data.Data := THashedStringList.Create;
 
     FNodeContactsRoot := ExplorerNew.AddChild(root);
     data := ExplorerNew.GetNodeData(FNodeContactsRoot);

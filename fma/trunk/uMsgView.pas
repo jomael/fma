@@ -210,7 +210,7 @@ type
 implementation
 
 uses
-  gnugettext, gnugettexthelpers, cUnicodeCodecs,
+  gnugettext, gnugettexthelpers, cUnicodeCodecs, uMessageData,
   Unit1, uSMSDetail, uLogger, uInputQuery, uThreadSafe, uMissedCalls, uSyncPhonebook,
   uSMS, uGlobal, uComposeSMS, uConnProgress, WebUtil, uDialogs, uImg32Helper;
 
@@ -358,13 +358,12 @@ const
   Sem: boolean = False;
 var
   i: Integer;
-  sms: TSMS;
   item: PListData;
   Node: PVirtualNode;
-  dt: string;
   Ref, Tot, N: Integer;
   dbfixed: boolean;
-  wl: TTntStringList;
+  md: TFmaMessageData;
+  test: DWord;
 begin
   if Sem then exit;
   Sem := True;
@@ -398,99 +397,89 @@ begin
       if sl <> FRendered then
         FRendered := nil;
       FRenderCanceled := False;
-      wl := TTntStringList.Create;
-      try
-        i := 0;
-        while i < sl.Count do begin
-          if FRenderCanceled then break;
-          GetTokenList(wl, sl[i]);
-          if wl.Count < 6 then begin
-            Inc(i);
-            continue;
-          end;
-          Node := ListMsg.AddChild(nil);
-          try
-            item := ListMsg.GetNodeData(Node);
-            item.pdu := wl[5];
-            item.ownerindex := i;
 
-            sms := Tsms.Create;
-            try
-              sms.PDU := item.pdu;
-
-              item.number := sms.Number;
-              item.from := Form1.ContactNumberByTel(item.number);
-              if sms.IsOutgoing then
-                item.date := 0
-              else
-                item.date := sms.TimeStamp;
-              item.msg := sms.Text;
-
-              item.stateindex := StrToInt(wl[1]) and $FFFF; // index
-
-              dt := wl[0];
-              if StrToInt(dt) = 1 then begin // ME
-                item.ImageIndex := 14;
-                item.StateIndex := item.StateIndex or $600000; // set to 0 shl 16
-              end
-              else if StrToInt(dt) = 2 then begin // SM
-                item.ImageIndex := 15;
-                item.StateIndex := item.StateIndex or $640000; // set to 4 shl 16
-              end
-              else {3} begin // PC
-                if sms.IsOutgoing then item.ImageIndex := 17
-                else item.ImageIndex := 16;
-                item.StateIndex := item.StateIndex or $680000; // set to 8 shl 16
-              end;
-
-              // Direction Bit
-              if sms.IsOutgoing then item.StateIndex := item.StateIndex or $020000
-                else item.StateIndex := item.StateIndex or $010000;
-
-              // New fields in 0.10.29a build
-              try
-                dt := wl[6];
-                if dt <> '' then item.date := StrToDateTime(dt);
-                item.newmsg := StrToInt(wl[7]) <> 0;
-              except
-              end;
-
-              // Long SMS? - show only first SMS message
-              GetLongMsgData(Node, Ref, Tot, N);
-              if (Tot > 1) and (N > 1) then begin
-                ListMsg.IsVisible[Node] := False;
-                if item.newmsg then begin
-                  { Don't set non-first Long SMS part as new flag }
-                  item.newmsg := False;
-                  if FindCmdLineSwitch('FIXDB') then begin
-                    sl[i] := SetToken(sl[i],'0',7);
-                    Log.AddMessageFmt(_('Database: Removed new message flag (DB Index: %d)'), [i], lsInformation);
-                    dbfixed := True;
-                  end;
-                end;
-              end;
-            finally
-              sms.Free;
-            end;
-            if i mod 8 = 0 then begin
-              Application.ProcessMessages;
-              if Application.Terminated then break;
-            end;
-          except
-            ListMsg.DeleteNode(Node);
-            Log.AddMessageFmt(_('Database: Error loading data (DB Index %d)'), [i], lsError);
-            if FindCmdLineSwitch('FIXDB') then begin
-              sl[i] := '';
-              Log.AddMessageFmt(_('Database: Removed incorrect data (DB Index: %d)'), [i], lsInformation);
-              dbfixed := True;
-            end;
-          end;
+      i := 0;
+      test := GetTickCount;
+      while i < sl.Count do begin
+        if FRenderCanceled then break;
+        md := TFmaMessageData(sl.Objects[i]);
+        if md = nil then begin
           Inc(i);
+          continue;
         end;
-      finally
-        wl.Free;
+        Node := ListMsg.AddChild(nil);
+        try
+          item := ListMsg.GetNodeData(Node);
+          item.pdu := sl[i];
+          item.ownerindex := i;
+
+          item.number := md.From;
+          item.from := Form1.ContactNumberByTel(item.number);
+          if md.IsOutgoing then
+            item.date := 0
+          else
+            item.date := md.TimeStamp;
+          item.msg := md.Text;
+
+          item.stateindex := md.MsgIndex and $FFFF; // index
+
+          if Ord(md.Location) = 1 then begin // ME
+            item.ImageIndex := 14;
+            item.StateIndex := item.StateIndex or $600000; // set to 0 shl 16
+          end
+          else if Ord(md.Location) = 2 then begin // SM
+            item.ImageIndex := 15;
+            item.StateIndex := item.StateIndex or $640000; // set to 4 shl 16
+          end
+          else {3} begin // PC
+            if md.IsOutgoing then item.ImageIndex := 17
+            else item.ImageIndex := 16;
+            item.StateIndex := item.StateIndex or $680000; // set to 8 shl 16
+          end;
+
+          // Direction Bit
+          if md.IsOutgoing then item.StateIndex := item.StateIndex or $020000
+          else item.StateIndex := item.StateIndex or $010000;
+
+          // New fields in 0.10.29a build
+          try
+            if md.TimeStamp <> 0 then item.date := md.TimeStamp;
+            item.newmsg := md.IsNew;
+          except
+          end;
+
+          // Long SMS? - show only first SMS message
+          GetLongMsgData(Node, Ref, Tot, N);
+          if (Tot > 1) and (N > 1) then begin
+            ListMsg.IsVisible[Node] := False;
+            if item.newmsg then begin
+              { Don't set non-first Long SMS part as new flag }
+              item.newmsg := False;
+              if FindCmdLineSwitch('FIXDB') then begin
+                md.IsNew := False;
+                Log.AddMessageFmt(_('Database: Removed new message flag (DB Index: %d)'), [i], lsInformation);
+                dbfixed := True;
+              end;
+            end;
+          end;
+
+          if i mod 8 = 0 then begin
+            Application.ProcessMessages;
+            if Application.Terminated then break;
+          end;
+        except
+          ListMsg.DeleteNode(Node);
+          Log.AddMessageFmt(_('Database: Error loading data (DB Index %d)'), [i], lsError);
+          if FindCmdLineSwitch('FIXDB') then begin
+            sl[i] := '';
+            Log.AddMessageFmt(_('Database: Removed incorrect data (DB Index: %d)'), [i], lsInformation);
+            dbfixed := True;
+          end;
+        end;
+        Inc(i);
       end;
       FRendered := sl;
+      Log.AddMessageFmt('Rendering messages took: %d ms', [GetTickCount - test], lsDebug);
     finally
       Animate1.Visible := False;
       Animate1.Active := False;
@@ -777,7 +766,8 @@ var
   UpdateIncoming,UpdateOutgoing: boolean;
   procedure DelNodeFromDBandView;
   begin
-    if AnsiCompareText(GetToken(sl[item.ownerindex],5),item.pdu) = 0 then begin
+    if AnsiCompareText(sl[item.ownerindex],item.pdu) = 0 then begin
+      TFmaMessageData(sl.Objects[item.ownerindex]).Free;
       sl.Delete(item.ownerindex);
       ReindexAfterSMSDeletion(item.ownerindex);
       if prev = ListMsg.FocusedNode then begin
@@ -995,7 +985,7 @@ begin
                     Form1.ChatNotifyDel(item.pdu);
 
                   { Remove message from database }
-                  if AnsiCompareText(GetToken(sl[item.ownerindex],5),item.pdu) = 0 then begin
+                  if AnsiCompareText(sl[item.ownerindex],item.pdu) = 0 then begin
                     if memType <> '' then begin { in phone? }
                       Form1.AskRequestConnection;
                       try
@@ -1004,12 +994,12 @@ begin
                         { silently ignore delete failure - it means message is not in phone anyway }
                       end;
                     end;
+                    TFmaMessageData(sl.Objects[item.ownerindex]).Free;
                     sl.Delete(item.ownerindex);
                     ReindexAfterSMSDeletion(item.ownerindex);
                     { Delete message part from database if its not the first one.
                       The first part will be deleted below in DelNodeFromView call. }
                     if prev <> node then DelNodeFromView;
-                    // mhr said this should be removed - break;
                   end
                   else begin // this should never happen
                     RenderListView(sl);
@@ -1135,6 +1125,7 @@ var
   ImpList: TStringList;
   sl,dl: TStringList;
   data: PFmaExplorerNode;
+  md: TFmaMessageData;
   t,p,str: String;
   i,j,Added,iBody,iDate,iState,iPDU,iNew: integer;
   function IsMultilineBody(s: String): boolean;
@@ -1154,6 +1145,9 @@ var
     sPDU: string;
   begin
     Result := False;
+    if sl.IndexOf(aPDU) <> -1 then
+      Result := True;
+    {
     for i := 0 to sl.Count-1 do begin
       sPDU := GetToken(sl[i], 5);
       if AnsiCompareStr(aPDU,sPDU) = 0 then begin
@@ -1161,6 +1155,7 @@ var
         break;
       end;
     end;
+    }
     for i := 0 to dl.Count-1 do begin
       sPDU := GetToken(dl[i], 5);
       if AnsiCompareStr(aPDU,sPDU) = 0 then begin
@@ -1225,7 +1220,10 @@ begin
     end;
     if Added <> 0 then begin
       { Add changes at once }
-      sl.AddStrings(dl);
+      for i:=0 to dl.Count-1 do begin
+        md := TFmaMessageData.Create(dl[i]);
+        sl.AddObject(md.PDU, md);
+      end;
       Form1.UpdateNewMessagesCounter(Form1.ExplorerNew.FocusedNode);
       RenderListView(sl);
       Log.AddSynchronizationMessage('Imported '+IntToStr(Added)+' item(s)...'); // do not localize debug
@@ -1503,29 +1501,22 @@ var
   item: PListData;
   wl : TTntStringList;
   Ref, Tot, N, i: Integer;
-  procedure OptimizedSMSChange(index: integer; ModifyPDU: WideString; MarkAsRead: boolean);
+  procedure OptimizedSMSChange(index: integer; ModifyPDU: string; MarkAsRead: boolean);
   var
-    s: WideString;
-    flag: string;
-    stat: integer;
+    s: string;
+    md: TFmaMessageData;
   begin
     try
       s := FRendered[index];
-      if ModifyPDU <> GetToken(s,5) then begin // is the index good?
+      if ModifyPDU <> s then begin // is the index good?
         Log.AddMessage('Mark message: Wrong DB index)', lsDebug);
       end
       else
       try
-        flag := GetToken(s,7);
-        stat := StrToInt(flag);
-        if stat <> byte(not MarkAsRead) then begin
-          if ModifyPDU = GetToken(s,5) then begin // should we modify the item?
-            s := Copy(s,1,Length(s)-Length(flag));
-            if MarkAsRead then s := s + '0' // clear new message flag
-            else
-              s := s + '1'; // set the new message flag
-            FRendered[index] := s;
-            Exit;
+        md := TFmaMessageData(FRendered.Objects[index]);
+        if md.IsNew <> (not MarkAsRead) then begin
+          if ModifyPDU = md.PDU then begin // should we modify the item?
+            md.IsNew := not MarkAsRead;
           end;
         end;
       except
@@ -1901,10 +1892,11 @@ procedure TfrmMsgView.CleanupDatabase(Ask,removeDuplicates: boolean);
 var
   sl: TStringList;
   i,j,DelCount, ARef, ATot, An: Integer;
-  APDU,flag: string;
+  APDU: string;
   WasEnabled: Boolean;
   w: WideString;
   sms: TSMS;
+  md: TFmaMessageData;
 begin
   if FRendered = nil then exit;
   if removeDuplicates then
@@ -1931,11 +1923,12 @@ begin
       i := 0;
       DelCount := 0;
       while i < sl.Count do begin
-        APDU := GetToken(sl[i],5);
+        APDU := sl[i];
         { All items up to skippedIndex are already processed for duplicates }
         j := i + 1;
         while j < sl.Count do begin
-          if AnsiCompareStr(APDU,GetToken(sl[j],5)) = 0 then begin
+          if AnsiCompareStr(APDU,sl[j]) = 0 then begin
+            TFmaMessageData(sl.Objects[j]).Free;
             sl.Delete(j);
             Inc(DelCount);
             Log.AddMessageFmt(_('Database: Removed duplicate message (DB Index: %d, Original: %d)'),
@@ -1957,16 +1950,16 @@ begin
       Log.AddMessage('Fix DB: Clearing redundant unread flags...', lsDebug); // do not localize debug
       DelCount := 0;
       for i := 0 to sl.Count-1 do begin
-        APDU := GetToken(sl[i],5);
+        APDU := sl[i];
         GSMLongMsgData(APDU, ARef, ATot, An);
         try
           if (ATot > 1) and (An > 1) then Abort;
           sms.PDU := APDU;
-          if not sms.IsOutgoing then sms.TimeStamp;
+          //if not sms.IsOutgoing then sms.TimeStamp;
         except
-          flag := GetToken(sl[i],7);
-          if flag <> '0' then begin
-            sl[i] := SetToken(sl[i],'0',7); // clear new message flag
+          md := TFmaMessageData(sl.Objects[i]);
+          if md.IsNew then begin
+            md.IsNew := False;
             Inc(DelCount);
             Log.AddMessageFmt(_('Database: Removed new message flag (DB Index: %d)'), [i], lsInformation);
           end;
