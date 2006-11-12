@@ -3094,7 +3094,10 @@ begin
           ExtractName(Names, NumType);
 
           partialNumber := GetPartialNumber(Number);
-          FLookupList.Values[partialNumber] := Names;
+          { ME numbers are always rendered before SM, so better use
+            ME names, because SM names have limitations }
+          if (rootNode = FNodeContactsME) or (FLookupList.IndexOfName(partialNumber) = -1) then
+            FLookupList.Values[partialNumber] := Names;
 
           if tracker.IndexOf(Names) = -1 then begin
             nameNode := ExplorerNew.AddChild(rootNode);
