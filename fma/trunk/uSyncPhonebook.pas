@@ -431,6 +431,8 @@ end;
 function vCard2Contact(VCard: TVCard; contact: PContactData): boolean;
 var
   sl: TTntStringList;
+  graphicFile: TTntFileStream;
+  graphicFileName: WideString;
 begin
   Result := True;
   FillChar(contact^,SizeOf(contact^),0);
@@ -474,6 +476,24 @@ begin
     SetContactNotes(contact,sl);
   finally
     sl.Free;
+  end;
+  if Assigned(VCard.Photo) then begin
+    if not WideDirectoryExists(Form1.GetProfilePath+'pic') then
+      WideCreateDir(Form1.GetProfilePath+'pic');
+    // TODO: check if DisplayName doesn't contain unallowed filename chars
+    graphicFileName := Form1.GetProfilePath+'pic\'+VCard.FullName;
+    graphicFileName := RemoveUnsafeChars(graphicFileName);
+    case VCard.PhotoType of
+      1: graphicFileName := graphicFileName + '.gif';
+      2: graphicFileName := graphicFileName + '.jpg';
+    end;
+    graphicFile := TTntFileStream.Create(graphicFileName, fmCreate);
+    try
+      VCard.Photo.SaveToStream(graphicFile);
+      contact^.picture := WideExtractFileName(graphicFileName);
+    finally
+      graphicFile.Free;
+    end;
   end;
   contact^.Modified := VCard.ModifiedDate;
 end;

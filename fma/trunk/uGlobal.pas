@@ -23,6 +23,7 @@ const
   EmptyDate = 949998; // for Outlook compatability
 
 function IsEmptyDate(ADate: TDateTime): boolean;
+function RemoveUnsafeChars(s: WideString): WideString;
 
 function WideConcatList(Left,Right: WideString; delimiter: WideString = ''): WideString;
 
@@ -51,6 +52,7 @@ procedure GetTokenList(AList: TTntStrings; str: WideString; delimiter: WideChar 
 { Returns all tokens in wl List as a flat-wide-string, and quotes them if needed }
 function GetTokenListText(wl: TTntStringList; delimiter: WideChar = ','): WideString;
 
+
 implementation
 
 uses
@@ -60,7 +62,26 @@ uses
 function IsEmptyDate(ADate: TDateTime): boolean;
 begin
   Result := Trunc(ADate) = EmptyDate;
-end;  
+end;
+
+function RemoveUnsafeChars(s: WideString): WideString;
+var
+  i: integer;
+begin
+  // http://msdn.microsoft.com/library/default.asp?url=/library/en-us/fileio/fs/naming_a_file.asp
+  i := 1;
+  while i <= Length(s) do begin
+    case s[i] of
+      '<', '>', ':', '/', '\', '|': s[i] := '-';
+      #1..#31, '"': begin
+        Delete(s, i, 1);
+        Dec(i);
+      end;
+    end;
+    Inc(i);
+  end;
+  Result := s;
+end;
 
 (* Unicode *)
 

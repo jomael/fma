@@ -11307,16 +11307,10 @@ begin
 end;
 
 function TForm1.ExtractPhoneIdentity(var Model, Serial: string): string;
-  function RemoveUnsafeChars(var s: string): string;
-  begin
-    s := StringReplace(s,'"','',[rfReplaceAll]);
-    s := StringReplace(s,':','-',[rfReplaceAll]);
-    s := StringReplace(s,'\','-',[rfReplaceAll]); { Remove "\" char which is invalid for Text Folders and OS paths } 
-    s := StringReplace(s,'/','-',[rfReplaceAll]);
-    Result := s;
-  end;
 begin
-  Result := Format('%s [%s]',[RemoveUnsafeChars(model),RemoveUnsafeChars(serial)]);
+  Model := RemoveUnsafeChars(Model);
+  Serial := RemoveUnsafeChars(Serial);
+  Result := Format('%s [%s]',[Model,Serial]);
 end;
 
 function TForm1.GetPhoneIdentity: string;
