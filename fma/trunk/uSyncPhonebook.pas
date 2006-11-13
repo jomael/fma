@@ -481,12 +481,11 @@ begin
     if not WideDirectoryExists(Form1.GetProfilePath+'pic') then
       WideCreateDir(Form1.GetProfilePath+'pic');
     graphicFileName := Form1.GetProfilePath+'pic\';
-    if VCard.LUID <> '' then
-      graphicFileName := graphicFileName + VCard.LUID
-    else
-      graphicFileName := graphicFileName + VCard.FullName;
     // check if DisplayName doesn't contain unallowed filename chars
-    graphicFileName := RemoveUnsafeChars(graphicFileName);
+    if VCard.LUID <> '' then
+      graphicFileName := graphicFileName + RemoveUnsafeChars(VCard.LUID)
+    else
+      graphicFileName := graphicFileName + RemoveUnsafeChars(VCard.FullName);
     case VCard.PhotoType of
       1: graphicFileName := graphicFileName + '.gif';
       2: graphicFileName := graphicFileName + '.jpg';
