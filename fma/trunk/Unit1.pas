@@ -1501,7 +1501,7 @@ begin
     memo2.Lines.Add('Email = ' + vcard.email  ); // do not localize
     memo2.Lines.Add('XLUID = ' + vcard.LUID ); // do not localize
     if vcard.Photo <> nil then begin
-      Image.Picture.Graphic.Assign(vcard.Photo);
+      Image.Picture.Assign(vCard.Photo);
     end;
   finally
     vCard.free;
