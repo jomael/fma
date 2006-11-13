@@ -1025,9 +1025,9 @@ type
     function PhoneExists(AName: WideString): boolean;
     function PhoneUnique(AName,AIdentity: WideString): boolean;
 
-    procedure LoadSMSMessages(sl: TStrings; APath: String);
-    procedure SaveSMSMessages(sl: TStrings; APath: String);
-    procedure ClearSMSMessages(sl: TStrings); overload;
+    procedure LoadSMSMessages(sl: THashedStringList; APath: String);
+    procedure SaveSMSMessages(sl: THashedStringList; APath: String);
+    procedure ClearSMSMessages(sl: THashedStringList); overload;
     procedure ClearSMSMessages(Node: PVirtualNode); overload;
 
     function LoadPhoneDataFiles(ID: string = ''; ShowStatus: Boolean = True; ShowProgress: Boolean = False): boolean;
@@ -2390,7 +2390,7 @@ begin
 
   // hide call dialog
   if Assigned(frmCalling) and frmCalling.IsCreated then
-    frmCalling.CloseCall;
+    frmCalling.Close;
 
   // hide alarm dialog
   if Assigned(frmNewAlarm) and frmNewAlarm.Visible then
@@ -4129,7 +4129,7 @@ begin
         Status(WideFormat(_('Call ended (%s)'), [frmCalling.lblTime.Caption]));
         frmCalling.IsCalling := False;
         frmCalling.IsTalking := False;
-        frmCalling.CloseCall;
+        frmCalling.Close;
       end
     else begin
       frmCalling.Caption := ccsDesc[ccstatus];
@@ -8568,7 +8568,7 @@ begin
     LoadPhoneDataFiles(ID);
 end;
 
-procedure TForm1.LoadSMSMessages(sl: TStrings; APath: String); // do not localize
+procedure TForm1.LoadSMSMessages(sl: THashedStringList; APath: String);
 var
   md: TFmaMessageData;
   savedFile: TStrings;
@@ -8577,7 +8577,7 @@ begin
   savedFile := TStringList.Create;
   try
     savedFile.LoadFromFile(APath);
-    for j:=0 to savedFile.Count-1 do begin
+    for j := 0 to savedFile.Count-1 do begin
       md := TFmaMessageData.Create(savedFile[j]);
       sl.AddObject(md.PDU, md);
     end;
@@ -8586,7 +8586,7 @@ begin
   end;
 end;
 
-procedure TForm1.SaveSMSMessages(sl: TStrings; APath: String);
+procedure TForm1.SaveSMSMessages(sl: THashedStringList; APath: String);
 var
   i: integer;
   savedFile: TStrings;
@@ -8594,7 +8594,7 @@ var
 begin
   savedFile := TStringList.Create;
   try
-    for i:=0 to sl.Count-1 do begin
+    for i := 0 to sl.Count-1 do begin
       md := TFmaMessageData(sl.Objects[i]);
       savedFile.Add(md.AsString);
     end;
@@ -8604,12 +8604,15 @@ begin
   end;
 end;
 
-procedure TForm1.ClearSMSMessages(sl: TStrings);
+procedure TForm1.ClearSMSMessages(sl: THashedStringList);
 var
   i: integer;
 begin
-  for i:=0 to sl.Count-1 do
-    if Assigned(sl.Objects[i]) then TFmaMessageData(sl.Objects[i]).Free;
+  for i := 0 to sl.Count-1 do
+    if Assigned(sl.Objects[i]) then begin
+      TFmaMessageData(sl.Objects[i]).Free;
+      sl.Objects[i] := nil;
+    end;
   sl.Clear;
 end;
 
@@ -9466,7 +9469,7 @@ begin
               ScriptEvent('OnConnectionLost', []); // do not localize
               Status(_('Connection: Lost!'));
               if Assigned(frmCalling) and frmCalling.IsCreated then
-                frmCalling.CloseCall;
+                frmCalling.Close;
               if Assigned(frmNewAlarm) and frmNewAlarm.Visible then
                 frmNewAlarm.Close;
               { TODO: Close new messages dialogs? }
@@ -9713,7 +9716,7 @@ function TForm1.UpdateNewMessagesCounter(rootNode: PVirtualNode; ModifyPDU: stri
 var
   cnt,i: integer;
   stat: boolean;
-  sl: TStrings;
+  sl: THashedStringList;
   data: PFmaExplorerNode;
   s: WideString;
 begin
@@ -11549,7 +11552,7 @@ begin
     // TODO: -omhr: fix!!!
       md := TFmaMessageData(nl.Objects[i]);
       if FindPDUinList(sl, Ord(md.Location), nl[i], True) = -1 then begin
-        sl.AddObject(md.PDU, md);
+        sl.AddObject(nl[i], md);
         inc(NewCount);
       end
       else // dispose TFmaMessageData object
@@ -13816,7 +13819,7 @@ end;
 procedure TForm1.SaveUserFoldersData(DBPath: string);
 var
   db: TIniFile;
-  sl: TStrings;
+  sl: THashedStringList;
   i,cnt: Integer;
   procedure SearchUserFolders(Root: PVirtualNode);
   var
@@ -13858,7 +13861,7 @@ begin
   db := TIniFile.Create(DBPath + 'UserFolders.dat');
   try
     { clear old data }
-    sl := TStringList.Create;
+    sl := THashedStringList.Create;
     try
       db.ReadSections(sl);
       for i := 0 to sl.Count-1 do

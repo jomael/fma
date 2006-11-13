@@ -342,7 +342,7 @@ begin
   Height := Constraints.MinHeight;
   FCreated := True;
   if not Popup then exit;
-  { Show window but not activate it }
+  { Show window but not activate it --- if using this CLOSE is not working!!!
   SetWindowPos(Handle, HWND_TOPMOST,
     Left, Top, Width, Height,
     SWP_NOACTIVATE or SWP_NOSIZE);
@@ -353,6 +353,9 @@ begin
   ShowWindow(Memo.Handle,SW_SHOWNOACTIVATE);
   ShowWindow(ImagePanel.Handle,SW_SHOWNOACTIVATE);
   ShowWindow(Image32.Handle,SW_SHOWNOACTIVATE);
+  }
+  Show;
+  Update;
 end;
 
 procedure TfrmCalling.FormCreate(Sender: TObject);

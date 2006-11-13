@@ -179,8 +179,7 @@ end;
 
 procedure TfrmNewAlarm.FormKeyPress(Sender: TObject; var Key: Char);
 begin
-  if Key = #27 then
-  begin
+  if Key = #27 then begin
     CloseButtonClick(Self);
   end;
 end;

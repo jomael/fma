@@ -371,7 +371,7 @@ begin
   edSearchFor.Text := '';
   try
     if sl.Count <> 0 then NoItemsPanel.Visible := False;
-    if sl.Count > 20 then begin // show a message to user on large folder
+    if sl.Count > 99 then begin // show a message to user on large folder
       Form1.Status(_('Building messages list, please wait...'),False);
       Animate1.Top := ListMsg.Top + (ListMsg.Height - Animate1.Height) div 2 + 32;
       Animate1.Color := ColorToRGB(clWindow);
@@ -1220,7 +1220,7 @@ begin
     end;
     if Added <> 0 then begin
       { Add changes at once }
-      for i:=0 to dl.Count-1 do begin
+      for i := 0 to dl.Count-1 do begin
         md := TFmaMessageData.Create(dl[i]);
         sl.AddObject(md.PDU, md);
       end;
