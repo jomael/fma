@@ -41,6 +41,7 @@ type
     FDecoded: boolean;
     FText: WideString;
     FFrom: string;
+    ARef, ATot, An: integer;
   protected
     procedure SetPDU(const NewPDU: string); override;
     procedure SetString(const AData: string); override;
@@ -48,10 +49,20 @@ type
     function GetSMSFrom: string;
     function GetOutgoing: boolean; override;
     function GetTimeStamp: TDateTime; override;
+    function GetIsLongSMS: boolean;
+    function GetIsLongFirst: boolean;
+    function GetARef: integer;
+    function GetATot: integer;
+    function GetAN: integer;
     procedure DecodeSMS;
   public
     property Text: WideString read GetSMSText;
     property From: string read GetSMSFrom;
+    property IsLong: boolean read GetIsLongSMS;
+    property IsLongFirst: boolean read GetIsLongFirst;
+    property Reference: integer read GetARef;
+    property Total: integer read GetATot;
+    property MsgNum: integer read GetAN;
     constructor Create(const AData: string = '');
   end;
 
@@ -215,10 +226,47 @@ begin
   Result := FTimeStamp;
 end;
 
+function TFmaMessageData.GetIsLongSMS: boolean;
+begin
+  if (not FDecoded) then
+    DecodeSMS;
+  Result := ATot > 1;
+end;
+
+function TFmaMessageData.GetIsLongFirst: boolean;
+begin
+  if (not FDecoded) then
+    DecodeSMS;
+  Result := (ATot > 1) and (An = 1);
+end;
+
+function TFmaMessageData.GetARef: integer;
+begin
+  if (not FDecoded) then
+    DecodeSMS;
+  Result := ARef;
+end;
+
+function TFmaMessageData.GetATot: integer;
+begin
+  if (not FDecoded) then
+    DecodeSMS;
+  Result := ATot;
+end;
+
+function TFmaMessageData.GetAN: integer;
+begin
+  if (not FDecoded) then
+    DecodeSMS;
+  Result := An;
+end;
+
 procedure TFmaMessageData.DecodeSMS;
 var
   sms: TSMS;
   dateTime: TDateTime;
+  UDHI: string;
+  pos, octet, udhil: Integer;
 begin
   if FPDU = '' then
     raise Exception.Create('Invalid Message PDU!');
@@ -232,6 +280,30 @@ begin
     if dateTime <> 0 then
       FTimeStamp := dateTime;
     FOutgoing := sms.IsOutgoing;
+    // decode Long Msg Info
+    ARef := -1; ATot := -1; An := -1;
+    if sms.IsUDH then begin
+      UDHI := sms.UDHI;
+      udhil := StrToInt('$' + copy(UDHI, 1, 2));
+      //ANALIZE UDHI
+      UDHI := Copy(UDHI, 3, length(UDHI));
+      while UDHI <> '' do begin
+        //Get the octet for type
+        octet := StrToInt('$' + Copy(UDHI, 1, 2));
+        UDHI := Copy(UDHI, 3, length(UDHI));
+        case octet of
+          0: begin //SMS CONCATENATION
+               ARef := StrToInt('$' + Copy( UDHI, 3, 2));
+               ATot := StrToInt('$' + Copy( UDHI, 5, 2));
+               An := StrToInt('$' + Copy( UDHI, 7, 2));
+             end;
+        else begin
+               pos := udhil + 1;
+               UDHI := Copy(UDHI, pos * 2 + 1, length(UDHI));
+             end;
+        end;
+      end;
+    end;
   finally
     sms.Free;
     FDecoded := True;

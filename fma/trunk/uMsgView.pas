@@ -194,7 +194,7 @@ type
     procedure DeleteSelected(Ask: boolean = True);
     procedure CleanupDatabase(Ask: boolean = True; removeDuplicates: boolean = True);
 
-    procedure GetLongMsgData(Node: PVirtualNode; var ARef, ATot, An: Integer);
+    procedure GetLongMsgData(Node: PVirtualNode; var ARef, ATot, An: Integer; AList: TStrings = nil);
 
     function IsRendered(const sl: TStrings): boolean;
     function IsLongSMSNode(ANode: PVirtualNode): boolean;
@@ -449,7 +449,7 @@ begin
           end;
 
           // Long SMS? - show only first SMS message
-          GetLongMsgData(Node, Ref, Tot, N);
+          GetLongMsgData(Node, Ref, Tot, N, sl);
           if (Tot > 1) and (N > 1) then begin
             ListMsg.IsVisible[Node] := False;
             if item.newmsg then begin
@@ -1220,7 +1220,7 @@ begin
     end;
     if Added <> 0 then begin
       { Add changes at once }
-      for i := 0 to dl.Count-1 do begin
+      for i:=0 to dl.Count-1 do begin
         md := TFmaMessageData.Create(dl[i]);
         sl.AddObject(md.PDU, md);
       end;
@@ -1242,15 +1242,21 @@ begin
   FCustomImage := Value;
 end;
 
-procedure TfrmMsgView.GetLongMsgData(Node: PVirtualNode; var ARef, ATot, An: Integer);
+procedure TfrmMsgView.GetLongMsgData(Node: PVirtualNode; var ARef, ATot, An: Integer; AList: TStrings = nil);
 var
   item: PListData;
+  md: TFmaMessageData;
 begin
+  if AList = nil then AList := FRendered;
   ARef := -1; ATot := -1; An := -1;
   if Assigned(Node) then begin
     item := ListMsg.GetNodeData(Node);
-    if Assigned(item) then
-      GSMLongMsgData(item.pdu, ARef, ATot, An);
+    if Assigned(item) then begin
+      md := TFmaMessageData(AList.Objects[item.ownerindex]);
+      ARef := md.Reference;
+      ATot := md.Total;
+      An := md.MsgNum;
+    end;
   end;
 end;
 
@@ -1369,18 +1375,30 @@ end;
 
 function TfrmMsgView.IsLongSMSNode(ANode: PVirtualNode): boolean;
 var
-  Ref, Tot, N: Integer;
+  item: PListData;
+  md: TFmaMessageData;
 begin
-  GetLongMsgData(ANode, Ref, Tot, N);
-  Result := Tot > 1;
+  Result := False;
+  if not Assigned(ANode) then Exit;
+  item := ListMsg.GetNodeData(ANode);
+  if Assigned(item) then begin
+    md := TFmaMessageData(FRendered.Objects[item.ownerindex]);
+    Result := md.IsLong;
+  end;
 end;
 
 function TfrmMsgView.IsLongSMSFirstNode(ANode: PVirtualNode): boolean;
 var
-  Ref, Tot, N: Integer;
+  item: PListData;
+  md: TFmaMessageData;
 begin
-  GetLongMsgData(ANode, Ref, Tot, N);
-  Result := (Tot > 1) and (N = 1);
+  Result := False;
+  if not Assigned(ANode) then Exit;
+  item := ListMsg.GetNodeData(ANode);
+  if Assigned(item) then begin
+    md := TFmaMessageData(FRendered.Objects[item.ownerindex]);
+    Result := md.IsLongFirst;
+  end;
 end;
 
 function TfrmMsgView.FindSMS(APDU: string): PVirtualNode;
@@ -1506,24 +1524,20 @@ var
     s: string;
     md: TFmaMessageData;
   begin
+    s := FRendered[index];
+    if ModifyPDU <> s then begin // is the index good?
+      Log.AddMessage('Mark message: Wrong DB index)', lsDebug);
+    end
+    else
     try
-      s := FRendered[index];
-      if ModifyPDU <> s then begin // is the index good?
-        Log.AddMessage('Mark message: Wrong DB index)', lsDebug);
-      end
-      else
-      try
-        md := TFmaMessageData(FRendered.Objects[index]);
-        if md.IsNew <> (not MarkAsRead) then begin
-          if ModifyPDU = md.PDU then begin // should we modify the item?
-            md.IsNew := not MarkAsRead;
-          end;
+      md := TFmaMessageData(FRendered.Objects[index]);
+      if md.IsNew <> (not MarkAsRead) then begin
+        if ModifyPDU = md.PDU then begin // should we modify the item?
+          md.IsNew := not MarkAsRead;
         end;
-      except
-        Log.AddMessageFmt(_('Database: Error loading data (DB Index %d)'), [index], lsError);
       end;
     except
-      Log.AddMessage('Mark message: Wrong DB index)', lsDebug);
+      Log.AddMessageFmt(_('Database: Error loading data (DB Index %d)'), [index], lsError);
     end;
   end;
 begin
