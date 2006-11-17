@@ -155,7 +155,11 @@ begin
      end
   end;
   if btnLongSMS.Down then begin
-     packetL := (FMaxLength - 7 + 4*byte(FDCS = gcs16bitUcs2) );
+     case FDCS of
+       gcsDefault7Bit:packetL := (FMaxLength - 7); { 160 septets - UDH (6 octets+padding) }
+       gcs8BitOctets: packetL := (FMaxLength - 6); { 140 octets - UDH (6 octets) }
+       gcs16bitUcs2:  packetL := (FMaxLength - 3); { 140 octets (70widechars) - UDH (6 octets) }
+     end;
      len := length(Memo.Text);
      packetCount := (len div packetL) + 1;
      if len <= FMaxLength then packetCount := 1;
@@ -428,7 +432,13 @@ begin
 
     if btnLongSMS.Down and (Length(Text) > FMaxLength) then begin
        //sending Long SMS...
-       packetL := (FMaxLength - 7 + 4*byte(FDCS = gcs16bitUcs2) );
+       case FDCS of
+         gcsDefault7Bit:packetL := (FMaxLength - 7); { 160 septets - UDH (6 octets+padding) }
+         gcs8BitOctets: packetL := (FMaxLength - 6); { 140 octets - UDH (6 octets) }
+         gcs16bitUcs2:  packetL := (FMaxLength - 3); { 140 octets (70widechars) - UDH (6 octets) }
+       else
+         Abort;
+       end;
        smstot := IntToHex((length(Text) div packetL) + 1, 2);
        //for all recepients...
        for i := 0 to sl.Count - 1 do begin

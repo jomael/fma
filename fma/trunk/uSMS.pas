@@ -931,14 +931,14 @@ begin
     }
     if FIsUDH then begin
       UDHILength := StrToInt('$' + copy(FPDU, startpos + 2, 2));
-      UDHnull := ''; 
+      UDHnull := '';
 
       FUDHI := copy(FPDU, startpos + 2, UDHILength * 2 + 2);
 
       //Replace UDH with NULL chars
       for i:=0 to UDHILength do
         UDHnull := UDHnull + '00';
-        
+
       Delete(FPDU,startpos + 2,UDHILength * 2 + 2);
       Insert(UDHNull,FPDU,startpos + 2);
       //FPDU := AnsiReplaceStr(FPDU, FUDHI, UDHNull);
@@ -963,29 +963,32 @@ begin
     else
     if FDataCoding = 1 then begin
        // here FMessageLength contains numbers of octets (encoded bytes)
-       str := copy(FPDU, startpos + 2, (FMessageLength)*2);
+       if FIsUDH then
+         str := copy(FPDU, startpos + (UDHIlength+1)*2 + 2, (FMessageLength)*2)
+       else
+         str := copy(FPDU, startpos + 2, (FMessageLength)*2);
 
        //Result := Get8bit(str);
        Result := GSMDecode8Bit(str);
 
-       if FIsUDH then
-         Result := Copy(Result, ((UDHILength div 7) + UDHILength + 2) + 1, Length(Result));
+       {if FIsUDH then
+         Result := Copy(Result, UDHILength + 1, Length(Result));}
     end
     else
     if FDataCoding = 2 then begin
        // here FMessageLength contains numbers of octets (encoded bytes)
-       str := copy(FPDU, startpos + 2, (FMessageLength)*2);
+       if FIsUDH then
+         str := copy(FPDU, startpos + (UDHIlength+1)*2 + 2, (FMessageLength)*2)
+       else
+         str := copy(FPDU, startpos + 2, (FMessageLength)*2);
 
        //Result := GetUCS2(str);
        Result := GSMDecodeUcs2(str);
 
-       if FIsUDH then begin
+       {if FIsUDH then begin
          i := ((UDHILength + 1) mod 4) + 2;
-         { mhr: This seem to fix problem with decoding some long UCS2 messages
-           TODO: approve, based on debug only}
-         //if UDHIlength = 0 then Inc(i);
          Result := Copy(Result, i, Length(Result));
-       end;
+       end;}
     end
     else Result := _('(Unsupported: Unknown coding scheme)');
 
@@ -1057,7 +1060,7 @@ begin
          udhl := StrToInt('$' + Copy(FUDHI,1,2));
          udhl := (udhl div 7) + udhl + 2;
          for i := 0 to udhl - 1 do begin
-            AMessage := '@' + AMessage; 
+            AMessage := '@' + AMessage;
          end;
       end;
       {
@@ -1081,15 +1084,16 @@ begin
       pduMsg  := GSMEncode7Bit(AMessage);
       pduMsgL := IntToHex(GSMLength7Bit(AMessage), 2); // number of septets (see above)
       pduDCS  := '00'; { see Data Coding Scheme below }
+
+      { Remove excessive 7-bit padding }
+      if FUDHI <> '' then
+         pduMsg := Copy(pduMsg, (udhl-1) * 2 + 1, length(pduMsg));
     end
     else
     if dcs = gcs8BitOctets then begin // 8-bit coding
       if FUDHI <> '' then begin
          udhl := StrToInt('$' + Copy(FUDHI,1,2));
-         udhl := (udhl div 7) + udhl + 2;
-         for i := 0 to udhl - 1 do begin
-            AMessage := '@' + AMessage; 
-         end;
+         udhl := udhl + 1;
       end;
       {
       for i := 1 to length(AMessage) do begin
@@ -1097,18 +1101,14 @@ begin
       end;
       }
       pduMsg  := GSMEncode8Bit(AMessage);
-      pduMsgL := IntToHex(length(pduMsg) div 2,2); // number of octets
+      pduMsgL := IntToHex((length(pduMsg) div 2) + udhl,2); // number of octets
       pduDCS  := '04'; { see Data Coding Scheme below }
     end
     else
     if dcs = gcs16bitUcs2 then begin // UCS2 Coding
       if FUDHI <> '' then begin
          udhl := StrToInt('$' + Copy(FUDHI,1,2));
-         udhl := ((udhl + 1) mod 4) + 1; { TODO: ??? check this formulae!!! }
-         for i := 0 to udhl - 1 do begin
-            AMessage := '@' + AMessage; 
-         end;
-         udhl := udhl*2 + 1; // adjust udhl according to UCS2 coding 
+         udhl := udhl + 1;
       end;
       {
       for i := 1 to length(AMessage) do begin
@@ -1116,7 +1116,7 @@ begin
       end;
       }
       pduMsg  := GSMEncodeUcs2(AMessage);
-      pduMsgL := IntToHex(length(pduMsg) div 2,2); // number of octets
+      pduMsgL := IntToHex((length(pduMsg) div 2) + udhl,2); // number of octets
       pduDCS  := '08'; { see Data Coding Scheme below }
     end
     else
@@ -1126,8 +1126,6 @@ begin
     { Have a message class meaning Class 0 Immediate display (alert) }
     if FFlashSMS then code := code or $10;
     pduDCS := IntToHex(code, 2);
-    if FUDHI <> '' then
-       pduMsg := Copy(pduMsg, (udhl-1) * 2 + 1, length(pduMsg));
 
     { If the “len“ field is set to Zero then use the default value of the Service Centre address set by
       the AT+CSCA command }
@@ -1148,7 +1146,7 @@ begin
            1    0     SMS-COMMAND (MS ==> SMSC)
            1    1     Reserved }
     pduFirst :=  '11'; // hex
-    head := StrToInt('$' + pduFirst); 
+    head := StrToInt('$' + pduFirst);
     { SRR  bit5
            0          A status report is not requested
            1          A status report is requested }
