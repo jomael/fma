@@ -358,21 +358,23 @@ begin
     Value := Value + '0';
   for i := 0 to (Length(Value) div 2) - 1 do begin
     Octet := StrToInt('$' + copy(Value, (i*2)+1, 2));
-    Result := Result + Chr(Octet);
+    Result := Result + WideChar(Octet);
   end;
 end;
 
 function GSMEncode8Bit(const Value: WideString): string;
 var
   i,j: integer;
-  text: AnsiString;
+  w: word;
   Octet: string;
 begin
   Result := '';
-  text := Value;
-  j := length(text);
+  j := length(Value);
+  // all WideChars must be less than 256
   for i := 1 to j do begin
-    Octet := IntToHex(Ord(text[i]),2);
+    w := Ord(Value[i]);
+    if w > MAXBYTE then raise Exception.Create('Unable to use 8bit encoding!');
+    Octet := IntToHex(w,2);
     Result := Result + Octet;
   end;
 end;
