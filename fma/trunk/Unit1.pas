@@ -10005,7 +10005,7 @@ end;
 procedure TForm1.SaveMsgToFolder(var rootNode: PVirtualNode; PDU: String; OverwriteOld,
   AsNew,UpdateView: boolean; ForceIndex: Integer; ForceDate: TDateTime; AllowDuplicates: Boolean);
 var
-  ARef, ATot, An: Integer;
+  ARef, ATot, An, Idx: Integer;
   buffer: String;
   sms: TSMS;
   EntryExist: Boolean;
@@ -10054,12 +10054,13 @@ begin
   end;
 
   { TODO: Optimize for speed }
-  sl := TStringList(EData.Data);
+  sl := THashedStringList(EData.Data);
   EntryExist := False;
   if not AllowDuplicates then begin
-    EntryExist := sl.IndexOf(PDU) <> -1;
+    Idx := sl.IndexOf(PDU);
+    EntryExist := Idx <> -1;
     if EntryExist and OverwriteOld then begin
-      md := TFmaMessageData(sl.Objects[sl.IndexOf(PDU)]);
+      md := TFmaMessageData(sl.Objects[Idx]);
       md.AsString := buffer; // that should do it
     end;
     {
@@ -10112,6 +10113,7 @@ var
   s,LongText: WideString;
   pdu: string;
   sl,ml,fl,newpdu: TStringList;
+  md: TFmaMessageData;
   sms: TSMS;
   OldMsec: cardinal;
   chat: TfrmCharMessage;
@@ -10229,9 +10231,12 @@ begin
         FSendingMessage := True;
 
         EData := ExplorerNew.GetNodeData(FNodeMsgOutbox);
-        sl.AddStrings(TStrings(EData.Data));
-        for i := 0 to sl.Count-1 do
-          sl.Objects[i] := nil; // Objects will be used as flag if message is processed, so clear it now
+        for i := 0 to TStrings(EData.Data).Count-1 do begin
+          md := TFmaMessageData(TStrings(EData.Data).Objects[i]);
+          if Assigned(md) then
+            sl.AddObject(md.AsString,nil); // Objects will be used as flag if message is processed, so clear it now
+        end;
+        //sl.AddStrings(TStrings(EData.Data));
 
         if CanShowProgress then
           dlg.ShowProgress(FProgressLongOnly);
@@ -13251,14 +13256,18 @@ var
   sl,ml: TStringList;
   i,j: Integer;
   data: PFmaExplorerNode;
+  md: TFmaMessageData;
 begin
   sl := TStringList.Create;
   ml := TStringList.Create;
   try
-    data :=ExplorerNew.GetNodeData(FNodeMsgOutbox);
-    sl.AddStrings(TStrings(data.Data));
-    for i := 0 to sl.Count-1 do
-      sl.Objects[i] := nil; // Objects will be used as flag if message is processed, so clear it now
+    data := ExplorerNew.GetNodeData(FNodeMsgOutbox);
+    for i := 0 to TStrings(data.Data).Count-1 do begin
+      md := TFmaMessageData(TStrings(data.Data).Objects[i]);
+      if Assigned(md) then
+        sl.AddObject(md.AsString,nil); // Objects will be used as flag if message is processed, so clear it now
+    end;
+    //sl.AddStrings(TStrings(data.Data));
 
     { Perform cleanup }
     i := 0;
@@ -14282,21 +14291,21 @@ var
   dlg: TfrmConnect;
   sl: TStringList;
   fl: TTntStringList;
-  i,MoveCount,msgType,msgIndex: Integer;
+  i,MoveCount,msgIndex: Integer;
+  msgType: TMessageLocation;
   memType: string;
-  w,pdu,who,sender: WideString;
+  who,sender: WideString;
   DeliveryNode: PVirtualNode;
   EData: PFmaExplorerNode;
-  sms: TSMS;
   smsDate: TDateTime;
   smsNew: Boolean;
+  md: TFmaMessageData;
 begin
   Status('Applying Rules...');
   MoveCount := 0;
   EData := ExplorerNew.GetNodeData(Node);
   sl := TStringList(EData.Data); // list Folder contents
   fl := TTntStringList.Create;  // modified folders list
-  sms := TSMS.Create;
   try
     dlg := GetProgressDialog;
     try
@@ -14307,28 +14316,25 @@ begin
       { Process folder messages }
       i := 0;
       while i < sl.Count do begin
-        pdu := GetToken(sl[i],5);
-        sms.PDU := pdu;
+        md := TFmaMessageData(sl.Objects[i]);
         { Find corresponding Rule, if any }
         DeliveryNode := nil;
-        if sms.Number <> '' then begin
-          who := LookupContact(sms.Number);
-          if who = '' then who := sUnknownContact;
-          sender := who + ' [' + sms.Number + ']';
+        if Assigned(md) then begin
+          who := md.From;
+          if pos('[',who) <> 0 then sender := who
+            else sender := LookupContact(who,sUnknownContact) + ' [' + Who + ']';
           DeliveryNode := GetSMSDeliveryNode(sender,Rules,False);
         end;
         { Apply rule if needed }
         if Assigned(DeliveryNode) and (DeliveryNode <> Node) then begin
-          msgType := StrToInt(GetToken(sl[i],0));
-          msgIndex := StrToInt(GetToken(sl[i],1));
-          smsDate := sms.TimeStamp;
-          w := GetToken(sl[i],6);
-          if w <> '' then smsDate := StrToDateTime(w);
-          smsNew := StrToInt(GetToken(sl[i],7)) <> 0;
+          msgType := md.Location;
+          msgIndex := md.MsgIndex;
+          smsDate := md.TimeStamp;
+          smsNew := md.IsNew;
+          memType := ''; // In PC
           case msgType of
-            1: memType := 'ME';
-            2: memType := 'SM';
-            else memType := ''; // In PC
+            mlME: memType := 'ME';
+            mlSM: memType := 'SM';
           end;
           if memType <> '' then begin
             AskRequestConnection;
@@ -14338,7 +14344,7 @@ begin
               { silently ignore delete failure - it means message is not in phone anyway }
             end;
           end;
-          SaveMsgToFolder(DeliveryNode,pdu,True,smsNew,False,-1,smsDate,True); // -1 = no index in PC folders
+          SaveMsgToFolder(DeliveryNode,md.PDU,True,smsNew,False,-1,smsDate,True); // -1 = no index in PC folders
           EData := ExplorerNew.GetNodeData(DeliveryNode);
           if fl.IndexOf(EData.Text) = -1 then
             fl.AddObject(EData.Text, Pointer(DeliveryNode));
@@ -14373,7 +14379,6 @@ begin
     end;
     Status(WideFormat(_('Delivery completed (%d %s)'),[MoveCount,ngettext('message moved','messages moved',MoveCount)]));
   finally
-    sms.Free;
     fl.Free;
   end;
 end;
