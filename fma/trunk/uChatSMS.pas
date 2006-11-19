@@ -154,8 +154,12 @@ begin
 end;
 
 function TfrmCharMessage.IsYourNumber(Number: string): boolean;
+var
+  a,b: String;
 begin
-  Result := WideCompareText(Form1.ExtractContact(lblName.Caption),Form1.LookupContact(Number)) = 0;
+  a := Form1.GetPartialNumber(Number);
+  b := Form1.GetPartialNumber(Form1.ExtractNumber(lblName.Caption));
+  Result := CompareText(a,b) = 0;
 end;
 
 procedure TfrmCharMessage.SetChatContact(Who: WideString);
