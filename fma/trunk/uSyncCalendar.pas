@@ -1464,8 +1464,10 @@ begin
   try
     Event.AlertDisplayed := True; // dismiss by default
 
-    // Use UserField8 as unique ID for Event/Task 
+    // Use UserField8 as unique ID for Event/Task
     CreateEvent(Event.Description,255,StrToInt(Event.UserField8)); // 255 = no Alpha
+
+    VpDB.Resource.EventsDirty := True; // force DB update
   except
     Free;
   end;
@@ -1478,10 +1480,12 @@ begin
   Event := VpDB.vEvent[EventRecordID];
   if Assigned(Event) then begin
     Event.AlertDisplayed := False; // allow further alerts
-    
+
     Event.Loading := True; // prevent "Event.Changed" modification
     Event.SnoozeTime := PostponeTime;
     Event.Loading := False;
+
+    VpDB.Resource.EventsDirty := True; // force DB update
   end;
 end;
 

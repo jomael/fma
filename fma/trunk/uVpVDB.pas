@@ -211,13 +211,6 @@ begin
     end;
   finally
     Loading := false;
-    { Update Events alert shown status -- NOT NEEDED
-    for I := pred(Resource.Schedule.EventCount) downto 0 do begin
-      Event := Resource.Schedule.GetEvent(I);
-      ACalEntity := FCalendar.GetCalEntityByItemIndex(Event.RecordID - 1);
-      Event.AlertDisplayed := ACalEntity.VAlertShown.IsON;
-    end;
-    }
   end;
 
   inherited;

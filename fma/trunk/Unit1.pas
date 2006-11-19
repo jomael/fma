@@ -11242,7 +11242,7 @@ begin
   frmWelcomeTips.QueueTip('You can assign a preferred default number for each contact so that FMA will default to either the Mobile, office or home number when dialed from FMA.'+sLineBreak+'Open a contact and choose the Call Preferences tab.',15);
   frmWelcomeTips.QueueTip('You can assign a personalized photo and sound to pop up on your screen when FMA receives a call from that contact.'+sLineBreak+'Open a contact and choose Personalize tab.',15);
   frmWelcomeTips.QueueTip('FMA has a very active user forums for information and troubleshooting. Visit us at http://www.mobileagent.info/forums',15);
-  frmWelcomeTips.QueueTip('FMA has an IRC channel.'+sLineBreak+'server: irc.chatspike.net'+sLineBreak+'channel: #fma',15);
+//frmWelcomeTips.QueueTip('FMA has an IRC channel.'+sLineBreak+'server: irc.chatspike.net'+sLineBreak+'channel: #fma',15);
   frmWelcomeTips.QueueTip('You can toggle FMA Today page options by simply right-clicking anywhere on the page.',15);
   frmWelcomeTips.QueueTip('You can hide and show various areas on the FMA Today page by clicking the little "double up arrow" icons at the top of each section.',15);
   frmWelcomeTips.QueueTip('You can call or Message a contact directly from the call list by simply right-clicking the item on the call list.',15);
