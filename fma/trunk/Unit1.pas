@@ -8577,9 +8577,11 @@ begin
   savedFile := TStringList.Create;
   try
     savedFile.LoadFromFile(APath);
-    for j := 0 to savedFile.Count-1 do begin
+    for j := 0 to savedFile.Count-1 do try
       md := TFmaMessageData.Create(savedFile[j]);
       sl.AddObject(md.PDU, md);
+    except
+      Log.AddMessageFmt(_('Unable to load message data! [DB index: %d]'), [j], lsError);
     end;
   finally
     savedFile.Free;

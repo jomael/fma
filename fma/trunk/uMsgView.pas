@@ -1795,10 +1795,16 @@ begin
           octet := StrToInt('$' + Copy(UDHI, 1, 2));
           UDHI := Copy(UDHI, 3, length(UDHI));
           case octet of
-             0:begin //SMS CONCATENATION
+             0,8:begin //SMS CONCATENATION
                  pos := StrToInt('$' + Copy(UDHI, 1, 2)) + 1;
-                 Description := Description + _('[LONG SMS - REFID:') + IntToStr(StrToInt('$' + Copy(UDHI, 3, 2)));
-                 Description := Description + _(' - COUNT:') + IntToStr(StrToInt('$' + Copy(UDHI, 5, 2))) + ']';
+                 if octet = 0 then begin
+                   Description := Description + _('[LONG SMS - REFID:') + IntToStr(StrToInt('$' + Copy(UDHI, 3, 2)));
+                   Description := Description + _(' - COUNT:') + IntToStr(StrToInt('$' + Copy(UDHI, 5, 2))) + ']';
+                 end
+                 else begin
+                   Description := Description + _('[LONG SMS - REFID:') + IntToStr(StrToInt('$' + Copy(UDHI, 3, 4)));
+                   Description := Description + _(' - COUNT:') + IntToStr(StrToInt('$' + Copy(UDHI, 7, 2))) + ']';
+                 end;
                  UDHI := Copy(UDHI, pos*2+1, length(UDHI));
                  MemoMsgBody.Clear;
                  (*

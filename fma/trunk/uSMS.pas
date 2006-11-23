@@ -839,10 +839,15 @@ begin
         octet := StrToInt('$' + Copy(UDHI, 1, 2));
         UDHI := Copy(UDHI, 3, length(UDHI));
         case octet of
-          0: begin //SMS CONCATENATION
+          0: begin // SMS CONCATENATION WITH 8bit REF
                ARef := StrToInt('$' + Copy( UDHI, 3, 2));
                ATot := StrToInt('$' + Copy( UDHI, 5, 2));
                An := StrToInt('$' + Copy( UDHI, 7, 2));
+             end;
+          8: begin // SMS CONCATENATION WITH 16bit REF
+               ARef := StrToInt('$' + Copy( UDHI, 3, 4));
+               ATot := StrToInt('$' + Copy( UDHI, 7, 2));
+               An := StrToInt('$' + Copy( UDHI, 9, 2));
              end;
         else begin
                pos := udhil + 1;

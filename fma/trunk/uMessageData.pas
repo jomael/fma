@@ -83,6 +83,7 @@ var
   wl: TTntStrings;
 begin
   FData := AData;
+  FChanged := False;
   wl := TTntStringList.Create;
   try
     GetTokenList(wl, AData);
@@ -95,8 +96,13 @@ begin
     FOutgoing := wl[2] = '3';
     FPDU := wl[5];
     if wl.Count > 6 then begin
-      if wl[6] <> '' then
-        FTimeStamp := StrToDateTime(wl[6])
+      if wl[6] <> '' then try
+        FTimeStamp := StrToDateTime(wl[6]);
+      except
+        // Unexpected date/time format
+        FTimeStamp := 0;
+        FChanged := True; // correct format on save
+      end
       else
         FTimeStamp := 0;
     end;
@@ -105,7 +111,6 @@ begin
   finally
     wl.Free;
   end;
-  FChanged := False;
 end;
 
 function TFmaMessage.GetString: string;
@@ -292,10 +297,15 @@ begin
         octet := StrToInt('$' + Copy(UDHI, 1, 2));
         UDHI := Copy(UDHI, 3, length(UDHI));
         case octet of
-          0: begin //SMS CONCATENATION
+          0: begin // SMS CONCATENATION WITH 8bit REF
                ARef := StrToInt('$' + Copy( UDHI, 3, 2));
                ATot := StrToInt('$' + Copy( UDHI, 5, 2));
                An := StrToInt('$' + Copy( UDHI, 7, 2));
+             end;
+          8: begin // SMS CONCATENATION WITH 16bit REF
+               ARef := StrToInt('$' + Copy( UDHI, 3, 4));
+               ATot := StrToInt('$' + Copy( UDHI, 7, 2));
+               An := StrToInt('$' + Copy( UDHI, 9, 2));
              end;
         else begin
                pos := udhil + 1;
