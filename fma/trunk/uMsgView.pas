@@ -20,17 +20,14 @@ uses
   Windows, TntWindows, Messages, SysUtils, TntSysUtils, Classes, TntClasses, Graphics, TntGraphics, Controls, TntControls,
   Forms, TntForms, Dialogs, TntDialogs, Menus, TntMenus, ImgList, VirtualTrees, ExtCtrls, TntExtCtrls, StdCtrls, TntStdCtrls,
   ComCtrls, TntComCtrls, UniTntCtrls, DateUtils, GR32_Image, Buttons, TntButtons, Placemnt, LMDControl, LMDBaseControl,
-  LMDBaseGraphicControl, LMDGraphicControl, LMDFill, ToolWin;
+  LMDBaseGraphicControl, LMDGraphicControl, LMDFill, ToolWin, uMessageData;
 
 type
   TListData = Record
     imageindex: Integer;
     stateindex: Integer;
-    ownerindex: Integer;
-    from, msg: WideString;
-    number, pdu: String;
-    date: TDateTime;
-    newmsg: Boolean;
+    from: WideString;
+    smsData: TFmaMessageData;
   end;
   PListData = ^TListData;
 
@@ -185,7 +182,6 @@ type
     procedure DoMarkMessages(AsRead: boolean; SelectedOnly: Boolean = True);
     procedure DoShowPreview(Node: PVirtualNode);
     procedure UpdatePreview;
-    procedure ReindexAfterSMSDeletion(deletedIndex: Integer);
   public
     procedure ClearView;
     procedure RenderListView(var sl: TStringList);
@@ -194,7 +190,7 @@ type
     procedure DeleteSelected(Ask: boolean = True);
     procedure CleanupDatabase(Ask: boolean = True; removeDuplicates: boolean = True);
 
-    procedure GetLongMsgData(Node: PVirtualNode; var ARef, ATot, An: Integer; AList: TStrings = nil);
+    procedure GetLongMsgData(Node: PVirtualNode; var ARef, ATot, An: Integer);
 
     function IsRendered(const sl: TStrings): boolean;
     function IsLongSMSNode(ANode: PVirtualNode): boolean;
@@ -210,7 +206,7 @@ type
 implementation
 
 uses
-  gnugettext, gnugettexthelpers, cUnicodeCodecs, uMessageData,
+  gnugettext, gnugettexthelpers, cUnicodeCodecs,
   Unit1, uSMSDetail, uLogger, uInputQuery, uThreadSafe, uMissedCalls, uSyncPhonebook,
   uSMS, uGlobal, uComposeSMS, uConnProgress, WebUtil, uDialogs, uImg32Helper;
 
@@ -239,31 +235,23 @@ procedure TfrmMsgView.ListMsgBeforeCellPaint(Sender: TBaseVirtualTree;
   CellRect: TRect);
 var
   item: PListData;
-  Ref, Tot, N: Integer;
 begin
   item := Sender.GetNodeData(Node);
-  GetLongMsgData(Node, Ref, Tot, N);
 
-  if (Node <> Sender.FocusedNode) or (Column <> 0) then begin
-    if (Column > 0) and (Tot > 1) and (N > 1) then begin
-      TargetCanvas.Brush.Color := $CCCCCC; // this is obsolete - these nodes are hided
-      TargetCanvas.FillRect(CellRect);
-    end
-    else begin
-      if (Column > 0) and (Tot > 1) and (N = 1) then begin
-        TargetCanvas.Brush.Color := $CAFFFF; // long sms
-        TargetCanvas.FillRect(CellRect);
-      end
-      else begin
-        if Column = 0 then begin
-          if item.imageindex = 17 then
-            TargetCanvas.Brush.Color := $00E0E0FF  // from column (out)
-          else
-            TargetCanvas.Brush.Color := $00FFE0E0; // from column (in)
-          TargetCanvas.FillRect(CellRect);
-        end;
-      end;
-    end;
+  if Column = 0 then begin
+    if item.smsData.IsOutgoing then
+      TargetCanvas.Brush.Color := $00E0E0FF  // from column (out)
+    else
+      TargetCanvas.Brush.Color := $00FFE0E0; // from column (in)
+    TargetCanvas.FillRect(CellRect);
+  end
+  else if (item.smsData.IsLong) and (item.smsData.IsLongFirst) then begin
+    TargetCanvas.Brush.Color := $CAFFFF; // long sms
+    TargetCanvas.FillRect(CellRect);
+  end
+  else if (item.smsData.IsLong) and (not item.smsData.IsLongFirst) then begin
+    TargetCanvas.Brush.Color := $CCCCCC; // this is obsolete - these nodes are hided
+    TargetCanvas.FillRect(CellRect);
   end;
 end;
 
@@ -276,8 +264,8 @@ begin
   item2 := Sender.GetNodeData(Node2);
 
   if Column = 0 then Result := CompareStr(item1.from, item2.from)
-  else if Column = 1 then Result := WideCompareStr(item1.msg, item2.msg)
-  else if Column = 3 then Result := CompareDateTime(item1.date, item2.date);
+  else if Column = 1 then Result := WideCompareStr(item1.smsData.Text, item2.smsData.Text)
+  else if Column = 3 then Result := CompareDateTime(item1.smsData.TimeStamp, item2.smsData.TimeStamp);
 end;
 
 procedure TfrmMsgView.ListMsgGetImageIndex(Sender: TBaseVirtualTree;
@@ -297,7 +285,7 @@ begin
   2:begin
       if (Kind = ikNormal) or (Kind = ikSelected) then begin
         item := Sender.GetNodeData(Node);
-        if item.newmsg then
+        if item.smsData.IsNew then
           ImageIndex := 21
         else
           ImageIndex := 20;
@@ -318,7 +306,7 @@ begin
   if Column = 0 then CellText := item.from
   else
   if Column = 1 then begin
-    CellText := FlattenText(item.msg);
+    CellText := FlattenText(item.smsData.Text);
     if IsLongSMSNode(Node) then CellText := CellText + ' (...)'; // do not localize
     {
     if IsLongSMSNode(Node) then
@@ -331,9 +319,9 @@ begin
   if Column = 2 then CellText := #32 // span columns doesnt take effect
   else
   if Column = 3 then begin
-    if item.date > 0 then begin
-      if isToday(item.date) then CellText := TimeToStr(item.date)
-      else CellText := DateTimeToStr(item.date)
+    if item.smsData.TimeStamp > 0 then begin
+      if isToday(item.smsData.TimeStamp) then CellText := TimeToStr(item.smsData.TimeStamp)
+      else CellText := DateTimeToStr(item.smsData.TimeStamp)
     end
     else CellText := _('(not available)');
   end;
@@ -357,10 +345,10 @@ procedure TfrmMsgView.RenderListView(var sl: TStringList);
 const
   Sem: boolean = False;
 var
-  i: Integer;
+  i,j: Integer;
+  isNumber: boolean;
   item: PListData;
   Node: PVirtualNode;
-  Ref, Tot, N: Integer;
   dbfixed: boolean;
   md: TFmaMessageData;
   test: DWord;
@@ -410,16 +398,19 @@ begin
         Node := ListMsg.AddChild(nil);
         try
           item := ListMsg.GetNodeData(Node);
-          item.pdu := sl[i];
-          item.ownerindex := i;
+          item.smsData := md;
 
-          item.number := md.From;
-          item.from := Form1.ContactNumberByTel(item.number);
-          if md.IsOutgoing then
-            item.date := 0
+          // DONE: check if smsData.From is number (can be alpha string)
+          isNumber := False;
+          for j:=1 to Length(item.smsData.From) do
+            if IsDelimiter('+0123456789', item.smsData.From, j) then begin
+              isNumber := True;
+              break;
+            end;
+          if isNumber then
+            item.from := Form1.ContactNumberByTel(item.smsData.From)
           else
-            item.date := md.TimeStamp;
-          item.msg := md.Text;
+            item.from := item.smsData.From;
 
           item.stateindex := md.MsgIndex and $FFFF; // index
 
@@ -441,20 +432,12 @@ begin
           if md.IsOutgoing then item.StateIndex := item.StateIndex or $020000
           else item.StateIndex := item.StateIndex or $010000;
 
-          // New fields in 0.10.29a build
-          try
-            if md.TimeStamp <> 0 then item.date := md.TimeStamp;
-            item.newmsg := md.IsNew;
-          except
-          end;
-
           // Long SMS? - show only first SMS message
-          GetLongMsgData(Node, Ref, Tot, N, sl);
-          if (Tot > 1) and (N > 1) then begin
+          if (md.IsLong) and (not md.IsLongFirst) then begin
             ListMsg.IsVisible[Node] := False;
-            if item.newmsg then begin
+            if md.IsNew then begin
               { Don't set non-first Long SMS part as new flag }
-              item.newmsg := False;
+              md.IsNew := False;
               if FindCmdLineSwitch('FIXDB') then begin
                 md.IsNew := False;
                 Log.AddMessageFmt(_('Database: Removed new message flag (DB Index: %d)'), [i], lsInformation);
@@ -515,7 +498,7 @@ begin
     if item <> nil then begin
       if frmDetail = nil then
         frmDetail := TfrmDetail.Create(Self);
-      frmDetail.PDU := item.pdu;
+      frmDetail.PDU := item.smsData.PDU;
 
       if item.StateIndex and $C0000 = 0 then // ME
         frmDetail.edLocation.Text := _('PC and Phone')
@@ -541,7 +524,7 @@ begin
             curr := PVirtualNode(sl.Objects[i]);
             if Assigned(curr) then begin
               item := ListMsg.GetNodeData(curr);
-              sms.PDU := item.pdu;
+              sms.PDU := item.smsData.PDU;
 
               if sms.IsOutgoing then
                 frmDetail.memoPDU.Lines.Add(WideFormat(_('Message Type: %s'),
@@ -549,7 +532,7 @@ begin
               else
                 frmDetail.memoPDU.Lines.Add(WideFormat(_('Message Type: %s'),
                   ['SMS DELIVER'])); // do not localize
-              frmDetail.memoPDU.Lines.Add(sLineBreak + item.pdu + sLineBreak);
+              frmDetail.memoPDU.Lines.Add(sLineBreak + item.smsData.PDU + sLineBreak);
             end
             else
               frmDetail.memoPDU.Lines.Add(sLineBreak + _('Message part is missing.') + sLineBreak);
@@ -587,7 +570,7 @@ var
   wl: TTntStringList;
   t: WideString;
   s,ss,str: String;
-  Ref, Tot, N, i: Integer;
+  i: Integer;
 begin
   if FileType <> 1 then begin
     if MessageDlgW(_('FMA could Import only CSV message exports. Do you still want to continue exporting?'),
@@ -609,18 +592,17 @@ begin
                try
                  if Selected[node] then begin
                    { Skip Long SMS entries except for the first one }
-                   GetLongMsgData(Node, Ref, Tot, N);
-                   if (Tot > 1) and (N <> 1) then begin
+                   item := GetNodeData(node);
+                   if (item.smsData.IsLong) and (not item.smsData.IsLongFirst) then begin
                      node := GetNext(node);
                      Continue;
                    end;
-                   item := GetNodeData(node);
                    wl := TTntStringList.Create;
                    try
                      { Break long SMS into several parts in order to keep original PDU-s.
                        If it's regular SMS, then emulate a Long one with one member (PDU) }
-                     if Tot = -1 then
-                       wl.AddObject(item.msg,Pointer(node))
+                     if not item.smsData.IsLong then
+                       wl.AddObject(item.smsData.Text,Pointer(node))
                      else
                        if not GetNodeLongList(node,wl) then begin
                          node := GetNext(node);
@@ -630,8 +612,8 @@ begin
                      for i := 0 to wl.Count-1 do begin
                        item := GetNodeData(PVirtualNode(wl.Objects[i]));
                        { NOTE: every item should be quoted!!! Import depends on it }
-                       ss := '"SMS","' + WideStringToUTF8String(Tnt_WideStringReplace(item.msg, '"', '""', [rfReplaceAll])) + '",'; // do not localize
-                       s := item.number;
+                       ss := '"SMS","' + WideStringToUTF8String(Tnt_WideStringReplace(item.smsData.Text, '"', '""', [rfReplaceAll])) + '",'; // do not localize
+                       s := item.smsData.From;
                        t := Form1.ExtractContact(item.from);
                        if item.StateIndex and $20000 <> 0 then begin // outgoing message
                          ss := ss + '"(Outgoing)","' + WideStringToUTF8String(item.from) + '","PHONE",';  // do not localize
@@ -641,9 +623,9 @@ begin
                          ss := ss + '"' + WideStringToUTF8String(t) + '","' + s + '","PHONE",';  // do not localize
                          ss := ss + '"(Incoming)","' + WideStringToUTF8String(item.from) + '","PHONE",';  // do not localize
                        end;
-                       if item.date > 0 then ss := ss + '"' + DateTimeToStr(item.date) + '",'
+                       if item.smsData.TimeStamp > 0 then ss := ss + '"' + DateTimeToStr(item.smsData.TimeStamp) + '",'
                          else ss := ss + '"",';
-                       ss := ss + '"' + IntToStr(item.stateindex) + '","' + item.pdu + '","' + IntToStr(byte(item.newmsg)) + '"';
+                       ss := ss + '"' + IntToStr(item.stateindex) + '","' + item.smsData.PDU + '","' + IntToStr(byte(item.smsData.IsNew)) + '"';
                        sl.add(ss);
                      end;
                    finally
@@ -672,20 +654,19 @@ begin
              try
                if Selected[node] then begin
                  { Skip Long SMS entries except for the first one }
-                 GetLongMsgData(Node, Ref, Tot, N);
-                 if (Tot > 1) and (N <> 1) then begin
-                   node := GetNext(node);
-                   Continue;
-                 end;
                  item := GetNodeData(node);
+                 if (item.smsData.IsLong) and (not item.smsData.IsLongFirst) then begin
+                  node := GetNext(node);
+                  Continue;
+                 end;
                  str := '<sms>'; // do not localize
                  str := str + '<from>' + HTMLEncode(WideStringToUTF8String(item.from),False) + '</from>'; // do not localize
-                 if Tot > 1 then
+                 if item.smsData.IsLong then
                    str := str + '<msg>' + HTMLEncode(WideStringToUTF8String(GetNodeLongText(Node)),False) + '</msg>' // do not localize
                  else
-                   str := str + '<msg>' + HTMLEncode(WideStringToUTF8String(item.msg),False) + '</msg>'; // do not localize
-                 if item.date > 0 then
-                   str := str + '<date>' + HTMLEncode(DateTimeToStr(item.date),False) + '</date>' // do not localize
+                   str := str + '<msg>' + HTMLEncode(WideStringToUTF8String(item.smsData.Text),False) + '</msg>'; // do not localize
+                 if item.smsData.TimeStamp > 0 then
+                   str := str + '<date>' + HTMLEncode(DateTimeToStr(item.smsData.TimeStamp),False) + '</date>' // do not localize
                  else
                    str := str + '<date/>'; // do not localize
                  str := str + '</sms>'; // do not localize
@@ -715,20 +696,19 @@ begin
             try
               if Selected[node] then begin
                  { Skip Long SMS entries except for the first one }
-                 GetLongMsgData(Node, Ref, Tot, N);
-                 if (Tot > 1) and (N <> 1) then begin
+                 item := GetNodeData(node);
+                 if (item.smsData.IsLong) and (not item.smsData.IsLongFirst) then begin
                    node := GetNext(node);
                    Continue;
                  end;
-                 item := GetNodeData(node);
                  str := '<TR>'; // do not localize
                  str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(item.from),False) + '</TD>'; // do not localize
-                 if Tot > 1 then
+                 if item.smsData.IsLong then
                    str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(GetNodeLongText(Node)),False) + '</TD>' // do not localize
                  else
-                   str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(item.msg),False) + '</TD>'; // do not localize
-                 if item.date > 0 then
-                   str := str + '<TD>' + HTMLEncode(DateTimeToStr(item.date),False) + '</TD>' // do not localize
+                   str := str + '<TD>' + HTMLEncode(WideStringToUTF8String(item.smsData.Text),False) + '</TD>'; // do not localize
+                 if item.smsData.TimeStamp > 0 then
+                   str := str + '<TD>' + HTMLEncode(DateTimeToStr(item.smsData.TimeStamp),False) + '</TD>' // do not localize
                  else
                    str := str + '<TD></TD>'; // do not localize
                  str := str + '</TR>'; // do not localize
@@ -762,14 +742,17 @@ var
   item: PListData;
   sl: TStringList;
   wl: TTntStringList;
-  Ref, Tot, N, j: Integer;
+  j: Integer;
   UpdateIncoming,UpdateOutgoing: boolean;
   procedure DelNodeFromDBandView;
+  var
+    index: Integer;
   begin
-    if AnsiCompareText(sl[item.ownerindex],item.pdu) = 0 then begin
-      TFmaMessageData(sl.Objects[item.ownerindex]).Free;
-      sl.Delete(item.ownerindex);
-      ReindexAfterSMSDeletion(item.ownerindex);
+    index := sl.IndexOfObject(item.smsData);
+    if index <> -1 then begin
+      item.smsData := nil;
+      TFmaMessageData(sl.Objects[index]).Free;
+      sl.Delete(index);
       if prev = ListMsg.FocusedNode then begin
         MemoMsgBody.Clear;
         IsCustomImage := False;
@@ -791,18 +774,17 @@ begin
         prev := nil;
         if Selected[node] then begin
           { Skip Long SMS entries except for the first one }
-          GetLongMsgData(Node, Ref, Tot, N);
-          if (Tot > 1) and (N <> 1) then begin
+          item := GetNodeData(node);
+          if (item.smsData.IsLong) and (not item.smsData.IsLongFirst) then begin
             node := GetNext(node);
             Continue;
           end;
-          item := GetNodeData(node);
           wl := TTntStringList.Create;
           try
             { Break long SMS into several parts in order to keep original PDU-s.
               If it's regular SMS, then emulate a Long one with one member (PDU) }
-            if Tot = -1 then
-              wl.AddObject(item.msg,Pointer(node))
+            if not item.smsData.IsLong then
+              wl.AddObject(item.smsData.Text,Pointer(node))
             else
               if not GetNodeLongList(node,wl) then begin
                 node := GetNext(node);
@@ -827,7 +809,7 @@ begin
               end;
               if State = -1 then State := 0;
               { Upload to phone }
-              if Form1.WriteSMS(Mem, item.pdu, State) then
+              if Form1.WriteSMS(Mem, item.smsData.PDU, State) then
                 case State of
                   0,1: UpdateIncoming := True;
                   2,3: UpdateOutgoing := True;
@@ -887,7 +869,7 @@ begin
     Repeat
       if ListMsg.Selected[node] then begin
         item := ListMsg.GetNodeData(node);
-        if item.newmsg then HasUnread := True else HasRead := True;
+        if item.smsData.IsNew then HasUnread := True else HasRead := True;
         if HasRead and HasUnread then break;
       end;
       node := ListMsg.GetNext(node);
@@ -913,14 +895,13 @@ end;
 
 procedure TfrmMsgView.DeleteSelected(Ask: boolean = True);
 var
-  index: Integer;
+  i,j,index: Integer;
   s,memType: String;
   node,prev: PVirtualNode;
   data: PFmaExplorerNode;
   item: PListData;
   sl: TStringList;
   wl : TTntStringList;
-  Ref, Tot, N, j: Integer;
   procedure DelNodeFromView;
   begin
     { If deleteing current node, clear personalization and msg preview too }
@@ -952,15 +933,14 @@ begin
         prev := nil;
         if ListMsg.Selected[node] then begin
           { Skip Long SMS entries except for the first one }
-          GetLongMsgData(Node, Ref, Tot, N);
-          if (Tot = -1) or (N = 1) then begin
-            item := ListMsg.GetNodeData(node);
+          item := ListMsg.GetNodeData(node);
+          if (not item.smsData.IsLong) or (item.smsData.IsLongFirst) then begin
             wl := TTntStringList.Create;
             try
               { Break long SMS into several parts in order to keep original PDU-s.
                 If it's regular SMS, then emulate a Long one with one member (PDU) }
-              if Tot = -1 then
-                wl.AddObject(item.msg,Pointer(node))
+              if not item.smsData.IsLong then
+                wl.AddObject(item.smsData.Text,Pointer(node))
               else
                 GetNodeLongList(node,wl);
 
@@ -982,21 +962,22 @@ begin
 
                   { If deleteing from Outbox, notify and enable Chat window }
                   if Form1.ExplorerNew.FocusedNode = Form1.FNodeMsgOutbox then
-                    Form1.ChatNotifyDel(item.pdu);
+                    Form1.ChatNotifyDel(item.smsData.PDU);
 
                   { Remove message from database }
-                  if AnsiCompareText(sl[item.ownerindex],item.pdu) = 0 then begin
+                  i := sl.IndexOfObject(item.smsData);
+                  if i <> -1 then begin
                     if memType <> '' then begin { in phone? }
                       Form1.AskRequestConnection;
                       try
-                        Form1.DeleteSMS(index, memType, item.pdu);
+                        Form1.DeleteSMS(index, memType, item.smsData.PDU);
                       except
                         { silently ignore delete failure - it means message is not in phone anyway }
                       end;
                     end;
-                    TFmaMessageData(sl.Objects[item.ownerindex]).Free;
-                    sl.Delete(item.ownerindex);
-                    ReindexAfterSMSDeletion(item.ownerindex);
+                    (item.smsData).Free;
+                    item.smsData := nil;
+                    sl.Delete(i);
                     { Delete message part from database if its not the first one.
                       The first part will be deleted below in DelNodeFromView call. }
                     if prev <> node then DelNodeFromView;
@@ -1107,7 +1088,7 @@ begin
           frmMessageContact.Memo.SelText := GetNodeLongText(node);
         end
         else
-          frmMessageContact.Memo.SelText := item.msg;
+          frmMessageContact.Memo.SelText := item.smsData.Text;
         frmMessageContact.Memo.SelStart := Length(frmMessageContact.Memo.Text);
         frmMessageContact.Memo.SetFocus;
         { Message is already in Drafts, so mark new message as not modified }
@@ -1242,20 +1223,17 @@ begin
   FCustomImage := Value;
 end;
 
-procedure TfrmMsgView.GetLongMsgData(Node: PVirtualNode; var ARef, ATot, An: Integer; AList: TStrings = nil);
+procedure TfrmMsgView.GetLongMsgData(Node: PVirtualNode; var ARef, ATot, An: Integer);
 var
   item: PListData;
-  md: TFmaMessageData;
 begin
-  if AList = nil then AList := FRendered;
   ARef := -1; ATot := -1; An := -1;
   if Assigned(Node) then begin
     item := ListMsg.GetNodeData(Node);
     if Assigned(item) then begin
-      md := TFmaMessageData(AList.Objects[item.ownerindex]);
-      ARef := md.Reference;
-      ATot := md.Total;
-      An := md.MsgNum;
+      ARef := item.smsData.Reference;
+      ATot := item.smsData.Total;
+      An := item.smsData.MsgNum;
     end;
   end;
 end;
@@ -1308,7 +1286,7 @@ begin
           if (An > 0) and (An <= AList.Count) then begin
             if not Assigned(AList.Objects[An-1]) then
               Inc(FoundCount);
-            AList[An - 1] := PListData(GetNodeData(Node))^.msg;
+            AList[An - 1] := PListData(GetNodeData(Node))^.smsData.Text;
             AList.Objects[An - 1] := Pointer(Node); // keep track of the nodes containing Long SMS parts
             if FoundCount = Tot then
               Break;
@@ -1376,28 +1354,24 @@ end;
 function TfrmMsgView.IsLongSMSNode(ANode: PVirtualNode): boolean;
 var
   item: PListData;
-  md: TFmaMessageData;
 begin
   Result := False;
   if not Assigned(ANode) then Exit;
   item := ListMsg.GetNodeData(ANode);
   if Assigned(item) then begin
-    md := TFmaMessageData(FRendered.Objects[item.ownerindex]);
-    Result := md.IsLong;
+    Result := item.smsData.IsLong;
   end;
 end;
 
 function TfrmMsgView.IsLongSMSFirstNode(ANode: PVirtualNode): boolean;
 var
   item: PListData;
-  md: TFmaMessageData;
 begin
   Result := False;
   if not Assigned(ANode) then Exit;
   item := ListMsg.GetNodeData(ANode);
   if Assigned(item) then begin
-    md := TFmaMessageData(FRendered.Objects[item.ownerindex]);
-    Result := md.IsLongFirst;
+    Result := item.smsData.IsLongFirst;
   end;
 end;
 
@@ -1410,7 +1384,7 @@ begin
   node := ListMsg.GetFirst;
   while Assigned(node) do begin
     item := ListMsg.GetNodeData(node);
-    if SameText(item.pdu,APDU) then begin
+    if item.smsData.PDU = APDU then begin
       Result := node;
       break;
     end;
@@ -1518,28 +1492,7 @@ var
   node,curr: PVirtualNode;
   item: PListData;
   wl : TTntStringList;
-  Ref, Tot, N, i: Integer;
-  procedure OptimizedSMSChange(index: integer; ModifyPDU: string; MarkAsRead: boolean);
-  var
-    s: string;
-    md: TFmaMessageData;
-  begin
-    s := FRendered[index];
-    if ModifyPDU <> s then begin // is the index good?
-      Log.AddMessage('Mark message: Wrong DB index)', lsDebug);
-    end
-    else
-    try
-      md := TFmaMessageData(FRendered.Objects[index]);
-      if md.IsNew <> (not MarkAsRead) then begin
-        if ModifyPDU = md.PDU then begin // should we modify the item?
-          md.IsNew := not MarkAsRead;
-        end;
-      end;
-    except
-      Log.AddMessageFmt(_('Database: Error loading data (DB Index %d)'), [index], lsError);
-    end;
-  end;
+  i: Integer;
 begin
   { do not mark as read/unread messages stored in Outbox or Drafts }
   if CanModifyReadStatus then begin
@@ -1547,30 +1500,24 @@ begin
     while Assigned(node) do begin
       if not SelectedOnly or ListMsg.Selected[node] then begin
         { Skip Long SMS entries except for the first one }
-        GetLongMsgData(Node, Ref, Tot, N);
-        if (Tot > 1) and (N <> 1) then begin
+        item := ListMsg.GetNodeData(node);
+        if (item.smsData.IsLong) and (not item.smsData.IsLongFirst) then begin
           node := ListMsg.GetNext(node);
           Continue;
         end;
-        item := ListMsg.GetNodeData(node);
         wl := TTntStringList.Create;
         try
           { Break long SMS into several parts in order to process each PDU-s.
             If it's regular SMS, then emulate a Long SMS with one member (PDU) }
-          if Tot = -1 then
-            wl.AddObject(item.msg,Pointer(node))
+          if not item.smsData.IsLong then
+            wl.AddObject(item.smsData.Text,Pointer(node))
           else
             GetNodeLongList(node,wl);
           for i := 0 to wl.Count-1 do begin
             curr := PVirtualNode(wl.Objects[i]);
             if Assigned(curr) then begin
               item := ListMsg.GetNodeData(curr);
-
-              if item.newmsg = AsRead then begin
-                OptimizedSMSChange(item.ownerindex ,item.pdu, AsRead);
-              end;
-              item.newmsg := not AsRead;
-
+              item.smsData.IsNew := not AsRead;
               { Do not mark long SMS entries as Unread, except the first one }
               if not AsRead then break;
             end;
@@ -1596,7 +1543,6 @@ procedure TfrmMsgView.SearchForMessages(what: WideString);
 var
   Node: PVirtualNode;
   Item: PListData;
-  Ref, Tot, N: integer;
   w: WideString;
 begin
   Timer2.Enabled := False; // cancel search timer
@@ -1605,16 +1551,17 @@ begin
     DeselectAll;
     node := ListMsg.GetFirst;
     while Assigned(node) do begin
-      GetLongMsgData(Node, Ref, Tot, N);
-      if (Tot > 1) and (N <> 1) then begin
+      Item := ListMsg.GetNodeData(Node);
+      if (item.smsData.IsLong) and (not item.smsData.IsLongFirst) then begin
         node := ListMsg.GetNext(node);
         Continue;
       end;
 
-      Item := ListMsg.GetNodeData(Node);
-      if Tot > 1 then w := GetNodeLongText(Node)
-        else w := item.msg;
-      ListMsg.IsVisible[Node] := (what = '') or (Pos(WideUpperCase(what),WideUpperCase(w)) <> 0);
+      if item.smsData.IsLong then w := GetNodeLongText(Node)
+        else w := item.smsData.Text;
+      what := WideUpperCase(what);
+      ListMsg.IsVisible[Node] := (what = '') or
+        (Pos(what,WideUpperCase(w)) <> 0) or (Pos(what, WideUpperCase(item.from)) <> 0);
 
       node := ListMsg.GetNext(node);
     end;
@@ -1647,7 +1594,7 @@ begin
     if hit.HitColumn = 2 then
       if Assigned(hit.HitNode) then begin
         item := ListMsg.GetNodeData(hit.HitNode);
-        b := item.newmsg;
+        b := item.smsData.IsNew;
         Screen.Cursor := crAppStart;
         try
           Timer1.Enabled := false;
@@ -1669,7 +1616,7 @@ var
 begin
   item := Sender.GetNodeData(Node);
 
-  if item.newmsg then
+  if item.smsData.IsNew then
     TargetCanvas.Font.Style := [fsBold]
   else
     TargetCanvas.Font.Style := [];
@@ -1757,12 +1704,13 @@ begin
   try
     //posTemp := 0;
     item := ListMsg.GetNodeData(Node);
-    MemoMsgBody.Text := item.msg;// + inttostr(length(item.msg));
+    MemoMsgBody.Text := item.smsData.Text;// + inttostr(length(item.msg));
     MemoMsgBody.DefAttributes.Color := clWindowText;
     MemoMsgBody.DefAttributes.Size  := 10;
-    sms.PDU := item.pdu; //ADD  {
+    sms.PDU := item.smsData.PDU; //ADD
+    sms.Text; // Decode all PDU fields
     { try to load contact personalized image and maintain a cache }
-    s := Form1.LookupContact(item.Number);
+    s := Form1.LookupContact(item.smsData.From);
     if Form1.IsIrmcSyncEnabled and Form1.frmSyncPhonebook.FindContact(s,contact) then begin
       s := GetContactPictureFile(contact);
       if s <> '' then
@@ -1783,7 +1731,7 @@ begin
     else
         IsCustomImage := False;
     { show message info }
-    item.msg := sms.Text;
+    //item.msg := sms.Text;
     if sms.IsUDH then begin
        UDHI := sms.UDHI;
        udhil := StrToInt('$' + copy(UDHI, 1, 2));
@@ -1879,21 +1827,6 @@ procedure TfrmMsgView.UpdatePreview;
 begin
   if Assigned(ListMsg.FocusedNode) and (MemoMsgBody.Lines.Count = 0) then
     DoShowPreview(ListMsg.FocusedNode);
-end;
-
-procedure TfrmMsgView.ReindexAfterSMSDeletion(deletedIndex: Integer);
-var
-  node: PVirtualNode;
-  item: PListData;
-begin
-  // all owner indexes higher than index of deleted SMS will be decreased
-  node := ListMsg.GetFirst;
-  while node <> nil do begin
-    item := ListMsg.GetNodeData(node);
-    if item.ownerindex > deletedIndex then
-      item.ownerindex := item.ownerindex-1;
-    node := ListMsg.GetNext(node);
-  end;
 end;
 
 procedure TfrmMsgView.ListMsgKeyUp(Sender: TObject; var Key: Word;

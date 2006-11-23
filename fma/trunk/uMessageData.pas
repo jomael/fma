@@ -36,6 +36,7 @@ type
     constructor Create(const AData: string = '');
   end;
 
+  PFmaMessageData = ^TFmaMessageData;
   TFmaMessageData = class(TFmaMessage)
   private
     FDecoded: boolean;

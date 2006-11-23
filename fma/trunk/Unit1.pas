@@ -3651,7 +3651,7 @@ begin
     if frmMsgView.IsLongSMSNode(node) then
       frmMessageContact.Memo.SelText := frmMsgView.GetNodeLongText(node)
     else
-      frmMessageContact.Memo.SelText := item.msg;
+      frmMessageContact.Memo.SelText := item.smsData.Text;
     frmMessageContact.Memo.SelStart := Length(frmMessageContact.Memo.Text);
   end;
 end;
@@ -13661,14 +13661,14 @@ begin
         { Break long SMS into several parts in order to keep original PDU-s.
           If it's regular SMS, then emulate a Long one with one member (PDU) }
         if Tot = -1 then
-          wl.AddObject(item.msg,Pointer(node))
+          wl.AddObject(item.smsData.Text,Pointer(node))
         else
           frmMsgView.GetNodeLongList(node,wl);
         for j := 0 to wl.Count-1 do begin
           curr := PVirtualNode(wl.Objects[j]);
           if Assigned(curr) then begin
             item := frmMsgView.ListMsg.GetNodeData(curr);
-            SaveMsgToFolder(FolderNode,item.pdu,True,item.newmsg,False,-1,item.date,FArchiveDublicates); // -1 = no index in PC folders
+            SaveMsgToFolder(FolderNode,item.smsData.PDU,True,item.smsData.IsNew,False,-1,item.smsData.TimeStamp,FArchiveDublicates); // -1 = no index in PC folders
           end;
         end;
       finally
