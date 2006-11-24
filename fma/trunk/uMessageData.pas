@@ -97,12 +97,18 @@ begin
     FOutgoing := wl[2] = '3';
     FPDU := wl[5];
     if wl.Count > 6 then begin
-      if wl[6] <> '' then try
-        FTimeStamp := StrToDateTime(wl[6]);
-      except
-        // Unexpected date/time format
-        FTimeStamp := 0;
-        FChanged := True; // correct format on save
+      if wl[6] <> '' then begin
+        if wl[6][1] = '$' then
+          FTimeStamp := HexStringToDateTime(wl[6])
+        else begin
+          FChanged := True; // use HexString on save
+          try
+            FTimeStamp := StrToDateTime(wl[6]);
+          except
+            // Unexpected date/time format
+            FTimeStamp := 0;
+          end;
+        end;
       end
       else
         FTimeStamp := 0;
@@ -124,7 +130,7 @@ begin
       FData := FData + '1';
     FData := FData + ',,,' + FPDU + ',';
     if FTimeStamp <> 0 then
-      FData := FData + DateTimeToStr(FTimeStamp) + ','
+      FData := FData + DateTimeToHexString(FTimeStamp) + ','
     else
       FData := FData + ',';
     FData := FData + IntToStr(Byte(FUnread));

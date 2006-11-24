@@ -401,7 +401,7 @@ begin
           item.smsData := md;
 
           // DONE: check if smsData.From is number (can be alpha string)
-          isNumber := False;
+          isNumber := item.smsData.From = '';
           for j:=1 to Length(item.smsData.From) do
             if IsDelimiter('+0123456789', item.smsData.From, j) then begin
               isNumber := True;

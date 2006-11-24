@@ -52,6 +52,10 @@ procedure GetTokenList(AList: TTntStrings; str: WideString; delimiter: WideChar 
 { Returns all tokens in wl List as a flat-wide-string, and quotes them if needed }
 function GetTokenListText(wl: TTntStringList; delimiter: WideChar = ','): WideString;
 
+{ Converts TDateTime to 17byte hex string and vice versa }
+function DateTimeToHexString(DateTime: TDateTime): string;
+function HexStringToDateTime(const Source: string): TDateTime;
+
 
 implementation
 
@@ -136,7 +140,7 @@ begin
     for i := m-k+1 downto 1 do
       if str[i] = substr[1] then begin
         found := True;
-        for j := 2 to k do 
+        for j := 2 to k do
           if str[i+j-1] <> substr[j] then begin
             found := False;
             break;
@@ -460,6 +464,34 @@ begin
   while s <> '' do begin
     Inc(Result);
     GetFirstToken(s,delimiter);
+  end;
+end;
+
+function DateTimeToHexString(DateTime: TDateTime): string;
+const Int64Bytes: integer = SizeOf(Int64);
+var
+  i: Int64;
+begin
+  Result := '';
+  Assert(SizeOf(Int64) = SizeOf(TDateTime));
+  i := 0;
+  Move(DateTime, i, Int64Bytes);
+  Result := '$' + IntToHex(i, 2*Int64Bytes);
+end;
+
+function HexStringToDateTime(const Source: string): TDateTime;
+const Int64Bytes: integer = SizeOf(Int64);
+var
+  i: Int64;
+begin
+  Result := 0;
+  Assert(SizeOf(Int64) = SizeOf(TDateTime));
+  if (Source <> '') then begin
+    if Source[1] = '$' then
+      i := StrToInt64Def(Source, 0)
+    else
+      i := StrToInt64Def('$'+Source, 0);
+    Move(i, Result, Int64Bytes);
   end;
 end;
 
