@@ -238,20 +238,25 @@ var
 begin
   item := Sender.GetNodeData(Node);
 
-  if Column = 0 then begin
-    if item.smsData.IsOutgoing then
-      TargetCanvas.Brush.Color := $00E0E0FF  // from column (out)
-    else
-      TargetCanvas.Brush.Color := $00FFE0E0; // from column (in)
-    TargetCanvas.FillRect(CellRect);
-  end
-  else if (item.smsData.IsLong) and (item.smsData.IsLongFirst) then begin
-    TargetCanvas.Brush.Color := $CAFFFF; // long sms
-    TargetCanvas.FillRect(CellRect);
-  end
-  else if (item.smsData.IsLong) and (not item.smsData.IsLongFirst) then begin
-    TargetCanvas.Brush.Color := $CCCCCC; // this is obsolete - these nodes are hided
-    TargetCanvas.FillRect(CellRect);
+  if Assigned(item) then
+  try
+    if Column = 0 then begin
+      if item.smsData.IsOutgoing then
+        TargetCanvas.Brush.Color := $00E0E0FF  // from column (out)
+      else
+        TargetCanvas.Brush.Color := $00FFE0E0; // from column (in)
+      TargetCanvas.FillRect(CellRect);
+    end
+    else if (item.smsData.IsLong) and (item.smsData.IsLongFirst) then begin
+      TargetCanvas.Brush.Color := $CAFFFF; // long sms
+      TargetCanvas.FillRect(CellRect);
+    end
+    else if (item.smsData.IsLong) and (not item.smsData.IsLongFirst) then begin
+      TargetCanvas.Brush.Color := $CCCCCC; // this is obsolete - these nodes are hided
+      TargetCanvas.FillRect(CellRect);
+    end;
+  except
+    item.smsData := nil;
   end;
 end;
 
@@ -285,10 +290,13 @@ begin
   2:begin
       if (Kind = ikNormal) or (Kind = ikSelected) then begin
         item := Sender.GetNodeData(Node);
-        if item.smsData.IsNew then
-          ImageIndex := 21
-        else
-          ImageIndex := 20;
+        try
+          if item.smsData.IsNew then
+            ImageIndex := 21
+          else
+            ImageIndex := 20;
+        except
+        end;
       end
       else ImageIndex := -1;
     end;
@@ -306,8 +314,12 @@ begin
   if Column = 0 then CellText := item.from
   else
   if Column = 1 then begin
-    CellText := FlattenText(item.smsData.Text);
-    if IsLongSMSNode(Node) then CellText := CellText + ' (...)'; // do not localize
+    try
+      CellText := FlattenText(item.smsData.Text);
+      if IsLongSMSNode(Node) then CellText := CellText + ' (...)'; // do not localize
+    except
+      item.smsData := nil;
+    end;
     {
     if IsLongSMSNode(Node) then
       CellText := FlattenText(GetNodeLongText(node))
@@ -319,11 +331,15 @@ begin
   if Column = 2 then CellText := #32 // span columns doesnt take effect
   else
   if Column = 3 then begin
-    if item.smsData.TimeStamp > 0 then begin
-      if isToday(item.smsData.TimeStamp) then CellText := TimeToStr(item.smsData.TimeStamp)
-      else CellText := DateTimeToStr(item.smsData.TimeStamp)
-    end
-    else CellText := _('(not available)');
+    try
+      if item.smsData.TimeStamp > 0 then begin
+        if isToday(item.smsData.TimeStamp) then CellText := TimeToStr(item.smsData.TimeStamp)
+        else CellText := DateTimeToStr(item.smsData.TimeStamp)
+      end
+      else CellText := _('(not available)');
+    except
+      item.smsData := nil;
+    end;
   end;
 end;
 

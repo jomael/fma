@@ -8624,6 +8624,9 @@ var
 begin
   EData := ExplorerNew.GetNodeData(Node);
   ClearSMSMessages(THashedStringList(EData.Data));
+  // Clear frmMsgView because we just freed smsData objects
+  if (frmMsgView.Visible) and (ExplorerNew.FocusedNode = Node) then
+    frmMsgView.RenderListView(TStringList(EData.Data));
 end;
 
 function TForm1.LoadPhoneDataFiles(ID: string; ShowStatus,ShowProgress: Boolean): boolean;
@@ -8989,7 +8992,6 @@ begin
   try
     Log.AddMessage('Database: Loading SMS Outbox', lsDebug); // do not localize debug
     data := ExplorerNew.GetNodeData(FNodeMsgOutbox);
-    THashedStringList(data.Data).Clear;
     ClearSMSMessages(FNodeMsgOutbox);
     LoadSMSMessages(data.Data, Fullpath + 'SMSOutbox.dat'); // do not localize
     DoCleanupOutbox;
@@ -13802,9 +13804,11 @@ begin
           { don't clear if user is migrating/relocating data }
           ClearSMSMessages(nl);
         end;
-        for j := 1 to dl.Count-1 do begin // ignore Value[0] since it is the 'Path' one
+        for j := 1 to dl.Count-1 do try // ignore Value[0] since it is the 'Path' one
           md := TFmaMessageData.Create(dl.Values[dl.Names[j]]);
           nl.AddObject(md.PDU, md);
+        except
+          Log.AddMessageFmt(_('Unable to load message data! [DB index: %d]'), [j], lsError);
         end;
         if UpdateNewMessagesCounter(Node) <> 0 then
           if ShowUnreadFolders then

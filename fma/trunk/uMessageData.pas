@@ -11,7 +11,7 @@ type
   private
     FChanged, FOutgoing, FUnread: boolean;
     FData, FPDU: string;
-    FIndex: Integer;
+    FIndex, FStat, FPDULength: Integer;
     FTimeStamp: TDateTime;
     FLocation: TMessageLocation;
   protected
@@ -89,13 +89,35 @@ begin
   try
     GetTokenList(wl, AData);
     if wl.Count < 6 then
-      raise Exception.Create('Invalid message data!');
-    // wl[0] = location, [1] = index, [2] = '1'/'3'>incoming/outgoing [3,4] ??
-    // [5] = PDU, [6] = timestamp, [7] = newFlag
+      raise EConvertError.Create('Invalid message data!');
+    {
+      wl[0] = location (FMA data)
+      wl[1] = index (+CMGL data)
+      wl[2] = stat '0,1'/'2,3' > in/out (+CMGL data)
+      wl[3] = [alpha] - unused (+CGML data)
+      wl[4] = PDU length, in octets (+CGML data)
+      wl[5] = PDU (+CMGL data)
+      wl[6] = timestamp (FMA data)
+      wl[7] = new flag (FMA data)
+    }
     FLocation := TMessageLocation(StrToInt(wl[0]));
     FIndex := StrToInt(wl[1]);
-    FOutgoing := wl[2] = '3';
+    FStat := StrToIntDef(wl[2], 0);
+    FOutgoing := FStat in [2, 3];
+    // set unread flag by stat field first
+    FUnread := FStat in [0, 2];
+    FPDULength := StrToIntDef(wl[4],0); // PDU len in octets
     FPDU := wl[5];
+    // TODO: Finish and use this sanity check ???
+    {
+    if FPDULength > 0 then begin
+      ExpectedByteLen := FPDULength * ....
+      if Length(FPDU) > ExpectedByteLen then // truncate PDU
+        FPDU := Copy(FPDU, 1, ExpectedByteLen)
+      else if Length(FPDU) < ExpectedByteLen then // error!
+        raise EConvertError.Create('Invalid PDU!');
+    end;
+    }
     if wl.Count > 6 then begin
       if wl[6] <> '' then begin
         if wl[6][1] = '$' then
@@ -124,12 +146,9 @@ function TFmaMessage.GetString: string;
 begin
   if FChanged then begin
     FData := IntToStr(Ord(FLocation)) + ',' + IntToStr(FIndex) + ',';
-    if not FOutgoing then
-      FData := FData + '3'
-    else
-      FData := FData + '1';
-    FData := FData + ',,,' + FPDU + ',';
-    if FTimeStamp <> 0 then
+    FData := FData + IntToStr(FStat) + ',';
+    FData := FData + ',,' + FPDU + ',';
+    if (FTimeStamp <> 0) and (FOutgoing) then
       FData := FData + DateTimeToHexString(FTimeStamp) + ','
     else
       FData := FData + ',';
@@ -171,6 +190,7 @@ procedure TFmaMessage.SetPDU(const NewPDU: string);
 begin
   FChanged := True;
   FPDU := NewPDU;
+  FPDULength := 0;
   // TODO: PDU sanity check
 end;
 
@@ -182,8 +202,11 @@ end;
 
 procedure TFmaMessage.SetTimeStamp(const NewTimeStamp: TDateTime);
 begin
-  FChanged := True;
-  FTimeStamp := NewTimeStamp;
+  // TimeStamp can be changed only for Outgoing messages
+  if FOutgoing then begin
+    FChanged := True;
+    FTimeStamp := NewTimeStamp;
+  end;
 end;
 
 procedure TFmaMessage.SetUnread(const NewValue: boolean);
@@ -233,7 +256,7 @@ end;
 
 function TFmaMessageData.GetTimeStamp: TDateTime;
 begin
-  if (not FDecoded) and FChanged then
+  if (not FDecoded) then
     DecodeSMS;
   Result := FTimeStamp;
 end;
@@ -324,6 +347,11 @@ begin
   finally
     sms.Free;
     FDecoded := True;
+  end;
+  // never set non-first long messages as unread
+  if (ATot > 1) and (An > 1) and (FUnread) then begin
+    FUnread := False;
+    FChanged := True;
   end;
 end;
 
