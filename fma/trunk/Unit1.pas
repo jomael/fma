@@ -10044,7 +10044,7 @@ begin
       else dt := ForceDate;
     { if not timestamp is not set (i.e. outgoing sms) use current time }
     if dt = 0 then dt := Now;
-    buffer := buffer + '"' + DateTimeToStr(dt) + '"';
+    buffer := buffer + '"' + DateTimeToHexString(dt) + '"';
 
     if AsNew then begin
       GSMLongMsgData(PDU, ARef, ATot, An);
@@ -10057,7 +10057,7 @@ begin
     sms.Free;
   end;
 
-  { TODO: Optimize for speed }
+  { DONE: Optimize for speed }
   sl := THashedStringList(EData.Data);
   EntryExist := False;
   if not AllowDuplicates then begin

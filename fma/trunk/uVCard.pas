@@ -539,10 +539,20 @@ var
       end;
     end
 
-    { BDAY:19730205 }
+    { BDAY
+      The property value is a string conforming to the ISO 8601 calendar date,
+      complete representation, in either basic or extended format.
+      The following example is in the basic format of ISO 8601:
+      BDAY:19950415
+      The following example is in the extended format of ISO 8601:
+      BDAY:1995-04-15
+    }
     else if CompareStr('BDAY',PName) = 0 then begin
       PWValue := DecodePropertyValue(PParams,PValue);
-      BDay := EncodeDate(StrToInt(Copy(PWValue,1,4)),StrToInt(Copy(PWValue,5,2)),StrToInt(Copy(PWValue,7,2)));
+      if Length(PWValue) = 8 then
+        BDay := EncodeDate(StrToInt(Copy(PWValue,1,4)),StrToInt(Copy(PWValue,5,2)),StrToInt(Copy(PWValue,7,2)))
+      else if Length(PWValue) = 10 then
+        BDay := EncodeDate(StrToInt(Copy(PWValue,1,4)),StrToInt(Copy(PWValue,6,2)),StrToInt(Copy(PWValue,9,2)));
     end
 
     { URL;CHARSET=UTF-8:http://www.5group.com }

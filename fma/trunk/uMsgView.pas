@@ -238,7 +238,7 @@ var
 begin
   item := Sender.GetNodeData(Node);
 
-  if Assigned(item) then
+  if Assigned(item) and Assigned(item.smsData) then
   try
     if Column = 0 then begin
       if item.smsData.IsOutgoing then
@@ -315,8 +315,10 @@ begin
   else
   if Column = 1 then begin
     try
-      CellText := FlattenText(item.smsData.Text);
-      if IsLongSMSNode(Node) then CellText := CellText + ' (...)'; // do not localize
+      if Assigned(item.smsData) then begin
+        CellText := FlattenText(item.smsData.Text);
+        if IsLongSMSNode(Node) then CellText := CellText + ' (...)'; // do not localize
+      end;
     except
       item.smsData := nil;
     end;
@@ -332,7 +334,7 @@ begin
   else
   if Column = 3 then begin
     try
-      if item.smsData.TimeStamp > 0 then begin
+      if (Assigned(item.smsData) and (item.smsData.TimeStamp > 0)) then begin
         if isToday(item.smsData.TimeStamp) then CellText := TimeToStr(item.smsData.TimeStamp)
         else CellText := DateTimeToStr(item.smsData.TimeStamp)
       end
