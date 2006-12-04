@@ -80,13 +80,16 @@ begin
   { Restore form position }
   FormPlacement1.RestoreFormPlacement;
   Application.ProcessMessages;
-  { Show window but not activate it }
+  { Show window but not activate it --- if using this CLOSE is not working!!!
   SetWindowPos(Handle, HWND_TOPMOST,
     Left + 24 * ((Screen.FormCount-2) mod 10), Top + 24 * (Screen.FormCount div 10), Width, Height,
     SWP_NOACTIVATE);
   ShowWindow(Handle,SW_SHOWNOACTIVATE);
   ShowWindow(PostponeButton.Handle,SW_SHOWNOACTIVATE);
   ShowWindow(CloseButton.Handle,SW_SHOWNOACTIVATE);
+  }
+  Show;
+  Update;
 end;
 
 procedure TfrmNewAlarm.FormCreate(Sender: TObject);
@@ -134,7 +137,7 @@ begin
           except
           end;
         aaIgnore:
-          exit;  
+          exit;
       end;
   end;
   { Postpone or dismiss alarm }
@@ -146,8 +149,11 @@ begin
   try
     case FCreator of
       aoPhone:
-        if Form1.FConnected and not Form1.FObex.Connected and not ThreadSafe.ObexConnecting then
-          Form1.TxAndWait(s);
+        begin
+          Action := caHide;
+          if Form1.FConnected and not Form1.FObex.Connected and not ThreadSafe.ObexConnecting then
+            Form1.TxAndWait(s);
+        end;
       aoFMA:
         Action := caFree; { Calendar events use new alarm dialog for each new event }
     end;
