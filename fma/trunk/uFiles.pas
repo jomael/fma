@@ -276,6 +276,7 @@ function TFile.Update: boolean;
     Result := fTreeView.InsertNode(CurNode, amInsertBefore);
     EData := fTreeView.GetNodeData(Result);
     EData.Text := FileName;
+    EData.isFile := True;
     exit;
    end;
 
@@ -285,6 +286,7 @@ function TFile.Update: boolean;
   Result := fTreeView.AddChild(fTreeNode);
   EData := fTreeView.GetNodeData(Result);
   EData.Text := FileName;
+  EData.isFile := True;
  end;
 
  function CreateNewDirNode(DirName: WideString): PVirtualNode;
@@ -306,6 +308,7 @@ function TFile.Update: boolean;
     Result := fTreeView.InsertNode(CurFile.TreeNode, amInsertBefore);
     EData := fTreeView.GetNodeData(Result);
     EData.Text := DirName;
+    EData.isFile := True;
     exit;
    end;
 
@@ -315,6 +318,7 @@ function TFile.Update: boolean;
   Result := fTreeView.AddChild(fTreeNode);
   EData := fTreeView.GetNodeData(Result);
   EData.Text := DirName;
+  EData.isFile := True;
  end;
 
  procedure AddNewFile(NewFile: TFile);

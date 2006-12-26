@@ -403,7 +403,7 @@ begin
     try
       data2 := Form1.ExplorerNew.GetNodeData(fFile.TreeNode);
       case data2.ImageIndex of
-        36: begin // sound
+        36,38: begin // sound
           SetTab(pcFile,tsFileSound,Panel2);
           lblType.Caption := _('Sound');
           if btnFindTarget.Enabled then begin
@@ -436,27 +436,32 @@ begin
             lblNoCache.Caption := _('In phone only');
         end;
         27: begin // theme
-          { Theme support only for T610 and K700 phones! } 
+          { Theme support only for T610 and K700 phones! }
+          lblType.Caption := _('Theme');
+          if btnFindTarget.Enabled then
+            lblNoCache.Caption := _('Downloaded')
+          else
+            lblNoCache.Caption := _('In phone only');
           if not (Form1.IsT610Clone or Form1.IsK700Clone) then
             Abort;
           SetTab(pcFile,tsFileTheme,Panel2);
-          lblType.Caption := _('Theme');
           if btnFindTarget.Enabled then begin
-            lblNoCache.Caption := _('Downloaded');
             ThemeContainer1.OpenTheme(Fullpath);
             ThemeViewer1.Preview := pvStandby;
             lbPreview.ItemIndex := Ord(pvStandby)-1;
-          end
-          else
-            lblNoCache.Caption := _('In phone only');
+          end;
         end;
         else begin
           lblType.Caption := _('Unknown');
+          if btnFindTarget.Enabled then
+            lblNoCache.Caption := _('Downloaded')
+          else
+            lblNoCache.Caption := _('In phone only');
           Abort;
         end;
       end;
     except
-      lblNoCache.Caption := _('Not supported');
+      //lblNoCache.Caption := _('Not supported');
       tsFilePreview.TabVisible := False;
     end;
 
@@ -658,7 +663,8 @@ begin
     pcGeneral.ActivePage.Parent := pcGeneral;
   if Assigned(pcFile.ActivePage) then
     pcFile.ActivePage.Parent := pcFile;
-  if Assigned(fFile) then fFile.Free;
+  // fFile is assigned from ExplorerNew->Node->Data, dont free!!!
+  if Assigned(fFile) then fFile := nil;
 end;
 
 procedure TfrmFolderProps.SetTab(Control: TTntPageControl; Tab: TTntTabSheet;

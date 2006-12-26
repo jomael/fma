@@ -1,6 +1,6 @@
 object frmDetail: TfrmDetail
-  Left = 448
-  Top = 239
+  Left = 391
+  Top = 171
   BorderStyle = bsDialog
   Caption = 'Message'
   ClientHeight = 454
@@ -243,15 +243,6 @@ object frmDetail: TfrmDetail
         ReadOnly = True
         TabOrder = 1
       end
-      object edTimeStamp: TTntEdit
-        Left = 92
-        Top = 136
-        Width = 257
-        Height = 21
-        Color = clBtnFace
-        ReadOnly = True
-        TabOrder = 2
-      end
       object memoText: TTntMemo
         Left = 92
         Top = 168
@@ -259,7 +250,7 @@ object frmDetail: TfrmDetail
         Height = 173
         ReadOnly = True
         ScrollBars = ssVertical
-        TabOrder = 3
+        TabOrder = 2
       end
       object edLocation: TTntEdit
         Left = 92
@@ -268,7 +259,32 @@ object frmDetail: TfrmDetail
         Height = 21
         Color = clBtnFace
         ReadOnly = True
+        TabOrder = 3
+      end
+      object TimeStampDate: TTntDateTimePicker
+        Left = 92
+        Top = 136
+        Width = 117
+        Height = 21
+        Date = 39077.016685648140000000
+        Time = 39077.016685648140000000
+        Color = clBtnFace
+        Enabled = False
         TabOrder = 4
+        OnChange = TimeStampChange
+      end
+      object TimeStampTime: TTntDateTimePicker
+        Left = 232
+        Top = 136
+        Width = 117
+        Height = 21
+        Date = 39077.016910983800000000
+        Time = 39077.016910983800000000
+        Color = clBtnFace
+        Enabled = False
+        Kind = dtkTime
+        TabOrder = 5
+        OnChange = TimeStampChange
       end
     end
     object TabSheet2: TTabSheet
@@ -386,5 +402,15 @@ object frmDetail: TfrmDetail
     Caption = 'Close'
     TabOrder = 1
     OnClick = Button1Click
+  end
+  object btnEditSMSTime: TTntButton
+    Left = 16
+    Top = 424
+    Width = 107
+    Height = 25
+    Caption = 'Edit timestamp'
+    TabOrder = 2
+    Visible = False
+    OnClick = btnEditSMSTimeClick
   end
 end

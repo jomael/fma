@@ -19,7 +19,7 @@ interface
 
 uses
   Windows, TntWindows, Messages, SysUtils, TntSysUtils, Variants, Classes, TntClasses, Graphics, TntGraphics, Controls, TntControls, Forms, TntForms,
-  Dialogs, TntDialogs, ExtCtrls, TntExtCtrls, StdCtrls, TntStdCtrls, ComCtrls, TntComCtrls, UniTntCtrls;
+  Dialogs, TntDialogs, ExtCtrls, TntExtCtrls, StdCtrls, TntStdCtrls, ComCtrls, TntComCtrls, UniTntCtrls, uMessageData;
 
 type
   TfrmDetail = class(TTntForm)
@@ -30,7 +30,6 @@ type
     Label1: TTntLabel;
     edSMSC: TTntEdit;
     Label3: TTntLabel;
-    edTimeStamp: TTntEdit;
     Button1: TTntButton;
     Label4: TTntLabel;
     memoText: TTntMemo;
@@ -51,16 +50,21 @@ type
     memoPDU: TTntMemo;
     TntLabel1: TTntLabel;
     edLocation: TTntEdit;
+    TimeStampDate: TTntDateTimePicker;
+    TimeStampTime: TTntDateTimePicker;
+    btnEditSMSTime: TTntButton;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure btnEditSMSTimeClick(Sender: TObject);
+    procedure TimeStampChange(Sender: TObject);
   private
-    FPDU: String;
-    procedure SetPDU(const Value: String);
+    FSMS: TFmaMessageData;
+    procedure SetSMS(const Value: TFmaMessageData);
     { Private declarations }
   public
     { Public declarations }
-    property PDU: String read FPDU write SetPDU;
+    property SMS: TFmaMessageData read FSMS write SetSMS;
   end;
 
 var
@@ -76,20 +80,20 @@ uses
 
 { TfrmDetail }
 
-procedure TfrmDetail.SetPDU(const Value: String);
+procedure TfrmDetail.SetSMS(const Value: TFmaMessageData);
 resourcestring
   NoInfo = '(No Information)';
 var
   sms: Tsms;
   ARef, ATot, An: Integer;
 begin
-  FPDU := Value;
+  FSMS := Value;
 
-  sms := Tsms.Create;
+  sms := TSMS.Create;
   try
-    sms.PDU := FPDU;
+    sms.PDU := FSMS.PDU;
 
-    edFrom.Text := sms.Number;
+    edFrom.Text := FSMS.From;
 
     memoText.Text := sms.Text;
     edUDHI.Text := sms.UDHI;
@@ -99,10 +103,19 @@ begin
     edSMSC.Text := sms.SMSC;
     if edSMSC.Text = '' then edSMSC.Text := NoInfo;
 
-    if sms.TimeStamp > 0 then
-      edTimeStamp.Text := DateTimeToStr(sms.TimeStamp)
-    else
-      edTimeStamp.Text := NoInfo;
+    btnEditSMSTime.Caption := _('Edit timestamp');
+    btnEditSMSTime.Tag := 0;
+    btnEditSMSTime.Enabled := FSMS.IsOutgoing;
+    btnEditSMSTime.Visible := FSMS.IsOutgoing;
+
+    if FSMS.TimeStamp > 0 then begin
+      TimeStampDate.DateTime := FSMS.TimeStamp;
+      TimeStampTime.DateTime := FSMS.TimeStamp;
+    end
+    else begin
+      TimeStampDate.DateTime := Now;
+      TimeStampTime.DateTime := Now;
+    end;
 
     memoPDU.Clear;
 
@@ -116,9 +129,9 @@ begin
       memoPDU.Lines.Add(WideFormat(_('Message Type: %s'),
         ['SMS DELIVER'])); // do not localize
     end;
-    memoPDU.Lines.Add(sLineBreak + FPDU);
+    memoPDU.Lines.Add(sLineBreak + FSMS.PDU);
 
-    GSMLongMsgData(FPDU, ARef, ATot, An);
+    GSMLongMsgData(FSMS.PDU, ARef, ATot, An);
     if ATot < 1 then ATot := 1;
 
     edLongCount.Text := IntToStr(ATot);
@@ -132,7 +145,7 @@ begin
     Caption := Caption + ' - [' + lblName.Caption + ']';
   finally
     sms.Destroy;
-  end;  
+  end;
 end;
 
 procedure TfrmDetail.Button1Click(Sender: TObject);
@@ -155,6 +168,37 @@ procedure TfrmDetail.FormShow(Sender: TObject);
 begin
   PageControl1.ActivePageIndex := 0;
   Button1.SetFocus;
+end;
+
+procedure TfrmDetail.btnEditSMSTimeClick(Sender: TObject);
+begin
+  if btnEditSMSTime.Tag = 0 then begin
+    PageControl1.ActivePageIndex := 0;
+    btnEditSMSTime.Caption := _('Save changes');
+    btnEditSMSTime.Tag := 1;
+    TimeStampDate.Enabled := True;
+    TimeStampTime.Enabled := True;
+    TimeStampDate.Color := clWindow;
+    TimeStampTime.Color := clWindow;
+    Self.Update;
+    if TimeStampDate.CanFocus then
+      TimeStampDate.SetFocus;
+    btnEditSMSTime.Enabled := False;
+  end
+  else begin
+    btnEditSMSTime.Caption := _('Edit timestamp');
+    btnEditSMSTime.Tag := 0;
+    FSMS.TimeStamp := Int(TimeStampDate.Date) + (TimeStampTime.Time - Int(TimeStampTime.Time));
+    TimeStampDate.Enabled := False;
+    TimeStampTime.Enabled := False;
+    TimeStampDate.Color := clBtnFace;
+    TimeStampTime.Color := clBtnFace;
+  end;
+end;
+
+procedure TfrmDetail.TimeStampChange(Sender: TObject);
+begin
+  btnEditSMSTime.Enabled := True;
 end;
 
 end.

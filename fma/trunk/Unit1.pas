@@ -72,6 +72,7 @@ type
     Data: Pointer;
     Text: WideString;
     ImageIndex, StateIndex: Integer;
+    isFile: boolean;
     SpecialImages: Cardinal;
     { specialImages:Cardinal = $ ST M1 M2 NC
         ST - standard imageIndex
@@ -3240,7 +3241,10 @@ begin
       else
         ActionConnectionDownload.Hint := _('Refresh Data');
 
-      if ((EData.StateIndex and FmaMessagesRootMask) = FmaMessagesRootFlag) and
+      if EData.isFile then begin // must be first because of abused StateIndex
+        SetFrameVisible('EXPLORE'); // do not localize
+      end
+      else if ((EData.StateIndex and FmaMessagesRootMask) = FmaMessagesRootFlag) and
         ((EData.StateIndex and FmaNodeSubitemsMask) <> 0) then begin // SMS text Messages
         ActionConnectionDownload.Hint := _('Download Messages');
         SetFrameVisible('MSG'); // do not localize
@@ -3268,6 +3272,7 @@ begin
         else
           SetFrameVisible('INFO'); // Fma Today // do not localize
       end;
+      
       if Node = FNodeContactsSM then begin // SIM book
         SetFrameVisible('SM'); // do not localize
         if not frmSMEdit.IsRendered then frmSMEdit.RenderData;
@@ -3472,7 +3477,7 @@ begin
       TxAndWait('AT+CMGD=' + IntToStr(index)); // do not localize
     Result := True;
   except
-    on E: Exception do  
+    on E: Exception do
       raise Exception.Create(Format(_('Delete failed: %s'), [E.Message]));
   end;
 end;
@@ -7259,10 +7264,14 @@ begin
               CurFile := PExploreItem(frmExplore.ListItems.GetNodeData(Node))^.fFile;
               cName := WideExtractFileName(CurFile.InternalName);
               gName := WideExtractFilePath(CurFile.InternalName);
-              dlg.SetDescr(_('Deleting ')+cname+'...');
-              ObexPutFile(CurFile.FullPath,True);
-              ReindexFolder;
-              DelNode := Node;
+              try
+                dlg.SetDescr(_('Deleting ')+cname+'...');
+                ObexPutFile(CurFile.FullPath,True);
+                ReindexFolder;
+                DelNode := Node;
+              except on E: Exception do
+                MessageDlgW(WideFormat(_('Unable to delete file "%s"! Error details: %s'),[cName, E.Message]), mtError, MB_OK);
+              end;
             end;
             Node := frmExplore.ListItems.GetNext(Node);
             if Assigned(DelNode) then
@@ -7273,14 +7282,18 @@ begin
           frmExplore.RootNode := ExplorerNew.FocusedNode;
         end
         else begin
-          ObexPutFile(CurFile.FullPath,True);
-          ReindexFolder; // Delete node from Explorer too
-          if FromView then begin
-            frmExplore.ListItems.DeleteNode(SelNode);
-            frmExplore.RootNode := ExplorerNew.FocusedNode; // update view
-          end
-          else
-            ExplorerNew.DeleteNode(ExplorerNew.FocusedNode);
+          try
+            ObexPutFile(CurFile.FullPath,True);
+            ReindexFolder; // Delete node from Explorer too
+            if FromView then begin
+              frmExplore.ListItems.DeleteNode(SelNode);
+              frmExplore.RootNode := ExplorerNew.FocusedNode; // update view
+            end
+            else
+              ExplorerNew.DeleteNode(ExplorerNew.FocusedNode);
+          except on E: Exception do
+            MessageDlgW(WideFormat(_('Unable to delete file! Error details: %s'),[E.Message]), mtError, MB_OK);
+          end;
         end;
 
         Status(_('Delete completed'));
@@ -7503,17 +7516,27 @@ begin
 end;
 
 procedure TForm1.InitObexFolders;
+var
+  dlg: TfrmConnect;
 begin
   if not FStartupOptions.NoObex and FUseObex then begin
     if not CoolTrayIcon1.CycleIcons then
       Status(_('Loading folders...'));
+    dlg := GetProgressDialog;
     try
-      fFiles.Update;
-      ExplorerNew.Expanded[FNodeObex] := true;
+      dlg.InitializeLoop(_('Loading folders...'));
+      if CanShowProgress then
+        dlg.ShowProgress(FProgressLongOnly);
+      try
+        fFiles.Update;
+        ExplorerNew.Expanded[FNodeObex] := true;
+      finally
+        if not CoolTrayIcon1.CycleIcons then
+          Status('');
+        if frmExplore.Visible then frmExplore.RootNode := ExplorerNew.FocusedNode;
+      end;
     finally
-      if not CoolTrayIcon1.CycleIcons then
-        Status('');
-      if frmExplore.Visible then frmExplore.RootNode := ExplorerNew.FocusedNode;
+      FreeProgressDialog;
     end;
   end;
 end;

@@ -516,7 +516,7 @@ begin
     if item <> nil then begin
       if frmDetail = nil then
         frmDetail := TfrmDetail.Create(Self);
-      frmDetail.PDU := item.smsData.PDU;
+      frmDetail.SMS := item.smsData;
 
       if item.StateIndex and $C0000 = 0 then // ME
         frmDetail.edLocation.Text := _('PC and Phone')
