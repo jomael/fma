@@ -544,7 +544,7 @@ Const
     'Cuba 53 
     'Cyprus (Republic of) 357 
     'Czech Republic 420 
-    'Democratic People's Republic of Korea 850 
+    'Democratic People's Republic of Korea 850
     'Democratic Republic of the Congo 243 
     'Denmark 45 
     'Diego Garcia 246 
@@ -565,7 +565,7 @@ Const
     'Finland 358 
     'France 33 
     'French Guiana 594 
-    'French Polynesia 689 
+    'French Polynesia 689
     'Gabonese Republic 241 
     'Gambia (Republic of the) 220 
     'Georgia 995 
@@ -586,7 +586,7 @@ Const
     'Honduras (Republic of) 504 
     'Hongkong 852 
     'Hungary (Republic of) 36
-    'Iceland 354 
+    'Iceland 354
     'India (Republic of) 91 
     'Indonesia (Republic of) 62 
     'International Freephone Service 800 
@@ -607,7 +607,7 @@ Const
     'Lao People's Democratic Republic 856 
     'Latvia (Republic of) 371 
     'Lebanon 961 
-    'Lesotho (Kingdom of) 266 
+    'Lesotho (Kingdom of) 266
     'Liberia (Republic of) 231 
     'Libya 218 
     'Liechtenstein (Principality of) 423 
@@ -628,7 +628,7 @@ Const
     'Mayotte 269 
     'Mexico 52 
     'Micronesia (Federated States of) 691 
-    'Moldova (Republic of) 373 
+    'Moldova (Republic of) 373
     'Monaco (Principality of) 377 
     'Mongolia 976 
     'Montserrat 1 
@@ -649,7 +649,7 @@ Const
     'Northern Mariana Islands 1 
     'Norway 47 
     'Oman (Sultanate of) 968 
-    'Pakistan (Islamic Republic of) 92 
+    'Pakistan (Islamic Republic of) 92
     'Palau (Republic of) 680 
     'Panama (Republic of) 507 
     'Papua New Guinea 675 
@@ -670,7 +670,7 @@ Const
     'Saint Lucia 1 
     'Saint Pierre and Miquelon 508 
     'Saint Vincent and the Grenadines 1 
-    'Samoa (Independent State of) 685 
+    'Samoa (Independent State of) 685
     'San Marino (Republic of) 378 
     'Sao Tome and Principe 239 
     'Saudi Arabia (Kingdom of) 966 
@@ -691,7 +691,7 @@ Const
     'Suriname (Republic of) 597 
     'Swaziland (Kingdom of) 268 
     'Sweden 46 
-    'Switzerland (Confederation of) 41 
+    'Switzerland (Confederation of) 41
     'Syrian Arab Republic 963 
     'Tajikistan 992 
     'Tanzania (United Republic of) 255 
@@ -712,7 +712,7 @@ Const
     'United States 1 
     'United States Virgin Islands 1 
     'Uruguay (Eastern Republic of) 598 
-    'Uzbekistan (Republic of) 998 
+    'Uzbekistan (Republic of) 998
     'Vanuatu (Republic of) 678 
     'Vatican City State 39 
     'Vatican City State 379 
@@ -912,7 +912,7 @@ var
   begin
     i := Length(s);
     if i >= 2 then begin
-      if Copy(s,i-1,2) = '00' then 
+      if Copy(s,i-1,2) = '00' then
         Delete(s,i-1,2);
     end;
     Result := s;
@@ -926,7 +926,7 @@ begin
     if not FIsSMSSumit then startpos := startpos + 12;
 
     { Sample PDU which is from Long SMS and doesn't contains UDHI!
-    
+
       005143048101010000FFA00000000000005A20631A5F2683825650592E7F
       CB417774D90D2AE2E1ECB7BC2C0739DFE4B28B18A68741E939C89964BA1A
       8A16C898C697C9206B589E7ED7E7A07BDA4D7EDF41E4B2395C67D34173F4
@@ -1287,6 +1287,13 @@ begin
   // Check if PDU contain SMSC information
   try
     FSMSCLen := StrToInt('$' + copy(FPDU, 1, 2)) * 2; // length in octets * 2 = number of chars
+    { !- hack -!
+      -mhr: seems SE is sometimes using Address-Length == 1 when SMSC is ommited
+      anyway this would mean that only Type-of-Address is present without the actual
+      address which would be weird, so it shouldn't do any problems
+    }
+    if FSMSCLen = 2 then
+      FSMSCLen := 0;
   except
     FSMSCLen := 0;
     Log.AddMessage('PDU ERROR (SMSCLen): '+Value, lsError); // do not localize debug

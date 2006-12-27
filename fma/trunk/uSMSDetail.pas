@@ -107,6 +107,8 @@ begin
     btnEditSMSTime.Tag := 0;
     btnEditSMSTime.Enabled := FSMS.IsOutgoing;
     btnEditSMSTime.Visible := FSMS.IsOutgoing;
+    TimeStampDate.Enabled := False;
+    TimeStampTime.Enabled := False;
 
     if FSMS.TimeStamp > 0 then begin
       TimeStampDate.DateTime := FSMS.TimeStamp;
@@ -183,7 +185,7 @@ begin
     Self.Update;
     if TimeStampDate.CanFocus then
       TimeStampDate.SetFocus;
-    btnEditSMSTime.Enabled := False;
+    btnEditSMSTime.Enabled := FSMS.TimeStamp = 0;
   end
   else begin
     btnEditSMSTime.Caption := _('Edit timestamp');
