@@ -327,7 +327,7 @@ begin
 
   if UseSEcommands then 
     Form1.ScheduleTxAndWait('AT*SELERT="'+WideStringToUTF8String(Copy(Msg,1,160))+'",6,1'+buf) // do not localize
-  else 
+  else
     Form1.ScheduleTxAndWait('AT*EAID=1,' + IntToStr(FNextState) + ',"' + WideStringToUTF8String(Copy(Msg,1,160)) + '"' + buf); // do not localize
 
 end;
@@ -507,7 +507,8 @@ begin
   Log.AddScriptMessage('AccessoriesMenu.DlgFeedback: Title="'+Title+'" Event="'+event+'"', lsDebug); // do not localize debug
 
   if UseSEcommands then begin
-    Form1.ScheduleTxAndWait('AT*SELERT="'+WideStringToUTF8String(Copy(Title,1,15))+'",6,1'); // do not localize
+    Form1.ScheduleTxAndWait('AT*SEGAUGE="'+WideStringToUTF8String(Copy(Title,1,15))+'",0,1,0'); // do not localize
+    //Form1.ScheduleTxAndWait('AT*SELERT="'+WideStringToUTF8String(Copy(Title,1,15))+'",6,1'); // do not localize
   end
   else begin
     Form1.ScheduleTxAndWait('AT*EAID=13,' + IntToStr(FNextState) + ',"' + WideStringToUTF8String(Copy(Title,1,15)) + '"'); // do not localize
