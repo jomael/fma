@@ -41,6 +41,7 @@
 '-ArrayContainer
 ' -Attributes:
 '  -Item ( Get( idx ):value/object, Set( idx, object ), Let( idx,  value ) )
+'  -USize ( Get:value )
 ' -Methods
 '  -RedimAry ( size )
 '  -RedimPAry ( size )
@@ -477,6 +478,10 @@ Class ArrayContainer
 		Redim Preserve m_Array( nDim )
 	End Function
 	
+	Public Property Get USize
+		USize = UBound(m_Array)
+	End Property
+
 	Private Function BoundCheck ( nAryIndex )
 		If ( nAryIndex <= UBound(m_Array) ) and ( nAryIndex >= LBound(m_Array) ) Then
 			BoundCheck = true

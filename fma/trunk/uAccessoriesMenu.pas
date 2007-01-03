@@ -32,6 +32,8 @@ const
   DLG_INFORMATION = $08;
   DLG_FEEDBACK    = $09;
   DLG_SUBMENU     = $0a;
+  DLG_LIST_1      = $0b;
+  DLG_LIST_N      = $0c;
   DLG_INPUTERR    = $80;
 
 type
@@ -39,6 +41,7 @@ type
   private
     FTitle: WideString;
     FMenuList: TTntStrings;
+    FMenuListOptions: TStrings;
     FUIOpen: Boolean;
     function UseSEcommands: Boolean;
   protected
@@ -46,6 +49,8 @@ type
     procedure Init; safecall;
     procedure Clear; safecall;
     procedure AddItem(const Caption, Event: WideString); safecall;
+    procedure AddItemEx(const Caption: WideString; Disabled, Selected, CanDelete: WordBool; ImgIndex: Integer; const Event: WideString); safecall;
+    procedure Set_MenuType(Value: Integer); safecall;
     procedure Set_Title(const Value: WideString); safecall;
     procedure Set_Selected(Value: Integer); safecall;
     procedure Update; safecall;
@@ -75,6 +80,7 @@ type
     FMenuEntryEvent: String;
     FInputMax: Integer;
     FInputMin: Integer;
+    property SessionOpened: boolean read FUIOpen;
     procedure OpenUI; safecall;
     procedure CloseUI; safecall;
     procedure Initialize; override;
@@ -140,7 +146,37 @@ AddItem(
 procedure TAccessoriesMenu.AddItem(const Caption, Event: WideString);
 begin
   FMenuList.Add(Caption);
+  FMenuListOptions.Add('0,0,0,0');
   FEventList.Add(Event);
+end;
+
+procedure TAccessoriesMenu.AddItemEx(const Caption: WideString; Disabled, Selected, CanDelete: WordBool; ImgIndex: Integer; const Event: WideString);
+var
+  s: string;
+begin
+  if Disabled and (not UseSEcommands) then Exit;
+  FMenuList.Add(Caption);
+  s := IntToStr(ImgIndex) + ',';
+  if Disabled then
+    s := s + '1,'
+  else
+    s := s + '0,';
+  if Selected then
+    s := s + '1,'
+  else
+    s := s + '0,';
+  if CanDelete then
+    s := s + '1'
+  else
+    s := s + '0';
+  FMenuListOptions.Add(s);
+  FEventList.Add(Event);
+end;
+
+procedure TAccessoriesMenu.Set_MenuType(Value: Integer);
+begin
+  if Value <= DLG_LIST_N then
+    FType := Value;
 end;
 
 {*******************************************************************************
@@ -176,11 +212,18 @@ begin
 
   // Prepare start of AT command
   OpenUI;
-  FType := DLG_SUBMENU;
+  if FType and $0f < DLG_SUBMENU then
+    FType := DLG_SUBMENU;
   Log.AddScriptMessage('AccessoriesMenu.Update', lsDebug); // do not localize debug
 
   if UseSEcommands then begin
-    Com := 'AT*SELIST="' + WideStringToUTF8String(FTitle) + '",3,'; // do not localize
+    Com := 'AT*SELIST="' + WideStringToUTF8String(FTitle) + '",'; // do not localize
+    if FType = DLG_LIST_1 then
+      Com := Com + '1,'
+    else if FType = DLG_LIST_N then
+      Com := Com + '2,'
+    else
+      Com := Com + '3,';
     If FSelected>0 Then
       Com := Com + IntToStr(FSelected-1) + ',' // do not localize
     else
@@ -206,7 +249,7 @@ begin
       SetLength(W, Length(W)-1);
     until false;
     if UseSEcommands then
-      TempBuf := ',"' + TempBuf + '",0,0,0,0'
+      TempBuf := ',"' + TempBuf + '",' + FMenuListOptions[i]
     else
       TempBuf := ',"' + TempBuf + '"';
 
@@ -251,7 +294,9 @@ ClearMenu() [Clears menu items and abort command]
 procedure TAccessoriesMenu.ClearMenu;
 begin
   Log.AddScriptMessage('AccessoriesMenu.ClearMenu', lsDebug); // do not localize debug
+  FType := DLG_SUBMENU;
   FMenuList.Clear;
+  FMenuListOptions.Clear;
   FEventList.Clear;
   FBack := '';
 end;
@@ -295,7 +340,7 @@ begin
       buf := buf + ',"' + WideStringToUTF8String(Copy(FMenuList.Strings[i],1,15)) + '"';
   end;
 
-  Form1.ScheduleTxAndWait(buf); 
+  Form1.ScheduleTxAndWait(buf);
 end;
 
 {*******************************************************************************
@@ -317,7 +362,7 @@ begin
 
   if TimeoutS > 0 then begin
     if TimeoutS > 10 then Exception.Create(_('TimeoutS out of range (0-10)'));
-    if UseSEcommands then 
+    if UseSEcommands then
       buf := ',' + IntToStr(TimeoutS * 1000)
     else
       buf := ',' + IntToStr(TimeoutS * 10);
@@ -539,6 +584,7 @@ destructor TAccessoriesMenu.Destroy;
 begin
   Log.AddScriptMessage('AccessoriesMenu.Destroy', lsDebug); // do not localize debug
   FreeAndNil(FMenuList);
+  FreeAndNil(FMenuListOptions);
   FreeAndNil(FEventList);
   inherited;
 end;
@@ -548,6 +594,7 @@ begin
   inherited;
   Log.AddScriptMessage('AccessoriesMenu.Initialize', lsDebug); // do not localize debug
   FMenuList := TTntStringList.Create;
+  FMenuListOptions := TStringList.Create;
   FEventList := TTntStringList.Create;
 end;
 

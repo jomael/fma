@@ -12,7 +12,7 @@ unit MobileAgent_TLB;
 // ************************************************************************ //
 
 // PASTLWTR : 1.2
-// File generated on 6.11.2006 17:20:49 from Type Library described below.
+// File generated on 31.12.2006 19:02:23 from Type Library described below.
 
 // ************************************************************************  //
 // Type Lib: c:\install\fma\MobileAgent.tlb (1)
@@ -229,10 +229,14 @@ type
     procedure DlgInputInt(const Title: WideString; const Prompt: WideString; MinVal: Integer; 
                           MaxVal: Integer; DefaultVal: Integer; const event: WideString); safecall;
     procedure DlgFeedback(const Title: WideString; const event: WideString); safecall;
+    procedure Set_MenuType(Value: Integer); safecall;
+    procedure AddItemEx(const Caption: WideString; Disabled: WordBool; Selected: WordBool; 
+                        CanDelete: WordBool; ImgIndex: Integer; const Event: WideString); safecall;
     property Title: WideString write Set_Title;
     property Selected: Integer write Set_Selected;
     property Back: WideString write Set_Back;
     property NextState: Integer write Set_NextState;
+    property MenuType: Integer write Set_MenuType;
   end;
 
 // *********************************************************************//
@@ -263,6 +267,9 @@ type
     procedure DlgInputInt(const Title: WideString; const Prompt: WideString; MinVal: Integer; 
                           MaxVal: Integer; DefaultVal: Integer; const event: WideString); dispid 4;
     procedure DlgFeedback(const Title: WideString; const event: WideString); dispid 13;
+    property MenuType: Integer writeonly dispid 19;
+    procedure AddItemEx(const Caption: WideString; Disabled: WordBool; Selected: WordBool; 
+                        CanDelete: WordBool; ImgIndex: Integer; const Event: WideString); dispid 20;
   end;
 
 // *********************************************************************//

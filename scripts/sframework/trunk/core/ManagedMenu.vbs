@@ -27,12 +27,14 @@ Class ManagedMenu
 	Private numPages
 	Private isRoot
 	Private updateMenu
+	Private m_menuType
 
 	Sub Class_Initialize ()
  	isRoot = 0
 	 'Init an empty menu
 	 m_Title = ""
 	 updateMenu = False
+	 m_menuType = 10 'Standard menu
 	 Set List = New LinkedList
 	End Sub
 	Public Property Let Title (ByVal t)
@@ -44,6 +46,9 @@ Class ManagedMenu
 	Public Property Get CurrentPage
 	 CurrentPage = Page
 	End Property
+	Public Property Let menuType (ByVal mt)
+	 m_menuType = mt
+	End Property
 	Sub SetList(lst)
 		Set List = lst
 		'Split list into pages. We have to split the list so that the AT command isn't >250 bytes/chars
@@ -51,13 +56,19 @@ Class ManagedMenu
 		numPages = 0
 		ReDim Pages(0)
 		'Init ATLengt with maxlength to force the creation of the first page
-		ItemsLength = MENU_MAX_ITEMS_LENGTH		
+		ItemsLength = MENU_MAX_ITEMS_LENGTH
 		Dim menuIt, menuLast, entry, temp
 		'escape entries
 		menuIt   = List.Begin
 		menuLast = List.Last
 		Do Until menuIt.Object Is menuLast.Object
-			menuIt.Item = Array(Util.EscapeInvalidATChars(menuIt.Item.Item(0)), menuIt.Item.Item(1))
+			If menuIt.Item.USize = 1 Then
+				menuIt.Item = Array(Util.EscapeInvalidATChars(menuIt.Item.Item(0)), menuIt.Item.Item(1))
+			ElseIf menuIt.Item.USize = 5 Then
+				menuIt.Item = Array(Util.EscapeInvalidATChars(menuIt.Item.Item(0)), menuIt.Item.Item(1), menuIt.Item.Item(2), menuIt.Item.Item(3), menuIt.Item.Item(4), menuIt.Item.Item(5))
+			Else
+				Debug.ErrorMsg "ManagedMenu: Unexpected number of parameters!"
+			End If
 			menuIt.Iterate()
 		Loop
 		'Split list
@@ -84,7 +95,7 @@ Class ManagedMenu
 			Set bi.Item = menuIt.Item
 			ItemsLength = ItemsLength + EncodedLen
 			menuIt.Iterate()
-		Loop		
+		Loop
 		'Init Menu
 		Page = 1
 	End Sub	
@@ -141,7 +152,11 @@ Class ManagedMenu
 				menuIt   = Pages(Page - 1).Begin
 				menuLast = Pages(Page - 1).Last
 				Do Until menuIt.Object Is menuLast.Object
-					am.AddItem menuIt.Item.Item(0), menuIt.Item.Item(1)
+					If menuIt.Item.USize >= 5 Then
+						am.AddItemEx menuIt.Item.Item(0), menuIt.Item.Item(1), menuIt.Item.Item(2), menuIt.Item.Item(3), menuIt.Item.Item(4), menuIt.Item.Item(5)
+					Else
+						am.AddItem menuIt.Item.Item(0), menuIt.Item.Item(1)
+					End If
 					menuIt.Iterate()
 				Loop
 				'If numPages > 1 Then am.AddItem MENU_NEXT_PAGE, "MenuStack.Top.NextPage"
@@ -150,6 +165,8 @@ Class ManagedMenu
 		
 		'Capture back-button action
 		am.Back = "MenuStack.Top.Quit"
+
+		am.MenuType = m_menuType
 		
 		'Use "wait" as general next state. So the phone won't fall back to the
 		'connection -> accessories -> FMA menu between menu updates.

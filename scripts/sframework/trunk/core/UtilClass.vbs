@@ -41,8 +41,6 @@ Class UtilClass
 		If fma.isK750orBetter = False Then
 			Transmit "AT*EAST=" & Chr(34) & text & Chr(34)
 		End If
-		'Transmit "AT*SETICK=" & Chr(34) & text & Chr(34) & ",1"
-		Else
 		On Error GoTo 0
 	End Sub
 	

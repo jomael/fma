@@ -17,6 +17,7 @@ Class PluginManager
 Private m_Self
 Private mainMenu
 Private update
+Private toggling
 
 'Some info about the plugin
 Public Property Get SHOWABLE 'Do I have a menu?
@@ -72,10 +73,19 @@ If Fso.FolderExists(ScriptFolder & "plugins") Then
     className = pluginFile
     If InStr(pluginFile.Name, ".") > 0 Then className = Left(pluginFile.Name, InStr(pluginFile.Name, ".") - 1)
 
-    If match Then
-     bi.Item = Array(g_(Me,"[  ] ") & className, Self & ".Enable """ & pluginFile.Name & """, """ & pluginFile & """")
+    If fma.isK750orBetter = False Then
+      toggling = False
+      If match Then
+       bi.Item = Array(g_(Me,"[  ] ") & className, Self & ".Enable """ & pluginFile.Name & """, """ & pluginFile & """")
+      Else
+       bi.Item = Array(g_(Me,"[*] ") & className, Self & ".Disable """ & pluginFile.Name & """, """ & pluginFile & """")
+      End If
     Else
-     bi.Item = Array(g_(Me,"[*] ") & className, Self & ".Disable """ & pluginFile.Name & """, """ & pluginFile & """")
+      mainMenu.menuType = 12
+      Dim exceptions
+      exceptions = "FrameworkMainMenu.vbs,PluginManager.vbs"
+      toggling = True
+      bi.Item = Array(className, InStr(exceptions, pluginFile.Name) > 0, Not match, False, 0, Self & ".Toggle """ & pluginFile.Name & """, """ & pluginFile & """, " & Not match)
     End If
   End If
   Next
@@ -116,7 +126,7 @@ PluginManager.LoadPlugin(Fso.GetFile(path))
 PluginManager("FrameworkMainMenu").Refresh
 
 update = True
-Me.Show
+If toggling = False Then Me.Show
 End Sub
 
 Sub Disable( pluginFile, path )
@@ -137,14 +147,30 @@ Else
   Settings (PluginManager, "Don't load") = excludeList
   Settings.Save
 
-  Dim className 
+  Dim className
   If InStr(pluginFile, ".") > 0 Then className = Left(pluginFile, InStr(pluginFile, ".") - 1)
 
   PluginManager.UnloadPlugin(className)
   PluginManager("FrameworkMainMenu").Refresh
 End If
 update = True
-Me.Show
+If toggling = False Then Me.Show
+End Sub
+
+Sub Toggle( pluginFile, path, prevState, result )
+  Dim newState
+  If result = 1 Then
+    newState = True
+  Else
+    newState = False
+  End If
+  If prevState <> newState Then
+    If result = 1 Then
+      Me.Enable pluginFile, path
+    Else
+      Me.Disable pluginFile, path
+    End If
+  End If
 End Sub
 
 End Class

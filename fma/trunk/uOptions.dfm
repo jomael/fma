@@ -2806,8 +2806,8 @@ object frmOptions: TfrmOptions
   end
   object OpenDialog1: TTntOpenDialog
     Filter = 
-      'VBScript (*.vbscript)|*.vbscript;*.vbs|JScript (*.jscript)|*.jsc' +
-      'ript|All Files|*.*'
+      'VBScript (*.vbscript)|*.vbscript;*.vbs|JScript (*.jscript; *.js)' +
+      '|*.jscript;*.js|All Files|*.*'
     Options = [ofHideReadOnly, ofNoChangeDir, ofFileMustExist, ofEnableSizing]
     Title = 'Select Script File'
     Left = 32

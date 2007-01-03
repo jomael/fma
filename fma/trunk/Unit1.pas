@@ -3750,7 +3750,7 @@ end;
 
 procedure TForm1.HandleSEGUII(AMsg: String);
 var
-  position, objectId, action: Integer;
+  position, objectId, action, i: Integer;
   msg, buf, result: WideString;
 begin
   Msg := LongStringToWideString(AMsg);
@@ -3989,13 +3989,76 @@ begin
             Log.AddMessage('Unexpected action from Submenu Dialog',lsDebug); // do not localize debug
         end;
       end;
+    DLG_LIST_1:
+      begin
+        case action of
+          0, // CANCEL
+          1: // PREVIOUS
+            begin
+              FAccessoriesMenu.CloseUI;
+              ScheduleScriptEvent(FAccessoriesMenu.FBack,[]);
+            end;
+          5: // ACCEPT INDEX (AMsg=Index)
+            begin
+              position:=StrToInt(Msg);
+              FAccessoriesMenu.FSelected := position+1;
+              ScheduleScriptEvent(FAccessoriesMenu.FEventList.Strings[position],[]);
+            end;
+          7: // ACCEPT INDEX (AMsg=Index)
+            begin
+              position:=StrToInt(Msg);
+              FAccessoriesMenu.FSelected := position+1;
+              for i:=0 to FAccessoriesMenu.FEventList.Count-1 do
+                if i = position-1 then
+                  ScheduleScriptEvent(FAccessoriesMenu.FEventList.Strings[i]+', 1',[])
+                else
+                  ScheduleScriptEvent(FAccessoriesMenu.FEventList.Strings[i]+', 0',[]);
+                // could use JS fix
+              FAccessoriesMenu.CloseUI;
+              ScheduleScriptEvent(FAccessoriesMenu.FBack,[]);
+            end;
+          else
+            Log.AddMessage('Unexpected action from Submenu Dialog',lsDebug); // do not localize debug
+        end;
+      end;
+    DLG_LIST_N:
+      begin
+        case action of
+          0, // CANCEL
+          1: // PREVIOUS
+            begin
+              FAccessoriesMenu.CloseUI;
+              ScheduleScriptEvent(FAccessoriesMenu.FBack,[]);
+            end;
+          5: // ACCEPT INDEX (AMsg=Index)
+            begin
+              position:=StrToInt(Msg);
+              FAccessoriesMenu.FSelected := position+1;
+              ScheduleScriptEvent(FAccessoriesMenu.FEventList.Strings[position],[]);
+            end;
+          7: // ACCEPT INDICES (AMsg=Indices)
+            begin
+              for i:=0 to FAccessoriesMenu.FEventList.Count-1 do
+                if Pos(','+IntToStr(i+1)+',', ','+Msg+',') <> 0 then
+                  ScheduleScriptEvent(FAccessoriesMenu.FEventList.Strings[i]+', 1',[])
+                else
+                  ScheduleScriptEvent(FAccessoriesMenu.FEventList.Strings[i]+', 0',[]);
+                // could use JS fix
+              FAccessoriesMenu.CloseUI;
+              ScheduleScriptEvent(FAccessoriesMenu.FBack,[]);
+            end;
+          else
+            Log.AddMessage('Unexpected action from Submenu Dialog',lsDebug); // do not localize debug
+        end;
+      end;
     else
       begin
         if FAccessoriesMenu.FType>DLG_INPUTERR then
           FAccessoriesMenu.FType := FAccessoriesMenu.FType - DLG_INPUTERR;
       end;
   end;
-  if (action>1) and (FAccessoriesMenu.FType<DLG_INPUTERR) then
+  // don't use SEDEL if CloseUI was called
+  if (action>1) and (FAccessoriesMenu.FType<DLG_INPUTERR) and (FAccessoriesMenu.SessionOpened) then
     TxAndWait('AT*SEDEL='+IntToStr(objectId));
 end;
 
@@ -5628,7 +5691,7 @@ end;
 
 function TForm1.LoadScript: boolean;
 var
-  FmaFunc,ext: String;
+  FmaFunc,ext,scriptLanguage: String;
 begin
   Result := True;
   if FScriptFile <> '' then begin
@@ -5641,38 +5704,74 @@ begin
         try
           { load script from file }
           ScriptControl.Code.Clear;
-          ScriptControl.Language := Copy(ext, 2, length(ext)-1);
+          scriptLanguage := Copy(ext, 2, length(ext)-1);
+          if scriptLanguage = 'js' then
+            scriptLanguage := 'jscript';
+          ScriptControl.Language := scriptLanguage;
           ScriptControl.Code.Assign(frmEditor.Script.Lines);
           { if Fma internal functions does not exist, append it to script now }
-          FmaFunc := 'Sub '+__fma_objcall+'(command)'; // do not localize
-          if ScriptControl.Code.IndexOf(FmaFunc) = -1 then begin
-            Log.AddScriptMessage('Script: Adding FMA enhancements', lsDebug); // do not localize debug
-            ScriptControl.Code.Add('');
-            ScriptControl.Code.Add(''' FMA enhancements - DO NOT REMOVE/ALTER THIS FUNCTION!!!'); // do not localize
-            ScriptControl.Code.Add(FmaFunc);
-            ScriptControl.Code.Add('  Execute(command)'); // do not localize
-            ScriptControl.Code.Add('End Sub'); // do not localize
-          end;
-          FmaFunc := 'Sub '+__fma_objcall+'Ex(command, arguments)'; // do not localize
-          if ScriptControl.Code.IndexOf(FmaFunc) = -1 then begin
-            Log.AddScriptMessage('Script: Adding FMA advanced enhancements', lsDebug); // do not localize debug
-            ScriptControl.Code.Add('');
-            ScriptControl.Code.Add(''' FMA enhancements - DO NOT REMOVE/ALTER THIS FUNCTION!!!'); // do not localize
-            ScriptControl.Code.Add(FmaFunc);
-            ScriptControl.Code.Add('  Dim args, param'); // do not localize
-            ScriptControl.Code.Add('  If IsArray(arguments) And UBound(arguments) > -1 Then'); // do not localize
-            ScriptControl.Code.Add('      '' Generate argument list'); // do not localize
-            ScriptControl.Code.Add('      args = " "'); // do not localize
-            ScriptControl.Code.Add('      For Each param In arguments'); // do not localize
-            ScriptControl.Code.Add('              args = args & """" & param & """" & ", "'); // do not localize
-            ScriptControl.Code.Add('      Next'); // do not localize
-            ScriptControl.Code.Add('      '' Cut tailing ","'); // do not localize
-            ScriptControl.Code.Add('      If Right(args, 2) = ", " Then args = Left(args, Len(args) -2)'); // do not localize
-            ScriptControl.Code.Add('  Else'); // do not localize
-            ScriptControl.Code.Add('      args = ""'); // do not localize
-            ScriptControl.Code.Add('  End If'); // do not localize
-            ScriptControl.Code.Add('  Execute(command & args)'); // do not localize
-            ScriptControl.Code.Add('End Sub'); // do not localize
+          if Pos('vbs', LowerCase(ext)) <> 0 then begin
+          // vbs script
+            FmaFunc := 'Sub '+__fma_objcall+'(command)'; // do not localize
+            if ScriptControl.Code.IndexOf(FmaFunc) = -1 then begin
+              Log.AddScriptMessage('Script: Adding FMA enhancements', lsDebug); // do not localize debug
+              ScriptControl.Code.Add('');
+              ScriptControl.Code.Add(''' FMA enhancements - DO NOT REMOVE/ALTER THIS FUNCTION!!!'); // do not localize
+              ScriptControl.Code.Add(FmaFunc);
+              ScriptControl.Code.Add('  Execute(command)'); // do not localize
+              ScriptControl.Code.Add('End Sub'); // do not localize
+            end;
+            FmaFunc := 'Sub '+__fma_objcall+'Ex(command, arguments)'; // do not localize
+            if ScriptControl.Code.IndexOf(FmaFunc) = -1 then begin
+              Log.AddScriptMessage('Script: Adding FMA advanced enhancements', lsDebug); // do not localize debug
+              ScriptControl.Code.Add('');
+              ScriptControl.Code.Add(''' FMA enhancements - DO NOT REMOVE/ALTER THIS FUNCTION!!!'); // do not localize
+              ScriptControl.Code.Add(FmaFunc);
+              ScriptControl.Code.Add('  Dim args, param'); // do not localize
+              ScriptControl.Code.Add('  If IsArray(arguments) And UBound(arguments) > -1 Then'); // do not localize
+              ScriptControl.Code.Add('      '' Generate argument list'); // do not localize
+              ScriptControl.Code.Add('      args = " "'); // do not localize
+              ScriptControl.Code.Add('      For Each param In arguments'); // do not localize
+              ScriptControl.Code.Add('              args = args & """" & param & """" & ", "'); // do not localize
+              ScriptControl.Code.Add('      Next'); // do not localize
+              ScriptControl.Code.Add('      '' Cut tailing ","'); // do not localize
+              ScriptControl.Code.Add('      If Right(args, 2) = ", " Then args = Left(args, Len(args) -2)'); // do not localize
+              ScriptControl.Code.Add('  Else'); // do not localize
+              ScriptControl.Code.Add('      args = ""'); // do not localize
+              ScriptControl.Code.Add('  End If'); // do not localize
+              ScriptControl.Code.Add('  Execute(command & args)'); // do not localize
+              ScriptControl.Code.Add('End Sub'); // do not localize
+            end;
+          end
+          else begin
+          // jscript
+            FmaFunc := 'function '+__fma_objcall+'(command) {'; // do not localize
+            if ScriptControl.Code.IndexOf(FmaFunc) = -1 then begin
+              Log.AddScriptMessage('Script: Adding FMA enhancements', lsDebug); // do not localize debug
+              ScriptControl.Code.Add('');
+              ScriptControl.Code.Add('// FMA enhancements - DO NOT REMOVE/ALTER THIS FUNCTION!!!'); // do not localize
+              ScriptControl.Code.Add(FmaFunc);
+              ScriptControl.Code.Add('  eval(command);'); // do not localize
+              ScriptControl.Code.Add('}'); // do not localize
+            end;
+            FmaFunc := 'function '+__fma_objcall+'Ex(command, arguments) {'; // do not localize
+            if ScriptControl.Code.IndexOf(FmaFunc) = -1 then begin
+              Log.AddScriptMessage('Script: Adding FMA advanced enhancements', lsDebug); // do not localize debug
+              ScriptControl.Code.Add('');
+              ScriptControl.Code.Add('// FMA enhancements - DO NOT REMOVE/ALTER THIS FUNCTION!!!'); // do not localize
+              ScriptControl.Code.Add(FmaFunc);
+              ScriptControl.Code.Add('  var args, param, i;'); // do not localize
+              ScriptControl.Code.Add('  args = '''';'); // do not localize
+              ScriptControl.Code.Add('  for (i=0; i<arguments.length; i++) {'); // do not localize
+              ScriptControl.Code.Add('      // Generate argument list'); // do not localize
+              ScriptControl.Code.Add('      args += ''"'' + param + ''", '';'); // do not localize
+              ScriptControl.Code.Add('  }'); // do not localize
+              ScriptControl.Code.Add('  // Cut tailing ","'); // do not localize
+              ScriptControl.Code.Add('  if (args.length > 2) args = args.substr(0, args.length-2);'); // do not localize
+              ScriptControl.Code.Add('  else args = '''';'); // do not localize
+              ScriptControl.Code.Add('  eval(command + ''(''+ args + '')'');'); // do not localize
+              ScriptControl.Code.Add('}'); // do not localize
+            end;
           end;
         finally
           ScriptControl.Code.EndUpdate;
@@ -11905,7 +12004,8 @@ begin
             (Pos('W710',model) <> 0) or
             (Pos('W900',model) <> 0) or
             (Pos('W950',model) <> 0) or
-            IsK610Clone(BrandName);     // Ê600+ series also have Walkmen's MediaPlayer
+            IsK610Clone(BrandName) or     // Ê600+ series also have Walkmen's MediaPlayer
+            IsK750Clone(BrandName);       // and K750+ too
   // do not localize - end
 end;
 
