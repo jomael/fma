@@ -1062,7 +1062,7 @@ type
     function DeleteSMS(index: Integer; memType: String; CheckPDU: String = ''): Boolean;
 
     function GetNextLongSMSRefference: string;
-    procedure SendTextMessage(UDHI: String; msg: WideString; destNo: WideString; reqReply: Boolean = False;
+    procedure SendTextMessage(const UDHI: String; const msg: WideString; const destNo: WideString; reqReply: Boolean = False;
       Flash: Boolean = False; StatusReq: Boolean = False; dcs: TGSMCodingScheme = gcsUnknown; SaveDraft: Boolean = False);
 
     function GetStatus: WideString;
@@ -1106,7 +1106,7 @@ type
     function IsIrmcSyncEnabled: boolean;
 
     function IsContactNumberSelected: boolean;
-    function LocateSelContactNumber: string;
+    function LocateSelContactNumber: WideString;
     function GetPartialNumber(Number: string): string;
 
     function LocatePBName(Where: string; Index: integer): WideString; overload;
@@ -3539,7 +3539,7 @@ begin
     ShowBaloonInfo(_('You can enable auto-move in Options | Behaviour | Message Arrived | Move message to FMA.'));
 end;
 
-procedure TForm1.SendTextMessage(UDHI: String; msg, destNo: WideString; reqReply,
+procedure TForm1.SendTextMessage(const UDHI: String; const msg, destNo: WideString; reqReply,
   Flash: Boolean; StatusReq: Boolean; dcs: TGSMCodingScheme; SaveDraft: Boolean);
 var
   sms: TSMS;
@@ -5638,7 +5638,7 @@ begin
     if FHaveVoiceDialCommand_Hangup then
       TxAndWait('AT*EVH') // do not localize
     else
-      ScheduleTxAndWait('ATH'); // do not localize
+      ScheduleTxAndWait('AT+CHUP'); // do not localize
   if Assigned(frmCalling) and frmCalling.IsCreated then begin
     if not SilentMode then
       frmCalling.IsCalling := False;
@@ -8124,7 +8124,7 @@ begin
   ActionContactsNewMsg.Enabled := IsContactNumberSelected and (LocateSelContactNumber <> sUnknownNumber);
 end;
 
-function TForm1.LocateSelContactNumber: string;
+function TForm1.LocateSelContactNumber: WideString;
 var
   Number: WideString;
   contact: PContactData;

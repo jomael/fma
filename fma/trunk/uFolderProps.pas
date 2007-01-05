@@ -79,8 +79,6 @@ type
     tsContact: TTntTabSheet;
     lblContact: TTntLabel;
     lblContactPrefix: TTntLabel;
-    Button1: TTntButton;
-    Button2: TTntButton;
     tsDatabase: TTntTabSheet;
     tsFile: TTntTabSheet;
     Label1: TTntLabel;

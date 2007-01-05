@@ -325,7 +325,7 @@ var
   it,sl: TTntStringList;
   k, i, j, m, startpos, stoppos: Integer;
   group,complex: Boolean;
-  str, grp, text, temp: WideString;
+  str, grp, smsText, smsTemp: WideString;
   smstot,udhi:string;
   packetL: Integer;
   procedure CheckValidNumber(number: string);
@@ -432,9 +432,9 @@ begin
       end;
     end;
 
-    Text := Memo.Text;
+    smsText := Memo.Text;
 
-    if btnLongSMS.Down and (Length(Text) > FMaxLength) then begin
+    if btnLongSMS.Down and (Length(smsText) > FMaxLength) then begin
        //sending Long SMS...
        packetL := 0;
        case FDCS of
@@ -446,7 +446,7 @@ begin
            packetL := (FMaxLength - 3); { 140 octets (70widechars) - UDH (6 octets) }
          else Abort;
        end;
-       smstot := IntToHex((length(Text) div packetL) + 1, 2);
+       smstot := IntToHex((Length(smsText) div packetL) + 1, 2);
        //for all recepients...
        for i := 0 to sl.Count - 1 do begin
           StatusBar.Panels[2].Text := Format(_('Sending long message to %s...'), [sl.Strings[i]]);
@@ -454,10 +454,9 @@ begin
           smsRef := Form1.GetNextLongSMSRefference;
           udhi := '050003' + smsRef + smsTot; // see docs for 050003 magic // do not localize
           //...and send sms segments
-          Text := Memo.Text;
-          for m := 1 to (length(Text) div packetL) + 1 do begin
-            Temp := Copy(Text, (m-1)*packetL + 1, packetL);
-            Form1.SendTextMessage(udhi + IntToHex(m,2), Temp, sl.Strings[i], btnRequestReply.Down, btnFlashSMS.Down,
+          for m := 1 to (length(smsText) div packetL) + 1 do begin
+            smsTemp := Copy(smsText, (m-1)*packetL + 1, packetL);
+            Form1.SendTextMessage(udhi + IntToHex(m,2), smsTemp, sl.Strings[i], btnRequestReply.Down, btnFlashSMS.Down,
               btnStatusReport.Down, FDCS, AsDraft);
           end;
        end;
@@ -466,7 +465,7 @@ begin
        //normal SMS...
        for i := 0 to sl.Count - 1 do begin
           StatusBar.Panels[2].Text := Format(_('Sending message to %s...'), [sl.Strings[i]]);
-          Form1.SendTextMessage('', Text, sl.Strings[i], btnRequestReply.Down, btnFlashSMS.Down, btnStatusReport.Down,
+          Form1.SendTextMessage('', smsText, sl.Strings[i], btnRequestReply.Down, btnFlashSMS.Down, btnStatusReport.Down,
             FDCS, AsDraft);
        end;
     end;

@@ -75,7 +75,7 @@ object frmFolderProps: TfrmFolderProps
         Top = 60
         Width = 353
         Height = 273
-        ActivePage = tsFile
+        ActivePage = tsContact
         MultiLine = True
         Style = tsButtons
         TabOrder = 2
@@ -342,20 +342,6 @@ object frmFolderProps: TfrmFolderProps
             Width = 283
             Height = 13
             AutoSize = False
-          end
-          object Button1: TTntButton
-            Left = 0
-            Top = 48
-            Width = 133
-            Height = 25
-            TabOrder = 0
-          end
-          object Button2: TTntButton
-            Left = 0
-            Top = 80
-            Width = 133
-            Height = 25
-            TabOrder = 1
           end
         end
         object tsDatabase: TTntTabSheet
