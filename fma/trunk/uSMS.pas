@@ -410,27 +410,16 @@ end;
 
 function GSMEncodeUcs2(const Value: WideString): string;
 var
-  i: integer;
-  c: TUCS2Codec;
-  s: string;
+  i,j: integer;
+  Wide: string;
 begin
   Result := '';
-  { AAARGH!!! You are thinking of UCS2! UCS2 is a way to encode Unicode (or most of it)
-    in which each Unicode character is represented as two bytes. Unicode characters are
-    not ANY number of bytes long because Unicode is a character set and does not specify
-    a binary representation! This terrible faux pas is often made by people who are moving
-    from Unix to Windows/Java and have noticed that all the characters have suddenly
-    gotten wider. }
-  c := TUCS2Codec.Create;
-  try
-    s := c.Encode(@Value[1],Length(Value),i);
-  finally
-    c.Free;
+
+  j := Length(Value);
+  for i := 1 to j do begin
+    Wide := IntToHex(Ord(Value[i]),4);
+    Result := Result + Wide;
   end;
-  { Convert UCS2 to a HEX string sequence }
-  for i := 0 to Length(s) div 2 - 1 do
-    Result := Result + IntToHex(byte(s[i*2+2]),2) +
-                       IntToHex(byte(s[i*2+1]),2);
 end;
 
 { UTF8 - found on internet - not used in fma ! }

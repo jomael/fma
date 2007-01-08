@@ -10372,6 +10372,20 @@ begin
         TxAndWait('AT+CMGF=0'); // set PDU mode // do not localize
         TxAndWait('AT+CSMS=0'); // check if phone supports SMS commands // do not localize
         // not needed - TxAndWait('AT+CPMS="ME","ME"'); // store messages in ME phonebook // do not localize
+        {
+          AT+CMMS=n
+          0 Disable
+          1 Keep link enabled until time between last send messages
+            command response and next send command exceeds 5
+            seconds then ME closesTA switches <n> to 0
+          2 keep link enabled until time between last send messages
+            command response and next send command exceeds 5
+            seconds then ME closes link TA does NOT switch <n> to 0
+        }
+        try
+          if sl.Count > 1 then TxAndWait('AT+CMMS=2');
+        except
+        end;
 
         i := 0;
         dlg.Initialize(sl.Count,_('Sending out messages'));
