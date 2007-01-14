@@ -363,12 +363,14 @@ var
     end;
     s := ''; d := '';
     i := 1; j := Length(A);
+    if (j <> 0) and (A[1] = 'R') then inc(i);
     while (i <= j) and (A[i] in ['0'..'9']) do begin
       s := s + A[i];
       inc(i);
     end;
     Delete(A,1,i-1);
     i := 1; j := Length(B);
+    if (j <> 0) and (B[1] = 'R') then inc(i);
     while (i <= j) and (B[i] in ['0'..'9']) do begin
       d := d + B[i];
       inc(i);
@@ -385,9 +387,10 @@ var
         Result := CompareText(A,B);
   end;
 begin
-  a := StrPas(PChar(Item1));
-  b := StrPas(PChar(Item2));
+  a := UpperCase(StrPas(PChar(Item1)));
+  b := UpperCase(StrPas(PChar(Item2)));
   Result := CompareNum(FirstToken(a),FirstToken(b));
+  if Result = 0 then Result := CompareNum(FirstToken(a),FirstToken(b));
   if Result = 0 then Result := CompareNum(FirstToken(a),FirstToken(b));
   if Result = 0 then Result := CompareNum(FirstToken(a),FirstToken(b));
   if Result = 0 then Result := CompareNum(FirstToken(a),FirstToken(b));
