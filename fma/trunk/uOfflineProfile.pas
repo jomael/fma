@@ -91,7 +91,6 @@ begin
   else
     TntLabel1.Caption := TntLabel1.Caption + ' ' +
     _('You can''t Open such databases until you restart FMA with "-MIGRATEDB" command line switch (without quotes).');
-  RefreshView;
 end;
 
 function TfrmOfflineProfile.SelectedProfile: string;
@@ -260,6 +259,7 @@ end;
 
 procedure TfrmOfflineProfile.TntFormShow(Sender: TObject);
 begin
+  RefreshView;
   TntListView1.SetFocus;
 end;
 
