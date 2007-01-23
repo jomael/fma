@@ -1324,32 +1324,56 @@ object frmMsgView: TfrmMsgView
     object Advanced1: TTntMenuItem
       Caption = 'Advanced'
       object Search1: TTntMenuItem
-        Caption = 'Search Messages...'
+        Caption = 'New Search...'
+        ImageIndex = 0
         ShortCut = 114
         OnClick = Search1Click
       end
+      object SaveSearch2: TTntMenuItem
+        Caption = 'Sa&ve Search As...'
+        GroupIndex = 2
+        ImageIndex = 44
+        OnClick = SaveSearch1Click
+      end
       object N10: TTntMenuItem
         Caption = '-'
+        GroupIndex = 2
       end
       object addcontact1: TTntMenuItem
         Action = Form1.ActionContactsAddContact
+        GroupIndex = 2
       end
       object AddNewFolder1: TTntMenuItem
         Action = Form1.ActionViewAddFolder
+        GroupIndex = 2
       end
       object DeleteFolder1: TTntMenuItem
         Action = Form1.ActionViewDelFolder
+        GroupIndex = 2
       end
       object DeliveryRules1: TTntMenuItem
         Action = Form1.ActionSMSDelivery
+        GroupIndex = 2
       end
       object N11: TTntMenuItem
         Caption = '-'
+        GroupIndex = 2
       end
       object FixSMSDatabase1: TTntMenuItem
         Caption = 'Cleanup Folder...'
-        ImageIndex = 0
+        GroupIndex = 2
         OnClick = FixSMSDatabase1Click
+      end
+      object N13: TTntMenuItem
+        Caption = '-'
+        GroupIndex = 2
+      end
+      object TogglePreviewPane1: TTntMenuItem
+        Caption = 'Message Preview...'
+        GroupIndex = 2
+        ImageIndex = 33
+        ShortCut = 119
+        OnClick = TogglePreviewPane1Click
       end
     end
     object MarkAs1: TTntMenuItem
@@ -1469,6 +1493,7 @@ object frmMsgView: TfrmMsgView
   object pmSearch: TTntPopupMenu
     AutoPopup = False
     Images = Form1.ImageList2
+    OnPopup = pmSearchPopup
     Left = 112
     Top = 84
     object sfSender: TTntMenuItem
@@ -1506,11 +1531,12 @@ object frmMsgView: TfrmMsgView
       Caption = '-'
       GroupIndex = 2
     end
-    object SaveSearchasaFolder1: TTntMenuItem
-      Caption = 'Sa&ve Search as a Folder...'
+    object SaveSearch1: TTntMenuItem
+      Caption = 'Sa&ve Search As...'
       Enabled = False
       GroupIndex = 2
       ImageIndex = 44
+      OnClick = SaveSearch1Click
     end
   end
 end

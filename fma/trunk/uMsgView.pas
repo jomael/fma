@@ -31,6 +31,8 @@ type
   end;
   PListData = ^TListData;
 
+  TSearchMode = (smSender,smFrom,smAll,smText,smDate);
+
   TfrmMsgView = class(TTntFrame)
     Splitter2: TTntSplitter;
     ImageList: TImageList;
@@ -117,10 +119,13 @@ type
     sfSenderNumber: TTntMenuItem;
     sfEntireMessage: TTntMenuItem;
     N12: TTntMenuItem;
-    SaveSearchasaFolder1: TTntMenuItem;
+    SaveSearch1: TTntMenuItem;
     sfDate: TTntMenuItem;
     sfSender: TTntMenuItem;
     sfText: TTntMenuItem;
+    SaveSearch2: TTntMenuItem;
+    TogglePreviewPane1: TTntMenuItem;
+    N13: TTntMenuItem;
     procedure ListMsgBeforeCellPaint(Sender: TBaseVirtualTree;
       TargetCanvas: TCanvas; Node: PVirtualNode; Column: TColumnIndex;
       CellRect: TRect);
@@ -182,10 +187,15 @@ type
     procedure edSearchForEnter(Sender: TObject);
     procedure edSearchForExit(Sender: TObject);
     procedure OnSearchTypeChange(Sender: TObject);
+    procedure pmSearchPopup(Sender: TObject);
+    procedure SaveSearch1Click(Sender: TObject);
+    procedure TogglePreviewPane1Click(Sender: TObject);
   private
-    FCustomImage: Boolean;
+    FCustomImage,FIsRendered: Boolean;
     FRendered: TStringList;
     FRenderCanceled: boolean;
+    FSearchName: WideString;
+    FSearchMode: TSearchMode;
     function CanModifyReadStatus: boolean;
     function FlattenText(str: WideString; link: WideString = #32): WideString;
     procedure ShowDetail(Node: PVirtualNode);
@@ -193,11 +203,12 @@ type
     procedure Set_CustomImage(const Value: Boolean);
     procedure ResetAutoMarkAsReadTimer;
     procedure UpdatePropertiesStatus;
-    procedure SearchForMessages(what: WideString);
     procedure DeselectAll;
     procedure DoMarkMessages(AsRead: boolean; SelectedOnly: Boolean = True);
     procedure DoShowPreview(Node: PVirtualNode);
     procedure UpdatePreview;
+    procedure SetSearchMode(const Value: TSearchMode);
+    procedure SetSearchWhat(const Value: WideString);
   public
     procedure ClearView;
     procedure RenderListView(sl: TStringList);
@@ -208,12 +219,19 @@ type
 
     procedure GetLongMsgData(Node: PVirtualNode; var ARef, ATot, An: Integer);
 
+    function IsRenderingComplete: boolean;
     function IsRendered(const sl: TStrings): boolean;
     function IsLongSMSNode(ANode: PVirtualNode): boolean;
     function IsLongSMSFirstNode(ANode: PVirtualNode): boolean;
     function GetNodeLongText(ANode: PVirtualNode): WideString;
     function GetNodeLongList(ANode: PVirtualNode; var AList: TTntStringList): boolean;
     function FindSMS(APDU: string): PVirtualNode;
+
+    { Saved Searches }
+    procedure SearchForMessages(what: WideString);
+    property SearchName: WideString read FSearchName write FSearchName;
+    property SearchMode: TSearchMode read FSearchMode write SetSearchMode;
+    property SearchWhat: WideString write SetSearchWhat;
 
     property IsCustomImage: Boolean read FCustomImage write Set_CustomImage;
     property RenderCanceled: boolean read FRenderCanceled write FRenderCanceled;
@@ -390,8 +408,11 @@ begin
   if Sem then exit;
   Sem := True;
   dbfixed := False;
+  SearchName := '';
+  SearchMode := smAll;
   edSearchFor.Text := '';
   edSearchForExit(nil);
+  FIsRendered := False;
   try
     if sl.Count <> 0 then NoItemsPanel.Visible := False;
     if sl.Count > 99 then begin // show a message to user on large folder
@@ -519,6 +540,7 @@ begin
     if dbfixed then
       Form1.UpdateNewMessagesCounter(Form1.ExplorerNew.FocusedNode);
   end;
+  FIsRendered := True;
 end;
 
 procedure TfrmMsgView.ShowDetail(Node: PVirtualNode);
@@ -926,6 +948,7 @@ begin
   SendToSIM1.Enabled := SendToPhone1.Enabled;
   SendfromPhone1.Visible := SendMessage1.Visible;
   SendfromPhone1.Enabled := (ListMsg.SelectedCount >= 1) and Form1.FConnected and not Form1.FObex.Connected;
+  SaveSearch2.Enabled := (edSearchFor.Text <> '') and edSearchFor.ParentFont;
   UpdatePropertiesStatus;
 end;
 
@@ -1062,8 +1085,6 @@ procedure TfrmMsgView.ListMsgKeyDown(Sender: TObject; var Key: Word;
 begin
   if (Key = VK_RETURN) and (ListMsg.SelectedCount = 1) then
     ListMsgDblClick(ListMsg);
-  if (Key = VK_F3) then
-    Search1.Click;
 end;
 
 procedure TfrmMsgView.Splitter2Moved(Sender: TObject);
@@ -1604,24 +1625,20 @@ begin
       mn := UpperCase(item.smsData.From); // sender's number only (no name!)
 
       { Apply search filter }
-      if sfSender.Checked then
-        ListMsg.IsVisible[Node] := EmptySearch or (Pos(what,ms) <> 0)
-      else
-      if sfSenderNumber.Checked then
-        ListMsg.IsVisible[Node] := EmptySearch or (Pos(what,ms) <> 0) or (Pos(what,mn) <> 0)
-      else
-      if sfEntireMessage.Checked then // check all...
-        ListMsg.IsVisible[Node] := EmptySearch or (Pos(what,mt) <> 0) or // text
-          (Pos(what,ms) <> 0) or (Pos(what,mn) <> 0) or // sender and number
-          (Pos(what,md) <> 0) // message date
-      else
-      if sfText.Checked then
-        ListMsg.IsVisible[Node] := EmptySearch or (Pos(what,mt) <> 0)
-      else
-      if sfDate.Checked then
-        ListMsg.IsVisible[Node] := EmptySearch or (Pos(what,md) <> 0)
-      else
-        ListMsg.IsVisible[Node] := EmptySearch;
+      case FSearchMode of
+        smSender:
+          ListMsg.IsVisible[Node] := EmptySearch or (Pos(what,ms) <> 0);
+        smFrom:
+          ListMsg.IsVisible[Node] := EmptySearch or (Pos(what,ms) <> 0) or (Pos(what,mn) <> 0);
+        smAll:
+          ListMsg.IsVisible[Node] := EmptySearch or (Pos(what,mt) <> 0) or // text
+            (Pos(what,ms) <> 0) or (Pos(what,mn) <> 0) or // sender and number
+            (Pos(what,md) <> 0); // message date
+        smText:
+          ListMsg.IsVisible[Node] := EmptySearch or (Pos(what,mt) <> 0);
+        smDate:
+          ListMsg.IsVisible[Node] := EmptySearch or (Pos(what,md) <> 0);
+      end;
 
       node := ListMsg.GetNext(node);
     end;
@@ -1720,7 +1737,11 @@ begin
   edSearchFor.Text := '';
   edSearchForExit(nil);
   SearchPanel.Visible := True;
-  if Visible then ListMsg.SetFocus;
+  if Visible then
+    if ListMsg.Focused then
+      edSearchFor.SetFocus
+    else
+      ListMsg.SetFocus;
 end;
 
 procedure TfrmMsgView.SendToPhone1Click(Sender: TObject);
@@ -2052,6 +2073,9 @@ procedure TfrmMsgView.ClearView;
 begin
   edSearchFor.Text := '';
   edSearchForExit(nil);
+  SearchName := '';
+  SearchMode := smAll;
+  FIsRendered := False;
   FRendered := nil;
   ListMsg.Clear;
 end;
@@ -2110,9 +2134,67 @@ procedure TfrmMsgView.OnSearchTypeChange(Sender: TObject);
 begin
   if not (Sender as TTntMenuItem).Checked then begin
     (Sender as TTntMenuItem).Checked := True;
+
+    if sfSender.Checked        then FSearchMode := smSender;
+    if sfSenderNumber.Checked  then FSearchMode := smFrom;
+    if sfEntireMessage.Checked then FSearchMode := smAll;
+    if sfText.Checked          then FSearchMode := smText;
+    if sfDate.Checked          then FSearchMode := smDate;
+
     Timer2.Enabled := False;
     Timer2.Enabled := edSearchFor.ParentFont;
   end;
+end;
+
+procedure TfrmMsgView.pmSearchPopup(Sender: TObject);
+begin
+  SaveSearch1.Enabled := edSearchFor.Text <> '';
+end;
+
+procedure TfrmMsgView.SaveSearch1Click(Sender: TObject);
+var
+  s: WideString;
+begin
+  s := FSearchName;
+  if WideInputQuery('Save Search','Enter folder name:',s) and (Trim(s) <> '') then begin
+    if Form1.FSavedSearches.IndexOfName(s) <> -1 then
+      if MessageDlgW(WideFormat(_('Search "%s" already exists. Do you want to overwrite it?'),[s]),
+        mtConfirmation, MB_YESNO or MB_DEFBUTTON2) <> ID_YES then
+        exit;
+    { Node path is relative to 'My Phone' root node }    
+    Form1.FSavedSearches.Values[s] := Form1.ExplorerNodePath(Form1.ExplorerNew.FocusedNode,'\',1)+','+
+      IntToStr(Ord(FSearchMode))+','+edSearchFor.Text;
+    Form1.RenderSavedSearches;
+    Form1.ExplorerNew.Expanded[Form1.FNodeSavedSearches] := True;
+  end;
+end;
+
+procedure TfrmMsgView.SetSearchMode(const Value: TSearchMode);
+begin
+  FSearchMode := Value;
+  case Value of
+    smSender: sfSender.Checked := True;
+    smFrom:   sfSenderNumber.Checked := True;
+    smAll:    sfEntireMessage.Checked := True;
+    smText:   sfText.Checked := True;
+    smDate:   sfDate.Checked := True;
+  end;
+end;
+
+procedure TfrmMsgView.SetSearchWhat(const Value: WideString);
+begin
+  edSearchFor.ParentFont := True;
+  edSearchFor.Text := Value;
+end;
+
+function TfrmMsgView.IsRenderingComplete: boolean;
+begin
+  Result := FIsRendered;
+end;
+
+procedure TfrmMsgView.TogglePreviewPane1Click(Sender: TObject);
+begin
+  Form1.ActionViewMsgPreview.Execute;
 end;
 
 end.

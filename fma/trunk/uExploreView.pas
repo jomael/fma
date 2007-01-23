@@ -144,6 +144,13 @@ begin
       case Node.Dummy of
         8: Item.descr := _('Contact');
         9..13: Item.descr := _('Phone number');
+        18: begin
+          Item.descr := _('Search');
+          Item.param := IntToStr(EData.StateIndex+1);
+          col2 := _('Position');
+          itNode := itNode.NextSibling; // careful we have continue here
+          continue; // skip default handler
+        end;
         24: Item.descr := _('Profile');
         26,58: Item.descr := _('Group');
         59: Item.descr := _('Bookmark');

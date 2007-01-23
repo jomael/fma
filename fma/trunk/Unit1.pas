@@ -829,6 +829,7 @@ type
     procedure UpdateColorScheme;
 
     procedure DoRemoveAlarm;
+    procedure DoRemoveSavedSearch;
     procedure DoRemoveGroupMemberOrFile;
     procedure DoRemoveBookmark;
     procedure DoRemoveGroup;
@@ -944,7 +945,7 @@ type
     FNodeContactsRoot,
     FNodeContactsME, FNodeContactsSM, FNodeProfiles, FNodeGroups, FNodeCalls, FNodeCallsIn, FNodeCallsOut, FNodeCallsMissed,
     FNodeObex, FNodeOrganizer, FNodeAlarms, FNodeBookmarks, FNodeScripts, FNodeCalendar: PVirtualNode;
-    FNodeMsgPhoneRoot, FNodeMsgFmaRoot,
+    FNodeMsgPhoneRoot, FNodeMsgFmaRoot, FNodeSavedSearches,
     FNodeMsgInbox, FNodeMsgSent, FNodeMsgOutbox, FNodeMsgDrafts, FNodeMsgArchive: PVirtualNode;
     // new ones end
     FSMSCounterReseted,FSMSDoWarning,FSMSDoReset: boolean;
@@ -969,7 +970,7 @@ type
     FSupportedCS,FKeyActivity,FDatabaseVersion: String;
     FKeyInactivityTimeout: Integer;
     FFavoriteRecipients,FFavoriteCalls: TTntStringList;
-    FDeliveryRules: TTntStringList;
+    FDeliveryRules,FSavedSearches: TTntStringList;
 
     fFiles: TFiles;
 
@@ -1000,6 +1001,8 @@ type
     function IsCorrectSMSFolderName(AName: WideString): boolean;
     function IsNewSMSFolderNameOK(AParentNode: PVirtualNode; AName: WideString): WideString;
     function IsNewPhoneNameOK(AName: WideString): WideString;
+
+    procedure RenderSavedSearches;
 
     { Phonebook }
     procedure DownloadPhonebook(var ABuffer: string);
@@ -3204,7 +3207,8 @@ procedure TForm1.ExplorerNewChange(Sender: TBaseVirtualTree;
   Node: PVirtualNode);
 var
   EData: PFmaExplorerNode;
-  s: WideString;
+  s,sname: WideString;
+  snode: PVirtualNode;
 begin
   if ExplorerNew.GetFirstSelected <> Node then begin
     SetExplorerNode(Node);
@@ -3318,6 +3322,28 @@ begin
       end;
       if Node = FNodeAlarms then begin // Alarms
         SetFrameVisible('EXPLORE'); // do not localize
+      end;
+      if Node.Parent = FNodeSavedSearches then begin // Saved Search
+        // Format: name=target-node-path, search-mode, search-text
+        sname := FSavedSearches.Names[EData.StateIndex];
+        s := FSavedSearches.Values[sname];
+        snode := ExplorerFindNode(GetFirstToken(s),ExplorerNew.GetFirst);
+        if Assigned(snode) then begin
+          { Switch to target node and render data }
+          SetExplorerNode(snode);
+          ExplorerNewChange(ExplorerNew,snode);
+          while not frmMsgView.IsRenderingComplete do WaitASec(100);
+          { Apply saved search settings }
+          if not ActionViewMsgSearch.Checked then
+            ActionViewMsgSearch.Execute;
+          frmMsgView.SearchName := sname;
+          frmMsgView.SearchMode := TSearchMode(StrToInt(GetFirstToken(s)));
+          frmMsgView.SearchWhat := s;
+          frmMsgView.SearchForMessages(s); // speed-up searching
+          ExplorerNew.SetFocus;
+        end
+        else
+          Status(_('Search target node is not found'),False);
       end;
     end
     else
@@ -3505,6 +3531,8 @@ begin
   else if frmExplore.Visible and frmExplore.ListItems.Focused then begin
     if (ExplorerNew.FocusedNode.Parent = FNodeGroups) or ExplorerNodeIsFileOrFolder(ExplorerNew.FocusedNode) then
       DoRemoveGroupMemberOrFile;
+    if (ExplorerNew.FocusedNode = FNodeSavedSearches) then
+      DoRemoveSavedSearch;
     if (ExplorerNew.FocusedNode = FNodeBookmarks) then
       DoRemoveBookmark;
     if (ExplorerNew.FocusedNode = FNodeAlarms) then
@@ -5448,6 +5476,7 @@ begin
     WriteBool('Bookmarks','IE',FSyncBookmarksIE); // do not localize
     WriteBool('Bookmarks','Firefox',FSyncBookmarksFirefox); // do not localize
     WriteBool('Bookmarks','Opera',FSyncBookmarksOpera); // do not localize
+
     EraseSection('Favorites SMS'); // do not localize
     for i := 0 to FFavoriteRecipients.Count-1 do
       WriteString('Favorites SMS',IntToStr(i+1),'"'+WideStringToUTF8String(FFavoriteRecipients[i])+'"'); // do not localize
@@ -5457,6 +5486,10 @@ begin
     EraseSection('Delivery Rules'); // do not localize
     for i := 0 to FDeliveryRules.Count-1 do
       WriteString('Delivery Rules',IntToStr(i+1),'"'+WideStringToUTF8String(FDeliveryRules[i])+'"'); // do not localize
+    EraseSection('Saved Searches'); // do not localize
+    for i := 0 to FSavedSearches.Count-1 do
+      WriteString('Saved Searches',IntToStr(i+1),'"'+WideStringToUTF8String(FSavedSearches[i])+'"'); // do not localize
+
     WriteString('Chat','Nick','"'+WideStringToUTF8String(FChatNick)+'"'); // do not localize
     WriteBool('Chat','Long SMS',FChatLongSMS); // do not localize
     WriteBool('Chat','Bold Font',FChatBold); // do not localize
@@ -6982,6 +7015,7 @@ begin
           FNodeCallsMissed := nil;
           FNodeBookmarks := nil;
           FNodeAlarms := nil;
+          FNodeSavedSearches := nil;
         except
         end;
         { Free local variables }
@@ -8084,12 +8118,14 @@ end;
 procedure TForm1.ActionEditCommonUpdate(Sender: TObject);
 begin
   with (Sender as TTntAction) do begin
-    Enabled := frmMsgView.Visible or frmSyncPhonebook.Visible or frmSMEdit.Visible or frmMEEdit.Visible or
-               frmEditor.Visible or frmSyncBookmarks.Visible or frmCalendarView.Visible or
-      (frmExplore.Visible and (ExplorerNew.FocusedNode = FNodeAlarms) and (frmExplore.ListItems.SelectedCount = 1)) or
-      (frmExplore.Visible and (ExplorerNew.FocusedNode.Parent = FNodeGroups) and (frmExplore.ListItems.SelectedCount = 1)) or
-      (frmExplore.Visible and (ExplorerNew.FocusedNode = FNodeGroups) and (frmExplore.ListItems.SelectedCount = 1)) or
-      (frmExplore.Visible and (frmExplore.ListItems.SelectedCount <> 0) and (getExplorerSelectedNodeLevel1 = FNodeObex) );
+    if Assigned(ExplorerNew.FocusedNode) then
+      Enabled := frmMsgView.Visible or frmSyncPhonebook.Visible or frmSMEdit.Visible or frmMEEdit.Visible or
+         frmEditor.Visible or frmSyncBookmarks.Visible or frmCalendarView.Visible or
+        (frmExplore.Visible and (ExplorerNew.FocusedNode = FNodeAlarms) and (frmExplore.ListItems.SelectedCount = 1)) or
+        (frmExplore.Visible and (ExplorerNew.FocusedNode = FNodeSavedSearches) and (frmExplore.ListItems.SelectedCount = 1)) or
+        (frmExplore.Visible and (ExplorerNew.FocusedNode.Parent = FNodeGroups) and (frmExplore.ListItems.SelectedCount = 1)) or
+        (frmExplore.Visible and (ExplorerNew.FocusedNode = FNodeGroups) and (frmExplore.ListItems.SelectedCount = 1)) or
+        (frmExplore.Visible and (frmExplore.ListItems.SelectedCount <> 0) and (getExplorerSelectedNodeLevel1 = FNodeObex));
   end;
 end;
 
@@ -8993,6 +9029,11 @@ begin
           ReadSectionValues('Delivery Rules',sl); // do not localize
           for i := 0 to sl.Count-1 do
             FDeliveryRules.Add(UTF8StringToWideString(sl.Values[sl.Names[i]]));
+          FSavedSearches.Clear;
+          ReadSectionValues('Saved Searches',sl); // do not localize
+          for i := 0 to sl.Count-1 do
+            FSavedSearches.Add(UTF8StringToWideString(sl.Values[sl.Names[i]]));
+          RenderSavedSearches;
         finally
           sl.Free;
         end;
@@ -11292,6 +11333,9 @@ begin
       ClearNode(FNodeMsgArchive);
       ClearNode(FNodeMsgDrafts);
       frmMsgView.ClearView;
+
+      ClearNode(FNodeSavedSearches,False);
+      FSavedSearches.Clear;
 
       ClearNode(FNodeContactsME);
       frmSyncPhonebook.ListContacts.Clear;
@@ -13772,6 +13816,10 @@ begin
          (Node = FNodeContactsSM) or (Node = FNodeCallsIn) or (Node = FNodeCallsOut) or
          (Node = FNodeCallsMissed) or (Node = FNodeBookmarks) or (Node = FNodeAlarms) or
          (EData.StateIndex = FmaSMSSubFolderFlag) then TStringList(EData.Data).Free;
+      if (Node = FNodeSavedSearches) then begin
+        TTntStringList(EData.Data).Free;
+        FSavedSearches := nil;
+      end;
     finally
       Finalize(EData.Text);
     end;
@@ -14002,7 +14050,7 @@ var
         inc(cnt);
         s := 'Folder '+IntToStr(cnt); // section name // do not localize
         { add folder Path in Explorer view as first value }
-        { Change for FMA 2.2: Path is relative to FNodeMsgFmaRoot}
+        { Change for FMA 2.2: Path is relative to FNodeMsgFmaRoot }
         NodePath := ExplorerNodePath(itNode,'\',2);
         db.WriteString(s,'Path','\'+WideStringToUTF8String(NodePath)); // do not localize
         { add folder data next }
@@ -14738,6 +14786,14 @@ begin
       data.SpecialImagesFlags := $80;
       data.Data := THashedStringList.Create;
 
+    FNodeSavedSearches := ExplorerNew.AddChild(root);
+    data := ExplorerNew.GetNodeData(FNodeSavedSearches);
+    data.Text := _('Saved Searches');
+    data.ImageIndex := 4;
+    data.StateIndex := $000000;
+    FSavedSearches := TTntStringList.Create;
+    data.Data := FSavedSearches;
+
     FNodeContactsRoot := ExplorerNew.AddChild(root);
     data := ExplorerNew.GetNodeData(FNodeContactsRoot);
     data.Text := _('Contacts');
@@ -15019,6 +15075,11 @@ end;
 procedure TForm1.PopupMenu1Popup(Sender: TObject);
 begin
   if Assigned(ExplorerNew.FocusedNode) then begin
+    if ExplorerNew.FocusedNode.Parent = FNodeSavedSearches then begin
+      { no popup menu for saved searches }
+      ExplorerNew.FocusedNode := ExplorerNew.GetFirstSelected;
+      Abort;
+    end;
     ExplorerNew.Selected[ExplorerNew.FocusedNode] := True;
     ExplorerNew.SetFocus;
   end;
@@ -15680,6 +15741,58 @@ begin
         Abort;
       end;
     FVoiceMail := w;
+  end;
+end;
+
+procedure TForm1.RenderSavedSearches;
+var
+  i: Integer;
+  data: PFmaExplorerNode;
+  node: PVirtualNode;
+begin
+  ExplorerNew.DeleteChildren(FNodeSavedSearches,FSavedSearches.Count = 0);
+  for i := 0 to FSavedSearches.Count-1 do begin
+    // Format: name=search-settings
+    node := ExplorerNew.AddChild(FNodeSavedSearches);
+    data := ExplorerNew.GetNodeData(node);
+    data.Text := FSavedSearches.Names[i];
+    data.ImageIndex := 18;
+    data.StateIndex := i; // abused stateindex = search list position
+  end;
+  if frmExplore.Visible then ExplorerNewChange(ExplorerNew,ExplorerNew.FocusedNode);
+end;
+
+procedure TForm1.DoRemoveSavedSearch;
+var
+  i: Integer;
+  data: PFmaExplorerNode;
+  node: PVirtualNode;
+begin
+  node := nil;
+  if ActiveControl = ExplorerNew then begin
+    if ExplorerNew.FocusedNode.Parent = FNodeSavedSearches then
+      node := ExplorerNew.FocusedNode;
+  end
+  else
+    if frmExplore.Visible and frmExplore.ListItems.Focused then
+      node := frmExplore.GetSelectedNode;
+  if Assigned(node) then begin
+    data := ExplorerNew.GetNodeData(node);
+    if MessageDlgW(WideFormat(_('Are you sure you want to delete search "%s"?'),[data.Text]),
+      mtConfirmation, MB_YESNO or MB_DEFBUTTON2) = ID_YES then begin
+      FSavedSearches.Delete(data.StateIndex);
+      ExplorerNew.DeleteNode(node);
+      { Reindex rest of the nodes (abused stateindex) }
+      i := 0;
+      node := ExplorerNew.GetFirstChild(FNodeSavedSearches);
+      while Assigned(node) do begin
+        data := ExplorerNew.GetNodeData(node);
+        data.StateIndex := i;
+        inc(i);
+        node := ExplorerNew.GetNextSibling(node);
+      end;
+      if frmExplore.Visible then ExplorerNewChange(ExplorerNew,ExplorerNew.FocusedNode);
+    end;
   end;
 end;
 
