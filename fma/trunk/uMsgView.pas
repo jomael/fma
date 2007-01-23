@@ -539,8 +539,8 @@ begin
     NoItemsPanel.Visible := ListMsg.ChildCount[nil] = 0;
     if dbfixed then
       Form1.UpdateNewMessagesCounter(Form1.ExplorerNew.FocusedNode);
+    FIsRendered := True;
   end;
-  FIsRendered := True;
 end;
 
 procedure TfrmMsgView.ShowDetail(Node: PVirtualNode);

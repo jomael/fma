@@ -3329,11 +3329,15 @@ begin
         s := FSavedSearches.Values[sname];
         snode := ExplorerFindNode(GetFirstToken(s),ExplorerNew.GetFirst);
         if Assigned(snode) then begin
-          { Switch to target node and render data }
+          { Switch node }
+          EData := Sender.GetNodeData(snode);
           SetExplorerNode(snode);
-          ExplorerNewChange(ExplorerNew,snode);
-          while not frmMsgView.IsRenderingComplete do WaitASec(100);
-          { Apply saved search settings }
+          { Update view }
+          ActionConnectionDownload.Hint := _('Download Messages');
+          SetFrameVisible('MSG'); // do not localize
+          if not frmMsgView.IsRendered(TStringList(EData.Data)) then
+            frmMsgView.RenderListView(TStringList(EData.Data));
+          { Apply search settings }
           if not ActionViewMsgSearch.Checked then
             ActionViewMsgSearch.Execute;
           frmMsgView.SearchName := sname;
