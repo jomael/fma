@@ -26,7 +26,7 @@ type
   TListData = Record
     imageindex: Integer;
     stateindex: Integer;
-    from: WideString;
+    from,sender: WideString; // from is 'sender [number]', and sender is just the name
     smsData: TFmaMessageData;
   end;
   PListData = ^TListData;
@@ -53,9 +53,7 @@ type
     ToolButton5: TToolButton;
     ToolButton7: TToolButton;
     ToolButton4: TToolButton;
-    edSearchFor: TTntEdit;
     sbClearSearch: TTntSpeedButton;
-    TntLabel1: TTntLabel;
     SearchPanel: TTntPanel;
     Timer2: TTimer;
     ListPanel: TTntPanel;
@@ -110,6 +108,19 @@ type
     N4: TTntMenuItem;
     Picture1: TTntMenuItem;
     Commands1: TTntMenuItem;
+    LookupPanel: TTntPanel;
+    TntPanel1: TTntPanel;
+    Image1: TImage;
+    Image2: TImage;
+    edSearchFor: TTntEdit;
+    pmSearch: TTntPopupMenu;
+    sfSenderNumber: TTntMenuItem;
+    sfEntireMessage: TTntMenuItem;
+    N12: TTntMenuItem;
+    SaveSearchasaFolder1: TTntMenuItem;
+    sfDate: TTntMenuItem;
+    sfSender: TTntMenuItem;
+    sfText: TTntMenuItem;
     procedure ListMsgBeforeCellPaint(Sender: TBaseVirtualTree;
       TargetCanvas: TCanvas; Node: PVirtualNode; Column: TColumnIndex;
       CellRect: TRect);
@@ -166,6 +177,11 @@ type
       Shift: TShiftState);
     procedure FixSMSDatabase1Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
+    procedure Image2Click(Sender: TObject);
+    procedure Image1Click(Sender: TObject);
+    procedure edSearchForEnter(Sender: TObject);
+    procedure edSearchForExit(Sender: TObject);
+    procedure OnSearchTypeChange(Sender: TObject);
   private
     FCustomImage: Boolean;
     FRendered: TStringList;
@@ -429,6 +445,7 @@ begin
             item.from := Form1.ContactNumberByTel(item.smsData.From)
           else
             item.from := item.smsData.From;
+          item.sender := Form1.ExtractContact(item.from);
 
           item.stateindex := md.MsgIndex and $FFFF; // index
 
@@ -1561,8 +1578,12 @@ procedure TfrmMsgView.SearchForMessages(what: WideString);
 var
   Node: PVirtualNode;
   Item: PListData;
-  w: WideString;
+  md,mn: string;
+  mt,ms: WideString;
+  EmptySearch: boolean;
 begin
+  what := WideUpperCase(what);
+  EmptySearch := what = '';
   Timer2.Enabled := False; // cancel search timer
   try
     ListMsg.BeginUpdate;
@@ -1575,11 +1596,32 @@ begin
         Continue;
       end;
 
-      if item.smsData.IsLong then w := GetNodeLongText(Node)
-        else w := item.smsData.Text;
-      what := WideUpperCase(what);
-      ListMsg.IsVisible[Node] := (what = '') or
-        (Pos(what,WideUpperCase(w)) <> 0) or (Pos(what, WideUpperCase(item.from)) <> 0);
+      { Get message info }
+      if item.smsData.IsLong then mt := GetNodeLongText(Node) else mt := item.smsData.Text;
+      mt := WideUpperCase(mt); // message text (for both short or long SMS message)
+      md := UpperCase(DateTimeToStr(item.smsData.TimeStamp)); // sent or received date
+      ms := WideUpperCase(item.sender); // message sender's name (no number!)
+      mn := UpperCase(item.smsData.From); // sender's number only (no name!)
+
+      { Apply search filter }
+      if sfSender.Checked then
+        ListMsg.IsVisible[Node] := EmptySearch or (Pos(what,ms) <> 0)
+      else
+      if sfSenderNumber.Checked then
+        ListMsg.IsVisible[Node] := EmptySearch or (Pos(what,ms) <> 0) or (Pos(what,mn) <> 0)
+      else
+      if sfEntireMessage.Checked then // check all...
+        ListMsg.IsVisible[Node] := EmptySearch or (Pos(what,mt) <> 0) or // text
+          (Pos(what,ms) <> 0) or (Pos(what,mn) <> 0) or // sender and number
+          (Pos(what,md) <> 0) // message date
+      else
+      if sfText.Checked then
+        ListMsg.IsVisible[Node] := EmptySearch or (Pos(what,mt) <> 0)
+      else
+      if sfDate.Checked then
+        ListMsg.IsVisible[Node] := EmptySearch or (Pos(what,md) <> 0)
+      else
+        ListMsg.IsVisible[Node] := EmptySearch;
 
       node := ListMsg.GetNext(node);
     end;
@@ -1665,7 +1707,7 @@ end;
 procedure TfrmMsgView.edSearchForChange(Sender: TObject);
 begin
   Timer2.Enabled := False;
-  Timer2.Enabled := True;
+  Timer2.Enabled := edSearchFor.ParentFont;
 end;
 
 procedure TfrmMsgView.Timer2Timer(Sender: TObject);
@@ -1675,9 +1717,10 @@ end;
 
 procedure TfrmMsgView.Search1Click(Sender: TObject);
 begin
-  SearchPanel.Visible := True;
   edSearchFor.Text := '';
-  if Visible then edSearchFor.SetFocus;
+  edSearchForExit(nil);
+  SearchPanel.Visible := True;
+  if Visible then ListMsg.SetFocus;
 end;
 
 procedure TfrmMsgView.SendToPhone1Click(Sender: TObject);
@@ -1922,7 +1965,7 @@ begin
       for i := 0 to sl.Count-1 do begin
         md := TFmaMessageData(sl.Objects[i]);
         try
-          if (md.IsLong) and (not md.IsLongFirst) then begin
+          if md.IsLong and not md.IsLongFirst then begin
             if md.IsNew then begin
               md.IsNew := False;
               Inc(DelCount);
@@ -1930,8 +1973,7 @@ begin
             end;
           end;
         except
-          { something is really wrong.. maybe use sl.Delete(i)?
-            of course after changing for to while }
+          // PDU error? maybe use sl.Delete(i) of course after changing 'for' to 'while'
         end;
         frmConnect.IncProgress(1);
         if i mod 32 = 0 then begin
@@ -1958,32 +2000,38 @@ begin
         i := 0;
         while i < cl.Count do try
           if Form1.GetSMSMembers(i, cl, ml) then begin
-            for j:=0 to ml.Count-1 do begin
+            for j := 0 to ml.Count-1 do begin
               nl.Add(cl[Integer(ml.Objects[j])]);
               frmConnect.IncProgress(1);
               cl[Integer(ml.Objects[j])] := ''; // blind item
-              Dec(i);
             end;
+            repeat
+              j := cl.IndexOf('');
+              if j = -1 then break;
+              cl.Delete(j);
+            until cl.Count = 0;
+          end
+          else
+            Inc(i);
+          if i mod 32 = 0 then begin
+            Application.ProcessMessages;
+            if ThreadSafe.AbortDetected then break;
           end;
-          while cl.IndexOf('') <> -1 do cl.Delete(cl.IndexOf(''));
-          Application.ProcessMessages;
-          Inc(i);
         except
           // only exception can come from GetSMSMembers, so just skip it
           Inc(i);
         end;
-        { cl contains now only incomplete SMS (removal suggested)
-          TODO: what to do? ask user? }
-        //for j:=0 to cl.Count-1 do
-        //  nl.Add(cl[j]);
+        { TODO: what to do? ask user? cl contains now only incomplete SMS (removal suggested) }
+        //for j:=0 to cl.Count-1 do nl.Add(cl[j]);
         Log.AddMessageFmt('Fix DB: Removed %d incomplete message parts', [cl.Count]);
         // nl now contains entire compacted database
         Form1.ClearSMSMessages(sl); // sl == FRendered == EData.Data
-        for j := 0 to nl.Count-1 do try
-          md := TFmaMessageData.Create(nl[j]);
-          sl.AddObject(md.PDU, md);
-        except
-        end;
+        for j := 0 to nl.Count-1 do
+          try
+            md := TFmaMessageData.Create(nl[j]);
+            sl.AddObject(md.PDU, md);
+          except
+          end;
       finally
         nl.Free;
         ml.Free;
@@ -2015,6 +2063,55 @@ end;
 procedure TfrmMsgView.SpeedButton1Click(Sender: TObject);
 begin
   Form1.ActionViewMsgPreview.Execute;
+end;
+
+procedure TfrmMsgView.Image2Click(Sender: TObject);
+begin
+  edSearchFor.SetFocus;
+  edSearchFor.Text := '';
+end;
+
+procedure TfrmMsgView.Image1Click(Sender: TObject);
+var
+  p: TPoint;
+begin
+  edSearchFor.SetFocus;
+  p := Image1.ClientToScreen(Point(0,Image1.Height+2));
+  pmSearch.Popup(p.X,p.Y);
+end;
+
+procedure TfrmMsgView.edSearchForEnter(Sender: TObject);
+begin
+  if not edSearchFor.ParentFont then begin
+    edSearchFor.ParentFont := True;
+    edSearchFor.Text := '';
+  end;
+end;
+
+procedure TfrmMsgView.edSearchForExit(Sender: TObject);
+var
+  i: Integer;
+  s: WideString;
+begin
+  if edSearchFor.Text = '' then begin
+    for i := 0 to pmSearch.Items.Count-1 do
+      if pmSearch.Items[i].Checked then begin
+        { remove Hot-Key from Caption, if any }
+        s := Tnt_WideStringReplace(pmSearch.Items[i].Caption,'&','',[rfReplaceAll]);
+        break;
+      end;
+    edSearchFor.Font.Color := clGray;
+    edSearchFor.Text := WideFormat('(%s)',[s]);
+  end;
+end;
+
+procedure TfrmMsgView.OnSearchTypeChange(Sender: TObject);
+begin
+  if not (Sender as TTntMenuItem).Checked then begin
+    (Sender as TTntMenuItem).Checked := True;
+    Timer2.Enabled := False;
+    Timer2.Enabled := edSearchFor.ParentFont;
+  end;
 end;
 
 end.
