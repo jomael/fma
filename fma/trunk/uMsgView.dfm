@@ -203,7 +203,7 @@ object frmMsgView: TfrmMsgView
         0000330033330033000033333333333300003333333333330000}
       ParentShowHint = False
       ShowHint = True
-      OnClick = sbSearchClick
+      OnClick = sbCloseSearchClick
     end
     object LookupPanel: TTntPanel
       Left = 0

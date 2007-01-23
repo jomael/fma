@@ -137,7 +137,7 @@ type
     procedure Properties1Click(Sender: TObject);
     procedure Copy1Click(Sender: TObject);
     procedure pmListMsgPopup(Sender: TObject);
-    procedure sbSearchClick(Sender: TObject);
+    procedure sbCloseSearchClick(Sender: TObject);
     procedure ListMsgKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure Splitter2Moved(Sender: TObject);
@@ -391,6 +391,7 @@ begin
   Sem := True;
   dbfixed := False;
   edSearchFor.Text := '';
+  edSearchForExit(nil);
   try
     if sl.Count <> 0 then NoItemsPanel.Visible := False;
     if sl.Count > 99 then begin // show a message to user on large folder
@@ -1049,10 +1050,9 @@ begin
   Form1.Status('');
 end;
 
-procedure TfrmMsgView.sbSearchClick(Sender: TObject);
+procedure TfrmMsgView.sbCloseSearchClick(Sender: TObject);
 begin
   edSearchFor.Text := '';
-  SearchForMessages('');
   ListMsg.SetFocus;
   SearchPanel.Visible := False;
 end;
@@ -2051,6 +2051,7 @@ end;
 procedure TfrmMsgView.ClearView;
 begin
   edSearchFor.Text := '';
+  edSearchForExit(nil);
   FRendered := nil;
   ListMsg.Clear;
 end;
