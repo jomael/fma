@@ -1028,10 +1028,10 @@ type
 
     procedure LoadSMSMessages(sl: THashedStringList; APath: String);
     procedure SaveSMSMessages(sl: THashedStringList; APath: String);
-    procedure ClearSMSMessages(sl: THashedStringList); overload;
+    procedure ClearSMSMessages(sl: TStringList); overload;
     procedure ClearSMSMessages(Node: PVirtualNode); overload;
 
-    function LoadPhoneDataFiles(ID: string = ''; ShowStatus: Boolean = True; ShowProgress: Boolean = False): boolean;
+    function LoadPhoneDataFiles(ID: string = ''; ShowStatus: Boolean = True; ShowProgress: Boolean = False; SaveLocalChanges: Boolean = True): boolean;
     function OpenPhoneDataFiles(ID: string = ''): boolean;
     procedure DeletePhoneDataFiles(ID: string; Wnd: THandle = 0);
     procedure RepairPhoneDataFiles(ID: string);
@@ -8618,12 +8618,20 @@ var
   sl: TStringList;
   frmStatusDlg: TfrmStatusDlg;
   procedure FixDB_SMS(Filename: string);
+  var
+    ml: THashedStringList;
   begin
     Log.AddMessage('Fix DB: Checking database '+Filename, lsDebug); // do not localize debug
-    sl.LoadFromFile(FullPath + Filename);
-    frmMsgView.RenderListView(sl);
-    frmMsgView.CleanupDatabase(False,not FArchiveDublicates);
-    sl.SaveToFile(FullPath + Filename);
+    ml := THashedStringList.Create;
+    try
+      LoadSMSMessages(ml, FullPath + Filename);
+      frmMsgView.RenderListView(ml);
+      frmMsgView.CleanupDatabase(False,not FArchiveDublicates);
+      SaveSMSMessages(ml, FullPath + Filename);
+    finally
+      ClearSMSMessages(ml);
+      ml.Free;
+    end;
   end;
   procedure ScanSMSFolder(Root: PVirtualNode);
   var
@@ -8687,7 +8695,7 @@ begin
   end;
   // Reload all data
   if ID = PhoneIdentity then
-    LoadPhoneDataFiles(ID);
+    LoadPhoneDataFiles(ID, True, False, False);
 end;
 
 procedure TForm1.LoadSMSMessages(sl: THashedStringList; APath: String);
@@ -8728,7 +8736,7 @@ begin
   end;
 end;
 
-procedure TForm1.ClearSMSMessages(sl: THashedStringList);
+procedure TForm1.ClearSMSMessages(sl: TStringList);
 var
   i: integer;
 begin
@@ -8751,7 +8759,7 @@ begin
     frmMsgView.RenderListView(TStringList(EData.Data));
 end;
 
-function TForm1.LoadPhoneDataFiles(ID: string; ShowStatus,ShowProgress: Boolean): boolean;
+function TForm1.LoadPhoneDataFiles(ID: string; ShowStatus,ShowProgress,SaveLocalChanges: Boolean): boolean;
 var
   Fullpath: string;
   FDirID: TItemIDList;
@@ -8774,7 +8782,8 @@ var
 begin
   Result := True;
   { First, save any local changes, if any }
-  SavePhoneDataFiles(ShowStatus);
+  if SaveLocalChanges then
+    SavePhoneDataFiles(ShowStatus);
 
   if ShowStatus and Visible then begin
     OldStat := GetStatus;
@@ -13126,8 +13135,10 @@ begin
         if (ARef = IndexRef) and (ATot = IndexTotal) then
           if (An > 0) and (An <= Members.Count) then begin
             Members[An-1] := pdu;
-            Members.Objects[An-1] := Pointer(Item);
-            inc(FoundCount);
+            if Integer(Members.Objects[An-1]) = slEmpty then begin
+              Members.Objects[An-1] := Pointer(Item);
+              inc(FoundCount);
+            end;
             if FoundCount = IndexTotal then
               break;
           end;

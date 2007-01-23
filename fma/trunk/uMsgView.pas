@@ -184,7 +184,7 @@ type
     procedure UpdatePreview;
   public
     procedure ClearView;
-    procedure RenderListView(var sl: TStringList);
+    procedure RenderListView(sl: TStringList);
     procedure ExportList(FileType:Integer; Filename: WideString);
 
     procedure DeleteSelected(Ask: boolean = True);
@@ -359,7 +359,7 @@ begin
     Sender.SortColumn := Column;
 end;
 
-procedure TfrmMsgView.RenderListView(var sl: TStringList);
+procedure TfrmMsgView.RenderListView(sl: TStringList);
 const
   Sem: boolean = False;
 var
@@ -1861,12 +1861,11 @@ end;
 
 procedure TfrmMsgView.CleanupDatabase(Ask,removeDuplicates: boolean);
 var
-  sl: TStringList;
-  i,j,DelCount, ARef, ATot, An: Integer;
+  sl,cl,ml,nl: TStringList;
+  i,j,DelCount: Integer;
   APDU: string;
   WasEnabled: Boolean;
   w: WideString;
-  sms: TSMS;
   md: TFmaMessageData;
 begin
   if FRendered = nil then exit;
@@ -1880,12 +1879,11 @@ begin
   sl := FRendered;
   WasEnabled := Form1.Enabled;
   frmConnect := GetProgressDialog;
-  sms := TSMS.Create;
   try
     if Form1.CanShowProgress then
       frmConnect.ShowProgress(Form1.FProgressLongOnly);
     w := _('Cleanup messages database...');
-    frmConnect.Initialize(sl.Count + sl.Count*byte(removeDuplicates),w);
+    frmConnect.Initialize(sl.Count*(byte(removeDuplicates)+1),w);
     Form1.Status(w);
     Update;
     Form1.Enabled := False; // prevent keyboard move up/down in list while fixing
@@ -1916,24 +1914,24 @@ begin
         Inc(i);
       end;
       Log.AddMessageFmt('Fix DB: Removed %d entries from DB', [DelCount], lsDebug); // do not localize debug
+      if Self.Visible then RenderListView(sl);
     end;
     if not ThreadSafe.AbortDetected then begin
       Log.AddMessage('Fix DB: Clearing redundant unread flags...', lsDebug); // do not localize debug
       DelCount := 0;
       for i := 0 to sl.Count-1 do begin
-        APDU := sl[i];
-        GSMLongMsgData(APDU, ARef, ATot, An);
+        md := TFmaMessageData(sl.Objects[i]);
         try
-          if (ATot > 1) and (An > 1) then Abort;
-          sms.PDU := APDU;
-          //if not sms.IsOutgoing then sms.TimeStamp;
-        except
-          md := TFmaMessageData(sl.Objects[i]);
-          if md.IsNew then begin
-            md.IsNew := False;
-            Inc(DelCount);
-            Log.AddMessageFmt(_('Database: Removed new message flag (DB Index: %d)'), [i], lsInformation);
+          if (md.IsLong) and (not md.IsLongFirst) then begin
+            if md.IsNew then begin
+              md.IsNew := False;
+              Inc(DelCount);
+              Log.AddMessageFmt(_('Database: Removed new message flag (DB Index: %d)'), [i], lsInformation);
+            end;
           end;
+        except
+          { something is really wrong.. maybe use sl.Delete(i)?
+            of course after changing for to while }
         end;
         frmConnect.IncProgress(1);
         if i mod 32 = 0 then begin
@@ -1943,9 +1941,57 @@ begin
       end;
       Log.AddMessageFmt('Fix DB: Removed %d new flags from DB', [DelCount], lsDebug); // do not localize debug
     end;
+    { Compact database for faster message parts finding }
+    if not ThreadSafe.AbortDetected then begin
+      w := _('Compacting message database...');
+      frmConnect.Initialize(sl.Count, w);
+      Form1.Status(w);
+      Update;
+      cl := TStringList.Create; // original csv list
+      ml := TStringList.Create; // membersList
+      nl := TStringList.Create; // new compacted list
+      try
+        for i:=0 to sl.Count-1 do begin
+          md := TFmaMessageData(sl.Objects[i]);
+          cl.Add(md.AsString);
+        end;
+        i := 0;
+        while i < cl.Count do try
+          if Form1.GetSMSMembers(i, cl, ml) then begin
+            for j:=0 to ml.Count-1 do begin
+              nl.Add(cl[Integer(ml.Objects[j])]);
+              frmConnect.IncProgress(1);
+              cl[Integer(ml.Objects[j])] := ''; // blind item
+              Dec(i);
+            end;
+          end;
+          while cl.IndexOf('') <> -1 do cl.Delete(cl.IndexOf(''));
+          Application.ProcessMessages;
+          Inc(i);
+        except
+          // only exception can come from GetSMSMembers, so just skip it
+          Inc(i);
+        end;
+        { cl contains now only incomplete SMS (removal suggested)
+          TODO: what to do? ask user? }
+        //for j:=0 to cl.Count-1 do
+        //  nl.Add(cl[j]);
+        Log.AddMessageFmt('Fix DB: Removed %d incomplete message parts', [cl.Count]);
+        // nl now contains entire compacted database
+        Form1.ClearSMSMessages(sl); // sl == FRendered == EData.Data
+        for j := 0 to nl.Count-1 do try
+          md := TFmaMessageData.Create(nl[j]);
+          sl.AddObject(md.PDU, md);
+        except
+        end;
+      finally
+        nl.Free;
+        ml.Free;
+        cl.Free;
+      end;
+    end;
     Log.AddMessage('Fix DB: Cleanup finished', lsDebug); // do not localize debug
   finally
-    sms.Free;
     FreeProgressDialog;
     Form1.Enabled := WasEnabled;
   end;
