@@ -167,6 +167,10 @@ object frmContactsMEEdit: TfrmContactsMEEdit
         Caption = 'Not Modified'
         OnClick = Resetchangeflag1Click
       end
+      object Modified1: TTntMenuItem
+        Caption = 'Modified'
+        OnClick = Modified1Click
+      end
     end
     object otalChange1: TTntMenuItem
       Caption = 'Total Change'
@@ -182,6 +186,11 @@ object frmContactsMEEdit: TfrmContactsMEEdit
       Caption = 'Download Entire Phonebook...'
       ImageIndex = 1
       OnClick = DownloadEntirePhonebook1Click
+    end
+    object CopySelectedtoSIMcard1: TTntMenuItem
+      Caption = 'Copy Selected to SIM card...'
+      ImageIndex = 14
+      OnClick = CopySelectedtoSIMcard1Click
     end
     object N1: TTntMenuItem
       Caption = '-'

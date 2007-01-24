@@ -80,6 +80,9 @@ type
     Phone1: TTntMenuItem;
     N11: TTntMenuItem;
     Outlook1: TTntMenuItem;
+    CopySelectedtoSIMcard1: TTntMenuItem;
+    NewGroup1: TTntMenuItem;
+    GroupsDiv: TTntMenuItem;
     //List
     procedure ListContactsGetText(Sender: TBaseVirtualTree; Node: PVirtualNode;
       Column: TColumnIndex; TextType: TVSTTextType;
@@ -121,6 +124,8 @@ type
     procedure btnNEWClick(Sender: TObject);
     procedure btnDELClick(Sender: TObject);
     procedure btnSYNCClick(Sender: TObject);
+    procedure NewGroup1Click(Sender: TObject);
+    procedure CopySelectedtoSIMcard1Click(Sender: TObject);
   private
     ConflictVCardPhone,ConflictVCardPC: TVCard;
     VCard: TVCard;
@@ -2006,6 +2011,7 @@ end;
 
 procedure TfrmSyncPhonebook.PopupMenu1Popup(Sender: TObject);
 var
+  i: integer;
   m: TTntMenuItem;
   contact: PContactData;
   cgroups: WideString;
@@ -2014,36 +2020,42 @@ var
 begin
   DownloadEntirePhonebook1.Enabled := Form1.FConnected and not Form1.FObex.Connected;
   Properties1.Enabled := ListContacts.SelectedCount = 1;
+  CopySelectedtoSIMcard1.Enabled := ListContacts.SelectedCount <> 0;
+  { sync FirstLast menus }
   if FirstLast1.Checked then FirstLast2.Checked := True
-    else LastFirst2.Checked := True; // sync FirstLast menus
+    else LastFirst2.Checked := True;
+  { fill view columns }
   DoBuildColumnsPopup(DisplayColumns1);
-  AddtoGroup1.Clear;
+  { fill Add To Group submenu }
+  for i := 2 to AddtoGroup1.Count-1 do
+    AddtoGroup1.Delete(i);
+  NewGroup1.Enabled := False;
+  GroupsDiv.Visible := False;
   if Properties1.Enabled then begin
     contact := ListContacts.GetNodeData(ListContacts.FocusedNode);
     cgroups := Form1.LookupContactGroups(GetContactFullName(contact));
     { Add To Group only for modified and normal contacts, exclude new and deleted ones }
-    if contact.StateIndex in [1,3] then begin
-      if Assigned(Form1.FNodeGroups) then begin
-        itNode := Form1.FNodeGroups.FirstChild;
-        while itNode <> nil do begin
-          EData := Form1.ExplorerNew.GetNodeData(itNode);
-          m := TTntMenuItem.Create(nil);
-          try
-            m.AutoHotkeys := maManual;
-            m.Caption := EData.Text;
-            m.Tag := EData.StateIndex;
-            m.ImageIndex := 53;
-            m.OnClick := AddToGroupClick; // see few lines bellow for implementation
-            AddtoGroup1.Add(m);
-          except
-            m.Free;
-          end;
-          itNode := itNode.NextSibling;
+    if (contact.StateIndex in [1,3]) and Assigned(Form1.FNodeGroups) then begin
+      NewGroup1.Enabled := True;
+      itNode := Form1.FNodeGroups.FirstChild;
+      while Assigned(itNode) do begin
+        EData := Form1.ExplorerNew.GetNodeData(itNode);
+        m := TTntMenuItem.Create(nil);
+        try
+          m.AutoHotkeys := maManual;
+          m.Caption := EData.Text;
+          m.Tag := EData.StateIndex;
+          m.ImageIndex := 53;
+          m.OnClick := AddToGroupClick; // see few lines bellow for implementation
+          AddtoGroup1.Add(m);
+          GroupsDiv.Visible := True;
+        except
+          m.Free;
         end;
+        itNode := itNode.NextSibling;
       end;
     end;
   end;
-  AddtoGroup1.Enabled := AddtoGroup1.Count <> 0;
 end;
 
 procedure TfrmSyncPhonebook.AddToGroupClick(Sender: TObject);
@@ -3072,6 +3084,144 @@ begin
     except
       AEntity.Free;
     end;
+  end;
+end;
+
+procedure TfrmSyncPhonebook.NewGroup1Click(Sender: TObject);
+var
+  m: TTntMenuItem;
+  itNode: PVirtualNode;
+  EData: PFmaExplorerNode;
+begin
+  if Form1.ActionToolsCreateGroup.Execute then begin
+    itNode := Form1.FindExplorerChildNode(Form1.LastGroupCreated,Form1.FNodeGroups);
+    if Assigned(itNode) then begin
+      EData := Form1.ExplorerNew.GetNodeData(itNode);
+      m := TTntMenuItem.Create(nil);
+      try
+        m.AutoHotkeys := maManual;
+        m.Caption := EData.Text;
+        m.Tag := EData.StateIndex;
+        m.ImageIndex := 53;
+        m.OnClick := AddToGroupClick;
+        AddtoGroup1.Add(m);
+        m.Click; // Do add to group
+      except
+        m.Free;
+      end;
+    end;
+  end;
+end;
+
+procedure TfrmSyncPhonebook.CopySelectedtoSIMcard1Click(Sender: TObject);
+var
+  NewCnt,UpdCnt,SkpCnt: integer;
+  dl: TStrings;
+  node: PVirtualNode;
+  contact: PContactData;
+  data1,data2: PFmaExplorerNode;
+  cname: WideString;
+  procedure AddNumber(AName,Kind: WideString; ANumber: string);
+  var
+    cnode,nnode: PVirtualNode;
+    image,FoundIndex: Integer;
+    utf8s: String;
+  begin
+    if Cardinal(dl.Count) >= Form1.frmSMEdit.FMaxNumbers then Abort;
+    FoundIndex := -1;
+
+    { Try to locate contact }
+    cnode := Form1.FindExplorerChildNode(AName,Form1.FNodeContactsSM);
+    if Assigned(cnode) then begin
+      if Kind = 'H' then image := 9 // do not localize
+      else if Kind = 'M' then image := 10 // do not localize
+      else if Kind = 'W' then image := 11 // do not localize
+      else if Kind = 'F' then image := 12 // do not localize
+      else image := 13;
+
+      { Try to locate contact's number of the same kind }
+      nnode := Form1.ExplorerNew.GetFirstChild(cnode);
+      while Assigned(nnode) do begin
+        data1 := Form1.ExplorerNew.GetNodeData(nnode);
+        if data1.ImageIndex = image then begin
+          FoundIndex := data1.StateIndex;
+          break;
+        end;
+        nnode := Form1.ExplorerNew.GetNextSibling(nnode);
+      end;
+
+      if FoundIndex <> -1 then begin
+        if AnsiCompareStr(data1.Text,ANumber) <> 0 then begin
+          // TODO: Add wizard for asking where to store new number
+          case MessageDlgW(WideFormat(_('Contact "%s" already exists in SIM book.')+sLinebreak+sLinebreak,[AName])+
+            WideFormat(_('Do you want to replace [%s] with [%s]?'),[data1.Text,ANumber]),
+            mtConfirmation, MB_YESNOCANCEL or MB_DEFBUTTON2) of
+            ID_YES: dl.Delete(FoundIndex);
+            ID_NO: begin
+              inc(SkpCnt);
+              exit;
+            end;
+            ID_CANCEL: Abort;
+          end;
+        end
+        else begin
+          inc(SkpCnt);
+          exit; // number found but is the same, so exit
+        end;
+      end;
+    end;
+    { TODO: Use RightCopy }
+    ANumber := Copy(ANumber,1,Form1.frmSMEdit.FMaxTelLen+byte(Pos('+',ANumber) <> 0));
+    if kind <> '' then kind := '/' + kind;
+    { Add to SIM database }
+    utf8s := UTF8Encode(WideQuoteStr(AName + Kind, True));
+    dl.Add(utf8s + ',' + WideStringToLongString(ANumber) + ',' + IntToStr(dl.Count+1) + ',1,' + // and mark (1) as modified
+      GUIDToString(NewGUID)+','); // No LUID
+    if FoundIndex = -1 then inc(NewCnt) else inc(UpdCnt);
+  end;
+begin
+  NewCnt := 0; UpdCnt := 0; SkpCnt := 0;
+  data2 := Form1.ExplorerNew.GetNodeData(Form1.FNodeContactsSM);
+  dl := TStrings(data2.Data); // destination
+
+  if dl.Count <> 0 then
+    case MessageDlgW(_('Do you want to DELETE all SIM entries before copy? (No Undo)'),
+      mtConfirmation, MB_YESNOCANCEL or MB_DEFBUTTON2) of
+      ID_YES: begin
+        { Clear SIM database }
+        dl.Clear;
+        Form1.ExplorerNew.DeleteChildren(Form1.FNodeContactsSM);
+      end;
+      ID_CANCEL: exit;
+    end;
+  try
+    with ListContacts do begin
+      node := GetFirst;
+      while Assigned(Node) do begin
+        if Selected[node] then
+          try
+            contact := GetNodeData(node);
+            cname := GetContactFullName(contact);
+            cname := Copy(cname,1,Form1.frmSMEdit.FMaxNameLen);
+            if contact^.home  <> '' then AddNumber(cname,'H',contact^.home);   // do not localize
+            if contact^.work  <> '' then AddNumber(cname,'W',contact^.work);   // do not localize
+            if contact^.cell  <> '' then AddNumber(cname,'M',contact^.cell);   // do not localize
+            if contact^.fax   <> '' then AddNumber(cname,'F',contact^.fax);    // do not localize
+            if contact^.other <> '' then AddNumber(cname,'O',contact^.other);  // do not localize
+          except
+            if Cardinal(dl.Count) >= Form1.frmSMEdit.FMaxNumbers then break;
+          end;
+        node := GetNext(node);
+      end;
+    end;
+  finally
+    if (NewCnt <> 0) or (UpdCnt <> 0) then begin
+      Form1.RenderContactList(Form1.FNodeContactsSM);
+      { Update view }
+      Form1.frmSMEdit.RenderData(Form1.FNodeContactsSM);
+    end;
+    Form1.Status(WideFormat(_('Copy to SIM card: %d new, %d modified and %d items skipped'),
+      [NewCnt, UpdCnt, SkpCnt]));
   end;
 end;
 

@@ -817,6 +817,7 @@ type
 
     FLogForm: TfrmLog;
     FPhoneModel: String;
+    FLastGroupCreated: WideString;
 
     function GetAssociatedBand(Bar: TToolBar): TCoolBand;
     function GetBandSettings(Band: TCoolBand): string;
@@ -1005,6 +1006,7 @@ type
     procedure RenderSavedSearches;
 
     { Phonebook }
+    function AddNewToPhonebook(Number: string): boolean;
     procedure DownloadPhonebook(var ABuffer: string);
 
     { This allows calling object methods as well (m.func) }
@@ -1218,6 +1220,8 @@ type
     property PhoneIdentity: string read GetPhoneIdentity write SetPhoneIdentity;
     property ScriptFilename: WideString read FScriptFile;
     property PhoneModel: String read FPhoneModel;
+    //
+    property LastGroupCreated: WideString read FLastGroupCreated;
   end;
 
 var
@@ -2336,6 +2340,7 @@ begin
   if Assigned(frmFolderProps) then
     frmFolderProps.OnConnectionChange(False);
 
+  FLastGroupCreated := '';
   FMessage := '';
   EBCALastState := -1;
 
@@ -3111,6 +3116,8 @@ begin
             tracker.Add(Names);
           end
           else begin
+            node := FindExplorerChildNode(Names,rootNode);
+            {
             node := rootNode;
             while node <> nil do begin
               EData := ExplorerNew.GetNodeData(node);
@@ -3120,6 +3127,7 @@ begin
               end;
               node := node.NextSibling;
             end;
+            }
           end;
 
           if Number <> '' then begin
@@ -9685,74 +9693,8 @@ begin
 end;
 
 procedure TForm1.ActionContactsAddContactExecute(Sender: TObject);
-var
-  ContactData: PContactData;
-  SIMData: PSIMData;
-  Number: string;
-  procedure UpdateView;
-  var
-    EData: PFmaExplorerNode;
-  begin
-    if frmSyncPhonebook.Visible then
-      frmSyncPhonebook.ListContacts.Repaint;
-    if frmSMEdit.Visible then
-      frmSMEdit.ListNumbers.Repaint;
-    if frmMEEdit.Visible then
-      frmMEEdit.ListNumbers.Repaint;
-    if frmMsgView.Visible then begin
-      EData := ExplorerNew.GetNodeData(ExplorerNew.FocusedNode);
-      frmMsgView.RenderListView(TStringList(EData.Data));
-    end;
-    if frmInfoView.Visible then
-      frmInfoView.UpdateWelcomePage(True);
-  end;
 begin
-  Number := ExtractNumber(LocateSelContactNumber);
-  with TfrmAddContact.Create(nil) do
-    try
-      NewNumber := Number;
-      if ShowModal = mrOk then begin
-        if RadioButton1.Checked then begin
-          { Add new contact to ME }
-          if IsIrmcSyncEnabled then begin
-            if frmSyncPhonebook.DoEdit(True,Number) then
-              UpdateView;
-          end
-          else begin
-            if frmMEEdit.DoEdit(True,Number) then
-              UpdateView;
-          end;
-        end;
-        if RadioButton2.Checked then begin
-          { Update existing contact }
-          if IsIrmcSyncEnabled then begin
-            ContactData := GetSelectedContact;
-            case rgPhoneType.ItemIndex of
-              0: ContactData^.cell := Number;
-              1: ContactData^.work := Number;
-              2: ContactData^.home := Number;
-              3: ContactData^.fax := Number;
-              4: ContactData^.other := Number;
-            end;
-            { Mark contact as Modified (if not New) }
-            if ContactData^.StateIndex <> 0 then
-              ContactData^.StateIndex := 1;
-          end
-          else begin
-            SIMData := GetSelectedContact;
-            SIMData^.pnumb := Number;
-            { Mark contact as Modified (if not New) }
-            if SIMData^.imageindex <> 0 then
-              SIMData^.imageindex := 1;
-          end;
-          UpdateMEPhonebook;
-          { Update fma views }
-          UpdateView;
-        end;
-      end;
-    finally
-      Free;
-    end;
+  AddNewToPhonebook(ExtractNumber(LocateSelContactNumber));
 end;
 
 function TForm1.ExtractNumber(ContactNumber: WideString): WideString;
@@ -10817,9 +10759,11 @@ var
   sl: TStrings;
   Tree: TVirtualStringTree;
   procedure DoAdd(Name: WideString);
-  var utf8s: string;
+  var
+    utf8s: string;
   begin
-    { SEE ParsePhonebookListFromSync !!! Implementations should match }
+    { SEE ParsePhonebookListFromSync() and TfrmSyncPhonebook.CopySelectedtoSIMcard1Click()
+      Implementations should match!!! }
     utf8s := UTF8Encode(WideQuoteStr(Name,True));
     sl.Add(utf8s + ',' + WideStringToLongString(contact^.pnumb) + ',' +
       IntToStr(contact^.position) + ',' + IntToStr(contact^.imageindex) + ',' +
@@ -12563,6 +12507,7 @@ begin
       if FUseUTF8 then s := WideStringToUTF8String(s);
       TxAndWait('AT*ESCG="' + s + '"'); // do not localize
       InitGroups;
+      FLastGroupCreated := s;
       Status(_('Group created'));
     except
       Status(_('Group create failed'));
@@ -15798,6 +15743,77 @@ begin
       if frmExplore.Visible then ExplorerNewChange(ExplorerNew,ExplorerNew.FocusedNode);
     end;
   end;
+end;
+
+function TForm1.AddNewToPhonebook(Number: string): boolean;
+var
+  ContactData: PContactData;
+  SIMData: PSIMData;
+  procedure UpdateView;
+  var
+    EData: PFmaExplorerNode;
+  begin
+    if frmSyncPhonebook.Visible then
+      frmSyncPhonebook.ListContacts.Repaint;
+    if frmSMEdit.Visible then
+      frmSMEdit.ListNumbers.Repaint;
+    if frmMEEdit.Visible then
+      frmMEEdit.ListNumbers.Repaint;
+    if frmMsgView.Visible then begin
+      EData := ExplorerNew.GetNodeData(ExplorerNew.FocusedNode);
+      frmMsgView.RenderListView(TStringList(EData.Data));
+    end;
+    if frmInfoView.Visible then
+      frmInfoView.UpdateWelcomePage(True);
+  end;
+begin
+  Result := False;
+  with TfrmAddContact.Create(nil) do
+    try
+      NewNumber := Number;
+      if ShowModal = mrOk then begin
+        if RadioButton1.Checked then begin
+          { Add new contact to ME }
+          if IsIrmcSyncEnabled then begin
+            if frmSyncPhonebook.DoEdit(True,Number) then
+              UpdateView;
+          end
+          else begin
+            if frmMEEdit.DoEdit(True,Number) then
+              UpdateView;
+          end;
+        end;
+        if RadioButton2.Checked then begin
+          { Update existing contact }
+          if IsIrmcSyncEnabled then begin
+            ContactData := GetSelectedContact;
+            case rgPhoneType.ItemIndex of
+              0: ContactData^.cell := Number;
+              1: ContactData^.work := Number;
+              2: ContactData^.home := Number;
+              3: ContactData^.fax := Number;
+              4: ContactData^.other := Number;
+            end;
+            { Mark contact as Modified (if not New) }
+            if ContactData^.StateIndex <> 0 then
+              ContactData^.StateIndex := 1;
+          end
+          else begin
+            SIMData := GetSelectedContact;
+            SIMData^.pnumb := Number;
+            { Mark contact as Modified (if not New) }
+            if SIMData^.imageindex <> 0 then
+              SIMData^.imageindex := 1;
+          end;
+          UpdateMEPhonebook;
+          { Update fma views }
+          UpdateView;
+          Result := True;
+        end;
+      end;
+    finally
+      Free;
+    end;
 end;
 
 initialization

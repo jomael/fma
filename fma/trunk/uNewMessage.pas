@@ -273,11 +273,8 @@ end;
 
 procedure TfrmNewMessage.AddContact1Click(Sender: TObject);
 begin
-  { Add new contact to ME - lbAlpha.Caption comtains the number }
-  if Form1.IsIrmcSyncEnabled then
-    Form1.frmSyncPhonebook.DoEdit(True,lbAlpha.Caption)
-  else
-    Form1.frmMEEdit.DoEdit(True,lbAlpha.Caption);
+  if Form1.AddNewToPhonebook(lbAlpha.Caption) then
+    AddContact1.Enabled := False;
 end;
 
 procedure TfrmNewMessage.OnMouseEnter(Sender: TObject);

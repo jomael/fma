@@ -167,23 +167,16 @@ object frmContactsSMEdit: TfrmContactsSMEdit
         Caption = 'Not Modified'
         OnClick = Resetchangeflag1Click
       end
+      object Modified1: TTntMenuItem
+        Caption = 'Modified'
+        OnClick = Modified1Click
+      end
     end
     object otalChange1: TTntMenuItem
       Caption = 'Total Change'
       object UpdateContactsPosition1: TTntMenuItem
         Caption = 'Reindex (Sort) All Contacts...'
         OnClick = UpdateContactsPosition1Click
-      end
-    end
-    object otalCopy1: TTntMenuItem
-      Caption = 'Total Copy'
-      object UpdateContactsfromPhonebook1: TTntMenuItem
-        Caption = 'Copy All from Phonebook to SIM...'
-        OnClick = UpdateContactsfromPhonebook1Click
-      end
-      object SendAllContactstoPhonebook1: TTntMenuItem
-        Caption = 'Copy All from SIM to Phonebook...'
-        OnClick = SendAllContactstoPhonebook1Click
       end
     end
     object N7: TTntMenuItem
@@ -193,6 +186,11 @@ object frmContactsSMEdit: TfrmContactsSMEdit
       Caption = 'Download Entire Phonebook...'
       ImageIndex = 1
       OnClick = DownloadEntirePhonebook1Click
+    end
+    object SendAllContactstoPhonebook1: TTntMenuItem
+      Caption = 'Copy Selected to Phonebook...'
+      ImageIndex = 14
+      OnClick = SendAllContactstoPhonebook1Click
     end
     object N1: TTntMenuItem
       Caption = '-'

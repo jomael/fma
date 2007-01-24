@@ -54,6 +54,8 @@ type
     SendToPhone1: TTntMenuItem;
     ForceAs1: TTntMenuItem;
     otalChange1: TTntMenuItem;
+    CopySelectedtoSIMcard1: TTntMenuItem;
+    Modified1: TTntMenuItem;
     procedure Button1Click(Sender: TObject);
     procedure StringGridGetEditText(Sender: TObject; ACol, ARow: Integer;
       var Value: String);
@@ -91,6 +93,8 @@ type
     procedure btnUpdateSIMClick(Sender: TObject);
     procedure btnDELClick(Sender: TObject);
     procedure btnEDITClick(Sender: TObject);
+    procedure CopySelectedtoSIMcard1Click(Sender: TObject);
+    procedure Modified1Click(Sender: TObject);
   private
     { Private declarations }
     FContact: TContactData; // used for SIM contact editing (uEditContact)
@@ -624,6 +628,7 @@ procedure TfrmContactsMEEdit.PopupMenu1Popup(Sender: TObject);
 begin
   Properties1.Enabled := ListNumbers.SelectedCount = 1;
   DownloadEntirePhonebook1.Enabled := Form1.FConnected and not Form1.FObex.Connected;
+  CopySelectedtoSIMcard1.Enabled := ListNumbers.SelectedCount <> 0;
 end;
 
 function TfrmContactsMEEdit.DoEdit(AsNew: boolean; NewNumber: string): boolean;
@@ -1282,6 +1287,134 @@ begin
     end;
     Node := ListNumbers.GetNext(Node);
   end;
+end;
+
+procedure TfrmContactsMEEdit.CopySelectedtoSIMcard1Click(Sender: TObject);
+var
+  NewCnt,UpdCnt,SkpCnt: integer;
+  dl: TStrings;
+  node: PVirtualNode;
+  contact: PSIMData;
+  data1,data2: PFmaExplorerNode;
+  cname: WideString;
+  procedure AddNumber(AName,Kind: WideString; ANumber: string);
+  var
+    cnode,nnode: PVirtualNode;
+    image,FoundIndex: Integer;
+    utf8s: String;
+  begin
+    if Cardinal(dl.Count) >= Form1.frmSMEdit.FMaxNumbers then Abort;
+    FoundIndex := -1;
+
+    { Try to locate contact }
+    cnode := Form1.FindExplorerChildNode(AName,Form1.FNodeContactsSM);
+    if Assigned(cnode) then begin
+      if Kind = 'H' then image := 9 // do not localize
+      else if Kind = 'M' then image := 10 // do not localize
+      else if Kind = 'W' then image := 11 // do not localize
+      else if Kind = 'F' then image := 12 // do not localize
+      else image := 13;
+
+      { Try to locate contact's number of the same kind }
+      nnode := Form1.ExplorerNew.GetFirstChild(cnode);
+      while Assigned(nnode) do begin
+        data1 := Form1.ExplorerNew.GetNodeData(nnode);
+        if data1.ImageIndex = image then begin
+          FoundIndex := data1.StateIndex;
+          break;
+        end;
+        nnode := Form1.ExplorerNew.GetNextSibling(nnode);
+      end;
+
+      if FoundIndex <> -1 then begin
+        if AnsiCompareStr(data1.Text,ANumber) <> 0 then begin
+          // TODO: Add wizard for asking where to store new number
+          case MessageDlgW(WideFormat(_('Contact "%s" already exists in SIM book.')+sLinebreak+sLinebreak,[AName])+
+            WideFormat(_('Do you want to replace [%s] with [%s]?'),[data1.Text,ANumber]),
+            mtConfirmation, MB_YESNOCANCEL or MB_DEFBUTTON2) of
+            ID_YES: dl.Delete(FoundIndex);
+            ID_NO: begin
+              inc(SkpCnt);
+              exit;
+            end;
+            ID_CANCEL: Abort;
+          end;
+        end
+        else begin
+          inc(SkpCnt);
+          exit; // number found but is the same, so exit
+        end;
+      end;
+    end;
+    { TODO: Use RightCopy }
+    ANumber := Copy(ANumber,1,Form1.frmSMEdit.FMaxTelLen+byte(Pos('+',ANumber) <> 0));
+    if kind <> '' then kind := '/' + kind;
+    { Add to SIM database }
+    utf8s := UTF8Encode(WideQuoteStr(AName + Kind, True));
+    dl.Add(utf8s + ',' + WideStringToLongString(ANumber) + ',' + IntToStr(dl.Count+1) + ',1,' + // and mark (1) as modified
+      GUIDToString(NewGUID)+','); // No LUID
+    if FoundIndex = -1 then inc(NewCnt) else inc(UpdCnt);
+  end;
+begin
+  NewCnt := 0; UpdCnt := 0; SkpCnt := 0;
+  data2 := Form1.ExplorerNew.GetNodeData(Form1.FNodeContactsSM);
+  dl := TStrings(data2.Data); // destination
+
+  if dl.Count <> 0 then
+    case MessageDlgW(_('Do you want to DELETE all SIM entries before copy? (No Undo)'),
+      mtConfirmation, MB_YESNOCANCEL or MB_DEFBUTTON2) of
+      ID_YES: begin
+        { Clear SIM database }
+        dl.Clear;
+        Form1.ExplorerNew.DeleteChildren(Form1.FNodeContactsSM);
+      end;
+      ID_CANCEL: exit;
+    end;
+  try
+    with ListNumbers do begin
+      node := GetFirst;
+      while Assigned(Node) do begin
+        if Selected[node] then
+          try
+            contact := GetNodeData(node);
+            cname := contact^.cname;
+            cname := Copy(cname,1,Form1.frmSMEdit.FMaxNameLen);
+            if contact^.pnumb  <> '' then AddNumber(cname,contact^.ptype,contact^.pnumb);   // do not localize
+          except
+            if Cardinal(dl.Count) >= Form1.frmSMEdit.FMaxNumbers then break;
+          end;
+        node := GetNext(node);
+      end;
+    end;
+  finally
+    if (NewCnt <> 0) or (UpdCnt <> 0) then begin
+      Form1.RenderContactList(Form1.FNodeContactsSM);
+      { Update view }
+      Form1.frmSMEdit.RenderData(Form1.FNodeContactsSM);
+    end;
+    Form1.Status(WideFormat(_('Copy to SIM card: %d new, %d modified and %d items skipped'),
+      [NewCnt, UpdCnt, SkpCnt]));
+  end;
+end;
+
+procedure TfrmContactsMEEdit.Modified1Click(Sender: TObject);
+var
+  Item: PSIMData;
+  Node: PVirtualNode;
+begin
+  ListNumbers.BeginUpdate;
+  Node := ListNumbers.GetFirst;
+  while Node <> nil do
+  try
+    if ListNumbers.Selected[Node] then begin
+      item := ListNumbers.GetNodeData(Node);
+      item.imageindex := 1;
+    end;
+  finally
+    Node := ListNumbers.GetNext(Node);
+  end;
+  ListNumbers.EndUpdate;
+  UpdatePhonebook;
 end;
 
 end.

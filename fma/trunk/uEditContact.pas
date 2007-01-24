@@ -306,7 +306,7 @@ begin
     txtURL.Enabled := False;
     txtAddressType.Enabled := False;
   end;
-  txtBirthday.Enabled := Form1.IsK750orBetter;
+  txtBirthday.Enabled := Form1.IsK750orBetter and not FUseSIMMode;
   ResetButton.Enabled := not IsNew;
   UnlinkOutlookButton.Enabled := not IsNew;
   txtName.SetFocus;

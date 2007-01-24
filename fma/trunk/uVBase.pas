@@ -463,10 +463,10 @@ begin
 end;
 
 procedure TVProperty.SetText(const Value: WideString);
-  var
-    PropText: WideString;
-    StrLen: Integer;
-    ParamStart, ParamEnd: Integer;
+var
+  PropText: WideString;
+  StrLen: Integer;
+  ParamStart, ParamEnd: Integer;
 begin
   PropText := Trim(Value);
   StrLen := Length(PropText);
@@ -493,10 +493,10 @@ begin
 end;
 
 function TVProperty.GetEncodedText: WideString;
-  var
-    strTemp: WIdeString;
-    strUtf8: WideString;
-    strQP: WideString;
+var
+  strTemp: WIdeString;
+  strUtf8: WideString;
+  strQP: WideString;
 begin
   Result := '';
 

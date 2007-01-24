@@ -257,7 +257,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
       end
     end
     object CurrentView1: TTntMenuItem
-      Caption = 'Current View'
+      Caption = 'Current &View'
       object DisplayColumns1: TTntMenuItem
         Caption = 'Columns'
       end
@@ -265,7 +265,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
         Caption = '-'
       end
       object NameFormat1: TTntMenuItem
-        Caption = 'Full Name Format'
+        Caption = 'Full Name'
         object FirstLast2: TTntMenuItem
           Caption = 'First Last'
           Checked = True
@@ -284,6 +284,13 @@ object frmSyncPhonebook: TfrmSyncPhonebook
     object AddtoGroup1: TTntMenuItem
       AutoHotkeys = maManual
       Caption = 'Add to &Group'
+      object NewGroup1: TTntMenuItem
+        Caption = '&New Group...'
+        OnClick = NewGroup1Click
+      end
+      object GroupsDiv: TTntMenuItem
+        Caption = '-'
+      end
     end
     object N7: TTntMenuItem
       Caption = '-'
@@ -292,6 +299,11 @@ object frmSyncPhonebook: TfrmSyncPhonebook
       Caption = 'Download Entire Phonebook...'
       ImageIndex = 1
       OnClick = DownloadEntirePhonebook1Click
+    end
+    object CopySelectedtoSIMcard1: TTntMenuItem
+      Caption = 'Copy Selected to SIM card...'
+      ImageIndex = 14
+      OnClick = CopySelectedtoSIMcard1Click
     end
     object N3: TTntMenuItem
       Caption = '-'
