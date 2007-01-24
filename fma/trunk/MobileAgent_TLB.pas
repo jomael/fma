@@ -12,16 +12,16 @@ unit MobileAgent_TLB;
 // ************************************************************************ //
 
 // PASTLWTR : 1.2
-// File generated on 31.12.2006 19:02:23 from Type Library described below.
+// File generated on 24.01.2007 13:48:22 from Type Library described below.
 
 // ************************************************************************  //
-// Type Lib: c:\install\fma\MobileAgent.tlb (1)
+// Type Lib: C:\Projects\FMA\fma\trunk\MobileAgent.tlb (1)
 // LIBID: {6D3D646F-A801-4FE4-8610-F209E33D0D6E}
 // LCID: 0
 // Helpfile: 
 // HelpString: MobileAgent Library
 // DepndLst: 
-//   (1) v2.0 stdole, (C:\WINDOWS\system32\stdole2.tlb)
+//   (1) v2.0 stdole, (C:\WINDOWS\system32\STDOLE2.TLB)
 // ************************************************************************ //
 {$TYPEDADDRESS OFF} // Unit must be compiled without type-checked pointers. 
 {$WARN SYMBOL_PLATFORM OFF}
@@ -229,9 +229,9 @@ type
     procedure DlgInputInt(const Title: WideString; const Prompt: WideString; MinVal: Integer; 
                           MaxVal: Integer; DefaultVal: Integer; const event: WideString); safecall;
     procedure DlgFeedback(const Title: WideString; const event: WideString); safecall;
-    procedure Set_MenuType(Value: Integer); safecall;
+    procedure Set_MenuType(Param1: Integer); safecall;
     procedure AddItemEx(const Caption: WideString; Disabled: WordBool; Selected: WordBool; 
-                        CanDelete: WordBool; ImgIndex: Integer; const Event: WideString); safecall;
+                        CanDelete: WordBool; ImgIndex: Integer; const event: WideString); safecall;
     property Title: WideString write Set_Title;
     property Selected: Integer write Set_Selected;
     property Back: WideString write Set_Back;
@@ -269,7 +269,7 @@ type
     procedure DlgFeedback(const Title: WideString; const event: WideString); dispid 13;
     property MenuType: Integer writeonly dispid 19;
     procedure AddItemEx(const Caption: WideString; Disabled: WordBool; Selected: WordBool; 
-                        CanDelete: WordBool; ImgIndex: Integer; const Event: WideString); dispid 20;
+                        CanDelete: WordBool; ImgIndex: Integer; const event: WideString); dispid 20;
   end;
 
 // *********************************************************************//

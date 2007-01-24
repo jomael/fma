@@ -17,10 +17,10 @@ unit uEditContact;
 interface
 
 uses
-  Windows, TntWindows, Messages, SysUtils, TntSysUtils, Variants, Classes, TntClasses, Graphics, TntGraphics, Controls, TntControls, Forms, TntForms,
-  Dialogs, TntDialogs, ExtCtrls, TntExtCtrls, StdCtrls, TntStdCtrls, ComCtrls, TntComCtrls, UniTntCtrls, Buttons, TntButtons, uSyncPhonebook,
-  Menus, TntMenus, MPlayer, GR32_Image, uContactSync, VirtualTrees, uVCard,
-  ImgList, Mask;
+  Windows, TntWindows, Messages, SysUtils, TntSysUtils, Variants, Classes, TntClasses, Graphics, TntGraphics,
+  Controls, TntControls, Forms, TntForms, Dialogs, TntDialogs, ExtCtrls, TntExtCtrls, StdCtrls, TntStdCtrls,
+  ComCtrls, TntComCtrls, UniTntCtrls, Buttons, TntButtons, uSyncPhonebook, Menus, TntMenus, MPlayer, GR32_Image,
+  uContactSync, VirtualTrees, uVCard, ImgList, Mask, DateUtils;
 
 type
   TfrmEditContact = class(TTntForm)
@@ -306,9 +306,7 @@ begin
     txtURL.Enabled := False;
     txtAddressType.Enabled := False;
   end;
-  if not Form1.IsK750orBetter then begin
-    txtBirthday.Enabled := False;
-  end;
+  txtBirthday.Enabled := Form1.IsK750orBetter;
   ResetButton.Enabled := not IsNew;
   UnlinkOutlookButton.Enabled := not IsNew;
   txtName.SetFocus;
@@ -429,7 +427,7 @@ begin
   contact.other := txtOther.text;
   contact.homepage := txtURL.text;
   { birthday }
-  contact.Birthday := Trunc(txtBirthday.Date);
+  contact.Birthday := DateOf(txtBirthday.Date);
   { internet }
   a := '';
   i := PrefEmailIndex;

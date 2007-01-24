@@ -382,7 +382,7 @@ object frmEditTask: TfrmEditTask
     Height = 25
     Cancel = True
     Caption = '&Cancel'
-    ModalResult = 2
     TabOrder = 2
+    OnClick = CancelButtonClick
   end
 end

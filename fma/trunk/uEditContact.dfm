@@ -665,7 +665,7 @@ object frmEditContact: TfrmEditContact
           Width = 229
           Height = 21
           Style = csDropDownList
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 0
           OnChange = txtCustomChange
         end
@@ -1093,7 +1093,7 @@ object frmEditContact: TfrmEditContact
         Top = 344
         Width = 101
         Height = 25
-        Caption = 'Set as &Prefered'
+        Caption = 'Set &Prefered'
         Enabled = False
         TabOrder = 5
         OnClick = MailPrefButtonClick

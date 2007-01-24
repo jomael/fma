@@ -106,6 +106,7 @@ type
     procedure TntComboBoxRangeEndChange(Sender: TObject);
     procedure TntDatePickerReccurenceChange(Sender: TObject);
     procedure TntButton1Click(Sender: TObject);
+    procedure CancelButtonClick(Sender: TObject);
   private
     { Private declarations }
     FAlarmAdv,FPrevWeekDay: integer;
@@ -174,7 +175,7 @@ begin
   PageControl1.ActivePageIndex := 0;
   FPrevWeekDay := 0;
 
-  TabSheet3.Enabled := Form1.IsK610orBetter;
+  TabSheet3.Enabled := Form1.IsK700orBetter; // K610 previously
   lblDisabledReccurence.Visible := not TabSheet3.Enabled;
   StartDateTimeChange(nil);
   TntRadioGroupReccurenceClick(nil);
@@ -525,6 +526,13 @@ end;
 procedure TfrmEditEvent.TntButton1Click(Sender: TObject);
 begin
   { TODO: Reminder WAV file support }
+end;
+
+procedure TfrmEditEvent.CancelButtonClick(Sender: TObject);
+begin
+  {if not btnApply.Enabled or (MessageDlgW(_('Discard current changes?'),
+    mtConfirmation, MB_YESNO or MB_DEFBUTTON2) = ID_YES) then}
+    ModalResult := mrCancel;
 end;
 
 end.

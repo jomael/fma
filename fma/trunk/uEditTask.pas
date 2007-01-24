@@ -60,6 +60,7 @@ type
     procedure txtSubjectChange(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure ReminderDateTimeChange(Sender: TObject);
+    procedure CancelButtonClick(Sender: TObject);
   private
     { Private declarations }
     procedure DoSanityCheck;
@@ -169,6 +170,13 @@ begin
   DateTimeStart := DateOf(dtpDate.DateTime) + TimeOf(dtpTime.DateTime);
   dtpDate.DateTime := DateTimeStart;
   dtpTime.DateTime := DateTimeStart;
+end;
+
+procedure TfrmEditTask.CancelButtonClick(Sender: TObject);
+begin
+  {if not btnApply.Enabled or (MessageDlgW(_('Discard current changes?'),
+    mtConfirmation, MB_YESNO or MB_DEFBUTTON2) = ID_YES) then}
+    ModalResult := mrCancel;
 end;
 
 end.

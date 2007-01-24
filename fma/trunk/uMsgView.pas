@@ -198,13 +198,14 @@ type
     FSearchMode: TSearchMode;
     function CanModifyReadStatus: boolean;
     function FlattenText(str: WideString; link: WideString = #32): WideString;
-    procedure ShowDetail(Node: PVirtualNode);
     procedure WriteSMS(Mem: String; StoreAs: Integer = -1);
     procedure Set_CustomImage(const Value: Boolean);
     procedure ResetAutoMarkAsReadTimer;
     procedure UpdatePropertiesStatus;
     procedure DeselectAll;
     procedure DoMarkMessages(AsRead: boolean; SelectedOnly: Boolean = True);
+    procedure DoShowDetails(Node: PVirtualNode);
+    procedure DoCloseDetails;
     procedure DoShowPreview(Node: PVirtualNode);
     procedure UpdatePreview;
     procedure SetSearchMode(const Value: TSearchMode);
@@ -241,7 +242,7 @@ implementation
 
 uses
   gnugettext, gnugettexthelpers, cUnicodeCodecs,
-  Unit1, uSMSDetail, uLogger, uInputQuery, uThreadSafe, uMissedCalls, uSyncPhonebook,
+  Unit1, uEditSMS, uLogger, uInputQuery, uThreadSafe, uMissedCalls, uSyncPhonebook,
   uSMS, uGlobal, uComposeSMS, uConnProgress, WebUtil, uDialogs, uImg32Helper;
 
 {$R *.dfm}
@@ -407,6 +408,8 @@ var
 begin
   if Sem then exit;
   Sem := True;
+
+  DoCloseDetails;
   dbfixed := False;
   SearchName := '';
   SearchMode := smAll;
@@ -543,7 +546,7 @@ begin
   end;
 end;
 
-procedure TfrmMsgView.ShowDetail(Node: PVirtualNode);
+procedure TfrmMsgView.DoShowDetails(Node: PVirtualNode);
 var
   curr: PVirtualNode;
   item: PListData;
@@ -554,18 +557,19 @@ begin
   if Assigned(Node) then begin
     item := ListMsg.GetNodeData(node);
     if item <> nil then begin
-      if frmDetail = nil then
-        frmDetail := TfrmDetail.Create(Self);
+      { Create details dialog if needed }
+      if not Assigned(frmDetail) then frmDetail := TfrmDetail.Create(Self);
+
       frmDetail.SMS := item.smsData;
 
       if item.StateIndex and $C0000 = 0 then // ME
-        frmDetail.edLocation.Text := _('PC and Phone')
+        frmDetail.edLocation.Text := _('FMA and Phone')
       else
       if item.StateIndex and $C0000 = $40000 then // SM
-        frmDetail.edLocation.Text := _('PC and SIM card')
+        frmDetail.edLocation.Text := _('FMA and SIM card')
       else
       {if item.StateIndex and $C0000 = $80000 then} // PC
-        frmDetail.edLocation.Text := _('PC only');
+        frmDetail.edLocation.Text := _('FMA only');
 
       if IsLongSMSNode(node) then begin
         { Add full long SMS text, since it can't be obtained from PDU }
@@ -616,7 +620,7 @@ begin
     Timer1.Enabled := False;
     Timer1.Interval := 100;
     Timer1.Enabled := True;
-    ShowDetail(Node);
+    DoShowDetails(Node);
   end;
 end;
 
@@ -2071,6 +2075,7 @@ end;
 
 procedure TfrmMsgView.ClearView;
 begin
+  DoCloseDetails;
   edSearchFor.Text := '';
   edSearchForExit(nil);
   SearchName := '';
@@ -2195,6 +2200,14 @@ end;
 procedure TfrmMsgView.TogglePreviewPane1Click(Sender: TObject);
 begin
   Form1.ActionViewMsgPreview.Execute;
+end;
+
+procedure TfrmMsgView.DoCloseDetails;
+begin
+  if Assigned(frmDetail) then begin
+    frmDetail.IsModified := False; // Force: Discard any changes!
+    frmDetail.Close;
+  end;
 end;
 
 end.

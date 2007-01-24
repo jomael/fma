@@ -21,7 +21,7 @@ uses
   uNewMessage in 'uNewMessage.pas' {frmNewMessage},
   MobileAgent_TLB in 'MobileAgent_TLB.pas',
   uMobileAgentUI in 'uMobileAgentUI.pas' {MobileAgent: CoClass},
-  uSMSDetail in 'uSMSDetail.pas' {frmDetail},
+  uEditSMS in 'uEditSMS.pas' {frmDetail},
   uObex in 'uObex.pas',
   uPostNote in 'uPostNote.pas' {frmNote},
   uAccessoriesMenu in 'uAccessoriesMenu.pas' {AccessoriesMenu: CoClass},
