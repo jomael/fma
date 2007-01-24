@@ -54,7 +54,7 @@ type
     SendToPhone1: TTntMenuItem;
     ForceAs1: TTntMenuItem;
     otalChange1: TTntMenuItem;
-    CopySelectedtoSIMcard1: TTntMenuItem;
+    CopySelectedToSIMcard1: TTntMenuItem;
     Modified1: TTntMenuItem;
     procedure Button1Click(Sender: TObject);
     procedure StringGridGetEditText(Sender: TObject; ACol, ARow: Integer;
@@ -93,7 +93,7 @@ type
     procedure btnUpdateSIMClick(Sender: TObject);
     procedure btnDELClick(Sender: TObject);
     procedure btnEDITClick(Sender: TObject);
-    procedure CopySelectedtoSIMcard1Click(Sender: TObject);
+    procedure CopySelectedToSIMcard1Click(Sender: TObject);
     procedure Modified1Click(Sender: TObject);
   private
     { Private declarations }
@@ -1289,7 +1289,7 @@ begin
   end;
 end;
 
-procedure TfrmContactsMEEdit.CopySelectedtoSIMcard1Click(Sender: TObject);
+procedure TfrmContactsMEEdit.CopySelectedToSIMcard1Click(Sender: TObject);
 var
   NewCnt,UpdCnt,SkpCnt: integer;
   dl: TStrings;
@@ -1328,7 +1328,7 @@ var
 
       if FoundIndex <> -1 then begin
         if AnsiCompareStr(data1.Text,ANumber) <> 0 then begin
-          // TODO: Add wizard for asking where to store new number
+          // TODO: Add wizard for asking where to store new number --- frmPromptConflict
           case MessageDlgW(WideFormat(_('Contact "%s" already exists in SIM book.')+sLinebreak+sLinebreak,[AName])+
             WideFormat(_('Do you want to replace [%s] with [%s]?'),[data1.Text,ANumber]),
             mtConfirmation, MB_YESNOCANCEL or MB_DEFBUTTON2) of

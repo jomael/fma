@@ -147,6 +147,11 @@ object frmContactsMEEdit: TfrmContactsMEEdit
     object ChatContact1: TTntMenuItem
       Action = Form1.ActionContactsNewChat
     end
+    object CopySelectedToSIMcard1: TTntMenuItem
+      Caption = 'Copy to SIM Memory...'
+      ImageIndex = 14
+      OnClick = CopySelectedToSIMcard1Click
+    end
     object N5: TTntMenuItem
       Caption = '-'
     end
@@ -186,11 +191,6 @@ object frmContactsMEEdit: TfrmContactsMEEdit
       Caption = 'Download Entire Phonebook...'
       ImageIndex = 1
       OnClick = DownloadEntirePhonebook1Click
-    end
-    object CopySelectedtoSIMcard1: TTntMenuItem
-      Caption = 'Copy Selected to SIM card...'
-      ImageIndex = 14
-      OnClick = CopySelectedtoSIMcard1Click
     end
     object N1: TTntMenuItem
       Caption = '-'
