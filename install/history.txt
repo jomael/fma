@@ -333,5 +333,60 @@ FMA Beta 3. The change log is following:
 - Added: Create contact with Company name only.
 - Fixed: Upload contact without names to phone.
 - Fixed: Deleting missing contacts/events/tasks.
+- Fixed: Calendar Alarm shown status is not saved.
+- Fixed: Text Message Chat dialog is not updated.
+- Fixed: GetSMSMembers usage and DoProcessRules.
+- Fixed: SMS with 8-bit PDU encode/decode (mhr).
+- Fixed: GSM with 8-bit encode/decode (mhr).
+- Fixed: Call window is not closed on hang up.
+- Changed: Huge changes to Message handling (mhr).
+- Added: Move old/deleted phone messages to FMA.
+- Added: Long SMS properties to TFmaMessageData.
+- Added: Support for Contact's photo from VCard.
+- Added: Dismiss Calendar Alarm windows on ESC (vox).
+
+- Fixed: Message archive lost on exception.
+- Fixed: A few message fixes.
+- Fixed: Multiple datetime encode/decode issues.
+- Fixed: Unable to close alarm window. 
+- Added: Support for long SMS with 16bit reference number.
+- Added: Support for SMS with non-number sender.
+- Changed: Message timestamp now saved as hex string.
+- Changed: Search for SMS checks message text OR sender name.
+- Changed: TListData record.
+
+- Fixed: Patches Subversion revision numbering
+- Fixed: Pressing hangup with newer phones
+- Fixed: Call contact dialog not displaying Unicode
+- Fixed: Various file handling fixes
+- Fixed: GUI fixes for SMS timestamp editing
+- Fixed: Small PDU decode hack
+- Fixed: Minor accessory menu fixes
+- Added: Outgoing SMS timestamp can now be edited
+- Added: .wav and .mp3 files can be played in FMA
+- Added: Support for using JavaScript as FMA script
+- Added: am.AddItemEx method
+- Added: am.MenuType property
+- Added: Usage of CMMS command (multiple SMS sending)
+- Changed: SFramework core to support am.AddItemEx
+- Changed: PluginManager now uses new am.AddItemEx 
+- Changed: Reverted changes to SMS UCS2 encoding
+
+- Fixed: Editing new SIM card contacts (K700+)
+- Fixed: Upload SIM changes to phones (K610+)
+- Fixed: Copy contacts between SIM and Phone
+- Fixed: Close SMS details dialog memory leak
+- Fixed: Edit Birthday field disabled status
+- Fixed: Calendar reccurence for K700+ phones
+- Fixed: Edit SMS Timestamp will resort list
+- Changed: Show SMS Message details dialog GUI
+- Added: NewSMS AddToPhonebook will use wizard
+- Added: Add phonebook contact to New group
+- Added: Copy SIM contacts to Phone (IRMC off)
+- Added: Copy contacts from Phone to SIM book
+- Added: Copy SIM <-> Phone contacts conflicts
+- Added: Outlook Sync conflict can be canceled
+- Added: Force change contacts state (IRMC off)
+- Added: Support and auto-detect Portable mode
 
 The FMA Team

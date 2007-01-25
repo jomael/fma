@@ -280,6 +280,8 @@ Source: ..\fma\trunk\uPostNote.dfm; DestDir: {app}\source; Flags: overwritereado
 Source: ..\fma\trunk\uPostNote.pas; DestDir: {app}\source; Flags: overwritereadonly; Components: src
 Source: ..\fma\trunk\uPostURL.dfm; DestDir: {app}\source; Flags: overwritereadonly; Components: src
 Source: ..\fma\trunk\uPostURL.pas; DestDir: {app}\source; Flags: overwritereadonly; Components: src
+Source: ..\fma\trunk\uPortable.dfm; DestDir: {app}\source; Flags: overwritereadonly; Components: src
+Source: ..\fma\trunk\uPortable.pas; DestDir: {app}\source; Flags: overwritereadonly; Components: src
 Source: ..\fma\trunk\uPromptConflict.dfm; DestDir: {app}\source; Flags: overwritereadonly; Components: src
 Source: ..\fma\trunk\uPromptConflict.pas; DestDir: {app}\source; Flags: overwritereadonly; Components: src
 Source: ..\fma\trunk\uRegistry.pas; DestDir: {app}\source; Flags: overwritereadonly; Components: src
