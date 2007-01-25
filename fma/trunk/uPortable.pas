@@ -44,6 +44,8 @@ procedure TfrmPortableLogon.FormCreate(Sender: TObject);
 begin
   gghTranslateComponent(self);
   lblWelcome.Font.Style := lblWelcome.Font.Style + [fsBold];
+  lblWelcome.Font.Size := lblWelcome.Font.Size + 3;
+  lblWelcome.Font.Color := clGreen;
   OnModeChange(nil);
 end;
 

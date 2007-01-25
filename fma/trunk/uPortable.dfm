@@ -112,7 +112,7 @@ object frmPortableLogon: TfrmPortableLogon
   end
   object lblWelcome: TTntLabel
     Left = 12
-    Top = 16
+    Top = 14
     Width = 48
     Height = 13
     Caption = 'Welcome!'
@@ -471,11 +471,11 @@ object frmPortableLogon: TfrmPortableLogon
     OnClick = OnModeChange
   end
   object btnOK: TTntButton
-    Left = 120
+    Left = 68
     Top = 288
-    Width = 75
+    Width = 127
     Height = 25
-    Caption = '&Start...'
+    Caption = '&Start Application...'
     Default = True
     TabOrder = 2
     OnClick = btnOKClick
