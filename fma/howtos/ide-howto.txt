@@ -45,6 +45,20 @@ them are free source components (if nothing else stated in their licenses):
   - CoolTrayIcon by Troels Jakobsen, available from 
     http://subsimple.com/delphi.asp
 
+    Please apply next to CoolTrayIcon.pas around line 860:
+
+    WM_SYSCOMMAND:
+      // Handle MinimizeToTray by capturing minimize event of application
+      if Msg.wParam = SC_RESTORE then
+      begin
+    *   if FMinimizeToTray then
+    *   begin
+          if Application.MainForm.WindowState = wsMinimized then
+            Application.MainForm.WindowState := wsNormal;
+          Application.MainForm.Visible := True;
+    *   end;
+      end;
+
   - Graphics32 1.7.1, available from 
     http://sourceforge.net/projects/graphics32
 
