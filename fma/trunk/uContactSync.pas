@@ -571,9 +571,10 @@ begin
 
   if Assigned(FOnConflict) then
     FOnConflict(Self, Contact, OtherContact, Description, Item0Name, Item1Name, SelectedItem);
-
+  {
   if SelectedItem = -1 then
     SelectedItem := 0;
+  }
 end;
 
 function TSynchronizeContacts.DoFirstTime: Boolean;

@@ -17,9 +17,9 @@ unit uSIMEdit;
 interface
 
 uses
-  Windows, TntWindows, Messages, SysUtils, TntSysUtils, Classes, TntClasses, Graphics, TntGraphics, Controls, TntControls, Forms, TntForms, Dialogs, TntDialogs,
-  Grids, TntComCtrls, TntGrids, ExtCtrls, TntExtCtrls, StdCtrls, TntStdCtrls, Math, Menus, TntMenus, VirtualTrees, ImgList, uSyncPhonebook,
-  Placemnt;
+  Windows, TntWindows, Messages, SysUtils, TntSysUtils, Classes, TntClasses, Graphics, TntGraphics, Controls, TntControls,
+  Forms, TntForms, Dialogs, TntDialogs, Grids, TntComCtrls, TntGrids, ExtCtrls, TntExtCtrls, StdCtrls, TntStdCtrls, Math,
+  Menus, TntMenus, VirtualTrees, ImgList, uSyncPhonebook, uPromptConflict, uConflictChanges, Placemnt;
 
 type
   TSIMData = Record
@@ -104,6 +104,7 @@ type
     procedure btnDELClick(Sender: TObject);
     procedure btnEDITClick(Sender: TObject);
     procedure Modified1Click(Sender: TObject);
+    procedure frmSyncPhonebookNewNoUndo1Click(Sender: TObject);
   private
     { Private declarations }
     FContact: TContactData; // used for SIM contact editing (uEditContact)
@@ -116,28 +117,39 @@ type
     procedure RenderGUIDs;
   protected
     { Protected declarations }
+    FConflictPhone0,FConflictPhone1: string;
+    FConflictAnswer: integer;
     FRendered: Boolean;
     function GetCapacity(Target, LogName: string): Integer;
+    procedure DoForceSelectedAs(State: integer);
   public
     { Public declarations }
     SelContact: PSIMData;
     FMaxNumbers: Cardinal;
     FMaxNameLen,FMaxTelLen: integer;
     constructor Create(AOwner: TComponent); override;
-    function RenderData(ForceDBNode: PVirtualNode = nil): boolean;
+
     procedure UpdatePhonebook;
     procedure OnConnected; virtual;
     procedure ExportList(FileType:Integer; Filename: WideString); virtual;
+    function RenderData(ForceDBNode: PVirtualNode = nil): boolean;
+
     function IsMEMode: boolean; virtual;
     function IsRendered: boolean;
     function DoEdit(AsNew: boolean = False; NewNumber: string = ''): boolean;
+
     function FindContact(Number: WideString): WideString; overload;
     function FindContact(FullName: WideString; var AContact: PSIMData): boolean; overload;
     function FindContact(FullName,NumberType: WideString; var AContact: PSIMData): boolean; overload;
     function FindContact(FullName: WideString; var ANode: PVirtualNode): boolean; overload;
+
     procedure CheckForChanges;
     procedure CopySelectedToME;
     procedure CopySelectedToIRMC;
+    procedure CopyContactsConflict(Sender: TObject; ContactName: WideString; const Description: WideString;
+      Phone0,Phone1: string; const Item0Name, Item1Name: WideString; var SelectedItem: Integer);
+    procedure OnConflictChanges(Sender: TObject; const TargetName, Option1Name, Option2Name: WideString);
+    procedure ResetConflictState;
   end;
 
 implementation
@@ -168,6 +180,7 @@ var
   EData: PFmaExplorerNode;
   Modified,NeedRefresh: Boolean;
 begin
+  ResetConflictState;
   { ForceDBNode is used when loading Profile database etc. }
   if Assigned(ForceDBNode) then
     FExplore := ForceDBNode
@@ -503,23 +516,8 @@ begin
 end;
 
 procedure TfrmContactsSMEdit.Resetchangeflag1Click(Sender: TObject);
-var
-  Item: PSIMData;
-  Node: PVirtualNode;
 begin
-  ListNumbers.BeginUpdate;
-  Node := ListNumbers.GetFirst;
-  while Node <> nil do
-  try
-    if ListNumbers.Selected[Node] then begin
-      item := ListNumbers.GetNodeData(Node);
-      item.imageindex := 3;
-    end;
-  finally
-    Node := ListNumbers.GetNext(Node);
-  end;
-  ListNumbers.EndUpdate;
-  UpdatePhonebook;
+  DoForceSelectedAs(3);
 end;
 
 function TfrmContactsSMEdit.GetCapacity(Target, LogName: string): Integer;
@@ -1331,23 +1329,8 @@ begin
 end;
 
 procedure TfrmContactsSMEdit.Modified1Click(Sender: TObject);
-var
-  Item: PSIMData;
-  Node: PVirtualNode;
 begin
-  ListNumbers.BeginUpdate;
-  Node := ListNumbers.GetFirst;
-  while Node <> nil do
-  try
-    if ListNumbers.Selected[Node] then begin
-      item := ListNumbers.GetNodeData(Node);
-      item.imageindex := 1;
-    end;
-  finally
-    Node := ListNumbers.GetNext(Node);
-  end;
-  ListNumbers.EndUpdate;
-  UpdatePhonebook;
+  DoForceSelectedAs(1);
 end;
 
 procedure TfrmContactsSMEdit.CopySelectedToPhone1Click(Sender: TObject);
@@ -1365,89 +1348,105 @@ var
   Contact: PContactData;
   NewCnt,UpdCnt: cardinal;
   s,T,N: WideString;
-  i,j: integer;
+  i,j,Answer: integer;
+  procedure AddNumber(AName: WideString; ANumber: string);
+  begin
+    { If contact already exists? }
+    if Form1.frmSyncPhonebook.FindContact(AName,contact) then begin
+      { Check if the number already exists for that contact
+      O := GetContactPhoneType(contact,s); // get type if number found in ME contact
+      if O = '' then T := item.ptype
+        else T := O;
+      }
+      T := item.ptype;
+      {}
+      if T = 'W' then N := contact^.work  else // do not localize
+      if T = 'H' then N := contact^.home  else // do not localize
+      if T = 'F' then N := contact^.fax   else // do not localize
+      if T = 'O' then N := contact^.other else // do not localize
+        N := contact^.cell; // Default to '' or 'M' phone type
+      { Number position already filled in? }
+      if N <> '' then
+        if AnsiCompareStr(N,ANumber) <> 0 then begin
+          CopyContactsConflict(Self,GetContactFullName(contact),
+            _('Contact already exists in Phone Memory but has a different phone number specified.'),
+            N,ANumber,_('Phone Memory'),_('SIM Memory'),Answer);
+          case Answer of
+            0: exit; // keep Phone one
+            1: ; // copy SIM -> Phone
+            else Abort;
+          end;
+          {
+          case MessageDlgW(WideFormat(_('Contact "%s" already exists in Phone.')+sLinebreak+sLinebreak,[item.cname])+
+            WideFormat(_('Do you want to replace [%s] with [%s]?'),[N,s]),
+            mtConfirmation, MB_YESNOCANCEL or MB_DEFBUTTON2) of
+            ID_NO: begin
+              //inc(SkpCnt);
+              exit;
+            end;
+            ID_CANCEL: Abort;
+          end;
+          }
+        end
+        else
+          exit; // number found but is the same, so skip
+      if T = 'W' then contact^.work := ANumber  else // do not localize
+      if T = 'H' then contact^.home := ANumber  else // do not localize
+      if T = 'F' then contact^.fax := ANumber   else // do not localize
+      if T = 'O' then contact^.other := ANumber else // do not localize
+        contact^.cell := ANumber;
+      contact^.StateIndex := 1; // contact modified
+      inc(UpdCnt);
+    end
+    else
+    if Form1.frmSyncPhonebook.ListContacts.RootNodeCount < Form1.frmSyncPhonebook.FMaxRecME then begin
+      NewNode := Form1.frmSyncPhonebook.ListContacts.AddChild(nil);
+      contact := Form1.frmSyncPhonebook.ListContacts.GetNodeData(NewNode);
+      FillChar(contact^,SizeOf(contact^),0);
+      contact^.cell := ANumber;
+      contact^.StateIndex := 0; // new contact
+      s := Copy(AName,1,Form1.frmSyncPhonebook.FMaxNameLen+byte(Pos(' ',AName) <> 0)); // sanity check name length
+      j := Pos(', ',s);
+      if j = 0 then begin
+        j := Pos(' ',s);
+        if j = 0 then
+          contact^.name := s
+        else begin
+          contact^.name := Copy(s,1,j-1);
+          contact^.surname := Copy(s,j+1,Length(s)-j);
+        end;
+      end
+      else begin
+        contact^.surname := Copy(s,1,j-1);
+        contact^.name := Copy(s,j+2,Length(s)-j-1);
+      end;
+      inc(NewCnt);
+    end
+    else
+      Abort;
+  end;
 begin
+  ResetConflictState;
+  Answer := 0;
   NewCnt := 0;
   UpdCnt := 0;
   try
-    Node := ListNumbers.GetFirst;
-    while Assigned(Node) do begin
-      if ListNumbers.Selected[Node] then
-        try
-          item := ListNumbers.GetNodeData(Node);
-          { Sanity check phone number length }
-          i := Form1.frmSyncPhonebook.FMaxTellen;
-          if Length(item.pnumb) < i then i := Length(item.pnumb);
-          s := Copy(item.pnumb,1+Length(item.pnumb)-i,i);
-          { If contact already exists? }
-          if Form1.frmSyncPhonebook.FindContact(item.cname,contact) then begin
-            { Check if the number already exists for that contact
-            O := GetContactPhoneType(contact,s); // get type if number found in ME contact
-            if O = '' then T := item.ptype
-              else T := O;
-            }
-            T := item.ptype;
-            {}
-            if T = 'W' then N := contact^.work  else // do not localize
-            if T = 'H' then N := contact^.home  else // do not localize
-            if T = 'F' then N := contact^.fax   else // do not localize
-            if T = 'O' then N := contact^.other else // do not localize
-              N := contact^.cell; // Default to '' or 'M' phone type
-            { Number position already filled in? }  
-            if N <> '' then
-              if WideCompareStr(N,s) <> 0 then begin
-                // TODO: Add wizard for asking where to store new number --- frmPromptConflict
-                case MessageDlgW(WideFormat(_('Contact "%s" already exists in Phonebook.')+sLinebreak+sLinebreak,[item.cname])+
-                  WideFormat(_('Do you want to replace [%s] with [%s]?'),[N,s]),
-                  mtConfirmation, MB_YESNOCANCEL or MB_DEFBUTTON2) of
-                  ID_NO: begin
-                    //inc(SkpCnt);
-                    continue;
-                  end;
-                  ID_CANCEL: Abort;
-                end;
-              end
-              else begin
-                //inc(SkpCnt);
-                continue; // number found but is the same, so skip
-              end;
-            if T = 'W' then contact^.work := s else // do not localize
-            if T = 'H' then contact^.home := s else // do not localize
-            if T = 'F' then contact^.fax := s else // do not localize
-            if T = 'O' then contact^.other := s else // do not localize
-              contact^.cell := s;
-            contact^.StateIndex := 1; // contact modified
-            inc(UpdCnt);
-          end
-          else
-          if Form1.frmSyncPhonebook.ListContacts.RootNodeCount < Form1.frmSyncPhonebook.FMaxRecME then begin
-            NewNode := Form1.frmSyncPhonebook.ListContacts.AddChild(nil);
-            contact := Form1.frmSyncPhonebook.ListContacts.GetNodeData(NewNode);
-            FillChar(contact^,SizeOf(contact^),0);
-            contact^.cell := item.pnumb;
-            contact^.StateIndex := 0; // new contact
-            s := Copy(item.cname,1,Form1.frmSyncPhonebook.FMaxNameLen+byte(Pos(' ',s) <> 0)); // sanity check name length
-            j := Pos(', ',s);
-            if j = 0 then begin
-              j := Pos(' ',s);
-              if j = 0 then
-                contact^.name := s
-              else begin
-                contact^.name := Copy(s,1,j-1);
-                contact^.surname := Copy(s,j+1,Length(s)-j);
-              end;
-            end
-            else begin
-              contact^.surname := Copy(s,1,j-1);
-              contact^.name := Copy(s,j+2,Length(s)-j-1);
-            end;
-            inc(NewCnt);
-          end
-          else
-            break;
-        finally
-          Node := ListNumbers.GetNext(Node);
-        end;
+    with ListNumbers do begin
+      Node := GetFirst;
+      while Assigned(Node) do begin
+        if Selected[Node] then
+          try
+            item := GetNodeData(Node);
+            { Sanity check phone number length }
+            i := Form1.frmSyncPhonebook.FMaxTellen;
+            if Length(item.pnumb) < i then i := Length(item.pnumb);
+            s := Copy(item.pnumb,1+Length(item.pnumb)-i,i);
+            if s <> '' then AddNumber(item.cname,s);
+          except
+            if Form1.frmSyncPhonebook.ListContacts.RootNodeCount >= Form1.frmSyncPhonebook.FMaxRecME then break;
+          end;
+        Node := GetNext(Node);
+      end;
     end;
   finally
     if (NewCnt + UpdCnt) <> 0 then Form1.UpdateMEPhonebook;
@@ -1458,7 +1457,7 @@ end;
 
 procedure TfrmContactsSMEdit.CopySelectedToME;
 var
-  NewCnt,UpdCnt,SkpCnt: integer;
+  NewCnt,UpdCnt,SkpCnt,Answer: integer;
   dl: TStrings;
   node: PVirtualNode;
   contact: PSIMData;
@@ -1467,7 +1466,7 @@ var
   procedure AddNumber(AName,Kind: WideString; ANumber: string);
   var
     cnode,nnode: PVirtualNode;
-    image,FoundIndex: Integer;
+    i,j,image,FoundIndex: Integer;
     utf8s: String;
   begin
     if Cardinal(dl.Count) >= Form1.frmMEEdit.FMaxNumbers then Abort;
@@ -1495,7 +1494,18 @@ var
 
       if FoundIndex <> -1 then begin
         if AnsiCompareStr(data1.Text,ANumber) <> 0 then begin
-          // TODO: Add wizard for asking where to store new number --- frmPromptConflict
+          CopyContactsConflict(Self,data1.Text,
+            _('Contact already exists in Phone Memory but has a different phone number specified.'),
+            data1.Text,ANumber,_('Phone Memory'),_('SIM Memory'),Answer);
+          case Answer of
+            0: begin
+              inc(SkpCnt);
+              exit; // keep Phone one
+            end;
+            1: dl.Delete(FoundIndex); // copy SIM -> Phone
+            else Abort;
+          end;
+          {
           case MessageDlgW(WideFormat(_('Contact "%s" already exists in Phone book.')+sLinebreak+sLinebreak,[AName])+
             WideFormat(_('Do you want to replace [%s] with [%s]?'),[data1.Text,ANumber]),
             mtConfirmation, MB_YESNOCANCEL or MB_DEFBUTTON2) of
@@ -1506,6 +1516,7 @@ var
             end;
             ID_CANCEL: Abort;
           end;
+          }
         end
         else begin
           inc(SkpCnt);
@@ -1513,20 +1524,27 @@ var
         end;
       end;
     end;
-    { TODO: Use RightCopy }
-    ANumber := Copy(ANumber,1,Form1.frmMEEdit.FMaxTelLen+byte(Pos('+',ANumber) <> 0));
-    if kind <> '' then kind := '/' + kind;
+    { Sanity check phone number length }
+    i := Form1.frmMEEdit.FMaxTelLen + byte(Pos('+',ANumber) <> 0);
+    j := Length(ANumber);
+    if j < i then i := j;
+    ANumber := Copy(ANumber,1+j-i,i);
     { Add to SIM database }
+    if Kind <> '' then Kind := '/' + Kind;
     utf8s := UTF8Encode(WideQuoteStr(AName + Kind, True));
     dl.Add(utf8s + ',' + WideStringToLongString(ANumber) + ',' + IntToStr(dl.Count+1) + ',1,' + // and mark (1) as modified
       GUIDToString(NewGUID)+','); // No LUID
     if FoundIndex = -1 then inc(NewCnt) else inc(UpdCnt);
   end;
 begin
-  NewCnt := 0; UpdCnt := 0; SkpCnt := 0;
+  ResetConflictState;
+  Answer := 0;
+  NewCnt := 0;
+  UpdCnt := 0;
+  SkpCnt := 0;
   data2 := Form1.ExplorerNew.GetNodeData(Form1.FNodeContactsME);
   dl := TStrings(data2.Data); // destination
-
+  (*
   if dl.Count <> 0 then
     case MessageDlgW(_('Do you want to DELETE all Phone entries before copy? (No Undo)'),
       mtConfirmation, MB_YESNOCANCEL or MB_DEFBUTTON2) of
@@ -1537,6 +1555,7 @@ begin
       end;
       ID_CANCEL: exit;
     end;
+  *)
   try
     with ListNumbers do begin
       node := GetFirst;
@@ -1546,7 +1565,7 @@ begin
             contact := GetNodeData(node);
             cname := contact^.cname;
             cname := Copy(cname,1,Form1.frmMEEdit.FMaxNameLen);
-            if contact^.pnumb  <> '' then AddNumber(cname,contact^.ptype,contact^.pnumb);   // do not localize
+            if contact^.pnumb  <> '' then AddNumber(cname,contact^.ptype,contact^.pnumb);   
           except
             if Cardinal(dl.Count) >= Form1.frmMEEdit.FMaxNumbers then break;
           end;
@@ -1562,6 +1581,91 @@ begin
     Form1.Status(WideFormat(_('Copy to Phone: %d new, %d modified and %d items skipped'),
       [NewCnt, UpdCnt, SkpCnt]));
   end;
+end;
+
+procedure TfrmContactsSMEdit.CopyContactsConflict(Sender: TObject;
+  ContactName: WideString; const Description: WideString; Phone0,
+  Phone1: string; const Item0Name, Item1Name: WideString;
+  var SelectedItem: Integer);
+begin
+  if FConflictAnswer = 2 then begin // ask me?
+    frmPromptConflict := TfrmPromptConflict.Create(Self);
+    try
+      FConflictPhone0 := Phone0;
+      FConflictPhone1 := Phone1;
+      { Default frmPromptConflict.ObjKind is 'contact' }
+      frmPromptConflict.ObjName := ContactName;
+      frmPromptConflict.Info := Description;
+      frmPromptConflict.Item0Name := Item0Name;
+      frmPromptConflict.Item1Name := Item1Name;
+      frmPromptConflict.SelectedItem := SelectedItem;
+      frmPromptConflict.OnViewChanges := OnConflictChanges;
+      frmPromptConflict.CanBeAborted := True;
+      if frmPromptConflict.ShowModal = mrOK then begin
+        SelectedItem := frmPromptConflict.SelectedItem;
+        if frmPromptConflict.cbDontAskAgain.Checked then begin
+          { Use the same answer for all next conflicts }
+          FConflictAnswer := SelectedItem;
+        end;
+      end
+      else
+        SelectedItem := -1;
+    finally
+      frmPromptConflict.Free;
+    end;
+  end
+  else
+    SelectedItem := FConflictAnswer;
+end;
+
+procedure TfrmContactsSMEdit.OnConflictChanges(Sender: TObject;
+  const TargetName, Option1Name, Option2Name: WideString);
+begin
+  with TfrmConflictChanges.Create(nil) do
+  try
+    Target := TargetName;
+    Option1 := Option1Name;
+    Option2 := Option2Name;
+
+    if AnsiCompareStr(FConflictPhone0,FConflictPhone1) <> 0 then
+      AddChange(_('Number'),FConflictPhone0,FConflictPhone1);
+
+    if ChangeCount <> 0 then ShowModal
+      else MessageDlgW(_('No changes found.'), mtInformation, MB_OK);
+  finally
+    Free;
+  end;
+end;
+
+procedure TfrmContactsSMEdit.ResetConflictState;
+begin
+  FConflictAnswer := 2;
+end;
+
+procedure TfrmContactsSMEdit.DoForceSelectedAs(State: integer);
+var
+  Item: PSIMData;
+  Node: PVirtualNode;
+begin
+  ListNumbers.BeginUpdate;
+  Node := ListNumbers.GetFirst;
+  while Node <> nil do
+  try
+    if ListNumbers.Selected[Node] then begin
+      item := ListNumbers.GetNodeData(Node);
+      if item.imageindex <> 0 then item.imageindex := State;
+    end;
+  finally
+    Node := ListNumbers.GetNext(Node);
+  end;
+  ListNumbers.EndUpdate;
+  UpdatePhonebook;
+end;
+
+procedure TfrmContactsSMEdit.frmSyncPhonebookNewNoUndo1Click(
+  Sender: TObject);
+begin
+  DoForceSelectedAs(0);
 end;
 
 end.

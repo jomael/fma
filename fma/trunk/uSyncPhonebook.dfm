@@ -249,15 +249,15 @@ object frmSyncPhonebook: TfrmSyncPhonebook
     object ForceAs1: TTntMenuItem
       Caption = 'Force As'
       object ClearChangedFlag1: TTntMenuItem
-        Caption = 'Not Modified...'
+        Caption = 'Not Modified'
         OnClick = ClearChangedFlag1Click
       end
       object ForceUpdate: TTntMenuItem
-        Caption = 'Modified...'
+        Caption = 'Modified'
         OnClick = ForceUpdateClick
       end
       object ForceNewContact: TTntMenuItem
-        Caption = 'New (No Undo)...'
+        Caption = 'New (No Undo)'
         OnClick = ForceNewContactClick
       end
     end

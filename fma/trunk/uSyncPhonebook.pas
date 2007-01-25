@@ -210,7 +210,8 @@ implementation
 uses
   gnugettext, gnugettexthelpers, cUnicodeCodecs, uVCalendar,
   uLogger, uThreadSafe, WebUtil, DateUtils, Unit1, uGlobal, uEditContact, ComCtrls, TntComCtrls,
-  UniTntCtrls, uAddToGroup, uStatusDlg, IniFiles, uXML, uDialogs, uConflictChanges;
+  UniTntCtrls, uAddToGroup, uStatusDlg, IniFiles, uXML, uDialogs, uConflictChanges,
+  uSIMEdit;
 
 {$R *.dfm}
 
@@ -3115,7 +3116,7 @@ end;
 
 procedure TfrmSyncPhonebook.CopySelectedtoSIMcard1Click(Sender: TObject);
 var
-  NewCnt,UpdCnt,SkpCnt: integer;
+  NewCnt,UpdCnt,SkpCnt,Answer: integer;
   dl: TStrings;
   node: PVirtualNode;
   contact: PContactData;
@@ -3124,7 +3125,7 @@ var
   procedure AddNumber(AName,Kind: WideString; ANumber: string);
   var
     cnode,nnode: PVirtualNode;
-    image,FoundIndex: Integer;
+    i,j,image,FoundIndex: Integer;
     utf8s: String;
   begin
     if Cardinal(dl.Count) >= Form1.frmSMEdit.FMaxNumbers then Abort;
@@ -3152,7 +3153,18 @@ var
 
       if FoundIndex <> -1 then begin
         if AnsiCompareStr(data1.Text,ANumber) <> 0 then begin
-          // TODO: Add wizard for asking where to store new number
+          Form1.frmSMEdit.CopyContactsConflict(Self,AName,
+            _('Contact already exists in SIM Memory but has a different phone number specified.'),
+            ANumber,data1.Text,_('Phone Memory'),_('SIM Memory'),Answer);
+          case Answer of
+            0: dl.Delete(FoundIndex); // copy Phone -> SIM
+            1: begin
+              inc(SkpCnt);
+              exit; // keep SIM one
+            end;
+            else Abort;
+          end;
+          {
           case MessageDlgW(WideFormat(_('Contact "%s" already exists in SIM book.')+sLinebreak+sLinebreak,[AName])+
             WideFormat(_('Do you want to replace [%s] with [%s]?'),[data1.Text,ANumber]),
             mtConfirmation, MB_YESNOCANCEL or MB_DEFBUTTON2) of
@@ -3163,6 +3175,7 @@ var
             end;
             ID_CANCEL: Abort;
           end;
+          }
         end
         else begin
           inc(SkpCnt);
@@ -3170,20 +3183,27 @@ var
         end;
       end;
     end;
-    { TODO: Use RightCopy }
-    ANumber := Copy(ANumber,1,Form1.frmSMEdit.FMaxTelLen+byte(Pos('+',ANumber) <> 0));
-    if kind <> '' then kind := '/' + kind;
+    { Sanity check phone number length }
+    i := Form1.frmSMEdit.FMaxTelLen + byte(Pos('+',ANumber) <> 0);
+    j := Length(ANumber);
+    if j < i then i := j;
+    ANumber := Copy(ANumber,1+j-i,i);
     { Add to SIM database }
+    if Kind <> '' then Kind := '/' + Kind;
     utf8s := UTF8Encode(WideQuoteStr(AName + Kind, True));
     dl.Add(utf8s + ',' + WideStringToLongString(ANumber) + ',' + IntToStr(dl.Count+1) + ',1,' + // and mark (1) as modified
       GUIDToString(NewGUID)+','); // No LUID
     if FoundIndex = -1 then inc(NewCnt) else inc(UpdCnt);
   end;
 begin
-  NewCnt := 0; UpdCnt := 0; SkpCnt := 0;
+  Form1.frmSMEdit.ResetConflictState;
+  Answer := 0;
+  NewCnt := 0;
+  UpdCnt := 0;
+  SkpCnt := 0;
   data2 := Form1.ExplorerNew.GetNodeData(Form1.FNodeContactsSM);
   dl := TStrings(data2.Data); // destination
-
+  (*
   if dl.Count <> 0 then
     case MessageDlgW(_('Do you want to DELETE all SIM entries before copy? (No Undo)'),
       mtConfirmation, MB_YESNOCANCEL or MB_DEFBUTTON2) of
@@ -3194,6 +3214,7 @@ begin
       end;
       ID_CANCEL: exit;
     end;
+  *)
   try
     with ListContacts do begin
       node := GetFirst;

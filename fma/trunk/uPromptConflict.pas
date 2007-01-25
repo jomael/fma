@@ -35,7 +35,6 @@ type
     grpDescription: TTntGroupBox;
     lblInfo: TTntLabel;
     btnViewChanges: TTntButton;
-    procedure Button2Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnViewChangesClick(Sender: TObject);
   private
@@ -53,7 +52,9 @@ type
     function GetType: WideString;
     procedure SetType(const Value: WideString);
     procedure Set_OnChanges(const Value: TSyncConflictChangesEvent);
+    procedure SetCancel(const Value: boolean);
   public
+    property CanBeAborted: boolean write SetCancel;
     property ObjKind: WideString read GetType write SetType;
     property ObjName: WideString read GetContact write SetContact;
     property Info: WideString read GetInfo write SetInfo;
@@ -125,12 +126,6 @@ begin
   grpConflict.ItemIndex := Value;
 end;
 
-procedure TfrmPromptConflict.Button2Click(Sender: TObject);
-begin
-  Close;
-  raise Exception.Create(_('Contacts linking aborted by user'));
-end;
-
 procedure TfrmPromptConflict.FormCreate(Sender: TObject);
 begin
   gghTranslateComponent(self);
@@ -164,6 +159,11 @@ procedure TfrmPromptConflict.btnViewChangesClick(Sender: TObject);
 begin
   if Assigned(FOnChanges) then
     FOnChanges(Self, ObjName, Item0Name, Item1Name);
+end;
+
+procedure TfrmPromptConflict.SetCancel(const Value: boolean);
+begin
+  Button2.Enabled := Value;
 end;
 
 end.

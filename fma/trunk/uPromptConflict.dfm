@@ -17,9 +17,9 @@ object frmPromptConflict: TfrmPromptConflict
   object lblType: TTntLabel
     Left = 52
     Top = 16
-    Width = 61
+    Width = 40
     Height = 13
-    Caption = 'The contact:'
+    Caption = 'Contact:'
   end
   object lblContact: TTntLabel
     Left = 120
@@ -5126,8 +5126,8 @@ object frmPromptConflict: TfrmPromptConflict
     Height = 25
     Caption = '&Cancel'
     Enabled = False
+    ModalResult = 2
     TabOrder = 4
-    OnClick = Button2Click
   end
   object cbDontAskAgain: TTntCheckBox
     Left = 8
@@ -5146,18 +5146,18 @@ object frmPromptConflict: TfrmPromptConflict
     TabOrder = 0
     object lblInfo: TTntLabel
       Left = 8
-      Top = 16
-      Width = 347
+      Top = 20
+      Width = 349
       Height = 49
       AutoSize = False
       WordWrap = True
     end
     object btnViewChanges: TTntButton
-      Left = 254
-      Top = 66
-      Width = 101
+      Left = 282
+      Top = 68
+      Width = 73
       Height = 25
-      Caption = 'View Changes...'
+      Caption = '&Details...'
       Enabled = False
       TabOrder = 0
       OnClick = btnViewChangesClick

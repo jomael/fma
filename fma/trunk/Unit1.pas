@@ -11046,6 +11046,7 @@ begin
       frmPromptConflict.Item0Name := Item0Name;
       frmPromptConflict.Item1Name := Item1Name;
       frmPromptConflict.SelectedItem := SelectedItem;
+      frmPromptConflict.CanBeAborted := True;
       if Contact.IsChanged and OtherContact.IsChanged then
         frmPromptConflict.OnViewChanges := OnOutlookConflictChanges;
       if frmPromptConflict.ShowModal = mrOK then begin

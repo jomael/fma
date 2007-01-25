@@ -176,6 +176,10 @@ object frmContactsSMEdit: TfrmContactsSMEdit
         Caption = 'Modified'
         OnClick = Modified1Click
       end
+      object NewNoUndo1: TTntMenuItem
+        Caption = 'New (No Undo)'
+        OnClick = frmSyncPhonebookNewNoUndo1Click
+      end
     end
     object otalChange1: TTntMenuItem
       Caption = 'Total Change'
