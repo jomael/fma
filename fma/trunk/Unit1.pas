@@ -774,6 +774,8 @@ type
     procedure ActionEditVoiceMailExecute(Sender: TObject);
   private
     { Private declarations }
+    FAppCaption: WideString;
+
     LastSMSSendFailure,LastSMSReceiveFailure: TDateTime;
     FSendingMessage: Boolean;
 
@@ -818,6 +820,7 @@ type
     FLogForm: TfrmLog;
     FPhoneModel: String;
     FLastGroupCreated: WideString;
+    FPortableMode: boolean;
 
     function GetAssociatedBand(Bar: TToolBar): TCoolBand;
     function GetBandSettings(Band: TCoolBand): string;
@@ -1222,6 +1225,7 @@ type
     property PhoneModel: String read FPhoneModel;
     //
     property LastGroupCreated: WideString read FLastGroupCreated;
+    property PortableModeActivated: boolean read FPortableMode write FPortableMode;
   end;
 
 var
@@ -1269,7 +1273,8 @@ uses
   uFolderProps, Types, uOfflineProfile, uFMASync, uOutlookSync, uPromptConflict, uChooseLink, uLogObserverWriter,
   uOrganizeFavs, uCallContact, uAddToPhonebook, StrUtils, uLogWriters, janXMLParser2, uInputQuery,
   uVBase, uVCalendar, uSplash, uConflictChanges, jclShell, MobileAgent_TLB, UrlMOn, uDialogs, uNewDeviceWizard,
-  uWelcome, LMDGradient, uBrowseFolders, JwaHtmlHelp, uPassword, uMessageData;
+  uWelcome, LMDGradient, uBrowseFolders, JwaHtmlHelp, uPassword, uMessageData,
+  uPortable;
 
 {$R *.dfm}
 
@@ -1882,7 +1887,7 @@ begin
       end;
       EData.ImageIndex := 52;
       ExplorerNew.Repaint;
-      Caption := WideFormat(_('floAt''s Mobile Agent %s - [%s]'),[GetBuildVersionDtl,EData.Text]);
+      Caption := WideFormat(_('%s %s - [%s]'),[FAppCaption,GetBuildVersionDtl,EData.Text]);
       SetPanelText(1,model);
       CoolTrayIcon1.HideBalloonHint; // if previous 'failed' is shown, hide it
       ShowNextProgress;
@@ -2393,7 +2398,7 @@ begin
       if FSelPhone = '' then FSelPhone := _('My Phone');
       data.Text := FSelPhone;
       ExplorerNew.Repaint;
-      Caption := WideFormat(_('floAt''s Mobile Agent %s - [%s]'),[GetBuildVersionDtl,data.Text]);
+      Caption := WideFormat(_('%s %s - [%s]'),[FAppCaption,GetBuildVersionDtl,data.Text]);
     end;
   end;
 
@@ -2663,8 +2668,21 @@ var
   SDI: TSoftDistInfo;
   }
   m: TTntMenuItem;
+  DrvPath: string;
+  SectorsPerCluster: Cardinal;	    // address of sectors per cluster
+  BytesPerSector: Cardinal;	      // address of bytes per sector
+  NumberOfFreeClusters: Cardinal;  // address of number of free clusters
+  TotalNumberOfClusters: Cardinal; // address of total number of clusters
 begin
   ExePath := ExtractFilePath(Application.ExeName);
+  DrvPath := Copy(ExePath,1,3);
+  if FindCmdLineSwitch('PORTABLE') then // do not localize
+    PortableModeActivated := True
+  else
+    if GetDriveType(PChar(DrvPath)) = DRIVE_REMOVABLE then // Some SATA disks might report Removable too
+      if GetDiskFreeSpace(PChar(DrvPath),SectorsPerCluster,BytesPerSector,NumberOfFreeClusters,TotalNumberOfClusters) and
+        ((BytesPerSector/1048576)*SectorsPerCluster*TotalNumberOfClusters < 10000) then // capacity < 10 GB = not a HDD
+        PortableModeActivated := True;
 
   pbRSSI.Parent := StatusBar;
   pbPower.Parent := StatusBar;
@@ -2691,10 +2709,25 @@ begin
   sa.bInheritHandle := True;
   FFmaMutex := CreateMutex(@sa,False,PChar('Fma_Instance_One_Mutex')); // do not localize
   if FmaWebUpdate1.Active or (WaitForSingleObject(FFmaMutex, 5) = WAIT_TIMEOUT) then begin
+    { Another instance of FMA is already running }
     FNotFirstInstance := True;
-    { Another instance of Fma is already running }
-    if FNotFirstInstance then begin
-      Application.ShowMainForm := False;
+    Application.ShowMainForm := False;
+  end;
+
+  if not FNotFirstInstance and PortableModeActivated then begin
+    with TfrmPortableLogon.Create(nil) do
+    try
+      { Confirm portable mode? }
+      case ShowModal of
+        mrYes: ; // continue
+        mrNo: PortableModeActivated := False;
+        else begin
+          FNotFirstInstance := True;
+          Application.ShowMainForm := False;
+        end;
+      end;
+    finally
+      Free;
     end;
   end;
 
@@ -2756,8 +2789,8 @@ begin
   frmInfoView.Label2.Font.Color := clMaroon;
   for i := 0 to frmInfoView.ComponentCount-1 do
     if frmInfoView.Components[i] is TTntLabel then
-      // hack! change all linkXXX labels font style and color
-      if Pos('link',frmInfoView.Components[i].Name) = 1 then
+      // HACK! change all linkXXX labels font style and color
+      if Pos('link',frmInfoView.Components[i].Name) = 1 then // do not localize
         with frmInfoView.Components[i] as TTntLabel do begin
           Font.Color := clHotLight;
           Font.Style := Font.Style + [fsUnderline];
@@ -2792,7 +2825,13 @@ begin
   if not FNotFirstInstance then begin
     LoadOptions;
     InitRegistry;
-  end;
+    UpdateColorScheme;
+    //
+    CoolTrayIcon1.Enabled := True;
+    CoolTrayIcon1.MinimizeToTray := True;
+  end
+  else
+    Application.Terminate;
 
   FormStorage1.Active := False;
 
@@ -2806,7 +2845,11 @@ begin
   TP_Ignore(self, 'PanelTest'); // do not localize
   TP_Ignore(self, 'FormStorage1'); // do not localize
   gghTranslateComponent(self); // localize after all frames construction
-  Caption := WideFormat(_('floAt''s Mobile Agent %s'),[GetBuildVersionDtl]);
+  if PortableModeActivated then
+    FAppCaption := _('Portable floAt''s Mobile Agent')
+  else
+    FAppCaption := _('floAt''s Mobile Agent');
+  Caption := WideFormat(_('%s %s'),[FAppCaption,GetBuildVersionDtl]);
 
   if IsRightToLeft then
     with frmInfoView do begin
@@ -2816,8 +2859,6 @@ begin
       BigImage.Left := BigImage.Left - (CommonBitmaps.Bitmap[1].Width - BigImage.Width);
       BigImage.Width := CommonBitmaps.Bitmap[1].Width;
     end;
-
-  UpdateColorScheme;
 end;
 
 procedure TForm1.ActionSMSDownloadInboxExecute(Sender: TObject);
@@ -4758,6 +4799,8 @@ end;
 
 procedure TForm1.ApplicationEvents1Minimize(Sender: TObject);
 begin
+  if not CoolTrayIcon1.Enabled then exit;
+  
   if frmInfoView.Visible then EBCAState(False,False); // 2nd false = do not alter key monitoring
   if FormStorage1.StoredValue['StartMinimized'] = False then begin // do not localize
     //FloatingRectangles(True, False);
@@ -4770,6 +4813,8 @@ end;
 
 procedure TForm1.ApplicationEvents1Restore(Sender: TObject);
 begin
+  if not CoolTrayIcon1.Enabled then exit;
+  
   FormStorage1.StoredValue['StartMinimized'] := False; // do not localize
   ShowRestore1.Action := ActionWindowMinimize;
   if frmWelcomeTips.DialogClosed then
@@ -7049,9 +7094,14 @@ begin
       CloseHandle(WaitCompleteEvent);
       CloseHandle(WaitCompleteIsBusyEvent);
       CloseHandle(FFmaMutex);
+      //
+      if PortableModeActivated then
+        if not FAppInitialized or
+          (MessageDlgW(_('Do you want to cleanup Registry settings for FMA?'),mtConfirmation,MB_YESNO) = ID_YES) then
+          CleanupRegistry;
     end;
   except
-  end;  
+  end;
 end;
 
 procedure TForm1.ActionToolsChangeProfileExecute(Sender: TObject);
@@ -8850,7 +8900,7 @@ begin
   { If ID is not specified use current setting }
   if ID = '' then ID := PhoneIdentity;
 
-  if FindCmdLineSwitch('MIGRATEDB') then begin // do not localize
+  if FindCmdLineSwitch('MIGRATEDB') and not PortableModeActivated then begin // do not localize
     { Do we have phone ID at all? It depends on Fma version }
     if ID <> '' then begin
       { Should we upgrade from single database? -- Obsolete, but keep for backward compatability! }
@@ -8914,7 +8964,8 @@ begin
                 mutiple destination file names if the fFlags member specifies FOF_MULTIDESTFILES. Multiple names must be
                 null-separated. The list of names must be double null-terminated. }
               fo.pTo := PWideChar(LongStringToWideString(GetAppDataPath+'FMA\'#0#0)); // do not localize
-              fo.fFlags := FOF_NOCONFIRMATION or FOF_NOCONFIRMMKDIR or FOF_SIMPLEPROGRESS or FOF_ALLOWUNDO or FOF_NOERRORUI;
+              fo.fFlags := FOF_NOCONFIRMATION or FOF_NOCONFIRMMKDIR or FOF_SIMPLEPROGRESS or FOF_NOERRORUI;
+              if not PortableModeActivated then fo.fFlags := fo.fFlags or FOF_ALLOWUNDO; // Delete to Recycle Bin in Normal mode
               fo.lpszProgressTitle := PWideChar(_('Relocating FMA Database...'));
               if (SHFileOperationW(fo) = 0) and not fo.fAnyOperationsAborted then
                 break; // success
@@ -9233,7 +9284,7 @@ begin
     if FSelPhone = '' then FSelPhone := _('My Phone');
     data.Text := FSelPhone;
     ExplorerNew.Repaint;
-    Caption := WideFormat(_('floAt''s Mobile Agent %s - [%s]'),[GetBuildVersionDtl,data.Text]);
+    Caption := WideFormat(_('%s %s - [%s]'),[FAppCaption,GetBuildVersionDtl,data.Text]);
   end;
   ExplorerNewChange(ExplorerNew,ExplorerNew.FocusedNode);
 
@@ -10004,7 +10055,7 @@ begin
             FSelPhone := NewName;
             //if FSelPhone = '' then FSelPhone := _('My Phone');
             EData.Text := FSelPhone;
-            Caption := WideFormat(_('floAt''s Mobile Agent %s - [%s]'),[GetBuildVersionDtl,FSelPhone]);
+            Caption := WideFormat(_('%s %s - [%s]'),[FAppCaption,GetBuildVersionDtl,FSelPhone]);
             { Update view }
             ExplorerNewChange(ExplorerNew,ExplorerNew.FocusedNode);
             { Update tray icon if phone is renamed }
@@ -11316,7 +11367,7 @@ begin
         FSelPhone := _('My Phone');
         data.Text := FSelPhone;
         ExplorerNew.Repaint;
-        Caption := WideFormat(_('floAt''s Mobile Agent %s'),[GetBuildVersionDtl]);
+        Caption := WideFormat(_('%s %s'),[FAppCaption,GetBuildVersionDtl]);
 
         with ExplorerNew.Header.Columns[1] do begin
           MinWidth := 24; // respore column original width
@@ -11377,12 +11428,12 @@ begin
   { Add some default Welcome Tips here }
   frmWelcomeTips.QueueTip('You can upload or download multiple files in a single session by holding down the control key while selecting the files.',15);
   frmWelcomeTips.QueueTip('You can keep FMA up-to-date by using built-in Web Update Wizard, which is accessible from main menu, under Help.',15);
-  frmWelcomeTips.QueueTip('You can set-up rules for automatically filing your SMS messages based on who sent it or who you sent it to. Check Tools > Delivery Options to set up the rules.',15);
+  frmWelcomeTips.QueueTip('You can set-up rules for automatically dispatching your SMS messages based on who sent it or who you sent it to. Check Tools > Delivery Options to set up the rules.',15);
   frmWelcomeTips.QueueTip('You can create a list of favorite SMS recipients or groups, so you don''t have to go to your Phone Book eveytime.'+sLineBreak+'Click the SMS button and choose Favorites > Organize favorites to set up favorite contacts or groups.',15);
   frmWelcomeTips.QueueTip('You can send Flash SMS so the recipient does not have to read it.  The SMS simply appears on the phone and disappears when the user pushes any button.'+sLineBreak+'Click the SMS button and click the Flash option on the toolbar.',15);
   frmWelcomeTips.QueueTip('You can assign a preferred default number for each contact so that FMA will default to either the Mobile, office or home number when dialed from FMA.'+sLineBreak+'Open a contact and choose the Call Preferences tab.',15);
   frmWelcomeTips.QueueTip('You can assign a personalized photo and sound to pop up on your screen when FMA receives a call from that contact.'+sLineBreak+'Open a contact and choose Personalize tab.',15);
-  frmWelcomeTips.QueueTip('FMA has a very active user forums for information and troubleshooting. Visit us at http://www.mobileagent.info/forums',15);
+  frmWelcomeTips.QueueTip('You can visit the very active FMA user forums for information and troubleshooting. Visit us at http://www.mobileagent.info/forums',15);
 //frmWelcomeTips.QueueTip('FMA has an IRC channel.'+sLineBreak+'server: irc.chatspike.net'+sLineBreak+'channel: #fma',15);
   frmWelcomeTips.QueueTip('You can toggle FMA Today page options by simply right-clicking anywhere on the page.',15);
   frmWelcomeTips.QueueTip('You can hide and show various areas on the FMA Today page by clicking the little "double up arrow" icons at the top of each section.',15);
@@ -12101,6 +12152,8 @@ end;
 procedure TForm1.ApplicationEvents1Idle(Sender: TObject;
   var Done: Boolean);
 begin
+  if not CoolTrayIcon1.Enabled then exit;
+
   if FLastMenuButton <> nil then
     { Update main menu tool button }
     ReleaseMainMenuButton;
@@ -12411,7 +12464,7 @@ begin
     { Use custom phone ID (override current setting) }
     ID := OverrideID;
 
-  if FindCmdLineSwitch('MIGRATEDB') then begin // do not localize
+  if FindCmdLineSwitch('MIGRATEDB') and not PortableModeActivated then begin // do not localize
     { Do we have phone ID at all? Its presence depends on Fma version }
     if ID <> '' then
       if DirectoryExists(ExePath+'data\'+ID) then // do not localize
@@ -12493,6 +12546,8 @@ end;
 
 procedure TForm1.ApplicationEvents1Hint(Sender: TObject);
 begin
+  if not CoolTrayIcon1.Enabled then exit;
+  
   if not FConnectingStarted or FConnectingComplete then Status(TntApplication.Hint,False);
 end;
 
@@ -12624,9 +12679,13 @@ function TForm1.GetAppDataPath: string;
 var
   s: string;
 begin
-  Setlength(s,MAX_PATH);
-  SHGetSpecialFolderPath(Handle,@s[1],CSIDL_APPDATA,False);
-  Result := StrPas(@s[1])+'\';
+  if not PortableModeActivated then begin
+    Setlength(s,MAX_PATH);
+    SHGetSpecialFolderPath(Handle,@s[1],CSIDL_APPDATA,False);
+    Result := StrPas(@s[1])+'\';
+  end
+  else
+    Result := ExePath;
 end;
 
 procedure TForm1.FormStorage1RestorePlacement(Sender: TObject);
@@ -14576,7 +14635,8 @@ begin
           mutiple destination file names if the fFlags member specifies FOF_MULTIDESTFILES. Multiple names must be
           null-separated. The list of names must be double null-terminated. }
         fo.pTo := PWideChar(LongStringToWideString(#0#0));
-        fo.fFlags := FOF_NOCONFIRMATION or FOF_NOCONFIRMMKDIR or FOF_SIMPLEPROGRESS or FOF_ALLOWUNDO or FOF_NOERRORUI;
+        fo.fFlags := FOF_NOCONFIRMATION or FOF_NOCONFIRMMKDIR or FOF_SIMPLEPROGRESS or FOF_NOERRORUI;
+        if not PortableModeActivated then fo.fFlags := fo.fFlags or FOF_ALLOWUNDO; // Delete to Recycle Bin in Normal mode
         fo.lpszProgressTitle := PWideChar(_('Deleting FMA Database...'));
         if (SHFileOperationW(fo) = 0) and not fo.fAnyOperationsAborted then
           break; // success
@@ -14621,15 +14681,19 @@ function TForm1.ApplicationEvents1Help(Command: Word; Data: Integer;
 const
   Pos: TPoint = (X:0; Y:0);
 begin
+  Result := False;
+  if not CoolTrayIcon1.Enabled then exit;
+
   CallHelp := False;
-  Result := True;
   case Command of
-    HELP_SETPOPUP_POS:
+    HELP_SETPOPUP_POS: begin
       Pos := SmallPointToPoint(TSmallPoint(Data));
-    HELP_CONTEXTPOPUP:
+      Result := True;
+    end;
+    HELP_CONTEXTPOPUP: begin
       ShowHelpPopup(Pos, Data);
-    else
-      Result := False;
+      Result := True;
+    end;
   end;
 end;
 
@@ -15299,7 +15363,7 @@ begin
             //if FSelPhone = '' then FSelPhone := _('My Phone');
             EData.Text := FSelPhone;
             ExplorerNew.Repaint;
-            Caption := WideFormat(_('floAt''s Mobile Agent %s - [%s]'),[GetBuildVersionDtl,EData.Text]);
+            Caption := WideFormat(_('%s %s - [%s]'),[FAppCaption,GetBuildVersionDtl,EData.Text]);
           end;
           { Save changes and update explorer }
           SavePhoneDataFiles(True);

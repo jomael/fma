@@ -89,7 +89,8 @@ uses
   uImg32Helper in 'uImg32Helper.pas',
   uRegistry in 'uRegistry.pas',
   uPhoneHistory in 'uPhoneHistory.pas' {frmPhoneHistory},
-  uMessageData in 'uMessageData.pas';
+  uMessageData in 'uMessageData.pas',
+  uPortable in 'uPortable.pas' {frmPortableLogon};
 
 {$R *.TLB}
 
@@ -98,7 +99,7 @@ uses
 begin
   SetDefaultFont;
   Application.Initialize;
-  with TntApplication do Title := _('floAt''s Mobile Agent');
+  with TntApplication do Title := _('floAt''s Mobile Agent'); // use 'with' to fool IDE 
   Application.CreateForm(TForm1, Form1);
   Application.CreateForm(TfrmMessageContact, frmMessageContact);
   Application.CreateForm(TfrmCalling, frmCalling);
@@ -110,7 +111,7 @@ begin
   Application.CreateForm(TfrmCallContact, frmCallContact);
   Application.CreateForm(TfrmWelcomeTips, frmWelcomeTips);
   Application.CreateForm(TfrmNewAlarm, frmNewAlarm);
-  with Application do Form1.StartupInitialize; // Run this when all forms are created
+  with TntApplication do Form1.StartupInitialize; // Run this when all forms are created
   Application.Run;
   gghWorkaroundMidleEastApplicationExit(Form1); //TODO: Remove this workaround
 end.

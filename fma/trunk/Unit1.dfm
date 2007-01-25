@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 288
+  Left = 290
   Top = 152
-  Width = 890
+  Width = 900
   Height = 680
   Cursor = crArrow
   BorderIcons = [biSystemMenu, biMinimize, biMaximize, biHelp]
@@ -28,7 +28,7 @@ object Form1: TForm1
   object FramePanel: TTntPanel
     Left = 200
     Top = 54
-    Width = 682
+    Width = 692
     Height = 576
     Align = alClient
     BevelOuter = bvNone
@@ -37,7 +37,7 @@ object Form1: TForm1
     object PanelTest: TTntPanel
       Left = 0
       Top = 24
-      Width = 682
+      Width = 692
       Height = 552
       Align = alClient
       BevelOuter = bvNone
@@ -46,12 +46,12 @@ object Form1: TForm1
       TabOrder = 0
       Visible = False
       DesignSize = (
-        678
+        688
         548)
       object TntPageControl1: TTntPageControl
         Left = 4
         Top = 4
-        Width = 671
+        Width = 681
         Height = 540
         ActivePage = TntTabSheet2
         Anchors = [akLeft, akTop, akRight, akBottom]
@@ -59,12 +59,12 @@ object Form1: TForm1
         object TntTabSheet2: TTntTabSheet
           Caption = 'Terminal'
           DesignSize = (
-            663
+            673
             512)
           object Memo3: TTntMemo
             Left = 8
             Top = 8
-            Width = 647
+            Width = 657
             Height = 460
             Anchors = [akLeft, akTop, akRight, akBottom]
             Font.Charset = RUSSIAN_CHARSET
@@ -79,7 +79,7 @@ object Form1: TForm1
             OnChange = Memo3Change
           end
           object Button3: TTntButton
-            Left = 586
+            Left = 596
             Top = 478
             Width = 69
             Height = 25
@@ -91,7 +91,7 @@ object Form1: TForm1
           object cbTerminal: TTntComboBox
             Left = 8
             Top = 479
-            Width = 571
+            Width = 581
             Height = 21
             Anchors = [akLeft, akRight, akBottom]
             ItemHeight = 13
@@ -103,10 +103,10 @@ object Form1: TForm1
         object TntTabSheet1: TTntTabSheet
           Caption = 'Obex'
           DesignSize = (
-            663
+            673
             512)
           object Label1: TTntLabel
-            Left = 528
+            Left = 538
             Top = 363
             Width = 61
             Height = 13
@@ -114,7 +114,7 @@ object Form1: TForm1
             Caption = 'Photo vcard:'
           end
           object Image: TTntImage
-            Left = 529
+            Left = 539
             Top = 379
             Width = 128
             Height = 127
@@ -138,7 +138,7 @@ object Form1: TForm1
           object Memo2: TTntMemo
             Left = 4
             Top = 363
-            Width = 519
+            Width = 529
             Height = 145
             Anchors = [akLeft, akRight, akBottom]
             Lines.Strings = (
@@ -149,7 +149,7 @@ object Form1: TForm1
           object Memo1: TTntMemo
             Left = 4
             Top = 124
-            Width = 651
+            Width = 661
             Height = 229
             Anchors = [akLeft, akTop, akRight, akBottom]
             ScrollBars = ssBoth
@@ -250,7 +250,7 @@ object Form1: TForm1
         object TntTabSheet3: TTntTabSheet
           Caption = 'Codec'
           DesignSize = (
-            663
+            673
             512)
           object Label2: TTntLabel
             Left = 8
@@ -269,7 +269,7 @@ object Form1: TForm1
           object TntEdit1: TTntEdit
             Left = 8
             Top = 24
-            Width = 646
+            Width = 656
             Height = 21
             Anchors = [akLeft, akTop, akRight]
             TabOrder = 0
@@ -277,7 +277,7 @@ object Form1: TForm1
           object TntEdit2: TTntEdit
             Left = 8
             Top = 68
-            Width = 646
+            Width = 656
             Height = 21
             Anchors = [akLeft, akTop, akRight]
             TabOrder = 1
@@ -415,7 +415,7 @@ object Form1: TForm1
     object DescrPanel: TTntPanel
       Left = 0
       Top = 0
-      Width = 682
+      Width = 692
       Height = 24
       Align = alTop
       BevelOuter = bvNone
@@ -425,7 +425,7 @@ object Form1: TForm1
       object LMDFill1: TLMDFill
         Left = 0
         Top = 0
-        Width = 682
+        Width = 692
         Height = 23
         Align = alClient
         Bevel.Mode = bmCustom
@@ -529,7 +529,7 @@ object Form1: TForm1
       object Panel1: TTntPanel
         Left = 0
         Top = 23
-        Width = 682
+        Width = 692
         Height = 1
         Align = alBottom
         BevelOuter = bvNone
@@ -555,7 +555,7 @@ object Form1: TForm1
   object StatusBar: TTntStatusBar
     Left = 0
     Top = 630
-    Width = 882
+    Width = 892
     Height = 19
     Panels = <
       item
@@ -594,7 +594,7 @@ object Form1: TForm1
   object CoolBar: TCoolBar
     Left = 0
     Top = 0
-    Width = 882
+    Width = 892
     Height = 54
     AutoSize = True
     BandMaximize = bmNone
@@ -603,7 +603,7 @@ object Form1: TForm1
         Control = tbMainMenu
         ImageIndex = -1
         MinHeight = 21
-        Width = 292
+        Width = 281
       end
       item
         Break = False
@@ -611,7 +611,7 @@ object Form1: TForm1
         ImageIndex = -1
         MinHeight = 22
         Visible = False
-        Width = 148
+        Width = 131
       end
       item
         Break = False
@@ -619,42 +619,42 @@ object Form1: TForm1
         ImageIndex = -1
         MinHeight = 24
         Visible = False
-        Width = 432
+        Width = 470
       end
       item
         Control = tbStandard
         ImageIndex = -1
         MinHeight = 24
         Visible = False
-        Width = 231
+        Width = 243
       end
       item
         Break = False
         Control = tbExplorer
         ImageIndex = -1
         MinHeight = 24
-        Width = 211
+        Width = 227
       end
       item
         Break = False
         Control = tbMessages
         ImageIndex = -1
         MinHeight = 24
-        Width = 292
+        Width = 299
       end
       item
         Break = False
         Control = tbCalls
         ImageIndex = -1
         MinHeight = 24
-        Width = 134
+        Width = 109
       end>
     EdgeBorders = [ebTop, ebBottom]
     OnChange = CoolBarChange
     object tbStandard: TToolBar
       Left = 9
       Top = 26
-      Width = 222
+      Width = 232
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -747,9 +747,9 @@ object Form1: TForm1
       end
     end
     object tbProfile: TToolBar
-      Left = 305
+      Left = 294
       Top = 1
-      Width = 137
+      Width = 120
       Height = 22
       AutoSize = True
       ButtonWidth = 25
@@ -782,9 +782,9 @@ object Form1: TForm1
       end
     end
     object tbMessages: TToolBar
-      Left = 459
+      Left = 487
       Top = 26
-      Width = 281
+      Width = 288
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -872,9 +872,9 @@ object Form1: TForm1
       end
     end
     object tbCalls: TToolBar
-      Left = 755
+      Left = 790
       Top = 26
-      Width = 123
+      Width = 98
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -913,13 +913,13 @@ object Form1: TForm1
     object tbMainMenu: TToolBar
       Left = 9
       Top = 1
-      Width = 281
+      Width = 270
       Height = 21
       AutoSize = True
       ButtonHeight = 21
       ButtonWidth = 38
       Caption = 'tbMainMenu'
-      Constraints.MinWidth = 252
+      Constraints.MinWidth = 260
       EdgeBorders = []
       Flat = True
       Menu = MainMenu1
@@ -927,12 +927,13 @@ object Form1: TForm1
       ShowCaptions = True
       TabOrder = 4
       Transparent = True
+      Wrapable = False
       OnCustomDrawButton = tbMainMenuCustomDrawButton
     end
     object tbPhone: TToolBar
-      Left = 457
+      Left = 429
       Top = 0
-      Width = 421
+      Width = 459
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -967,9 +968,9 @@ object Form1: TForm1
       end
     end
     object tbExplorer: TToolBar
-      Left = 244
+      Left = 256
       Top = 26
-      Width = 206
+      Width = 216
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -7644,6 +7645,7 @@ object Form1: TForm1
   object CoolTrayIcon1: TCoolTrayIcon
     IconList = ImageList3
     CycleInterval = 50
+    Enabled = False
     Hint = 'Not Connected'
     Icon.Data = {
       0000010001001010040000000000280100001600000028000000100000002000
@@ -7658,7 +7660,6 @@ object Form1: TForm1
       0000F0070000F0070000F0070000F0070000F0070000F00F0000F81F0000}
     IconIndex = 0
     PopupMenu = trayMenu
-    MinimizeToTray = True
     OnBalloonHintClick = CoolTrayIcon1BalloonHintClick
     Left = 600
     Top = 336

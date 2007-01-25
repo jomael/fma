@@ -4,7 +4,7 @@ object frmWelcomeTips: TfrmWelcomeTips
   BorderStyle = bsToolWindow
   Caption = 'Did you know?'
   ClientHeight = 214
-  ClientWidth = 324
+  ClientWidth = 333
   Color = clBtnFace
   ParentFont = True
   FormStyle = fsStayOnTop
@@ -137,13 +137,13 @@ object frmWelcomeTips: TfrmWelcomeTips
   object Panel2: TPanel
     Left = 40
     Top = 0
-    Width = 284
+    Width = 293
     Height = 214
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
     object btnOK: TTntButton
-      Left = 208
+      Left = 216
       Top = 182
       Width = 69
       Height = 25
@@ -153,7 +153,7 @@ object frmWelcomeTips: TfrmWelcomeTips
       OnClick = btnOKClick
     end
     object btnNext: TTntButton
-      Left = 132
+      Left = 140
       Top = 182
       Width = 69
       Height = 25
@@ -164,7 +164,7 @@ object frmWelcomeTips: TfrmWelcomeTips
     object reTip: TTntRichEdit
       Left = 9
       Top = 8
-      Width = 268
+      Width = 276
       Height = 165
       ReadOnly = True
       ScrollBars = ssVertical
@@ -175,7 +175,7 @@ object frmWelcomeTips: TfrmWelcomeTips
     object cbDontShow: TTntCheckBox
       Left = 9
       Top = 186
-      Width = 120
+      Width = 130
       Height = 17
       Caption = 'Don'#39't show it again'
       TabOrder = 1
