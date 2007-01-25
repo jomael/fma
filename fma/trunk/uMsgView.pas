@@ -111,7 +111,7 @@ type
     Picture1: TTntMenuItem;
     Commands1: TTntMenuItem;
     LookupPanel: TTntPanel;
-    TntPanel1: TTntPanel;
+    LookupWhitePanel: TTntPanel;
     Image1: TImage;
     Image2: TImage;
     edSearchFor: TTntEdit;
@@ -126,6 +126,9 @@ type
     SaveSearch2: TTntMenuItem;
     TogglePreviewPane1: TTntMenuItem;
     N13: TTntMenuItem;
+    TntLabel1: TTntLabel;
+    TntLabel2: TTntLabel;
+    lblFiltered: TTntLabel;
     procedure ListMsgBeforeCellPaint(Sender: TBaseVirtualTree;
       TargetCanvas: TCanvas; Node: PVirtualNode; Column: TColumnIndex;
       CellRect: TRect);
@@ -210,7 +213,9 @@ type
     procedure UpdatePreview;
     procedure SetSearchMode(const Value: TSearchMode);
     procedure SetSearchWhat(const Value: WideString);
+    procedure SetSearchName(const Value: WideString);
   public
+    constructor Create(AOwner: TComponent); override;
     procedure ClearView;
     procedure RenderListView(sl: TStringList);
     procedure ExportList(FileType:Integer; Filename: WideString);
@@ -230,7 +235,8 @@ type
 
     { Saved Searches }
     procedure SearchForMessages(what: WideString);
-    property SearchName: WideString read FSearchName write FSearchName;
+    //
+    property SearchName: WideString read FSearchName write SetSearchName;
     property SearchMode: TSearchMode read FSearchMode write SetSearchMode;
     property SearchWhat: WideString write SetSearchWhat;
 
@@ -1648,6 +1654,7 @@ begin
     end;
   finally
     ListMsg.EndUpdate;
+    lblFiltered.Visible := not EmptySearch;
   end;
 end;
 
@@ -2099,6 +2106,7 @@ procedure TfrmMsgView.Image2Click(Sender: TObject);
 begin
   edSearchFor.SetFocus;
   edSearchFor.Text := '';
+  SearchForMessages(''); // speed-up searching
 end;
 
 procedure TfrmMsgView.Image1Click(Sender: TObject);
@@ -2106,7 +2114,7 @@ var
   p: TPoint;
 begin
   edSearchFor.SetFocus;
-  p := Image1.ClientToScreen(Point(0,Image1.Height+2));
+  p := Image1.ClientToScreen(Point(-2,Image1.Height+2));
   pmSearch.Popup(p.X,p.Y);
 end;
 
@@ -2161,7 +2169,7 @@ var
   s: WideString;
 begin
   s := FSearchName;
-  if WideInputQuery('Save Search','Enter folder name:',s) and (Trim(s) <> '') then begin
+  if WideInputQuery('Save Search','Enter search name:',s) and (Trim(s) <> '') then begin
     if Form1.FSavedSearches.IndexOfName(s) <> -1 then
       if MessageDlgW(WideFormat(_('Search "%s" already exists. Do you want to overwrite it?'),[s]),
         mtConfirmation, MB_YESNO or MB_DEFBUTTON2) <> ID_YES then
@@ -2208,6 +2216,24 @@ begin
     frmDetail.IsModified := False; // Force: Discard any changes!
     frmDetail.Close;
   end;
+end;
+
+constructor TfrmMsgView.Create(AOwner: TComponent);
+begin
+  inherited;
+  LookupPanel.ParentBackground := False;
+  LookupWhitePanel.ParentBackground := False;
+  TntLabel1.Left := LookupPanel.Left + LookupPanel.Width + 8;
+  TntLabel2.Left := TntLabel1.Left + TntLabel1.Width + 4;
+  TntLabel2.Font.Style := TntLabel2.Font.Style + [fsBold]; 
+end;
+
+procedure TfrmMsgView.SetSearchName(const Value: WideString);
+begin
+  FSearchName := Value;
+  TntLabel1.Visible := Value <> '';
+  TntLabel2.Visible := TntLabel1.Visible;
+  TntLabel2.Caption := Value;
 end;
 
 end.

@@ -3352,7 +3352,6 @@ begin
           frmMsgView.SearchMode := TSearchMode(StrToInt(GetFirstToken(s)));
           frmMsgView.SearchWhat := s;
           frmMsgView.SearchForMessages(s); // speed-up searching
-          ExplorerNew.SetFocus;
         end
         else
           Status(_('Search target node is not found'),False);
@@ -15044,6 +15043,7 @@ begin
     SelNode := ExplorerNew.GetFirstSelected;
     ExplorerNew.FocusedNode := Node;
     ExplorerNew.Selected[Node] := True;
+    ExplorerNew.RepaintNode(Node);
     if SelNode = Node then
       ExplorerNewChange(ExplorerNew,ExplorerNew.FocusedNode);
   end;

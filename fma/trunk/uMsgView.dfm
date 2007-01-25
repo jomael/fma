@@ -205,6 +205,32 @@ object frmMsgView: TfrmMsgView
       ShowHint = True
       OnClick = sbCloseSearchClick
     end
+    object TntLabel1: TTntLabel
+      Left = 308
+      Top = 4
+      Width = 68
+      Height = 13
+      Caption = 'Search Name:'
+      Visible = False
+    end
+    object TntLabel2: TTntLabel
+      Left = 384
+      Top = 4
+      Width = 38
+      Height = 13
+      Caption = '<name>'
+      Visible = False
+    end
+    object lblFiltered: TTntLabel
+      Left = 505
+      Top = 4
+      Width = 40
+      Height = 13
+      Alignment = taRightJustify
+      Anchors = [akTop, akRight]
+      Caption = '(Filtered)'
+      Visible = False
+    end
     object LookupPanel: TTntPanel
       Left = 0
       Top = 1
@@ -213,9 +239,9 @@ object frmMsgView: TfrmMsgView
       BevelOuter = bvNone
       BorderWidth = 1
       Color = clBtnShadow
-      ParentBackground = False
+      ParentBackground = True
       TabOrder = 0
-      object TntPanel1: TTntPanel
+      object LookupWhitePanel: TTntPanel
         Left = 1
         Top = 1
         Width = 298
@@ -224,7 +250,7 @@ object frmMsgView: TfrmMsgView
         BevelOuter = bvNone
         BorderWidth = 1
         Color = clWindow
-        ParentBackground = False
+        ParentBackground = True
         TabOrder = 0
         DesignSize = (
           298
