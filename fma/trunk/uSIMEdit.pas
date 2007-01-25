@@ -144,6 +144,9 @@ type
     function FindContact(FullName: WideString; var ANode: PVirtualNode): boolean; overload;
 
     procedure CheckForChanges;
+    procedure UploadChangesToPhone(IsMEMode: boolean; var ListNumbers: TVirtualStringTree;
+      ModifiedCount, MaxNumbers, MaxNameLen: cardinal; UploadAll: boolean);
+
     procedure CopySelectedToME;
     procedure CopySelectedToIRMC;
     procedure CopyContactsConflict(Sender: TObject; ContactName: WideString; const Description: WideString;
@@ -253,152 +256,8 @@ begin
 end;
 
 procedure TfrmContactsSMEdit.UpdateSIM(MaxItems: cardinal);
-var
-  PerformCleanup: boolean;
-  i,maxPos,numType: Integer;
-  name, number: WideString;
-  w, buf: string;
-  Item: PSIMData;
-  Node: PVirtualNode;
-  frmConnect: TfrmConnect;
-  target: string;
 begin
-  if IsMEMode then
-    target := _('Phonebook')
-  else
-    target := _('SIM');
-  PerformCleanup := MaxItems = ListNumbers.RootNodeCount;
-  Form1.RequestConnection;
-  Log.AddSynchronizationMessageFmt(_('Update %s started.'),[target]);
-  frmConnect := GetProgressDialog;
-  try
-    if Form1.CanShowProgress then
-      frmConnect.ShowProgress(Form1.FProgressLongOnly);
-    if MaxItems > 0 then
-      frmConnect.Initialize(MaxItems,WideFormat(_('Updating %s'),[target]))
-    else
-      frmConnect.SetDescr(WideFormat(_('Updating %s'),[target]));
-    Form1.Status(_('Uploading contacts...'));
-    maxPos := 0;
-    try
-      if IsMEMode then
-        Form1.TxAndWait('AT+CPBS="ME"')  // do not localize
-      else
-        Form1.TxAndWait('AT+CPBS="SM"'); // do not localize
-      try
-        Node := ListNumbers.GetFirst;
-        while Assigned(Node) and not ThreadSafe.AbortDetected do
-        try
-          item := ListNumbers.GetNodeData(Node);
-          if (item.imageindex <> 3) or cbForce.Checked then begin
-            numType := 129;
-            Name := item.cname;
-            Number := item.pnumb;
-
-            if maxPos <= item.position then maxPos := item.position;
-
-            buf := 'AT+CPBW=' + IntToStr(item.position); // do not localize
-            if Item.imageindex = 2 then begin
-              // Delete
-              Log.AddSynchronizationMessageFmt(_('%s deleted in %s by FMA.'),[Name, target], lsInformation);
-              Form1.TxAndWait(buf);
-            end
-            else begin
-              // Update
-              if Number[1] = '+' then begin
-                Number := copy(Number, 2, Length(Number)-1);
-                numType := 145;
-              end;
-
-              if Form1.FUseUTF8 then w := UTF8Encode(Name)
-                else w := name;
-
-              { Notes:
-              
-                - If phone is the currently selected phonebook storage, <text> will be
-                  interpreted as "first name" + white space + "last name" when stored in
-                  the hierarchical phonebook. The phone number will be stored as of type
-                  "other".
-                  
-                - When writing to SM, <text> shall be written as "last name" + comma +
-                  white space + "first name" + "/" + <type_of_number>.
-                  Example: "Smith, John/W"
-
-                  <type_of_number> Description
-                      "H" Home     Default setting
-                      "W" Work
-                      "O" Other
-                      "M" Mobile
-                      "F" Fax
-              }
-              if IsMEMode then begin
-                if (Length(w) < (FMaxNameLen-1)) and (item.ptype <> '') then
-                case item.ptype[1] of
-                  'M': w := w + '/M'; // do not localize
-                  'H': w := w + '/H'; // do not localize
-                  'W': w := w + '/W'; // do not localize
-                  'F': w := w + '/F'; // do not localize
-                  'O': w := w + '/O'; // do not localize
-                end;
-              end
-              else begin
-                { HACK! remove obsolete '/O' from SIM entries, added by previous FMA releases }
-                i := Length(w);
-                if (i > 2) and (w[i-1] = '/') and (Char(w[i]) in ['M','H','W','F','O']) then // do not localize
-                  Delete(w,i-1,2);
-              end;
-
-              { First clear the position }
-              try
-                Form1.TxAndWait(buf);
-              except
-              end;
-
-              { Next upload it }
-              buf := buf + ',"' + Number + '",' + IntToStr(numType) + ',"' + w + '"';
-              Form1.TxAndWait(buf);
-              Log.AddSynchronizationMessageFmt(_('%s stored in %s by FMA.'),[Name, target], lsInformation);
-              Item.imageindex := 3;
-            end;
-          end;
-        finally
-          frmConnect.IncProgress(1);
-          Node := ListNumbers.GetNext(Node);
-          ListNumbers.Repaint;
-        end;
-        { Ususaly happens when you rearrange contacts positions, i.e. modify all of them }
-        if PerformCleanup then
-        try
-          Form1.Status(_('Performing cleanup...'));
-          frmConnect.SetDescr(_('Performing cleanup'));
-          frmConnect.ClearMaxProgress;
-          Form1.SetTaskPercentage(0, FMaxNumbers - Cardinal(maxPos));
-          for i := maxPos + 1 to FMaxNumbers do
-          try
-            Form1.SetTaskPercentageInc;
-            buf := 'AT+CPBW=' + IntToStr(i); // do not localize
-            Form1.TxAndWait(buf);
-          except
-          end;
-        finally
-          Form1.SetTaskPercentage(-1);
-        end;
-        {}
-      finally
-        UpdatePhonebook;
-      end;
-    except
-      Form1.Status(_('Error updating memory'));
-      Log.AddSynchronizationMessageFmt(_('Update %s failed.'),[target], lsError);
-    end;
-    if not ThreadSafe.AbortDetected then
-      Log.AddSynchronizationMessageFmt(_('Updating %s completed.'),[target])
-    else
-      Log.AddSynchronizationMessage(_('Update aborted.'));
-  finally
-    FreeProgressDialog;
-  end;
-  Form1.Status('');
+  UploadChangesToPhone(IsMEMode,ListNumbers,MaxItems,FMaxNumbers,FMaxNameLen,cbForce.Checked);
 end;
 
 procedure TfrmContactsSMEdit.btnUpdateSIMClick(Sender: TObject);
@@ -411,7 +270,7 @@ begin
   mcount := 0; dcount := 0;
 
   Node := ListNumbers.GetFirst;
-  while Node <> nil do
+  while Assigned(Node) do
   try
     item := ListNumbers.GetNodeData(Node);
     if item.imageindex = 2 then
@@ -442,7 +301,7 @@ begin
       s := WideFormat(ngettext('%d modified contact', '%d modified contacts', mcount), [mcount]);
     if dcount <> 0 then
       s := WideFormat('%s and %d %s', [s, dcount, ngettext('deleted contact', 'deleted contacts', dcount)]);
-    case MessageDlgW(WideFormat(_('Confirm sending %s to phone?'),[s]), mtConfirmation, MB_YESNOCANCEL) of
+    case MessageDlgW(WideFormat(_('Confirm sending %s to SIM card?'),[s]), mtConfirmation, MB_YESNOCANCEL) of
       ID_YES: UpdateSIM(count);
       ID_CANCEL: Abort;
     end;
@@ -694,14 +553,14 @@ begin
       FContact.CDID := Selcontact^.CDID;
       { Set number according to phone type }
       if Selcontact^.pnumb <> '' then
-        if not IsMEMode or (Selcontact^.ptype = '') then
-          FContact.cell := Selcontact^.pnumb
+        if Selcontact^.ptype = '' then
+          FContact.home := Selcontact^.pnumb // if no number type specified, use home one (see bellow)
         else
           case Selcontact^.ptype[1] of
-            'M': FContact.cell := Selcontact^.pnumb;
-            'W': FContact.work := Selcontact^.pnumb;
-            'H': FContact.home := Selcontact^.pnumb;
-            'F': FContact.fax := Selcontact^.pnumb;
+            'M': FContact.cell  := Selcontact^.pnumb;
+            'W': FContact.work  := Selcontact^.pnumb;
+            'H': FContact.home  := Selcontact^.pnumb;
+            'F': FContact.fax   := Selcontact^.pnumb;
             'O': FContact.other := Selcontact^.pnumb;
           end;
     end;
@@ -724,72 +583,71 @@ begin
           end
           else
             Node := nil;
-          try
-            { copy all data }
-            FContact := contact;
-            Selcontact^.cname := FContact.name;
-            if FContact.surname <> '' then
-              Selcontact^.cname := Selcontact^.cname + ' ' + FContact.surname;
 
-            { get new number }
-            if IsNew then begin
-              if FContact.cell <> '' then begin
-                Selcontact^.pnumb := FContact.cell;
-                Selcontact^.ptype := 'M'; // do not localize
-              end;
-              if FContact.work <> '' then begin
-                Selcontact^.pnumb := FContact.work;
-                Selcontact^.ptype := 'W'; // do not localize
-              end;
-              if FContact.home <> '' then begin
-                Selcontact^.pnumb := FContact.home;
-                Selcontact^.ptype := 'H'; // do not localize
-              end;
-              if FContact.fax <> '' then begin
-                Selcontact^.pnumb := FContact.fax;
-                Selcontact^.ptype := 'F'; // do not localize
-              end;
-              if FContact.other <> '' then begin
-                Selcontact^.pnumb := FContact.other;
-                Selcontact^.ptype := 'O'; // do not localize
-              end;
+          { copy all data }
+          FContact := contact;
+          Selcontact^.cname := FContact.name;
+          if FContact.surname <> '' then
+            Selcontact^.cname := Selcontact^.cname + ' ' + FContact.surname;
+
+          { get new number }
+          if IsNew then begin
+            if FContact.cell <> '' then begin
+              Selcontact^.pnumb := FContact.cell;
+              Selcontact^.ptype := 'M'; // do not localize
+            end;
+            if FContact.work <> '' then begin
+              Selcontact^.pnumb := FContact.work;
+              Selcontact^.ptype := 'W'; // do not localize
+            end;
+            if FContact.home <> '' then begin
+              Selcontact^.pnumb := FContact.home;
+              Selcontact^.ptype := 'H'; // do not localize
+            end;
+            if FContact.fax <> '' then begin
+              Selcontact^.pnumb := FContact.fax;
+              Selcontact^.ptype := 'F'; // do not localize
+            end;
+            if FContact.other <> '' then begin
+              Selcontact^.pnumb := FContact.other;
+              Selcontact^.ptype := 'O'; // do not localize
+            end;
+          end
+          else
+            if Selcontact^.ptype = '' then begin
+              Selcontact^.pnumb := FContact.home; // if no number type specified, use home one (see above)
+              Selcontact^.ptype := 'H';
             end
             else
-              if not IsMEMode or (Selcontact^.ptype = '') then
-                Selcontact^.pnumb := FContact.cell
-              else
-                case Selcontact^.ptype[1] of
-                  'M': Selcontact^.pnumb := FContact.cell;
-                  'W': Selcontact^.pnumb := FContact.work;
-                  'H': Selcontact^.pnumb := FContact.home;
-                  'F': Selcontact^.pnumb := FContact.fax;
-                  'O': Selcontact^.pnumb := FContact.other;
-                end;
+              case Selcontact^.ptype[1] of
+                'M': Selcontact^.pnumb := FContact.cell;
+                'W': Selcontact^.pnumb := FContact.work;
+                'H': Selcontact^.pnumb := FContact.home;
+                'F': Selcontact^.pnumb := FContact.fax;
+                'O': Selcontact^.pnumb := FContact.other;
+              end;
 
-            if IsNew then begin
-              Selcontact^.imageindex := 0;
-              // find free position
-              Selcontact^.position := FindFreePos;
-              if Selcontact^.position = -1 then begin
-                DeleteNode(Node);
-                raise Exception.Create(_('No free position available'));
-              end
-              else
-                Result := True;
+          if IsNew then begin
+            Selcontact^.imageindex := 0;
+            // find free position
+            Selcontact^.position := FindFreePos;
+            if Selcontact^.position = -1 then begin
+              DeleteNode(Node);
+              MessageDlgW(_('No free position available'),mtError,MB_OK);
+              Abort;
             end
             else
-              if Selcontact^.imageindex <> 0 then begin // mark as modified
-                Selcontact^.imageindex := 1;
-                Result := True;
-              end;
-          except;
-            if IsNew then DeleteNode(Node);
-            raise;
-          end;
-          UpdatePhonebook;
+              Result := True;
+          end
+          else
+            if Selcontact^.imageindex <> 0 then begin // mark as modified
+              Selcontact^.imageindex := 1;
+              Result := True;
+            end;
         finally
           EndUpdate;
         end;
+        UpdatePhonebook;
       end;
       if customModified then begin
         { save call notes to DB }
@@ -809,7 +667,7 @@ begin
   if ListNumbers.RootNodeCount < FMaxNumbers then
     DoEdit(True)
   else
-    ShowMessageW(_('No more space in memory! New contact can not be created.'));
+    MessageDlgW(_('No more space in memory! New contact can not be created.'), mtError, MB_OK);
 end;
 
 procedure TfrmContactsSMEdit.UpdateChanged1Click(Sender: TObject);
@@ -1403,7 +1261,7 @@ var
       NewNode := Form1.frmSyncPhonebook.ListContacts.AddChild(nil);
       contact := Form1.frmSyncPhonebook.ListContacts.GetNodeData(NewNode);
       FillChar(contact^,SizeOf(contact^),0);
-      contact^.cell := ANumber;
+      contact^.home := ANumber; // default number type is HOME
       contact^.StateIndex := 0; // new contact
       s := Copy(AName,1,Form1.frmSyncPhonebook.FMaxNameLen+byte(Pos(' ',AName) <> 0)); // sanity check name length
       j := Pos(', ',s);
@@ -1666,6 +1524,178 @@ procedure TfrmContactsSMEdit.frmSyncPhonebookNewNoUndo1Click(
   Sender: TObject);
 begin
   DoForceSelectedAs(0);
+end;
+
+procedure TfrmContactsSMEdit.UploadChangesToPhone(IsMEMode: boolean;
+  var ListNumbers: TVirtualStringTree; ModifiedCount, MaxNumbers, MaxNameLen: cardinal;
+  UploadAll: boolean);
+var
+  PerformCleanup: boolean;
+  i,maxPos,numType: Integer;
+  cname, number: WideString;
+  w, buf: string;
+  Item: PSIMData;
+  Tmp,Node: PVirtualNode;
+  frmConnect: TfrmConnect;
+  target: string;
+begin
+  { WARNING! WARNING! WARNING!
+    This proc is called from both frmMEEdit and frmSMEdit -- check IsMEMode value }
+  Form1.RequestConnection;
+
+  if IsMEMode then
+    target := _('Phonebook')
+  else
+    target := _('SIM book');
+  PerformCleanup := ModifiedCount = ListNumbers.RootNodeCount;
+
+  Log.AddSynchronizationMessageFmt(_('Update %s started.'),[target]);
+  frmConnect := GetProgressDialog;
+  try
+    if Form1.CanShowProgress then
+      frmConnect.ShowProgress(Form1.FProgressLongOnly);
+    if ModifiedCount > 0 then
+      frmConnect.Initialize(ModifiedCount,WideFormat(_('Updating %s'),[target]))
+    else
+      frmConnect.SetDescr(WideFormat(_('Updating %s'),[target]));
+    Form1.Status(_('Uploading contacts...'));
+    
+    maxPos := 0;
+    try
+      if IsMEMode then
+        Form1.TxAndWait('AT+CPBS="ME"')  // do not localize
+      else
+        Form1.TxAndWait('AT+CPBS="SM"'); // do not localize
+      try
+        Node := ListNumbers.GetFirst;
+        while Assigned(Node) and not ThreadSafe.AbortDetected do
+          try
+            item := ListNumbers.GetNodeData(Node);
+            if (item.imageindex <> 3) or UploadAll then begin
+              numType := 129;
+              cname := item.cname;
+              Number := item.pnumb;
+
+              if maxPos <= item.position then maxPos := item.position;
+
+              buf := 'AT+CPBW=' + IntToStr(item.position); // do not localize
+
+              { First clear the position -- needed for K610+ phones }
+              try
+                Form1.TxAndWait(buf);
+              except
+              end;
+
+              if Item.imageindex <> 2 then begin
+                // Upload to phone
+                if Number[1] = '+' then begin
+                  Number := copy(Number, 2, Length(Number)-1);
+                  numType := 145;
+                end;
+
+                if Form1.FUseUTF8 then w := UTF8Encode(cname) else w := cname;
+                { Remove number type from SIM entries, added by previous FMA releases }
+                i := Length(w);
+                if (i > 2) and (w[i-1] = '/') and (Char(w[i]) in ['M','H','W','F','O']) then // do not localize
+                  Delete(w,i-1,2);
+
+                { SE Documentation Notes:
+                  - If phone is the currently selected phonebook storage, <text> will be
+                    interpreted as "first name" + white space + "last name" when stored in
+                    the hierarchical phonebook. The phone number will be stored as of type
+                    "other".
+                  
+                  - When writing to SM, <text> shall be written as "last name" + comma +
+                    white space + "first name" + "/" + <type_of_number>.
+                    Example: "Smith, John/W"
+
+                    <type_of_number> Description
+                        "H" Home     Default setting
+                        "W" Work
+                        "O" Other
+                        "M" Mobile
+                        "F" Fax
+                }
+                { Format SIM card names as "Last, First" -- disabled
+                if not IsMEMode then begin
+                  i := Pos(' ',w);
+                  if i <> 0 then
+                    w := WideTrim(WideCopy(w,i+1,Length(w)-i) + ', ' + WideCopy(w,1,i-1));
+                end;
+                }
+                { Add number type }
+                if (Length(w) < (integer(MaxNameLen)-1)) and (item.ptype <> '') then
+                  case item.ptype[1] of
+                    'M': w := w + '/M'; // do not localize
+                    'H': w := w + '/H'; // do not localize
+                    'W': w := w + '/W'; // do not localize
+                    'F': w := w + '/F'; // do not localize
+                    'O': w := w + '/O'; // do not localize
+                  end;
+
+                { Next upload it }
+                buf := buf + ',"' + Number + '",' + IntToStr(numType) + ',"' + w + '"'; // do not localize
+                Form1.TxAndWait(buf);
+                Item.imageindex := 3; // mark as not modified
+
+                Log.AddSynchronizationMessageFmt(_('%s stored in %s by FMA.'),[cname, target], lsInformation);
+              end
+              else
+                // Delete (already done)
+                Log.AddSynchronizationMessageFmt(_('%s deleted in %s by FMA.'),[cname, target], lsInformation);
+            end;
+          finally
+            frmConnect.IncProgress(1);
+
+            if Item.imageindex = 2 then begin
+              Tmp := Node;
+              Node := ListNumbers.GetNext(Node);
+              ListNumbers.DeleteNode(Tmp);
+            end
+            else
+              Node := ListNumbers.GetNext(Node);
+              
+            ListNumbers.Repaint;
+          end;
+
+        { Ususaly happens when you rearrange contacts positions, i.e. modify all of them }
+        if PerformCleanup then
+          try
+            Form1.Status(_('Performing cleanup...'));
+            frmConnect.SetDescr(_('Performing cleanup'));
+            frmConnect.ClearMaxProgress;
+            Form1.SetTaskPercentage(0, MaxNumbers - Cardinal(maxPos));
+
+            for i := maxPos + 1 to MaxNumbers do
+              try
+                Form1.SetTaskPercentageInc;
+                buf := 'AT+CPBW=' + IntToStr(i); // do not localize
+                Form1.TxAndWait(buf);
+              except
+              end;
+          finally
+            Form1.SetTaskPercentage(-1);
+          end;
+      finally
+        { This proc is called from both frmMEEdit and frmSMEdit } 
+        if IsMEMode then
+          Form1.frmMEEdit.UpdatePhonebook
+        else
+          Form1.frmSMEdit.UpdatePhonebook;
+      end;
+    except
+      Form1.Status(_('Error updating memory'));
+      Log.AddSynchronizationMessageFmt(_('Update %s failed.'),[target], lsError);
+    end;
+    { All Done }
+    if not ThreadSafe.AbortDetected then
+      Log.AddSynchronizationMessageFmt(_('Updating %s completed.'),[target])
+    else
+      Log.AddSynchronizationMessage(_('Update aborted by user.'));
+  finally
+    FreeProgressDialog;
+  end;
+  Form1.Status('');
 end;
 
 end.

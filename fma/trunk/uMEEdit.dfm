@@ -17,14 +17,14 @@ object frmContactsMEEdit: TfrmContactsMEEdit
     BevelOuter = bvLowered
     TabOrder = 0
     Visible = False
-    object btnUpdateSIM: TTntButton
+    object btnUpdateME: TTntButton
       Left = 8
       Top = 4
       Width = 75
       Height = 25
-      Caption = 'Update SIM'
+      Caption = 'Update ME'
       TabOrder = 0
-      OnClick = btnUpdateSIMClick
+      OnClick = btnUpdateMEClick
     end
     object cbForce: TTntCheckBox
       Left = 92

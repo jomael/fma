@@ -372,11 +372,13 @@ begin
         UpdateTelView(txtOther);
       end
       else if Form1.ExplorerNew.FocusedNode = Form1.FNodeContactsSM then begin
-        { Creating a New Contact in SIM Card - enable only cell phone }
-        UpdateTelView(txtHome);
-        UpdateTelView(txtWork);
-        UpdateTelView(txtFax);
-        UpdateTelView(txtOther);
+        if not Form1.IsK700orBetter then begin // older phone?
+          { Creating a New Contact in SIM Card - enable only home phone }
+          UpdateTelView(txtCell);
+          UpdateTelView(txtWork);
+          UpdateTelView(txtFax);
+          UpdateTelView(txtOther);
+        end;
       end;
     end
     else
