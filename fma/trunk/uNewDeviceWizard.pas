@@ -19,7 +19,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, TntControls, Forms, TntForms,
   Dialogs, TntDialogs, StdCtrls, TntStdCtrls, CheckLst, TntCheckLst, ExtCtrls, TntExtCtrls,
   jpeg, ComCtrls, TntComCtrls, WIrCOMMSocket, WSocket, WBluetoothSocket,
-  CPort, ImgList, CPortCtl, Menus, TntMenus, USBMonitor;
+  CPort, ImgList, CPortCtl, Menus, TntMenus, USBMonitor, Registry;
 
 const
   WM_NEXTWPAGE = WM_USER + 101;
@@ -93,7 +93,6 @@ type
     LocalWBtSocket: TWBluetoothSocket;
     LocalWIrSocket: TWIrCOMMSocket;
     ImageList1: TImageList;
-    cbCOM: TComComboBox;
     TntPopupMenu1: TTntPopupMenu;
     Refresh1: TTntMenuItem;
     TntLabel9: TTntLabel;
@@ -147,6 +146,7 @@ type
     FRxBuffer: TStringList;
     FMessageBuf: string;
     FSelected: TSelectedDeviceInfo;
+    procedure EnumLikelyComPorts(AList: TStringList);
     procedure WizardPageNext(var Msg: TMessage); message WM_NEXTWPAGE;
     procedure WizardPagePrevious(var Msg: TMessage); message WM_PREVWPAGE;
     procedure DoSearch(Reason: WideString = '');
@@ -412,6 +412,7 @@ end;
 procedure TfrmNewDeviceWizard.DoSearch(Reason: WideString);
 var
   i: integer;
+  ComPortList: TStringList;
   ComDevice,ComManufacturer: WideString;
   BtDevices: TBtDevicesInfo;
   IrDevices: TIrdaDevicesInfo;
@@ -528,27 +529,33 @@ begin
       if FCanceled then exit;
       FConnectionType := 2;
       DevName := '';
-      for i := 0 to cbCOM.Items.Count-1 do
+
+      ComPortList := TStringList.Create;
       try
-        if FCanceled or Application.Terminated then break;
-        cbCOM.ItemIndex := i;
-        LocalComPort.Port := cbCOM.Text;
-        LocalComPort.BaudRate := br9600;
-        LocalComPort.FlowControl.ControlRTS := rtsHandshake;
-        LocalComPort.FlowControl.ControlDTR := dtrHandshake;
-        LocalComPort.Open;
-
-        // Give the chance to run the com thread.
-        // The main event loop in TComThread.Execute have to be started (see the CPort.pas)
-        WaitASec(200, True);
-
+        EnumLikelyComPorts(ComPortList);
+        for i := 0 to ComPortList.Count-1 do
         try
-          DevAddr := cbCOM.Text;
-          ProbeDevice;
-        finally
-          LocalComPort.Close;
+          if FCanceled or Application.Terminated then break;
+          LocalComPort.Port := ComPortList[i];
+          LocalComPort.BaudRate := br9600;
+          LocalComPort.FlowControl.ControlRTS := rtsHandshake;
+          LocalComPort.FlowControl.ControlDTR := dtrHandshake;
+          LocalComPort.Open;
+
+          // Give the chance to run the com thread.
+          // The main event loop in TComThread.Execute have to be started (see the CPort.pas)
+          WaitASec(200, True);
+
+          try
+            DevAddr := ComPortList[i];
+            ProbeDevice;
+          finally
+            LocalComPort.Close;
+          end;
+        except
         end;
-      except
+      finally
+        ComPortList.Free;
       end;
     end;
 
@@ -889,6 +896,39 @@ begin
   cbSearchIR.Checked := cbSearchAll.Checked;
   cbSearchCOM.Checked := cbSearchAll.Checked;
   cbDeviceReadyClick(nil);
+end;
+
+procedure TfrmNewDeviceWizard.EnumLikelyComPorts(AList: TStringList);
+var
+  reg: TRegistry;
+  i: integer;
+  s: string;
+  Ports: TStrings;
+begin
+  AList.Clear;
+  reg := TRegistry.Create(KEY_READ);
+  try
+    reg.RootKey := HKEY_LOCAL_MACHINE;
+    reg.OpenKey('HARDWARE\DEVICEMAP\SERIALCOMM', False);
+    Ports := TStringList.Create;
+    try
+      reg.GetValueNames(Ports);
+      for i:=0 to Ports.Count-1 do begin
+        if Ports[i] <> '' then begin
+          if (Pos('\', Ports[i]) = 0) or (Pos('obex', Ports[i]) <> 0)
+            or (Pos('mgmt', Ports[i]) <> 0) then
+            Continue; // these ports are evil, hide them :)
+          s := reg.ReadString(Ports[i]);
+          AList.Add(s);
+        end;
+      end;
+    finally
+      Ports.Free;
+    end;
+  finally
+    reg.Free;
+  end;
+  AList.Sort;
 end;
 
 end.
