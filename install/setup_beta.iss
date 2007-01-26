@@ -25,7 +25,7 @@ AppID={{9029363A-8173-435A-9C7C-94AE7E4945D8}
 UninstallDisplayIcon={app}\MobileAgent.exe
 UninstallDisplayName=floAt's Mobile Agent 2
 UserInfoPage=true
-AppCopyright=© 2003-2006 by FMA Team
+AppCopyright=© 2003-2007 by FMA Team
 SolidCompression=true
 WizardImageBackColor=clWhite
 OutputDir=output
@@ -37,7 +37,7 @@ VersionInfoVersion=2.1.99
 VersionInfoCompany=floAt's
 VersionInfoDescription=floAt's Mobile Agent
 VersionInfoTextVersion=2.1 Beta 4
-VersionInfoCopyright=© 2003-2006 by FMA Team
+VersionInfoCopyright=© 2003-2007 by FMA Team
 
 [LangOptions]
 TitleFontName=Tahoma
@@ -323,8 +323,8 @@ Source: ..\fma\trunk\winxp.res; DestDir: {app}\source; Flags: overwritereadonly;
 Source: redist\scripten-me.exe; DestDir: {tmp}; Components: ms; Flags: deleteafterinstall; DestName: scripten.exe; MinVersion: 4.0.950,0; OnlyBelowVersion: 0,4.0.1381
 Source: redist\scripten-xp.exe; DestDir: {tmp}; Components: ms; Flags: deleteafterinstall; DestName: scripten.exe; MinVersion: 0,5.0.2195; OnlyBelowVersion: 0,5.2
 Source: redist\scripten-srv.exe; DestDir: {tmp}; Components: ms; Flags: deleteafterinstall; DestName: scripten.exe; MinVersion: 0,5.2
-Source: redist\sct10en.exe; DestDir: {tmp}; Components: ms; Flags: deleteafterinstall
-Source: redist\msxml.msi; DestDir: {tmp}; Flags: deleteafterinstall; Components: bin
+Source: redist\sct10en.exe; DestDir: {tmp}; Components: ms; Flags: deleteafterinstall; MinVersion: 4.1.2222,0; OnlyBelowVersion: 0,6.0
+Source: redist\msxml.msi; DestDir: {tmp}; Flags: deleteafterinstall; Components: bin; MinVersion: 4.1.1998,0
 Source: ..\fma\help\MobileAgent.chm; DestDir: {app}\help; Components: bin
 
 [Icons]
@@ -345,9 +345,9 @@ Name: {group}\Uninstall floAt's Mobile Agent; Filename: {uninstallexe}; Flags: c
 [Run]
 Filename: {app}\MobileAgent.exe; Description: Launch floAt's Mobile Agent; Flags: nowait skipifsilent skipifdoesntexist postinstall; Components: bin; WorkingDir: {app}
 Filename: {app}\floAtMediaCtrl.exe; WorkingDir: {app}; Flags: nowait skipifsilent skipifdoesntexist; Tasks: ; Components: bin
-Filename: msiexec; Flags: runminimized; Parameters: "/quiet /norestart /i ""{tmp}\msxml.msi"""; StatusMsg: Installing XML Parser...; Tasks: msxmlsp2; Components: bin
-Filename: {tmp}\sct10en.exe; Components: ms; Tasks: msscriptctrl; Parameters: /q; StatusMsg: Installing Script Control...; Flags: runminimized
-Filename: {tmp}\scripten.exe; Components: ms; Parameters: /q; StatusMsg: Installing Script Engine...; Flags: runminimized; Tasks: msscript56
+Filename: msiexec.exe; Flags: runminimized skipifdoesntexist; Parameters: "/quiet /norestart /i ""{tmp}\msxml.msi"""; StatusMsg: Installing XML Parser...; Tasks: msxmlsp2; Components: bin
+Filename: {tmp}\sct10en.exe; Components: ms; Tasks: msscriptctrl; Parameters: /q; StatusMsg: Installing Script Control...; Flags: runminimized skipifdoesntexist
+Filename: {tmp}\scripten.exe; Components: ms; Parameters: /q; StatusMsg: Installing Script Engine...; Flags: runminimized skipifdoesntexist; Tasks: msscript56
 
 [Components]
 Name: bin; Description: Application Files; Types: custom compact full
