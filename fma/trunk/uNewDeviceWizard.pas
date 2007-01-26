@@ -146,7 +146,7 @@ type
     FRxBuffer: TStringList;
     FMessageBuf: string;
     FSelected: TSelectedDeviceInfo;
-    procedure EnumLikelyComPorts(AList: TStringList);
+    procedure EnumLikelyComPorts(var AList: TStringList);
     procedure WizardPageNext(var Msg: TMessage); message WM_NEXTWPAGE;
     procedure WizardPagePrevious(var Msg: TMessage); message WM_PREVWPAGE;
     procedure DoSearch(Reason: WideString = '');
@@ -702,7 +702,7 @@ procedure TfrmNewDeviceWizard.AddDevice(Text: WideString; Address: string;
   FriendlyName, Manufacturer: WideString);
 begin
   { for modems: ImageIndex := 3 }
-  if (Text <> '') and (Pos('MODEM',WideUpperCase(Text)) = 0) then
+  if (Text <> '') and (WidePos('MODEM',WideUpperCase(Text)) = 0) then
     with lvDevices.Items.Add do begin
       Caption := Text;        // Device name
       SubItems.Add(Address);  // Peer Bluetooth address or COM port name
@@ -898,7 +898,7 @@ begin
   cbDeviceReadyClick(nil);
 end;
 
-procedure TfrmNewDeviceWizard.EnumLikelyComPorts(AList: TStringList);
+procedure TfrmNewDeviceWizard.EnumLikelyComPorts(var AList: TStringList);
 var
   reg: TRegistry;
   i: integer;
@@ -909,22 +909,25 @@ begin
   reg := TRegistry.Create(KEY_READ);
   try
     reg.RootKey := HKEY_LOCAL_MACHINE;
-    reg.OpenKey('HARDWARE\DEVICEMAP\SERIALCOMM', False);
-    Ports := TStringList.Create;
-    try
-      reg.GetValueNames(Ports);
-      for i:=0 to Ports.Count-1 do begin
-        if Ports[i] <> '' then begin
-          if (Pos('\', Ports[i]) = 0) or (Pos('obex', Ports[i]) <> 0)
-            or (Pos('mgmt', Ports[i]) <> 0) then
-            Continue; // these ports are evil, hide them :)
-          s := reg.ReadString(Ports[i]);
-          AList.Add(s);
+    if reg.OpenKey('HARDWARE\DEVICEMAP\SERIALCOMM', False) then
+      try
+        Ports := TStringList.Create;
+        try
+          reg.GetValueNames(Ports);
+          for i := 0 to Ports.Count-1 do begin
+            if Ports[i] <> '' then begin
+              if (Pos('\', Ports[i]) = 0) or (Pos('obex', Ports[i]) <> 0) or (Pos('mgmt', Ports[i]) <> 0) then
+                Continue; // these ports are evil, hide them :)
+              s := reg.ReadString(Ports[i]);
+              AList.Add(s);
+            end;
+          end;
+        finally
+          Ports.Free;
         end;
+      finally
+        reg.CloseKey;
       end;
-    finally
-      Ports.Free;
-    end;
   finally
     reg.Free;
   end;

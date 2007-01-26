@@ -1,6 +1,6 @@
 object frmOptions: TfrmOptions
-  Left = 292
-  Top = 158
+  Left = 296
+  Top = 160
   BorderIcons = [biSystemMenu, biHelp]
   BorderStyle = bsDialog
   Caption = 'FMA Options'
@@ -252,7 +252,7 @@ object frmOptions: TfrmOptions
               Width = 299
               Height = 21
               Style = csDropDownList
-              ItemHeight = 13
+              ItemHeight = 0
               TabOrder = 0
               OnSelect = cbBTDeviceSelect
             end
