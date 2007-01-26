@@ -12,6 +12,7 @@ object frmAbout: TfrmAbout
   OldCreateOrder = False
   Position = poMainFormCenter
   OnCreate = FormCreate
+  OnShow = TntFormShow
   DesignSize = (
     493
     356)
@@ -34,7 +35,7 @@ object frmAbout: TfrmAbout
     Cancel = True
     Caption = 'OK'
     ModalResult = 1
-    TabOrder = 3
+    TabOrder = 1
   end
   object Panel1: TTntPanel
     Left = 0
@@ -45,77 +46,134 @@ object frmAbout: TfrmAbout
     Anchors = [akLeft, akTop, akRight, akBottom]
     BevelOuter = bvNone
     Color = clWhite
+    ParentBackground = True
     TabOrder = 0
     DesignSize = (
       493
       314)
+    object BackgroundImage: TImage
+      Left = 112
+      Top = 61
+      Width = 394
+      Height = 386
+      AutoSize = True
+      Transparent = True
+    end
     object Image3: TTntImage
       Left = 0
       Top = 0
       Width = 493
       Height = 68
       Align = alTop
-    end
-    object lbVersion: TTntLabel
-      Left = 242
-      Top = 25
-      Width = 46
-      Height = 13
-      Caption = '<version>'
       Transparent = True
     end
-    object Label3: TTntLabel
+    object MainLabel: TTntLabel
       Left = 12
       Top = 72
-      Width = 323
-      Height = 13
-      Caption = 
-        'This software product is licensed under terms and conditions of ' +
-        'GPL.'
+      Width = 469
+      Height = 173
+      AutoSize = False
+      Caption = '<url>'
       Transparent = True
+      WordWrap = True
     end
     object Label12: TTntLabel
       Left = 12
-      Top = 264
+      Top = 256
       Width = 469
       Height = 29
       AutoSize = False
       Caption = 
-        'Please use the FMA website mentioned bellow if you want to post ' +
-        'Bug reports or Feature requests. Do not contact the developers p' +
-        'ersonally.'
+        'Please do not contact the developers personally, but use the FMA' +
+        ' website mentioned bellow if you want to post Bug Reports or Fea' +
+        'ture Requests:'
       Transparent = True
       WordWrap = True
     end
-    object lbURL: TTntLabel
+    object lbForumsURL: TTntLabel
       Left = 12
       Top = 292
-      Width = 23
+      Width = 75
+      Height = 13
+      Cursor = crHandPoint
+      Hint = 'http://fma.sourceforge.net/'
+      Anchors = [akLeft, akBottom]
+      Caption = 'Project Website'
+      Transparent = True
+      OnClick = OpenWebLinkClick
+    end
+    object TntLabel1: TTntLabel
+      Left = 92
+      Top = 292
+      Width = 16
+      Height = 13
+      Alignment = taCenter
+      Anchors = [akLeft, akBottom]
+      AutoSize = False
+      Caption = '|'
+      Transparent = True
+    end
+    object lbLicenseURL: TTntLabel
+      Left = 116
+      Top = 292
+      Width = 91
       Height = 13
       Cursor = crHandPoint
       Anchors = [akLeft, akBottom]
-      Caption = '<url>'
+      Caption = 'License Agreement'
       Transparent = True
-      OnClick = lbURLClick
+      OnClick = OpenWebLinkClick
     end
-    object TntPanel1: TTntPanel
+    object TntLabel3: TTntLabel
+      Left = 212
+      Top = 292
+      Width = 16
+      Height = 13
+      Alignment = taCenter
+      Anchors = [akLeft, akBottom]
+      AutoSize = False
+      Caption = '|'
+      Transparent = True
+    end
+    object lbDonateURL: TTntLabel
+      Left = 236
+      Top = 292
+      Width = 53
+      Height = 13
+      Cursor = crHandPoint
+      Hint = 'http://order.kagi.com/?6CYME&lang=en'
+      Anchors = [akLeft, akBottom]
+      Caption = 'Support Us'
+      Transparent = True
+      OnClick = OpenWebLinkClick
+    end
+    object lbVersion: TTntLabel
+      Left = 368
+      Top = 292
+      Width = 113
+      Height = 13
+      Alignment = taRightJustify
+      Caption = '<version>'
+      Transparent = True
+    end
+    object ContributorsPanel: TTntPanel
       Left = 12
       Top = 94
       Width = 469
-      Height = 163
+      Height = 151
       BevelOuter = bvNone
+      ParentBackground = True
       TabOrder = 0
+      Visible = False
       object CreditsText: TTntMemo
         Left = 0
         Top = 0
         Width = 469
-        Height = 163
+        Height = 151
         Align = alClient
         Alignment = taCenter
         BiDiMode = bdRightToLeft
         Lines.Strings = (
-          '(in order of appearance):'
-          ''
           ':: CREDITS ::'
           ''
           'Warren,'
@@ -187,23 +245,13 @@ object frmAbout: TfrmAbout
       end
     end
   end
-  object DonateButton: TTntButton
-    Left = 100
-    Top = 324
-    Width = 77
-    Height = 25
-    Anchors = [akRight, akBottom]
-    Caption = 'Donate...'
-    TabOrder = 2
-    OnClick = DonateButtonClick
-  end
-  object LicenseButton: TTntButton
+  object MoreButton: TTntButton
     Left = 12
     Top = 324
     Width = 77
     Height = 25
-    Caption = 'License...'
-    TabOrder = 1
-    OnClick = LicenseButtonClick
+    Caption = 'Credits'
+    TabOrder = 2
+    OnClick = MoreButtonClick
   end
 end

@@ -19,7 +19,7 @@ interface
 uses
   Windows, TntWindows, Messages, SysUtils, TntSysUtils, Variants, Classes, TntClasses, Controls, TntControls, Forms, TntForms,
   Dialogs, TntDialogs, StdCtrls, TntStdCtrls, ExtCtrls, TntExtCtrls, ShellApi,
-  Graphics, TntGraphics;
+  Graphics, TntGraphics, JvGIF, jpeg;
 
 {$I uAbout.inc}
 
@@ -28,19 +28,23 @@ type
     OkButton: TTntButton;
     Bevel2: TTntBevel;
     Panel1: TTntPanel;
-    lbVersion: TTntLabel;
-    Label3: TTntLabel;
+    MainLabel: TTntLabel;
     Image3: TTntImage;
-    DonateButton: TTntButton;
     Label12: TTntLabel;
-    TntPanel1: TTntPanel;
+    ContributorsPanel: TTntPanel;
     CreditsText: TTntMemo;
-    lbURL: TTntLabel;
-    LicenseButton: TTntButton;
+    lbForumsURL: TTntLabel;
+    TntLabel1: TTntLabel;
+    lbLicenseURL: TTntLabel;
+    TntLabel3: TTntLabel;
+    lbDonateURL: TTntLabel;
+    lbVersion: TTntLabel;
+    MoreButton: TTntButton;
+    BackgroundImage: TImage;
     procedure FormCreate(Sender: TObject);
-    procedure lbURLClick(Sender: TObject);
-    procedure DonateButtonClick(Sender: TObject);
-    procedure LicenseButtonClick(Sender: TObject);
+    procedure OpenWebLinkClick(Sender: TObject);
+    procedure MoreButtonClick(Sender: TObject);
+    procedure TntFormShow(Sender: TObject);
   private
     { Private declarations }
     Procedure LoadVersionInfo;
@@ -58,7 +62,7 @@ implementation
 
 uses
   gnugettext, gnugettexthelpers, cUnicodeCodecs,
-  Unit1, uVersion;
+  Unit1, uVersion, JclSysInfo;
 
 {$R *.dfm}
 
@@ -85,18 +89,10 @@ end;
 
 { TfrmAbout }
 
-procedure TfrmAbout.DonateButtonClick(Sender: TObject);
-begin
-  { Note: this is personal donation link for Dako (temporary placed here)
-    TODO: Add support for team donation, or other personal links }
-  ShellExecute(Handle, 'open', 'http://order.kagi.com/?6CYME&lang=en', '', '', SW_SHOWNORMAL); // do not localize
-end;
-
 procedure TfrmAbout.LoadVersionInfo;
 begin
-  lbVersion.Caption := WideFormat(_('Version %s'), [GetBuildVersion]);;
-  lbURL.Caption := ExtractFileVersionInfo(Application.ExeName,'URL'); // do not localize
-  lbURL.Hint := lbURL.Caption;
+  lbVersion.Caption := WideFormat(_('Version %s'), [GetBuildVersion]);
+  lbLicenseURL.Hint := ExtractFilePath(Application.ExeName)+'General Public License.rtf';
 end;
 
 procedure TfrmAbout.FormCreate(Sender: TObject);
@@ -116,10 +112,17 @@ begin
   Panel1.ParentBackground := False;
 {$ENDIF}
 
-  lbURL.Font.Color := clBlue;
-  lbURL.Font.Style := [fsUnderline];
+  lbForumsURL.Font.Color := clBlue;
+  lbForumsURL.Font.Style := lbForumsURL.Font.Style + [fsUnderline];
+  lbDonateURL.Font.Assign(lbForumsURL.Font);
+  lbLicenseURL.Font.Assign(lbForumsURL.Font);
 
-  //Image1.Picture.Assign(Form1.CommonBitmaps.Bitmap[1]);
+  TntLabel1.Left := lbForumsURL.Left + lbForumsURL.Width;
+  lbLicenseURL.Left := TntLabel1.Left + TntLabel1.Width;
+  TntLabel3.Left := lbLicenseURL.Left + lbLicenseURL.Width;
+  lbDonateURL.Left := TntLabel3.Left + TntLabel3.Width;
+
+  BackgroundImage.Picture.Assign(Form1.CommonBitmaps.Bitmap[1]);
   Image3.Picture.Assign(Form1.CommonBitmaps.Bitmap[2+byte(IsRightToLeft)]);
   LoadVersionInfo;
 
@@ -177,16 +180,41 @@ begin
   end;
 end;
 
-procedure TfrmAbout.lbURLClick(Sender: TObject);
+procedure TfrmAbout.OpenWebLinkClick(Sender: TObject);
 begin
   ShellExecute(Handle, 'open', PChar(String(TTntLabel(Sender).Hint)), '', '', SW_SHOWNORMAL); // do not localize
 end;
 
-procedure TfrmAbout.LicenseButtonClick(Sender: TObject);
+procedure TfrmAbout.MoreButtonClick(Sender: TObject);
 begin
-  ShellExecute(Handle, 'open', PChar(ExtractFilePath(Application.ExeName)+'General Public License.rtf'), // do not localize
-    '', '', SW_SHOWNORMAL);
+  if MoreButton.Tag = 1 then begin
+    MoreButton.Tag := 0;
+    MoreButton.Caption := _('Credits');
+    ContributorsPanel.Visible := False;
+    BackgroundImage.Visible := True;
+    MainLabel.Caption := _(
+      '©2003-2007 by Contributors. All Rights Reserved. FMA, floAt''s and floAt''s Mobile Agent texts ' +
+      'and green logo are copyright work of the FMA Team. Some parts in this project used under terms ' +
+      'and agreements of FMA License Agreement are available under separate third party licenses too. ' +
+      'Please refer to product''s documentation for more information.') + sLineBreak + sLineBreak +
+      WideFormat(_('FMA 2.2 Stable (System: %s %s, Version: %d.%d, Build: %x, "%s")'),
+        [GetWindowsVersionString, NtProductTypeString, Win32MajorVersion, Win32MinorVersion,
+         Win32BuildNumber, Win32CSDVersion]);
+  end
+  else begin
+    MoreButton.Tag := 1;
+    MoreButton.Caption := _('Notices');
+    ContributorsPanel.Visible := True;
+    BackgroundImage.Visible := False;
+    MainLabel.Caption := _('These are the project contributors (in order of appearance):');
+  end;
+end;
+
+procedure TfrmAbout.TntFormShow(Sender: TObject);
+begin
+  { Update view }
+  MoreButton.Tag := 1;
+  MoreButtonClick(nil);
 end;
 
 end.
-
