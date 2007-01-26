@@ -50,8 +50,8 @@ Name: desktopicon; Description: Create a &Desktop FMA icon; GroupDescription: Ad
 Name: quickicon; Description: Create a &Quick Launch FMA icon; Components: bin; GroupDescription: Additional icons:
 Name: defsounds; Description: Default FMA Sound Scheme; GroupDescription: Install also:; Components: bin
 Name: msxmlsp2; Description: Microsoft XML 4.0 SP2; GroupDescription: Install also:; Components: bin
-Name: msscriptctrl; Description: Microsoft Script Control; GroupDescription: Install also:; Components: ms
-Name: msscript56; Description: Microsoft Script Engine 5.6; GroupDescription: Install also:; Components: ms
+Name: msscriptctrl; Description: Microsoft Script Control; GroupDescription: Install also:; Components: ms; OnlyBelowVersion: 0,6.0
+Name: msscript56; Description: Microsoft Script Engine 5.6; GroupDescription: Install also:; Components: ms; OnlyBelowVersion: 0,6.0
 Name: deloldsf; Description: Delete previous Scripting Framework installation; GroupDescription: Additional tasks:; Components: ms\sframe
 
 [Files]
@@ -322,7 +322,7 @@ Source: ..\fma\trunk\uXMLContactSync.pas; DestDir: {app}\source; Flags: overwrit
 Source: ..\fma\trunk\winxp.res; DestDir: {app}\source; Flags: overwritereadonly; Components: src
 Source: redist\scripten-me.exe; DestDir: {tmp}; Components: ms; Flags: deleteafterinstall; DestName: scripten.exe; MinVersion: 4.0.950,0; OnlyBelowVersion: 0,4.0.1381
 Source: redist\scripten-xp.exe; DestDir: {tmp}; Components: ms; Flags: deleteafterinstall; DestName: scripten.exe; MinVersion: 0,5.0.2195; OnlyBelowVersion: 0,5.2
-Source: redist\scripten-srv.exe; DestDir: {tmp}; Components: ms; Flags: deleteafterinstall; DestName: scripten.exe; MinVersion: 0,5.2
+Source: redist\scripten-srv.exe; DestDir: {tmp}; Components: ms; Flags: deleteafterinstall; DestName: scripten.exe; MinVersion: 0,5.2; OnlyBelowVersion: 0,6.0
 Source: redist\sct10en.exe; DestDir: {tmp}; Components: ms; Flags: deleteafterinstall; MinVersion: 4.1.2222,0; OnlyBelowVersion: 0,6.0
 Source: redist\msxml.msi; DestDir: {tmp}; Flags: deleteafterinstall; Components: bin; MinVersion: 4.1.1998,0
 Source: ..\fma\help\MobileAgent.chm; DestDir: {app}\help; Components: bin
