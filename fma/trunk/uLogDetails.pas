@@ -164,7 +164,7 @@ end;
 
 procedure TfrmLogDetails.btnHelpMeClick(Sender: TObject);
 begin
-  MessageDlgW(_('Could not start event log Troubleshooter!'),mtInformation,MB_OK);
+  Form1.Index1.Click;
 end;
 
 procedure TfrmLogDetails.FormClose(Sender: TObject;

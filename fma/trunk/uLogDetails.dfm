@@ -105,11 +105,11 @@ object frmLogDetails: TfrmLogDetails
         OnClick = btnHelpMeClick
       end
       object cbTrackMessages: TTntCheckBox
-        Left = 8
+        Left = 96
         Top = 344
-        Width = 141
+        Width = 169
         Height = 17
-        Caption = 'Track New Messages'
+        Caption = 'Track new events'
         TabOrder = 6
       end
       object sbUp: TTntBitBtn
@@ -209,9 +209,9 @@ object frmLogDetails: TfrmLogDetails
     end
   end
   object OkButton: TTntButton
-    Left = 308
+    Left = 300
     Top = 416
-    Width = 69
+    Width = 77
     Height = 25
     Cancel = True
     Caption = 'Close'
