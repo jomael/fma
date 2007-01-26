@@ -780,20 +780,6 @@ object frmNewDeviceWizard: TfrmNewDeviceWizard
         StopFrame = 29
         Visible = False
       end
-      object cbCOM: TComComboBox
-        Left = 204
-        Top = 140
-        Width = 85
-        Height = 21
-        ComPort = LocalComPort
-        ComProperty = cpPort
-        Text = 'COM4'
-        Style = csDropDownList
-        ItemHeight = 13
-        ItemIndex = 3
-        TabOrder = 3
-        Visible = False
-      end
       object RefreshButton: TTntButton
         Left = 372
         Top = 260
@@ -812,7 +798,7 @@ object frmNewDeviceWizard: TfrmNewDeviceWizard
         BevelOuter = bvNone
         Caption = 'There are no items to display in this view.'
         Color = clWindow
-        TabOrder = 5
+        TabOrder = 3
         Visible = False
       end
     end

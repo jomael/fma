@@ -11438,12 +11438,12 @@ begin
   { Add some default Welcome Tips here }
   frmWelcomeTips.QueueTip('You can upload or download multiple files in a single session by holding down the control key while selecting the files.',15);
   frmWelcomeTips.QueueTip('You can keep FMA up-to-date by using built-in Web Update Wizard, which is accessible from main menu, under Help.',15);
-  frmWelcomeTips.QueueTip('You can set-up rules for automatically dispatching your SMS messages based on who sent it or who you sent it to. Check Tools > Delivery Options to set up the rules.',15);
+  frmWelcomeTips.QueueTip('You can set-up rules to automatically organize your SMS messages based on who sent it or who you sent it to. Check Tools > Delivery Options to set up the rules.',15);
   frmWelcomeTips.QueueTip('You can create a list of favorite SMS recipients or groups, so you don''t have to go to your Phone Book eveytime.'+sLineBreak+'Click the SMS button and choose Favorites > Organize favorites to set up favorite contacts or groups.',15);
   frmWelcomeTips.QueueTip('You can send Flash SMS so the recipient does not have to read it.  The SMS simply appears on the phone and disappears when the user pushes any button.'+sLineBreak+'Click the SMS button and click the Flash option on the toolbar.',15);
   frmWelcomeTips.QueueTip('You can assign a preferred default number for each contact so that FMA will default to either the Mobile, office or home number when dialed from FMA.'+sLineBreak+'Open a contact and choose the Call Preferences tab.',15);
   frmWelcomeTips.QueueTip('You can assign a personalized photo and sound to pop up on your screen when FMA receives a call from that contact.'+sLineBreak+'Open a contact and choose Personalize tab.',15);
-  frmWelcomeTips.QueueTip('You can visit the very active FMA user forums for information and troubleshooting. Visit us at http://www.mobileagent.info/forums',15);
+  frmWelcomeTips.QueueTip('You can visit the very active FMA user forums for information and troubleshooting. Visit us at http://fma.sourceforge.net/forums',15);
 //frmWelcomeTips.QueueTip('FMA has an IRC channel.'+sLineBreak+'server: irc.chatspike.net'+sLineBreak+'channel: #fma',15);
   frmWelcomeTips.QueueTip('You can toggle FMA Today page options by simply right-clicking anywhere on the page.',15);
   frmWelcomeTips.QueueTip('You can hide and show various areas on the FMA Today page by clicking the little "double up arrow" icons at the top of each section.',15);
