@@ -818,7 +818,7 @@ type
     FLastShownFrame,FLastClockTZ: string;
 
     FLogForm: TfrmLog;
-    FPhoneModel: String;
+    FPhoneModel,ForcePhoneModel: String;
     FLastGroupCreated: WideString;
     FPortableMode: boolean;
 
@@ -970,7 +970,7 @@ type
     FEmergencyMode,FUseCNMIMode3,FStatusReport,FUseUTF8,FUseObex,FUseObexCompat,
     FUseEBCA,FUseScript,FUseCBC,FUseCSQ,FUseSilentMonitor,FUseMinuteMonitor,FUseKeylockMonitor,FUseScriptEditorExt: Boolean;
     FAutoConnectionError,FOnACPower,LoadingDBFiles,FChatLongSMS,FChatBold,FUseMediaPlayer: Boolean;
-    FSelOperator,FSelPhone,FChatNick,FVoiceMail: WideString;
+    FSelOperator,FSelPhone,ForceSelPhone,FChatNick,FVoiceMail: WideString;
     FSupportedCS,FKeyActivity,FDatabaseVersion: String;
     FKeyInactivityTimeout: Integer;
     FFavoriteRecipients,FFavoriteCalls: TTntStringList;
@@ -1809,6 +1809,8 @@ begin
         model := ThreadSafe.RxBuffer[0];
         if Trim(model) = '' then model := _('Unknown');
         FPhoneModel := Model;
+        { If Getting Started wizard forces new phone name, then keep phone model too }
+        if ForceSelPhone <> '' then ForcePhoneModel := FPhoneModel;
       except
         Log.AddCommunicationMessage('Error: Could not identify phone model!',lsDebug); // do not localize debug
         Abort;
@@ -5612,7 +5614,7 @@ begin
   frmCalendarView.SaveCalendar(Fullpath + 'Calendar.vcs'); // do not localize
 
   { Backward compatability support }
-  if FindCmdLineSwitch('MIGRATEDB') then begin // do not localize
+  if FindCmdLineSwitch('MIGRATEDB') and not PortableModeActivated then begin // do not localize
     { Delete old common files, if any -- upgradeing from single database }
     if (PhoneIdentity <> '') and FileExists(ExePath + 'Phone.dat') then // do not localize
     try
@@ -8887,7 +8889,7 @@ var
   sl: TStringList;
   db: TStrings;
   data: PFmaExplorerNode;
-  w,OldStat: WideString;
+  w,OldStat,DBstr: WideString;
   s: String;
   NewProfile: Boolean;
   procedure ProgressNotify;
@@ -9058,9 +9060,19 @@ begin
     with TIniFile.Create(Fullpath + 'Phone.dat') do // do not localize
       try
         { For default settings please check out uOptions.pas }
-        FSelPhone := UTF8StringToWideString(ReadString('Global','PhoneName','')); // do not localize
-        w := FSelPhone;
-        i := 1;
+        DBstr := UTF8StringToWideString(ReadString('Global','PhoneBrand','')); // do not localize
+        { If connecting for the very first time, get phone model from the connected phone }
+        if DBstr = '' then
+          FPhoneModel := ForcePhoneModel
+        else
+          FPhoneModel := DBstr;
+        DBstr := UTF8StringToWideString(ReadString('Global','PhoneName','')); // do not localize
+        { If connecting for the very first time, get phone name from Getting Started wizard }
+        if DBstr = '' then
+          FSelPhone := ForceSelPhone
+        else
+          FSelPhone := DBstr;
+        i := 1; w := FSelPhone;
         while not PhoneUnique(w,ID) do
           w := WideFormat('%s (%d)',[FSelPhone,i]); // rename dublicated phone names
         if WideCompareStr(w,FSelPhone) <> 0 then begin
@@ -9069,7 +9081,6 @@ begin
         end;
         FVoiceMail := UTF8StringToWideString(ReadString('Global','VoiceMail','')); // do not localize
         FDatabaseVersion := UTF8StringToWideString(ReadString('Global','DBVersion','')); // do not localize
-        FPhoneModel := UTF8StringToWideString(ReadString('Global','PhoneBrand','')); // do not localize
         FSMSCounterReseted := ReadBool('SMS','Reset',False); // do not localize
         FSMSCounterResetDay := ReadInteger('SMS','Reset Day',1); // do not localize
         FSMSCounterResetLastMonth := ReadInteger('SMS','Reset Last Month',0); // do not localize
@@ -15346,6 +15357,10 @@ begin
         if FConnected then
           ActionConnectionDisconnect.Execute;
 
+        { Save current DB and clear view }
+        SavePhoneDataFiles(True);
+        ClearExplorerViews;
+
         { Apply new phone settings }
         with frmNewDeviceWizard.SelectedDevice do begin
           ThreadSafe.ConnectionType := ConnectionType;
@@ -15379,9 +15394,15 @@ begin
 
         { Connect to new phone device }
         try
-          ActionConnectionConnect.Execute;
+          ForceSelPhone := frmNewDeviceWizard.SelectedDevice.FriendlyName;
+          try
+            ActionConnectionConnect.Execute;
+          finally
+            ForceSelPhone := '';
+            ForcePhoneModel := '';
+          end;
           { Update view }
-          FSelPhone := frmNewDeviceWizard.SelectedDevice.FriendlyName;
+          Log.AddMessageFmt('New phone model: %s (%s)',[FPhoneModel,FSelPhone],lsDebug); // do not localize debug
           EData := ExplorerNew.GetNodeData(ExplorerNew.GetFirst);
           if Assigned(EData) then begin
             //if FSelPhone = '' then FSelPhone := _('My Phone');
@@ -15683,22 +15704,22 @@ end;
 
 function TForm1.IsT610orBetter(BrandName: WideString): Boolean;
 begin
-  Result := IsT610Clone or IsK700Clone or IsK750orBetter; // T610 or better
+  Result := IsT610Clone(BrandName) or IsK700Clone(BrandName) or IsK750orBetter(BrandName); // T610 or better
 end;
 
 function TForm1.IsK700orBetter(BrandName: WideString): Boolean;
 begin
-  Result := IsK700Clone or IsK750orBetter; // K700 or better
+  Result := IsK700Clone(BrandName) or IsK750orBetter(BrandName); // K700 or better
 end;
 
 function TForm1.IsK750orBetter(BrandName: WideString): Boolean;
 begin
-  Result := IsK750Clone or IsK610Clone or IsWalkmanClone; // K750 or better
+  Result := IsK750Clone(BrandName) or IsK610Clone(BrandName) or IsWalkmanClone(BrandName); // K750 or better
 end;
 
 function TForm1.IsK610orBetter(BrandName: WideString): Boolean;
 begin
-  Result := IsK610Clone or IsWalkmanClone; // K610 or better
+  Result := IsK610Clone(BrandName) or IsWalkmanClone(BrandName); // K610 or better
 end;
 
 procedure TForm1.ExplorerNewDragOver(Sender: TBaseVirtualTree;

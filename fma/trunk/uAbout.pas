@@ -91,7 +91,7 @@ end;
 
 procedure TfrmAbout.LoadVersionInfo;
 begin
-  lbVersion.Caption := WideFormat(_('Version %s'), [GetBuildVersion]);
+  lbVersion.Caption := WideFormat(_('Build: %s'), [GetBuildVersion]);
   lbLicenseURL.Hint := ExtractFilePath(Application.ExeName)+'General Public License.rtf';
 end;
 

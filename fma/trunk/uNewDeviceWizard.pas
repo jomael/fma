@@ -319,9 +319,9 @@ begin
       //CancelButton.Enabled := False;
       { setup tasks on finish }
       cbCalibrate.Checked := False;
-      cbCalibrate.Visible := Integer(lvDevices.Selected.Data) = ndcSerial; // only for serial
-      cbCheckObex.Checked := False;
-      cbCheckObex.Visible := cbCalibrate.Visible;
+      cbCalibrate.Visible := Integer(lvDevices.Selected.Data) = ndcSerial; // only for Serial
+      cbCheckObex.Checked := True;
+      cbCheckObex.Visible := True; // Form1.IsT610orBetter(lvDevices.Selected.Caption); // T610+ only
 
       FSelected.DisableObex := False;
       FSelected.DisableIrmcSync := False;
@@ -360,16 +360,16 @@ begin
           FSelected.DisableIrmcSync := True;
         end
         else
-        if not Form1.IsT610orBetter(lvDevices.Selected.Caption) then begin
+        if not Form1.IsT610orBetter(lvDevices.Selected.Caption) then begin // FSelected.DeviceName is empty here!
           { Older phones (T230, T68, ...) so no OBEX }
           Add(sTab + _('Phonebook Sync is not supported by your phone.'));
           FSelected.DisableIrmcSync := True;
         end
         else
-          if Form1.IsK610orBetter(lvDevices.Selected.Caption) then
-            Add(sTab + _('Your phone device is detected and supported partially.'))
+          if Form1.IsK610orBetter(lvDevices.Selected.Caption) then // FSelected.DeviceName is empty here!
+            Add(sTab + _('Your phone device is detected and supported partially.')) // K610+
           else
-            Add(sTab + _('Your phone device is detected and supported.')); // T610, K700 are OK
+            Add(sTab + _('Your phone device is detected and supported.')); // T610+ are OK
       end;
       cbCheckObex.Enabled := cbCheckObex.Visible and not FSelected.DisableObex;
       cbCheckObex.Checked := cbCheckObex.Enabled;
@@ -380,7 +380,7 @@ end;
 
 procedure TfrmNewDeviceWizard.CancelButtonClick(Sender: TObject);
 begin
-  if (nbWizard.PageIndex = piSearch) and Animate1.Active then
+  if (nbWizard.PageIndex = piSearch) and not RefreshButton.Enabled then
     { Just cancel the search process }
     FCanceled := True
   else begin
@@ -675,7 +675,7 @@ end;
 
 procedure TfrmNewDeviceWizard.TntPopupMenu1Popup(Sender: TObject);
 begin
-  Refresh1.Enabled := not Animate1.Active;
+  Refresh1.Enabled := RefreshButton.Enabled;
 end;
 
 procedure TfrmNewDeviceWizard.Refresh1Click(Sender: TObject);
