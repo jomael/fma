@@ -885,6 +885,7 @@ begin
           Font.Style := Font.Style + [fsUnderline];
         end;
 
+  lblTitle.Font.Name := 'Times New Roman';
   lblTitle.Font.Color := clGreen;
   lblTitle.Font.Size := lblTitle.Font.Size + 10;
 
