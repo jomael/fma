@@ -2672,6 +2672,7 @@ var
   RunOnRemovableDevice: boolean;
   RunOnDeviceID: string;
   RunMode: TModalResult;
+  CtrlPressed: boolean;
   IniName: string;
 begin
   ExePath := ExtractFilePath(Application.ExeName);
@@ -2738,9 +2739,11 @@ begin
             end;
         except
         end;
-      { Confirm portable mode? }
-      if RunMode = mrNone then begin
+      { Confirm portable mode? Can be forced if holding CTRL key while starting FMA }
+      CtrlPressed := GetKeyState(VK_LCONTROL) or GetKeyState(VK_RCONTROL);
+      if (RunMode = mrNone) or CtrlPressed then begin
         if not RunOnRemovableDevice then rbNormalMode.Checked := True;
+        if CtrlPressed and (RunMode <> mrNone) then cbDontAskAgain.Checked := True;
         RunMode := ShowModal;
       end;
       case RunMode of
@@ -2751,11 +2754,21 @@ begin
           Application.ShowMainForm := False;
         end;
       end;
-      if not FNotFirstInstance and cbDontAskAgain.Checked then
+      if not FNotFirstInstance and (cbDontAskAgain.Checked or CtrlPressed) then
         try
           if sl.Count = 0 then sl.Add('[Portable]'); // do not localize
-          sl.Values[RunOnDeviceID] := IntToStr(byte(rbPortableMode.Checked));
-          sl.SaveToFile(IniName);
+          if not cbDontAskAgain.Checked then begin
+            i := sl.IndexOfName(RunOnDeviceID);
+            if i <> -1 then sl.Delete(i);
+          end
+          else
+            sl.Values[RunOnDeviceID] := IntToStr(byte(rbPortableMode.Checked));
+          { If not settings left, remove file }
+          sl.Text := Trim(sl.Text);
+          if (sl.Count = 1) and (sl[0][1] = '[') then
+            DeleteFile(IniName)
+          else
+            sl.SaveToFile(IniName);
         except
         end;
     finally
@@ -2764,6 +2777,7 @@ begin
     end;
   end;
 
+  { Initialize LOG and mainform GUI }
   Log.AddMessageFmt('Build: %s', [GetBuildVersionDtl], lsDebug); // do not localize debug
   Log.AddMessageFmt('System: %s %s, Version: %d.%d, Build: %x, "%s"', // do not localize debug
     [GetWindowsVersionString, NtProductTypeString, Win32MajorVersion, Win32MinorVersion,

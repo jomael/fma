@@ -1,5 +1,19 @@
 unit uPortable;
 
+{
+*******************************************************************************
+* Descriptions: Startup mode selection dialog
+* $Source: /cvsroot/fma/fma/uPortable.pas,v $
+* $Locker:  $
+*
+* Todo:
+*
+* Change Log:
+* $Log: uPortable.pas,v $
+*
+*******************************************************************************
+}
+
 interface
 
 uses
@@ -90,13 +104,19 @@ end;
 
 procedure TfrmPortableLogon.FormShow(Sender: TObject);
 begin
+  MessageBeep(MB_ICONQUESTION);
   if rbPortableMode.Checked then
-    lblWelcomeInfo.Caption := _('FMA has detected that it is started from a Removable device.') + ' ' + lblWelcomeInfo.Caption
+    lblWelcomeInfo.Caption :=
+      _('FMA has detected that it is started from a Removable device.') + ' ' +
+      lblWelcomeInfo.Caption
   else
-    lblWelcomeInfo.Caption := _('FMA has detected that it is started in forced Portable mode.') + ' ' + lblWelcomeInfo.Caption;
+    lblWelcomeInfo.Caption :=
+      _('FMA has detected that it is started in forced Portable mode.') + ' ' +
+      lblWelcomeInfo.Caption;
   OnModeChange(nil);
   // HACK! Workaround for non-activated application Taskbar button
   BringWindowToTop(Application.Handle);
+  BringWindowToTop(Handle);
 end;
 
 end.
