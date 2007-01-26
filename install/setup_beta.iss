@@ -388,8 +388,10 @@ Name: {app}\*.dif; Type: files; Components: tools
 Name: {app}\*.rev; Type: files; Components: tools
 Name: {app}\update.txt; Type: files; Components: tools
 Name: {app}\MobileAgent.lst; Type: files; Components: tools
-Name: {app}\data; Type: dirifempty; Components: bin
 Name: {app}\locale; Type: filesandordirs; Components: lang
+Name: {app}\data; Type: dirifempty; Components: bin
+Name: {app}\FMA\default.tmp; Type: filesandordirs; Components: bin
+Name: {app}\FMA; Type: dirifempty; Components: bin
 Name: {userappdata}\FMA\default.tmp; Type: filesandordirs; Components: bin
 Name: {userappdata}\FMA; Type: dirifempty; Components: bin
 
