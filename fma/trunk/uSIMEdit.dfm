@@ -158,7 +158,7 @@ object frmContactsSMEdit: TfrmContactsSMEdit
     object SendToPhone1: TTntMenuItem
       Caption = 'Send To Phone'
       object UpdateChanged1: TTntMenuItem
-        Caption = 'Modified Contacts...'
+        Caption = 'Modified Only...'
         OnClick = UpdateChanged1Click
       end
       object UpdateAllRecords1: TTntMenuItem
@@ -184,7 +184,7 @@ object frmContactsSMEdit: TfrmContactsSMEdit
     object otalChange1: TTntMenuItem
       Caption = 'Total Change'
       object UpdateContactsPosition1: TTntMenuItem
-        Caption = 'Reindex (Sort) All Contacts...'
+        Caption = 'Reindex All...'
         OnClick = UpdateContactsPosition1Click
       end
     end

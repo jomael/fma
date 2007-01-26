@@ -2661,28 +2661,34 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 var
   sa: TSecurityAttributes;
+  sl: TStringList;
   i: Integer;
-  {
-  W: WideString;
-  DU: array[0..200] of WideChar;
-  SDI: TSoftDistInfo;
-  }
   m: TTntMenuItem;
   DrvPath: string;
-  SectorsPerCluster: Cardinal;	    // address of sectors per cluster
-  BytesPerSector: Cardinal;	      // address of bytes per sector
+  SectorsPerCluster: Cardinal;	   // address of sectors per cluster
+  BytesPerSector: Cardinal;	       // address of bytes per sector
   NumberOfFreeClusters: Cardinal;  // address of number of free clusters
   TotalNumberOfClusters: Cardinal; // address of total number of clusters
+  RunOnRemovableDevice: boolean;
+  RunOnDeviceID: string;
+  RunMode: TModalResult;
+  IniName: string;
 begin
   ExePath := ExtractFilePath(Application.ExeName);
+  IniName := ChangeFileExt(Application.ExeName,'.ini'); // do not localize
+
+  { Check for startup-mode selection dialog }
   DrvPath := Copy(ExePath,1,3);
-  if FindCmdLineSwitch('PORTABLE') then // do not localize
-    PortableModeActivated := True
-  else
-    if GetDriveType(PChar(DrvPath)) = DRIVE_REMOVABLE then // Some SATA disks might report Removable too
-      if GetDiskFreeSpace(PChar(DrvPath),SectorsPerCluster,BytesPerSector,NumberOfFreeClusters,TotalNumberOfClusters) and
-        ((BytesPerSector/1048576)*SectorsPerCluster*TotalNumberOfClusters < 10000) then // capacity < 10 GB = not a HDD
-        PortableModeActivated := True;
+  RunOnDeviceID := '';
+  RunOnRemovableDevice := False;
+  if GetDriveType(PChar(DrvPath)) = DRIVE_REMOVABLE then // Some SATA disks might report Removable too, so check size too...
+    if GetDiskFreeSpace(PChar(DrvPath),SectorsPerCluster,BytesPerSector,NumberOfFreeClusters,TotalNumberOfClusters) and
+      ((BytesPerSector/1048576)*SectorsPerCluster*TotalNumberOfClusters < 10000) then begin // capacity < 10 GB = not a HDD
+      PortableModeActivated := True;
+      RunOnRemovableDevice := True;                                                  
+      RunOnDeviceID := Format('%s%d%d\%d',[DrvPath,SectorsPerCluster,BytesPerSector,TotalNumberOfClusters]); // do not localize
+    end;
+  if FindCmdLineSwitch('PORTABLE') then PortableModeActivated := True; // do not localize
 
   pbRSSI.Parent := StatusBar;
   pbPower.Parent := StatusBar;
@@ -2714,11 +2720,30 @@ begin
     Application.ShowMainForm := False;
   end;
 
+  { Show startup-mode selection dialog if needed }
   if not FNotFirstInstance and PortableModeActivated then begin
+    sl := TStringList.Create; // needed for .INI file manipulations
     with TfrmPortableLogon.Create(nil) do
     try
+      RunMode := mrNone;
+      cbDontAskAgain.Enabled := RunOnRemovableDevice;
+      if RunOnRemovableDevice then
+        try
+          sl.LoadFromFile(IniName);
+          DrvPath := sl.Values[RunOnDeviceID];
+          if DrvPath <> '' then
+            case DrvPath[1] of
+              '1': RunMode := mrYes; // do not localize
+              '0': RunMode := mrNo;  // do not localize
+            end;
+        except
+        end;
       { Confirm portable mode? }
-      case ShowModal of
+      if RunMode = mrNone then begin
+        if not RunOnRemovableDevice then rbNormalMode.Checked := True;
+        RunMode := ShowModal;
+      end;
+      case RunMode of
         mrYes: ; // continue
         mrNo: PortableModeActivated := False;
         else begin
@@ -2726,14 +2751,23 @@ begin
           Application.ShowMainForm := False;
         end;
       end;
+      if not FNotFirstInstance and cbDontAskAgain.Checked then
+        try
+          if sl.Count = 0 then sl.Add('[Portable]'); // do not localize
+          sl.Values[RunOnDeviceID] := IntToStr(byte(rbPortableMode.Checked));
+          sl.SaveToFile(IniName);
+        except
+        end;
     finally
       Free;
+      sl.Free;
     end;
   end;
 
   Log.AddMessageFmt('Build: %s', [GetBuildVersionDtl], lsDebug); // do not localize debug
-  Log.AddMessageFmt('System: %s %s, Version: %d.%d, Build: %x, "%s"', [GetWindowsVersionString, NtProductTypeString,
-    Win32MajorVersion, Win32MinorVersion, Win32BuildNumber, Win32CSDVersion], lsDebug); // do not localize debug
+  Log.AddMessageFmt('System: %s %s, Version: %d.%d, Build: %x, "%s"', // do not localize debug
+    [GetWindowsVersionString, NtProductTypeString, Win32MajorVersion, Win32MinorVersion,
+     Win32BuildNumber, Win32CSDVersion], lsDebug);
 
   for i := 0 to CoolBar.Bands.Count-1 do begin
     CoolBar.Bands[i].MinWidth := CoolBar.Bands[i].Control.Constraints.MinWidth;
@@ -2749,6 +2783,7 @@ begin
   FEBCAKeyMonStopped := True;
   FKeyInactivityTimeout := 10000;
 
+  { Create DB tables }
   FNewMessageList := TStringList.Create;
   FNewPDUList := TStringList.Create;
 
@@ -2762,13 +2797,10 @@ begin
   FObex := TObex.Create;
   FObex.debugobex := False;
 
+  { Create custom views }
   frmMsgView := TfrmMsgView.Create(FramePanel);
   frmMsgView.Parent := FramePanel;
   frmMsgView.Align := alClient;
-{$IFDEF VER150}
-  frmMsgView.DetailsPanel.ParentBackground := False;
-  frmMsgView.SearchPanel.ParentBackground := False;
-{$ENDIF}
 
   frmSMEdit := TfrmContactsSMEdit.Create(FramePanel);
   frmSMEdit.Parent := FramePanel;
@@ -2781,23 +2813,6 @@ begin
   frmInfoView := TfrmInfoView.Create(FramePanel);
   frmInfoView.Parent := FramePanel;
   frmInfoView.Align := alClient;
-  frmInfoView.PopupMenu := PopupMenu2;
-  frmInfoView.BigImage.Picture.Assign(CommonBitmaps.Bitmap[1]);
-{$IFDEF VER150}
-  frmInfoView.Label5.Font.Color := clOlive;
-  frmInfoView.Label3.Font.Color := clGreen;
-  frmInfoView.Label2.Font.Color := clMaroon;
-  for i := 0 to frmInfoView.ComponentCount-1 do
-    if frmInfoView.Components[i] is TTntLabel then
-      // HACK! change all linkXXX labels font style and color
-      if Pos('link',frmInfoView.Components[i].Name) = 1 then // do not localize
-        with frmInfoView.Components[i] as TTntLabel do begin
-          Font.Color := clHotLight;
-          Font.Style := Font.Style + [fsUnderline];
-        end;
-  frmInfoView.ParentBackground := False;
-  frmInfoView.DiagramPanel.ParentBackground := False;
-{$ENDIF}
 
   frmSyncPhonebook := TfrmSyncPhonebook.Create(FramePanel);
   frmSyncPhonebook.Parent := FramePanel;
@@ -2814,14 +2829,12 @@ begin
   frmEditor := TfrmEditor.Create(FramePanel);
   frmEditor.Parent := FramePanel;
   frmEditor.Align := alClient;
-{$IFDEF VER150}
-  frmEditor.DetailsPanel.ParentBackground := False; // HACK!!
-{$ENDIF}
 
   frmCalendarView := TfrmCalendarView.Create(FramePanel);
   frmCalendarView.Parent := FramePanel;
   frmCalendarView.Align := alClient;
 
+  { Initialize settings }
   if not FNotFirstInstance then begin
     LoadOptions;
     InitRegistry;
@@ -2834,13 +2847,6 @@ begin
     Application.Terminate;
 
   FormStorage1.Active := False;
-
-  {
-  StringToWideChar(GUIDToString(LIBID_MobileAgent),@DU[0],200);
-  SDI.cbSize := SizeOf(SDI);
-  GetSoftwareUpdateInfo(@DU[0],SDI);
-  SoftwareUpdateMessageBox(Handle,@DU[0],0,SDI);
-  }
 
   TP_Ignore(self, 'PanelTest'); // do not localize
   TP_Ignore(self, 'FormStorage1'); // do not localize
@@ -7095,7 +7101,7 @@ begin
       CloseHandle(WaitCompleteIsBusyEvent);
       CloseHandle(FFmaMutex);
       //
-      if PortableModeActivated then
+      if PortableModeActivated and not FNotFirstInstance then
         if not FAppInitialized or
           (MessageDlgW(_('Do you want to cleanup Registry settings for FMA?'),mtConfirmation,MB_YESNO) = ID_YES) then
           CleanupRegistry;
@@ -7137,6 +7143,7 @@ begin
     if cbTerminal.Items.IndexOf(cbTerminal.Text) = -1 then
       cbTerminal.Items.Insert(0,cbTerminal.Text);
     cbTerminal.Text := '';
+    cbTerminal.SetFocus;
   except
     on e: Exception do Memo3.Lines.Add(e.Message);
   end;
@@ -11424,6 +11431,9 @@ begin
   { Restore Event Viewer visible status }
   if FormStorage1.StoredValue['Log'] = True then // do not localize
     ActionViewLog.Execute;
+
+  { Show Text Messages search panel by default, req. by Mhr :) }
+  frmMsgView.Search1.Click;
 
   { Add some default Welcome Tips here }
   frmWelcomeTips.QueueTip('You can upload or download multiple files in a single session by holding down the control key while selecting the files.',15);

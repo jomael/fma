@@ -23,6 +23,7 @@ object frmInfoView: TfrmInfoView
     Height = 499
     Align = alLeft
     BevelOuter = bvNone
+    ParentBackground = True
     ParentColor = True
     TabOrder = 0
     object Splitter2: TTntSplitter
@@ -53,6 +54,7 @@ object frmInfoView: TfrmInfoView
       Align = alTop
       BevelOuter = bvNone
       Constraints.MinHeight = 97
+      ParentBackground = True
       ParentColor = True
       TabOrder = 0
       DesignSize = (
@@ -61,29 +63,17 @@ object frmInfoView: TfrmInfoView
       object Label10: TTntLabel
         Left = 8
         Top = 8
-        Width = 78
-        Height = 33
+        Width = 26
+        Height = 13
         Caption = 'Inbox'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 14346715
-        Font.Height = -29
-        Font.Name = 'Book Antiqua'
-        Font.Style = [fsBold]
-        ParentFont = False
         Transparent = True
       end
       object Label17: TTntLabel
         Left = 32
         Top = 18
-        Width = 41
-        Height = 19
+        Width = 26
+        Height = 13
         Caption = 'Inbox'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clGreen
-        Font.Height = -16
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
         Transparent = True
       end
       object Bevel2: TTntBevel
@@ -237,6 +227,7 @@ object frmInfoView: TfrmInfoView
       Align = alClient
       BevelOuter = bvNone
       Constraints.MinHeight = 133
+      ParentBackground = True
       ParentColor = True
       TabOrder = 1
       DesignSize = (
@@ -245,29 +236,17 @@ object frmInfoView: TfrmInfoView
       object Label15: TTntLabel
         Left = 8
         Top = 8
-        Width = 168
-        Height = 33
+        Width = 60
+        Height = 13
         Caption = 'Recent Calls'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 14346715
-        Font.Height = -29
-        Font.Name = 'Book Antiqua'
-        Font.Style = [fsBold]
-        ParentFont = False
         Transparent = True
       end
       object Label21: TTntLabel
         Left = 32
         Top = 18
-        Width = 85
-        Height = 19
+        Width = 60
+        Height = 13
         Caption = 'Recent Calls'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clGreen
-        Font.Height = -16
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
         Transparent = True
       end
       object Bevel4: TTntBevel
@@ -406,6 +385,7 @@ object frmInfoView: TfrmInfoView
       Align = alBottom
       BevelOuter = bvNone
       Constraints.MinHeight = 257
+      ParentBackground = True
       ParentColor = True
       TabOrder = 2
       OnResize = BatteryPanelResize
@@ -415,30 +395,18 @@ object frmInfoView: TfrmInfoView
       object Label26: TTntLabel
         Left = 8
         Top = 8
-        Width = 219
-        Height = 33
+        Width = 76
+        Height = 13
         Caption = 'Phone & Battery'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 14346715
-        Font.Height = -29
-        Font.Name = 'Book Antiqua'
-        Font.Style = [fsBold]
-        ParentFont = False
         ShowAccelChar = False
         Transparent = True
       end
       object Label27: TTntLabel
         Left = 32
         Top = 18
-        Width = 114
-        Height = 19
+        Width = 76
+        Height = 13
         Caption = 'Phone & Battery'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clGreen
-        Font.Height = -16
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
         ShowAccelChar = False
         Transparent = True
       end
@@ -489,13 +457,15 @@ object frmInfoView: TfrmInfoView
         OnClick = OpenCloseImageClick
         OnDblClick = OpenCloseImageClick
       end
-      object TntPanel1: TTntPanel
+      object BatteryPanelLeft: TTntPanel
         Left = 0
         Top = 48
         Width = 207
         Height = 209
         Anchors = [akLeft, akTop, akBottom]
         BevelOuter = bvNone
+        Color = clWhite
+        ParentBackground = True
         TabOrder = 0
         DesignSize = (
           207
@@ -671,13 +641,15 @@ object frmInfoView: TfrmInfoView
           Caption = 'Battery type:'
         end
       end
-      object TntPanel2: TTntPanel
+      object BatteryPanelRight: TTntPanel
         Left = 208
         Top = 48
         Width = 205
         Height = 209
         Anchors = [akTop, akBottom]
         BevelOuter = bvNone
+        Color = clWhite
+        ParentBackground = True
         TabOrder = 1
         DesignSize = (
           205
@@ -875,6 +847,7 @@ object frmInfoView: TfrmInfoView
     Height = 499
     Align = alClient
     BevelOuter = bvNone
+    ParentBackground = True
     ParentColor = True
     TabOrder = 1
     object Splitter4: TTntSplitter
@@ -905,6 +878,7 @@ object frmInfoView: TfrmInfoView
       Align = alTop
       BevelOuter = bvNone
       Constraints.MinHeight = 97
+      ParentBackground = True
       ParentColor = True
       TabOrder = 0
       DesignSize = (
@@ -913,29 +887,17 @@ object frmInfoView: TfrmInfoView
       object Label18: TTntLabel
         Left = 8
         Top = 8
-        Width = 101
-        Height = 33
+        Width = 34
+        Height = 13
         Caption = 'Outbox'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 14346715
-        Font.Height = -29
-        Font.Name = 'Book Antiqua'
-        Font.Style = [fsBold]
-        ParentFont = False
         Transparent = True
       end
       object Label19: TTntLabel
         Left = 32
         Top = 18
-        Width = 52
-        Height = 19
+        Width = 34
+        Height = 13
         Caption = 'Outbox'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clGreen
-        Font.Height = -16
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
         Transparent = True
       end
       object Bevel3: TTntBevel
@@ -1089,6 +1051,7 @@ object frmInfoView: TfrmInfoView
       Align = alClient
       BevelOuter = bvNone
       Constraints.MinHeight = 133
+      ParentBackground = True
       ParentColor = True
       TabOrder = 1
       DesignSize = (
@@ -1097,29 +1060,17 @@ object frmInfoView: TfrmInfoView
       object Label24: TTntLabel
         Left = 8
         Top = 8
-        Width = 174
-        Height = 33
+        Width = 58
+        Height = 13
         Caption = 'Missed Calls'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 14346715
-        Font.Height = -29
-        Font.Name = 'Book Antiqua'
-        Font.Style = [fsBold]
-        ParentFont = False
         Transparent = True
       end
       object Label25: TTntLabel
         Left = 32
         Top = 18
-        Width = 85
-        Height = 19
+        Width = 58
+        Height = 13
         Caption = 'Missed Calls'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clGreen
-        Font.Height = -16
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
         Transparent = True
       end
       object Label23: TTntLabel
@@ -1258,6 +1209,7 @@ object frmInfoView: TfrmInfoView
       Align = alBottom
       BevelOuter = bvNone
       Constraints.MinHeight = 257
+      ParentBackground = True
       ParentColor = True
       TabOrder = 2
       DesignSize = (
@@ -1273,29 +1225,17 @@ object frmInfoView: TfrmInfoView
       object Label32: TTntLabel
         Left = 8
         Top = 8
-        Width = 187
-        Height = 33
+        Width = 67
+        Height = 13
         Caption = 'Personal Data'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 14346715
-        Font.Height = -29
-        Font.Name = 'Book Antiqua'
-        Font.Style = [fsBold]
-        ParentFont = False
         Transparent = True
       end
       object Label33: TTntLabel
         Left = 32
         Top = 18
-        Width = 97
-        Height = 19
+        Width = 67
+        Height = 13
         Caption = 'Personal Data'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clGreen
-        Font.Height = -16
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
         Transparent = True
       end
       object Image9: TTntImage
@@ -1784,29 +1724,17 @@ object frmInfoView: TfrmInfoView
     object wDate: TTntLabel
       Left = 84
       Top = 40
-      Width = 12
-      Height = 16
+      Width = 9
+      Height = 13
       Caption = '...'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clGray
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
       Transparent = True
     end
-    object Label9: TTntLabel
+    object lblTitle: TTntLabel
       Left = 84
       Top = 12
-      Width = 290
-      Height = 28
+      Width = 122
+      Height = 13
       Caption = 'floAt'#39's Mobile Agent today'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clGreen
-      Font.Height = -24
-      Font.Name = 'Book Antiqua'
-      Font.Style = []
-      ParentFont = False
       Transparent = True
     end
     object Image1: TTntImage

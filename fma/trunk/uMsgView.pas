@@ -415,6 +415,7 @@ begin
   if Sem then exit;
   Sem := True;
 
+  { Clear view }
   DoCloseDetails;
   dbfixed := False;
   SearchName := '';
@@ -422,6 +423,9 @@ begin
   edSearchFor.Text := '';
   edSearchForExit(nil);
   FIsRendered := False;
+  lblFiltered.Visible := False;
+
+  { Fill list }
   try
     if sl.Count <> 0 then NoItemsPanel.Visible := False;
     if sl.Count > 99 then begin // show a message to user on large folder
@@ -2083,13 +2087,16 @@ end;
 procedure TfrmMsgView.ClearView;
 begin
   DoCloseDetails;
-  edSearchFor.Text := '';
-  edSearchForExit(nil);
   SearchName := '';
   SearchMode := smAll;
+  edSearchFor.Text := '';
+  edSearchForExit(nil);
   FIsRendered := False;
   FRendered := nil;
+  lblFiltered.Visible := False;
+  ListMsg.BeginUpdate;
   ListMsg.Clear;
+  ListMsg.EndUpdate;
 end;
 
 procedure TfrmMsgView.FixSMSDatabase1Click(Sender: TObject);
@@ -2221,8 +2228,12 @@ end;
 constructor TfrmMsgView.Create(AOwner: TComponent);
 begin
   inherited;
+{$IFDEF VER150}
+  DetailsPanel.ParentBackground := False;
+  SearchPanel.ParentBackground := False;
   LookupPanel.ParentBackground := False;
   LookupWhitePanel.ParentBackground := False;
+{$ENDIF}
   TntLabel1.Left := LookupPanel.Left + LookupPanel.Width + 8;
   TntLabel2.Left := TntLabel1.Left + TntLabel1.Width + 4;
   TntLabel2.Font.Style := TntLabel2.Font.Style + [fsBold]; 

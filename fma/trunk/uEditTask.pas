@@ -64,6 +64,7 @@ type
   private
     { Private declarations }
     procedure DoSanityCheck;
+    procedure DoSetStatus(Sender: TObject; IsEnabled: boolean);
   public
     { Public declarations }
   end;
@@ -74,10 +75,17 @@ var
 implementation
 
 uses
-  gnugettext, gnugettexthelpers, DateUtils,
-  Unit1, uGetContact;
+  gnugettext, gnugettexthelpers,
+  Unit1, DateUtils, uGetContact, uDialogs;
 
 {$R *.dfm}
+
+type
+  THackControl = class(TWinControl)
+  public
+    property Enabled;
+    property Color;
+  end;
 
 procedure TfrmEditTask.FormCreate(Sender: TObject);
 begin
@@ -104,13 +112,16 @@ end;
 
 procedure TfrmEditTask.DoSanityCheck;
 begin
-  // Sanity Check
+  if Trim(txtSubject.Text) = '' then begin
+    MessageDlgW(_('You have to enter Task subject.'),mtError,MB_OK);
+    Abort;
+  end;
 end;
 
 procedure TfrmEditTask.chbReminderClick(Sender: TObject);
 begin
-  dtpDate.Enabled := chbReminder.Checked;
-  dtpTime.Enabled := chbReminder.Checked;
+  DoSetStatus(dtpDate,chbReminder.Checked);
+  DoSetStatus(dtpTime,chbReminder.Checked);
 end;
 
 procedure TfrmEditTask.chbCompletedClick(Sender: TObject);
@@ -177,6 +188,17 @@ begin
   {if not btnApply.Enabled or (MessageDlgW(_('Discard current changes?'),
     mtConfirmation, MB_YESNO or MB_DEFBUTTON2) = ID_YES) then}
     ModalResult := mrCancel;
+end;
+
+procedure TfrmEditTask.DoSetStatus(Sender: TObject; IsEnabled: boolean);
+begin
+  with THackControl(Sender) do begin
+    Enabled := IsEnabled;
+    if Enabled then
+      Color := clWindow
+    else
+      Color := clBtnFace;
+  end;
 end;
 
 end.

@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 290
   Top = 152
   Width = 900
-  Height = 680
+  Height = 676
   Cursor = crArrow
   BorderIcons = [biSystemMenu, biMinimize, biMaximize, biHelp]
   Caption = 'floAt'#39's Mobile Agent'
@@ -603,7 +603,7 @@ object Form1: TForm1
         Control = tbMainMenu
         ImageIndex = -1
         MinHeight = 21
-        Width = 281
+        Width = 297
       end
       item
         Break = False
@@ -611,7 +611,7 @@ object Form1: TForm1
         ImageIndex = -1
         MinHeight = 22
         Visible = False
-        Width = 131
+        Width = 147
       end
       item
         Break = False
@@ -619,42 +619,42 @@ object Form1: TForm1
         ImageIndex = -1
         MinHeight = 24
         Visible = False
-        Width = 470
+        Width = 444
       end
       item
         Control = tbStandard
         ImageIndex = -1
         MinHeight = 24
         Visible = False
-        Width = 243
+        Width = 235
       end
       item
         Break = False
         Control = tbExplorer
         ImageIndex = -1
         MinHeight = 24
-        Width = 227
+        Width = 219
       end
       item
         Break = False
         Control = tbMessages
         ImageIndex = -1
         MinHeight = 24
-        Width = 299
+        Width = 291
       end
       item
         Break = False
         Control = tbCalls
         ImageIndex = -1
         MinHeight = 24
-        Width = 109
+        Width = 141
       end>
     EdgeBorders = [ebTop, ebBottom]
     OnChange = CoolBarChange
     object tbStandard: TToolBar
       Left = 9
       Top = 26
-      Width = 232
+      Width = 222
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -747,9 +747,9 @@ object Form1: TForm1
       end
     end
     object tbProfile: TToolBar
-      Left = 294
+      Left = 308
       Top = 1
-      Width = 120
+      Width = 134
       Height = 22
       AutoSize = True
       ButtonWidth = 25
@@ -782,9 +782,9 @@ object Form1: TForm1
       end
     end
     object tbMessages: TToolBar
-      Left = 487
+      Left = 467
       Top = 26
-      Width = 288
+      Width = 278
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -872,9 +872,9 @@ object Form1: TForm1
       end
     end
     object tbCalls: TToolBar
-      Left = 790
+      Left = 760
       Top = 26
-      Width = 98
+      Width = 128
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -913,7 +913,7 @@ object Form1: TForm1
     object tbMainMenu: TToolBar
       Left = 9
       Top = 1
-      Width = 270
+      Width = 284
       Height = 21
       AutoSize = True
       ButtonHeight = 21
@@ -931,9 +931,9 @@ object Form1: TForm1
       OnCustomDrawButton = tbMainMenuCustomDrawButton
     end
     object tbPhone: TToolBar
-      Left = 429
+      Left = 457
       Top = 0
-      Width = 459
+      Width = 431
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -968,9 +968,9 @@ object Form1: TForm1
       end
     end
     object tbExplorer: TToolBar
-      Left = 256
+      Left = 246
       Top = 26
-      Width = 216
+      Width = 206
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -1408,6 +1408,7 @@ object Form1: TForm1
     object ActionViewMsgSearch: TTntAction
       Category = 'View'
       Caption = '&Search Messages'
+      Checked = True
       Hint = 'Toggle Search Messages On / Off'
       ImageIndex = 71
       OnExecute = ActionViewMsgSearchExecute

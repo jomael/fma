@@ -121,6 +121,7 @@ type
     procedure SetReccuWeekDaysVisible(const Value: boolean);
     function GetWeekDays: WideString;
     procedure SetWeekDays(const Value: WideString);
+    procedure DoSetStatus(Sender: TObject; IsEnabled: boolean);
   public
     { Public declarations }
     procedure UpdateAlarm;
@@ -142,9 +143,16 @@ implementation
 
 uses
   gnugettext, gnugettexthelpers,
-  DateUtils, Math, Unit1, uVCalendar;
+  DateUtils, Math, Unit1, uVCalendar, uDialogs;
 
 {$R *.dfm}
+
+type
+  THackControl = class(TWinControl)
+  public
+    property Enabled;
+    property Color;
+  end;
 
 procedure TfrmEditEvent.FormCreate(Sender: TObject);
 begin
@@ -176,6 +184,7 @@ begin
   FPrevWeekDay := 0;
 
   TabSheet3.Enabled := Form1.IsK700orBetter; // K610 previously
+  TntRadioGroupReccurence.Enabled := TabSheet3.Enabled;
   lblDisabledReccurence.Visible := not TabSheet3.Enabled;
   StartDateTimeChange(nil);
   TntRadioGroupReccurenceClick(nil);
@@ -191,7 +200,10 @@ end;
 
 procedure TfrmEditEvent.DoSanityCheck;
 begin
-//  raise EConvertError.Create(_('You have to enter valid entry'));
+  if Trim(txtSubject.Text) = '' then begin
+    MessageDlgW(_('You have to enter Event subject.'),mtError,MB_OK);
+    Abort;
+  end;
 end;
 
 procedure TfrmEditEvent.TntRadioGroupReminderClick(Sender: TObject);
@@ -240,10 +252,12 @@ procedure TfrmEditEvent.DurationChange(Sender: TObject);
 var
   DateTimeEnd: TDateTime;
 begin
-  TntDatePickerEnd.Enabled := TntComboBoxDuration.ItemIndex = 4;
-  TntTimePickerEnd.Enabled := TntDatePickerEnd.Enabled;
+  DoSetStatus(TntDatePickerEnd,TntComboBoxDuration.ItemIndex = 4);
+  DoSetStatus(TntTimePickerEnd,TntDatePickerEnd.Enabled);
+
   Label7.Enabled := TntDatePickerEnd.Enabled;
   Label8.Enabled := TntDatePickerEnd.Enabled;
+  
   // If Other duration is selected, do nothing
   if TntComboBoxDuration.ItemIndex <> 4 then begin
     DateTimeEnd := TntDatePickerStart.DateTime;
@@ -387,7 +401,8 @@ end;
 procedure TfrmEditEvent.TntRadioGroupReccurenceClick(Sender: TObject);
 begin
   TntLabel3.Enabled := TntRadioGroupReccurence.ItemIndex <> 0;
-  TntComboBoxRangeEnd.Enabled := TntLabel3.Enabled;
+  
+  DoSetStatus(TntComboBoxRangeEnd,TntLabel3.Enabled);
   TntComboBoxRangeEndChange(nil);
 
   ReccuWeekDaysVisible := TntRadioGroupReccurence.ItemIndex = 2;
@@ -405,8 +420,9 @@ end;
 
 procedure TfrmEditEvent.SetReminderStartVisible(const Value: boolean);
 begin
-  TntDatePickerReminder.Enabled := Value;
-  TntTimePickerReminder.Enabled := Value;
+  DoSetStatus(TntDatePickerReminder,Value);
+  DoSetStatus(TntTimePickerReminder,Value);
+
   Label26.Enabled := Value;
   Label10.Enabled := Value;
 end;
@@ -418,8 +434,9 @@ end;
 
 procedure TfrmEditEvent.SetReccurenceEndVisible(const Value: boolean);
 begin
-  TntDatePickerReccurence.Enabled := Value;
-  TntTimePickerReccurence.Enabled := Value;
+  DoSetStatus(TntDatePickerReccurence,Value);
+  DoSetStatus(TntTimePickerReccurence,Value);
+  
   TntLabel2.Enabled := Value;
   TntLabel1.Enabled := Value;
 end;
@@ -444,9 +461,10 @@ var
   i: Integer;
 begin
   TntLabel4.Enabled := Value;
+  
   for i := 1 to 7 do
-    with GetDayCheck(i) do
-      Enabled := Value;
+    DoSetStatus(GetDayCheck(i),Value);
+    
   if Value then UpdateWeekDays; // restore current week day settings
 end;
 
@@ -457,17 +475,16 @@ begin
   if FPrevWeekDay <> 0 then
     with GetDayCheck(FPrevWeekDay) do
       Checked := Tag <> 0; // restore Checked state
-  for i := 1 to 7 do
-    with GetDayCheck(i) do begin
-      Enabled := TntRadioGroupReccurence.ItemIndex = 2;
-      Tag := 0; // clean-up Checked state
+  for i := 1 to 7 do begin
+      DoSetStatus(GetDayCheck(i),TntRadioGroupReccurence.ItemIndex = 2);
+      GetDayCheck(i).Tag := 0; // clean-up Checked state
     end;
   FPrevWeekDay := DayOfTheWeek(TntDatePickerStart.DateTime);
   with GetDayCheck(FPrevWeekDay) do begin
     Tag := byte(Checked); // remember Checked state
     Checked := True;
-    Enabled := False;
   end;
+  DoSetStatus(GetDayCheck(FPrevWeekDay),False);
 end;
 
 function TfrmEditEvent.GetWeekDays: WideString;
@@ -533,6 +550,17 @@ begin
   {if not btnApply.Enabled or (MessageDlgW(_('Discard current changes?'),
     mtConfirmation, MB_YESNO or MB_DEFBUTTON2) = ID_YES) then}
     ModalResult := mrCancel;
+end;
+
+procedure TfrmEditEvent.DoSetStatus(Sender: TObject; IsEnabled: boolean);
+begin
+  with THackControl(Sender) do begin
+    Enabled := IsEnabled;
+    if Enabled then
+      Color := clWindow
+    else
+      Color := clBtnFace;
+  end;
 end;
 
 end.

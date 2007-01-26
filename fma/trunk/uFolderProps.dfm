@@ -75,7 +75,7 @@ object frmFolderProps: TfrmFolderProps
         Top = 60
         Width = 353
         Height = 273
-        ActivePage = tsContact
+        ActivePage = tsDatabase
         MultiLine = True
         Style = tsButtons
         TabOrder = 2

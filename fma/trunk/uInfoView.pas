@@ -33,7 +33,7 @@ type
     wSignal: TTntLabel;
     SignalImage: TTntImage;
     wDate: TTntLabel;
-    Label9: TTntLabel;
+    lblTitle: TTntLabel;
     Image1: TTntImage;
     LMDFill2: TLMDFill;
     PopupMenu2: TTntPopupMenu;
@@ -170,8 +170,8 @@ type
     linkSyncBookmarks: TTntLabel;
     linkSyncAll: TTntLabel;
     linkJumpSent: TTntLabel;
-    TntPanel1: TTntPanel;
-    TntPanel2: TTntPanel;
+    BatteryPanelLeft: TTntPanel;
+    BatteryPanelRight: TTntPanel;
     procedure ListViewResize(Sender: TObject);
     procedure ListViewCompare(Sender: TObject; Item1, Item2: TListItem; Data: Integer; var Compare: Integer);
     procedure FrameResize(Sender: TObject);
@@ -206,6 +206,7 @@ type
     { Private declarations }
   public
     { Public declarations }
+    constructor Create(AOwner: TComponent); override;
     procedure GetIdent;
     procedure UpdateWelcomePage(Init: boolean = False);
   end;
@@ -853,9 +854,60 @@ end;
 
 procedure TfrmInfoView.BatteryPanelResize(Sender: TObject);
 begin
-  TntPanel1.Width := BatteryPanel.Width div 2;
-  TntPanel2.Left := BatteryPanel.Width div 2;
-  TntPanel2.Width := BatteryPanel.Width - TntPanel2.Left;
+  BatteryPanelLeft.Width := BatteryPanel.Width div 2;
+  BatteryPanelRight.Left := BatteryPanel.Width div 2;
+  BatteryPanelRight.Width := BatteryPanel.Width - BatteryPanelRight.Left;
+end;
+
+constructor TfrmInfoView.Create(AOwner: TComponent);
+var
+  i: integer;
+begin
+  inherited;
+  PopupMenu := Form1.PopupMenu2;
+  BigImage.Picture.Assign(Form1.CommonBitmaps.Bitmap[1]);
+{$IFDEF VER150}
+  ParentBackground := False;
+  DiagramPanel.ParentBackground := False;
+  BatteryPanel.ParentBackground := False;
+  BatteryPanelLeft.ParentBackground := False;
+  BatteryPanelRight.ParentBackground := False;
+{$ENDIF}
+  Label5.Font.Color := clOlive;
+  Label3.Font.Color := clGreen;
+  Label2.Font.Color := clMaroon;
+  for i := 0 to ComponentCount-1 do
+    if Components[i] is TTntLabel then
+      // HACK! change all linkXXX labels font style and color
+      if Pos('link',Components[i].Name) = 1 then // do not localize
+        with Components[i] as TTntLabel do begin
+          Font.Color := clHotLight;
+          Font.Style := Font.Style + [fsUnderline];
+        end;
+
+  lblTitle.Font.Color := clGreen;
+  lblTitle.Font.Size := lblTitle.Font.Size + 10;
+
+  Label10.Font.Name := 'Book Antiqua';
+  Label10.Font.Color := $00DAE9DB;
+  Label10.Font.Size := Label10.Font.Size + 14;
+  Label10.Font.Style := Label10.Font.Style + [fsBold];
+  Label18.Font.Assign(Label10.Font);
+  Label15.Font.Assign(Label10.Font);
+  Label26.Font.Assign(Label10.Font);
+  Label32.Font.Assign(Label10.Font);
+  Label24.Font.Assign(Label10.Font);
+
+  Label17.Font.Color := clGreen;
+  Label17.Font.Size := Label17.Font.Size + 4;
+  Label19.Font.Assign(Label17.Font);
+  Label21.Font.Assign(Label17.Font);
+  Label27.Font.Assign(Label17.Font);
+  Label33.Font.Assign(Label17.Font);
+  Label25.Font.Assign(Label17.Font);
+
+  wDate.Font.Color := clGray;
+  wDate.Font.Size := wDate.Font.Size + 2;
 end;
 
 end.

@@ -4,18 +4,22 @@ object frmPortableLogon: TfrmPortableLogon
   ActiveControl = rbPortableMode
   BorderStyle = bsDialog
   Caption = 'floAt'#39's Mobile Agent'
-  ClientHeight = 322
+  ClientHeight = 338
   ClientWidth = 289
   Color = clWhite
   ParentFont = True
   OldCreateOrder = False
   Position = poScreenCenter
   OnCreate = FormCreate
+  OnShow = FormShow
+  DesignSize = (
+    289
+    338)
   PixelsPerInch = 96
   TextHeight = 13
   object Image3: TTntImage
     Left = 0
-    Top = 132
+    Top = 148
     Width = 289
     Height = 190
     Align = alBottom
@@ -117,15 +121,13 @@ object frmPortableLogon: TfrmPortableLogon
     Height = 13
     Caption = 'Welcome!'
   end
-  object TntLabel2: TTntLabel
+  object lblWelcomeInfo: TTntLabel
     Left = 12
     Top = 44
     Width = 265
     Height = 53
     AutoSize = False
-    Caption = 
-      'FMA has detected that it is started from a Removable device. Ple' +
-      'ase select how do you want to start the application?'
+    Caption = 'Please select how do you want to start the application?'
     WordWrap = True
   end
   object lblPortableInfo: TTntLabel
@@ -133,11 +135,13 @@ object frmPortableLogon: TfrmPortableLogon
     Top = 124
     Width = 213
     Height = 57
+    Cursor = crHandPoint
     AutoSize = False
     Caption = 
       'While in this mode application will not save any data to local c' +
       'omputer, and settings will be erased on application exit (option' +
       'al).'
+    Transparent = True
     WordWrap = True
     OnClick = lblPortableInfoClick
   end
@@ -146,11 +150,13 @@ object frmPortableLogon: TfrmPortableLogon
     Top = 208
     Width = 213
     Height = 57
+    Cursor = crHandPoint
     AutoSize = False
     Caption = 
       'All data will be stored to local computer'#39's users accounts priva' +
       'te folders. Settings will be available on next application start' +
       'up.'
+    Transparent = True
     WordWrap = True
     OnClick = lblNormalInfoClick
   end
@@ -442,17 +448,18 @@ object frmPortableLogon: TfrmPortableLogon
   end
   object btnCancel: TTntButton
     Left = 204
-    Top = 288
+    Top = 304
     Width = 75
     Height = 25
+    Anchors = [akRight, akBottom]
     Cancel = True
     Caption = 'E&xit'
     ModalResult = 2
-    TabOrder = 3
+    TabOrder = 4
   end
   object rbPortableMode: TTntRadioButton
-    Left = 52
-    Top = 104
+    Left = 51
+    Top = 103
     Width = 132
     Height = 17
     Caption = '&Portable Mode'
@@ -462,8 +469,8 @@ object frmPortableLogon: TfrmPortableLogon
     OnClick = OnModeChange
   end
   object rbNormalMode: TTntRadioButton
-    Left = 52
-    Top = 188
+    Left = 51
+    Top = 187
     Width = 132
     Height = 17
     Caption = '&Normal Mode'
@@ -472,12 +479,21 @@ object frmPortableLogon: TfrmPortableLogon
   end
   object btnOK: TTntButton
     Left = 68
-    Top = 288
+    Top = 304
     Width = 127
     Height = 25
+    Anchors = [akRight, akBottom]
     Caption = '&Start Application...'
     Default = True
-    TabOrder = 2
+    TabOrder = 3
     OnClick = btnOKClick
+  end
+  object cbDontAskAgain: TTntCheckBox
+    Left = 12
+    Top = 276
+    Width = 229
+    Height = 17
+    Caption = '&Don'#39't ask me again for this device'
+    TabOrder = 2
   end
 end

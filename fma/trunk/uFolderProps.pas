@@ -273,7 +273,7 @@ begin
     lvDatabase.Clear;
     NoItemsPanel.Visible := False;
     Fullpath := Form1.GetProfilePath+'dat'; // do not localize
-    btnFindDB.Enabled := True;
+    btnFindDB.Enabled := DirectoryExists(Fullpath);
     btnRules.Visible := False;
     lvDatabase.Height := btnFindDB.Top - lvDatabase.Top - 8;
     // Contacts

@@ -83,6 +83,7 @@ type
     procedure Set_Filename(const Value: string);
   public
     { Public declarations }
+    constructor Create(AOwner: TComponent); override;
     procedure Initialize;
     procedure Finalize;
 
@@ -359,6 +360,14 @@ end;
 procedure TfrmEditor.ScriptingOptions1Click(Sender: TObject);
 begin
   Form1.ScriptingOptions1.Click;
+end;
+
+constructor TfrmEditor.Create(AOwner: TComponent);
+begin
+  inherited;
+{$IFDEF VER150}
+  DetailsPanel.ParentBackground := False; 
+{$ENDIF}
 end;
 
 end.
