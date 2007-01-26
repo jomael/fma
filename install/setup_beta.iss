@@ -222,6 +222,8 @@ Source: ..\fma\trunk\uEditEvent.dfm; DestDir: {app}\source; Flags: overwriteread
 Source: ..\fma\trunk\uEditEvent.pas; DestDir: {app}\source; Flags: overwritereadonly; Components: src
 Source: ..\fma\trunk\uEditProfile.dfm; DestDir: {app}\source; Flags: overwritereadonly; Components: src
 Source: ..\fma\trunk\uEditProfile.pas; DestDir: {app}\source; Flags: overwritereadonly; Components: src
+Source: ..\fma\trunk\uEditSMS.dfm; DestDir: {app}\source; Flags: overwritereadonly; Components: src
+Source: ..\fma\trunk\uEditSMS.pas; DestDir: {app}\source; Flags: overwritereadonly; Components: src
 Source: ..\fma\trunk\uEditTask.dfm; DestDir: {app}\source; Flags: overwritereadonly; Components: src
 Source: ..\fma\trunk\uEditTask.pas; DestDir: {app}\source; Flags: overwritereadonly; Components: src
 Source: ..\fma\trunk\uExploreView.dfm; DestDir: {app}\source; Flags: overwritereadonly; Components: src
@@ -292,8 +294,6 @@ Source: ..\fma\trunk\uSelectContact.pas; DestDir: {app}\source; Flags: overwrite
 Source: ..\fma\trunk\uSIMEdit.dfm; DestDir: {app}\source; Flags: overwritereadonly; Components: src
 Source: ..\fma\trunk\uSIMEdit.pas; DestDir: {app}\source; Flags: overwritereadonly; Components: src
 Source: ..\fma\trunk\uSMS.pas; DestDir: {app}\source; Flags: overwritereadonly; Components: src
-Source: ..\fma\trunk\uSMSDetail.dfm; DestDir: {app}\source; Flags: overwritereadonly; Components: src
-Source: ..\fma\trunk\uSMSDetail.pas; DestDir: {app}\source; Flags: overwritereadonly; Components: src
 Source: ..\fma\trunk\uSplash.dfm; DestDir: {app}\source; Flags: overwritereadonly; Components: src
 Source: ..\fma\trunk\uSplash.pas; DestDir: {app}\source; Flags: overwritereadonly; Components: src
 Source: ..\fma\trunk\uStatusDlg.dfm; DestDir: {app}\source; Flags: overwritereadonly; Components: src
@@ -332,6 +332,7 @@ Name: {userdesktop}\floAt's Mobile Agent 2; Filename: {app}\MobileAgent.exe; Tas
 Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\floAt's Mobile Agent 2; Filename: {app}\MobileAgent.exe; WorkingDir: {app}; Comment: Opens floAt's Mobile Agent application.; IconIndex: 0; Flags: createonlyiffileexists; Components: bin; Tasks: quickicon
 Name: {group}\floAt's Mobile Agent; Filename: {app}\MobileAgent.exe; WorkingDir: {app}; IconIndex: 0; Flags: createonlyiffileexists; Components: bin; Comment: Opens floAt's Mobile Agent application.
 Name: {group}\floAt's Mobile Agent in Debug Mode; Filename: {app}\MobileAgent.exe; Parameters: -debug -debugobex; IconIndex: 0; WorkingDir: {app}; Flags: createonlyiffileexists; Components: bin; Comment: Opens floAt's Mobile Agent application in debug mode. Useful if you have experienced some problems using FMA.
+Name: {group}\floAt's Mobile Agent in Portable Mode; Filename: {app}\MobileAgent.exe; Parameters: -portable; IconIndex: 0; WorkingDir: {app}; Flags: createonlyiffileexists; Components: bin; Comment: Opens floAt's Mobile Agent application in portable mode. Useful if you want your data stored under FMA folder.
 Name: {group}\floAt's Mobile Agent Help; Filename: {app}\help\MobileAgent.chm; WorkingDir: {app}\help; Comment: Opens floAt's Mobile Agent help file.; Flags: createonlyiffileexists; Components: bin
 Name: {group}\General Public License; Filename: {app}\General Public License.rtf; WorkingDir: {app}; Comment: Opens floAt's Mobile Agent license agreement file.; Flags: createonlyiffileexists
 Name: {group}\Media Control Management; Filename: {app}\floAtMediaCtrl.exe; WorkingDir: {app}; Comment: Starts Media Control application in system tray area.; Flags: createonlyiffileexists; IconIndex: 0; Components: bin

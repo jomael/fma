@@ -372,6 +372,11 @@ FMA Beta 3. The change log is following:
 - Changed: PluginManager now uses new am.AddItemEx 
 - Changed: Reverted changes to SMS UCS2 encoding
 
+- Fixed: GetSMSMembers returning wrong result
+- Added: DB Repair now also compacts database
+- Added: Advanced Text Messages searching
+- Added: Text Messages Saved Searches support
+
 - Fixed: Editing new SIM card contacts (K700+)
 - Fixed: Upload SIM changes to phones (K610+)
 - Fixed: Copy contacts between SIM and Phone
@@ -388,5 +393,26 @@ FMA Beta 3. The change log is following:
 - Added: Outlook Sync conflict can be canceled
 - Added: Force change contacts state (IRMC off)
 - Added: Support and auto-detect Portable mode
+
+- Fixed: Getting Started wizard COMs detection
+- Fixed: Sanity check routines on some places
+- Fixed: Web Update wizard GUI (wrapped text)
+- Fixed: Portable mode dialog GUI transparency
+- Fixed: Today screen battery panel background
+- Fixed: Properties Find Target is not working
+- Fixed: SM/ME popup menus are reorganized now
+- Fixed: Changing SMS folder will hide Filtered
+- Fixed: Don't alter registry if no start mode
+- Fixed: Cleanup settings on FMA application exit
+- Fixed: Calendar Event/Task GUI (fonts, colors)
+- Fixed: Today page GUI (fonts, colors) changes
+- Changed: SMS Messages search visible by default
+- Changed: About dialog legal notices and GUI
+- Changed: Log event details dialog GUI changes
+- Added: Remember Portable mode startup settings
+- Added: Portable Mode dialog mode auto-detection
+- Added: FMA in portable mode program setup icon
+
+Note: Hold down CTRL to ignore portable settings and to show Startup Mode dialog.
 
 The FMA Team
