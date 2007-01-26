@@ -302,54 +302,36 @@ object frmWebUpdate: TfrmWebUpdate
         Height = 13
         Caption = '<version>'
       end
-      object gbNumbers: TTntGroupBox
+      object lblVersionInfo: TTntLabel
         Left = 56
-        Top = 179
-        Width = 397
-        Height = 98
+        Top = 264
+        Width = 197
+        Height = 13
+        Caption = '(select custom version to view its details)'
+        Enabled = False
+        Layout = tlCenter
+      end
+      object clNumbers: TTntCheckListBox
+        Left = 56
+        Top = 184
+        Width = 161
+        Height = 77
+        OnClickCheck = clNumbersClickCheck
+        AllowGrayed = True
+        Enabled = False
+        ItemHeight = 13
         TabOrder = 5
-        object lblVersionInfo: TTntLabel
-          Left = 172
-          Top = 12
-          Width = 217
-          Height = 13
-          Alignment = taCenter
-          AutoSize = False
-          Caption = '(select custom version to view its details)'
-          Enabled = False
-        end
-        object mmoVersionInfo: TTntMemo
-          Left = 171
-          Top = 36
-          Width = 218
-          Height = 54
-          BorderStyle = bsNone
-          Enabled = False
-          ParentColor = True
-          ReadOnly = True
-          ScrollBars = ssVertical
-          TabOrder = 1
-        end
-        object clNumbers: TTntCheckListBox
-          Left = 8
-          Top = 12
-          Width = 157
-          Height = 77
-          OnClickCheck = clNumbersClickCheck
-          AllowGrayed = True
-          Enabled = False
-          ItemHeight = 13
-          TabOrder = 0
-        end
-        object Panel1: TPanel
-          Left = 172
-          Top = 31
-          Width = 217
-          Height = 1
-          BevelOuter = bvNone
-          Color = clGrayText
-          TabOrder = 2
-        end
+      end
+      object mmoVersionInfo: TTntMemo
+        Left = 220
+        Top = 184
+        Width = 233
+        Height = 77
+        Enabled = False
+        ReadOnly = True
+        ScrollBars = ssVertical
+        TabOrder = 6
+        WordWrap = False
       end
       object TopPanel2: TTntPanel
         Left = 0
@@ -440,7 +422,7 @@ object frmWebUpdate: TfrmWebUpdate
         Height = 17
         Caption = 'Upgrade to the most recent version available'
         Checked = True
-        TabOrder = 6
+        TabOrder = 7
         TabStop = True
         OnClick = RadioButtonClick
       end

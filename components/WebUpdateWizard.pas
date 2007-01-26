@@ -193,7 +193,6 @@ type
     Label9: TTntLabel;
     rbMirrorCustom: TTntRadioButton;
     clMirrors: TTntCheckListBox;
-    gbNumbers: TTntGroupBox;
     lblVersionInfo: TTntLabel;
     cbDeleteUpdates: TTntCheckBox;
     DetailsButton: TTntButton;
@@ -202,7 +201,6 @@ type
     pbTotal: TTntProgressBar;
     Label10: TTntLabel;
     clNumbers: TTntCheckListBox;
-    Panel1: TPanel;
     procedure RadioButtonClick(Sender: TObject);
     procedure NextButtonClick(Sender: TObject);
     procedure clNumbersClickCheck(Sender: TObject);
@@ -302,7 +300,7 @@ begin
       sl := TStringList.Create;
       try
         i := FOnGetDetails(lblNameVer.Caption,clNumbers.Items[i],sl);
-        lblVersionInfo.Caption := _('Updates needed (')+IntToStr(i div 1024)+' '+_('Kb)');
+        lblVersionInfo.Caption := WideFormat(_('Total download size of the selected updates: %.0n Kb'),[i / 1024]);
         mmoVersionInfo.Text := '';
         for j := 0 to sl.Count-1 do begin
           mmoVersionInfo.Text := mmoVersionInfo.Text + sl[j];
@@ -453,7 +451,8 @@ begin
         RadioButton2.Visible := False;
         RadioButton3.Visible := False;
         clNumbers.Visible := False;
-        gbNumbers.Visible := False;
+        mmoVersionInfo.Visible := False;
+        lblVersionInfo.Visible := False;
       end;
       noNewVersion: begin
         RadioButton3.Visible := False;
@@ -468,7 +467,8 @@ begin
     RadioButton2.Visible := True;
     RadioButton3.Visible := True;
     clNumbers.Visible := True;
-    gbNumbers.Visible := True;
+    mmoVersionInfo.Visible := True;
+    lblVersionInfo.Visible := True;
   end;
 end;
 
