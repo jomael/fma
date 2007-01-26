@@ -107,6 +107,8 @@ begin
 end;
 
 procedure TfrmAddContact.btnOkClick(Sender: TObject);
+resourcestring
+  sNoContact = 'You have to select an existing contact first.';
 var
   ContactData: PContactData;
   SIMData: PSIMData;
@@ -118,8 +120,8 @@ begin
     if Form1.IsIrmcSyncEnabled then begin
       ContactData := GetSelectedContact;
       if ContactData = nil then begin
-        ShowMessageW(_('You have to select an existing contact first'));
-        Exit;
+        MessageDlgW(sNoContact,mtError,MB_OK);
+        Abort;
       end;
       case rgPhoneType.ItemIndex of
         0: Number := ContactData^.cell;
@@ -132,8 +134,8 @@ begin
     else begin
       SIMData := GetSelectedContact;
       if SIMData = nil then begin
-        ShowMessageW(_('You have to select an existing contact first'));
-        Exit;
+        MessageDlgW(sNoContact,mtError,MB_OK);
+        Abort;
       end;
       Number := SIMData^.pnumb;
     end;

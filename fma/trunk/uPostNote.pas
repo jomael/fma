@@ -38,13 +38,14 @@ type
     procedure OkButtonClick(Sender: TObject);
     procedure TntFormShow(Sender: TObject);
   private
+    { Private declarations }
     function Get_Note: WideString;
     function Get_Type: Integer;
     procedure Set_Note(const Value: WideString);
     procedure Set_Type(const Value: Integer);
     function Get_Class: WideString;
     procedure Set_Class(const Value: WideString);
-    { Private declarations }
+    procedure DoSanityCheck;
   public
     { Public declarations }
     property NoteText: WideString read Get_Note write Set_Note;
@@ -62,6 +63,14 @@ uses
   uDialogs;
 
 {$R *.dfm}
+
+procedure TfrmNote.DoSanityCheck;
+begin
+  if Trim(NoteText) = '' then begin
+    MessageDlgW(_('You must enter note contents.'),mtError,MB_OK);
+    Abort;
+  end;
+end;
 
 procedure TfrmNote.FormCreate(Sender: TObject);
 begin
@@ -85,10 +94,7 @@ end;
 
 procedure TfrmNote.OkButtonClick(Sender: TObject);
 begin
-  if Trim(NoteText) = '' then begin
-    MessageDlgW(_('You must enter note contents.'),mtError,MB_OK);
-    exit;
-  end;
+  DoSanityCheck;
   ModalResult := mrOk;
 end;
 

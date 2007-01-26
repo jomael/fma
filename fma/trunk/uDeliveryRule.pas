@@ -48,6 +48,7 @@ type
     function Get_Name: WideString;
     procedure Set_Name(const Value: WideString);
     procedure Set_Locked(const Value: boolean);
+    procedure DoSanityCheck;
   public
     { Public declarations }
     property RuleName: WideString read Get_Name write Set_Name;
@@ -143,18 +144,7 @@ end;
 
 procedure TfrmSMSRule.btnOKClick(Sender: TObject);
 begin
-  if Trim(RuleName) = '' then begin
-    MessageDlgW(_('You have to enter rule name.'),mtError,MB_OK);
-    Abort;
-  end;
-  if Trim(Correspondents) = '' then begin
-    MessageDlgW(_('You have to select correspondents.'),mtError,MB_OK);
-    Abort;
-  end;
-  if not Assigned(FolderNode) then begin
-    MessageDlgW(_('You have to select target folder.'),mtError,MB_OK);
-    Abort;
-  end;
+  DoSanityCheck;
   ModalResult := mrOk;
 end;
 
@@ -170,6 +160,22 @@ begin
   btnBrowse.Enabled := not Value;
   if Value then edFolder.Color := clBtnFace
     else edFolder.Color := clWindow;
+end;
+
+procedure TfrmSMSRule.DoSanityCheck;
+begin
+  if Trim(RuleName) = '' then begin
+    MessageDlgW(_('You have to enter rule name.'),mtError,MB_OK);
+    Abort;
+  end;
+  if Trim(Correspondents) = '' then begin
+    MessageDlgW(_('You have to select correspondents.'),mtError,MB_OK);
+    Abort;
+  end;
+  if not Assigned(FolderNode) then begin
+    MessageDlgW(_('You have to select target folder.'),mtError,MB_OK);
+    Abort;
+  end;
 end;
 
 end.

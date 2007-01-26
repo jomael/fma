@@ -71,6 +71,7 @@ type
     function Get_MultiSelect: boolean;
     procedure Set_MultiSelect(const Value: boolean);
     procedure Set_AllowSIM(const Value: boolean);
+    procedure DoSanityCheck;
   protected
     { Protected declarations }
     procedure DoAddContact(Node: TTntListItem);
@@ -603,15 +604,21 @@ end;
 
 procedure TfrmSelContact.OkButtonClick(Sender: TObject);
 begin
-  if SelectedList.Items.Count = 0 then
-    MessageDlgW(_('You have to select recipients.'),mtInformation,MB_OK)
-  else
-    ModalResult := mrOk;
+  DoSanityCheck;
+  ModalResult := mrOk;
 end;
 
 procedure TfrmSelContact.PopupMenu1Popup(Sender: TObject);
 begin
   Properties1.Enabled := TntListView1.SelCount = 1;
+end;
+
+procedure TfrmSelContact.DoSanityCheck;
+begin
+  if SelectedList.Items.Count = 0 then begin
+    MessageDlgW(_('You have to select recipients.'),mtError,MB_OK);
+    Abort;
+  end;
 end;
 
 end.

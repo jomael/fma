@@ -493,8 +493,7 @@ begin
       btnApply.Enabled := False; // we're done already sinte this is the last setting
       Form1.Status(_('Rename aborted'));
       MessageBeep(MB_ICONASTERISK);
-      MessageDlgW(_('This profile name is hardcoded in phone and can not be renamed'),
-        mtInformation, MB_OK);
+      MessageDlgW(_('This profile name is hardcoded in phone and can not be renamed'), mtError, MB_OK);
       Abort;
     end
   finally
@@ -591,7 +590,7 @@ begin
   Form1.Status(_('Sending setting profile...'));
   SendSetting;
   if Oldname <> Edit1.Text then
-    Form1.InitProfile();
+    Form1.InitProfile;
   Form1.Status('');
   btnApply.Enabled := False;
 end;

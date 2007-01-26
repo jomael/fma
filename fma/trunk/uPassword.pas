@@ -42,6 +42,7 @@ type
     FPhoneLock: WideString;
     procedure Set_AllowChange(const Value: boolean);
     procedure Set_Phone(const Value: widestring);
+    procedure DoSanityCheck;
   public
     { Public declarations }
     function LoginModal(APhoneName,APhoneLock: WideString): TModalResult;
@@ -156,21 +157,7 @@ procedure TfrmPassword.btnOKClick(Sender: TObject);
 begin
   btnOK.Enabled := False;
   try
-    if edNewPassword1.Visible and (edNewPassword1.Text <> '') and
-      (WideCompareStr(edNewPassword1.Text,edNewPassword2.Text) <> 0) then begin
-      MessageDlgW(_('Your new password do not match in both fields.'),mtError,MB_OK);
-      edNewPassword2.SelectAll;
-      edNewPassword2.SetFocus;
-      Abort;
-    end;
-    if WideCompareStr(edPassword.Text,FPhoneLock) <> 0 then begin
-      WaitASec(1);
-      MessageDlgW(_('Access is denied!') + sLineBreak + sLineBreak +
-        _('Please check your password and try again.'),mtError,MB_OK);
-      edPassword.SelectAll;
-      edPassword.SetFocus;
-      Abort;
-    end;
+    DoSanityCheck;
     ModalResult := mrOk;
   finally
     btnOK.Enabled := True;
@@ -198,6 +185,25 @@ procedure TfrmPassword.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
   CanClose := btnOK.Enabled;
+end;
+
+procedure TfrmPassword.DoSanityCheck;
+begin
+  if edNewPassword1.Visible and (edNewPassword1.Text <> '') and
+    (WideCompareStr(edNewPassword1.Text,edNewPassword2.Text) <> 0) then begin
+    MessageDlgW(_('Your new password do not match in both fields.'),mtError,MB_OK);
+    edNewPassword2.SelectAll;
+    edNewPassword2.SetFocus;
+    Abort;
+  end;
+  if WideCompareStr(edPassword.Text,FPhoneLock) <> 0 then begin
+    WaitASec(1);
+    MessageDlgW(_('Access is denied!') + sLineBreak + sLineBreak +
+      _('Please check your password and try again.'),mtError,MB_OK);
+    edPassword.SelectAll;
+    edPassword.SetFocus;
+    Abort;
+  end;
 end;
 
 end.

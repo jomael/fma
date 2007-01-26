@@ -45,9 +45,10 @@ type
     procedure FormCreate(Sender: TObject);
     procedure Button2Click(Sender: TObject);
   private
+    { Private declarations }
     FContact: PContactData;
     procedure Set_Contact(const Value: PContactData);
-    { Private declarations }
+    procedure DoSanityCheck;
   public
     { Public declarations }
     function CheckedCount: integer;
@@ -103,14 +104,8 @@ begin
     for i := 0 to clNumbers.Count-1 do clNumbers.Checked[i] := True;
     RadioButton2.Checked := True;
   end;
-  if CheckedCount = 0 then begin
-    if clNumbers.Count = 0 then 
-      MessageDlgW(_('This contact does not have any phone numbers.'),mtError,MB_OK)
-    else    
-      MessageDlgW(_('You have to select at least one phone number.'),mtError,MB_OK);
-    Abort;
-  end;
-  ModalResult := mrOk;  
+  DoSanityCheck;
+  ModalResult := mrOk;
 end;
 
 function TfrmAddToGroup.CheckedCount: integer;
@@ -155,6 +150,17 @@ begin
     sLinebreak+sLinebreak+'To exit Wizard right now click Yes. To continue click No.'),
     mtConfirmation, MB_YESNO) = ID_YES then
     ModalResult := mrCancel;
+end;
+
+procedure TfrmAddToGroup.DoSanityCheck;
+begin
+  if CheckedCount = 0 then begin
+    if clNumbers.Count = 0 then 
+      MessageDlgW(_('This contact does not have any phone numbers.'),mtError,MB_OK)
+    else    
+      MessageDlgW(_('You have to select at least one phone number.'),mtError,MB_OK);
+    Abort;
+  end;
 end;
 
 end.

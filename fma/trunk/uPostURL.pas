@@ -38,11 +38,12 @@ type
     procedure FormShow(Sender: TObject);
     procedure TntEdit1Change(Sender: TObject);
   private
+    { Private declarations }
     function Get_Title: WideString;
     function Get_URL: WideString;
     procedure Set_Title(const Value: WideString);
     procedure Set_URL(const Value: WideString);
-    { Private declarations }
+    procedure DoSanityCheck;
   public
     { Public declarations }
     property BookmarkTitle: WideString read Get_Title write Set_Title;
@@ -62,14 +63,7 @@ uses
 
 procedure TfrmBookmark.OkButtonClick(Sender: TObject);
 begin
-  if Trim(BookmarkTitle) = '' then begin
-    MessageDlgW(_('You must specify a title.'),mtError,MB_OK);
-    exit;
-  end;
-  if Trim(BookmarkURL) = '' then begin
-    MessageDlgW(_('You must specify an URL.'),mtError,MB_OK);
-    exit;
-  end;
+  DoSanityCheck;
   ModalResult := mrOk;
 end;
 
@@ -111,6 +105,18 @@ end;
 procedure TfrmBookmark.TntEdit1Change(Sender: TObject);
 begin
   lblName.Caption := TntEdit1.Text;
+end;
+
+procedure TfrmBookmark.DoSanityCheck;
+begin
+  if Trim(BookmarkTitle) = '' then begin
+    MessageDlgW(_('You must specify a title.'),mtError,MB_OK);
+    Abort;
+  end;
+  if Trim(BookmarkURL) = '' then begin
+    MessageDlgW(_('You must specify an URL.'),mtError,MB_OK);
+    Abort;
+  end;
 end;
 
 end.
