@@ -792,7 +792,7 @@ type
 
     FMessage: String;
 
-    FNewMessageList,FNewPDUList,FStatusReportList: TStringList;
+    FNewMessageList,FNewPDUList: TStringList;
 
     FLookupList: TTntStringList;
 
@@ -977,6 +977,9 @@ type
     FFavoriteRecipients,FFavoriteCalls: TTntStringList;
     FDeliveryRules,FSavedSearches: TTntStringList;
 
+    FStatusReportList: TStringList;
+    FReportLookupList: array[0..255] of Integer;
+
     fFiles: TFiles;
 
     { Mixer vars }
@@ -1039,6 +1042,8 @@ type
     procedure SaveSMSMessages(sl: THashedStringList; APath: String);
     procedure ClearSMSMessages(sl: TStringList); overload;
     procedure ClearSMSMessages(Node: PVirtualNode); overload;
+
+    procedure LoadStatusReports(APath: String);
 
     function LoadPhoneDataFiles(ID: string = ''; ShowStatus: Boolean = True; ShowProgress: Boolean = False; SaveLocalChanges: Boolean = True): boolean;
     function OpenPhoneDataFiles(ID: string = ''): boolean;
@@ -2297,7 +2302,7 @@ begin
           FUseMediaPlayer := False;
         end;
       end;
-      ShowNextProgress; 
+      ShowNextProgress;
 
       if not IsAutoConnect and not FStartupOptions.NoClock then begin
         if FSyncClockPrio <> 0 then begin // is it enabled?
@@ -2422,7 +2427,7 @@ begin
 
   // hide alarm dialog
   if Assigned(frmNewAlarm) and frmNewAlarm.Visible then
-    frmNewAlarm.Close; 
+    frmNewAlarm.Close;
 end;
 
 procedure TForm1.HandleMessage(var Msg: TFmaHandleMessage);
@@ -9209,7 +9214,7 @@ begin
     Result := False;
   end;
   try
-    FStatusReportList.LoadFromFile(Fullpath + 'SMSReports.dat'); // do not localize
+    LoadStatusReports(Fullpath + 'SMSReports.dat'); // do not localize
   except
   end;
   ProgressNotify;
@@ -10429,7 +10434,9 @@ var
                 if OldRef <> NewRef then begin
                   Log.AddCommunicationMessage(Format('Message reference changed to %sh',[NewRef]), lsDebug); // do not localize debug
                   { Return modified PDU }
-                  //pdu := sms.GetNewPDU(d);
+                  { TODO: must be done so Status Reports can work }
+                  sms.MessageReference := NewRef;
+                  pdu := sms.PDU;
                 end;
               except
                 // just in case
@@ -15956,9 +15963,48 @@ begin
 end;
 
 procedure TForm1.HandleCDS(AMsg: String);
+var
+  i: integer;
+  b: byte;
+  sr: TSMSStatusReport;
 begin
-  FStatusReportList.Add(AMsg);
-  // TODO: execute event xxx
+  i := FStatusReportList.Add(AMsg);
+  sr := TSMSStatusReport.Create;
+  try
+    sr.PDU := AMsg;
+    FStatusReportList.Objects[i] := sr;
+    b := Byte(StrToInt('$'+sr.MessageReference));
+    Inc(FReportLookupList[b]);
+    // TODO: show balloon, but what if message was long?
+    if sr.Delivered then
+      ShowBaloonInfo(WideFormat(_('Message sent to %s was successfully delivered.'), [LookupContact(sr.Number)]));
+  except
+    sr.Free;
+  end;
+end;
+
+procedure TForm1.LoadStatusReports(APath: String);
+var
+  i: integer;
+  b: byte;
+  sr: TSMSStatusReport;
+begin
+  // clear cache
+  for i:=0 to 255 do
+    FReportLookupList[i] := 0;
+
+  FStatusReportList.LoadFromFile(APath);
+  for i:=0 to FStatusReportList.Count-1 do begin
+    sr := TSMSStatusReport.Create;
+    try
+      sr.PDU := FStatusReportList[i];
+      FStatusReportList.Objects[i] := sr;
+      b := Byte(StrToInt('$'+sr.MessageReference));
+      Inc(FReportLookupList[b]);
+    except
+      sr.Free;
+    end;
+  end;
 end;
 
 initialization

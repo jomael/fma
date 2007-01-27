@@ -411,6 +411,36 @@ var
   dbfixed: boolean;
   md: TFmaMessageData;
   test: DWord;
+  procedure FindMatchingDeliveryReport(sd: TFmaMessageData);
+  var
+    i,num: integer;
+    b: byte;
+    sr: TSMSStatusReport;
+  begin
+    b := StrToIntDef('$'+sd.MessageRef,0);
+    num := Form1.FReportLookupList[b];
+    if (num > 0) and (b > 0) then begin // skip messages with reference 0
+      for i:=0 to Form1.FStatusReportList.Count-1 do begin
+        sr := TSMSStatusReport(Form1.FStatusReportList.Objects[i]);
+        if Assigned(sr) then begin
+          if sr.MessageReference = sd.MessageRef then begin
+            Dec(Num);
+            if sr.Number = sd.From then begin
+              // this is really it!
+              Log.AddMessageFmt('DB: Found matching Status Report! [Index %d]', [i]);
+              Dec(Form1.FReportLookupList[b]);
+              sd.ReportPDU := sr.PDU;
+              // dispose object
+              sr.Free;
+              Form1.FStatusReportList.Delete(i);
+              Break;
+            end;
+          end;
+        end;
+        if num <= 0 then break; // it can't be here now
+      end;
+    end;
+  end;
 begin
   if Sem then exit;
   Sem := True;
@@ -499,7 +529,11 @@ begin
           end;
 
           // Direction Bit
-          if md.IsOutgoing then item.StateIndex := item.StateIndex or $020000
+          if md.IsOutgoing then begin
+            item.StateIndex := item.StateIndex or $020000;
+            if md.ReportPDU = '' then
+              FindMatchingDeliveryReport(md);
+          end
           else item.StateIndex := item.StateIndex or $010000;
 
           // Long SMS? - show only first SMS message

@@ -123,10 +123,10 @@ begin
     FCanEditTime := False;
     ChangeButton.Tag := 0;
     ChangeButton.Caption := sChange;
-    ChangeButton.Enabled := FSMS.IsOutgoing;
+    ChangeButton.Enabled := FSMS.IsOutgoing and (FSMS.ReportPDU = '');
 
     DoShowTimestamp;
-    
+
     memoPDU.Clear;
 
     if sms.IsOutgoing then begin

@@ -33,13 +33,14 @@ type
 
   TSMSDecoder = class(TObject)
   private
-    FPDU: String;
-    FDataCoding: Integer;
     function ReverseOctets(Octets: String): String;
     function DecodeNumber(raw: String): String;
     function EncodeNumber(Number: String): String;
     function MakeCRLF(str: Widestring): WideString;
     function DecodeTimeStamp(raw: String): TDateTime;
+  protected
+    FPDU: String;
+    FDataCoding: Integer;
   public
     property PDU: String read FPDU write FPDU;
   end;
@@ -109,11 +110,12 @@ type
     procedure Set_PDU(const Value: String);
     function Get_IsDelivered: boolean;
   public
-    property PDU: string write Set_PDU;
+    property PDU: string read FPDU write Set_PDU;
     property MessageReference: string read FMessageRef;
     property OriginalSentTime: TDateTime read FSCATS;
     property DischargeTime: TDateTime read FDTS;
     property Number: String read FAddress;
+    property StatusCode: Byte read FStatus;
     property Delivered: Boolean read Get_IsDelivered;
     property Text: WideString read FMessage;
     property UDHI: String read FUDHI;
@@ -561,7 +563,7 @@ Const
     'Congo (Republic of the) 242 
     'Cook Islands 682
     'Costa Rica 506
-    'Côte d'Ivoire (Republic of) 225 
+    'Côte d'Ivoire (Republic of) 225
     'Croatia (Republic of) 385 
     'Cuba 53
     'Cyprus (Republic of) 357
@@ -577,7 +579,7 @@ Const
     'Ecuador 593 
     'Egypt (Arab Republic of) 20
     'El Salvador (Republic of) 503 
-    'Equatorial Guinea (Republic of) 240 
+    'Equatorial Guinea (Republic of) 240
     'Eritrea 291 
     'Estonia (Republic of) 372
     'Ethiopia 251
@@ -593,7 +595,7 @@ Const
     'Georgia 995 
     'Germany (Federal Republic of) 49
     'Ghana 233 
-    'Gibraltar 350 
+    'Gibraltar 350
     'Greece 30 
     'Greenland (Denmark) 299
     'Grenada 1
@@ -609,7 +611,7 @@ Const
     'Hongkong 852 
     'Hungary (Republic of) 36
     'Iceland 354
-    'India (Republic of) 91 
+    'India (Republic of) 91
     'Indonesia (Republic of) 62
     'International Freephone Service 800
     'Iran 98
@@ -625,7 +627,7 @@ Const
     'Kiribati (Republic of) 686 
     'Korea (Republic of) 82
     'Kuwait (State of) 965 
-    'Kyrgyz Republic 996 
+    'Kyrgyz Republic 996
     'Lao People's Democratic Republic 856 
     'Latvia (Republic of) 371
     'Lebanon 961
@@ -641,7 +643,7 @@ Const
     'Malawi 265 
     'Malaysia 60
     'Maldives (Republic of) 960 
-    'Mali (Republic of) 223 
+    'Mali (Republic of) 223
     'Malta 356 
     'Marshall Islands (Republic of the) 692
     'Martinique (French Department of) 596
@@ -657,7 +659,7 @@ Const
     'Morocco (Kingdom of) 212
     'Mozambique (Republic of) 258
     'Myanmar (Union of) 95 
-    'Namibia (Republic of) 264 
+    'Namibia (Republic of) 264
     'Nauru (Republic of) 674 
     'Nepal 977
     'Netherlands (Kingdom of the) 31
@@ -689,7 +691,7 @@ Const
     'Rwandese Republic 250 
     'Saint Helena 290
     'Saint Kitts and Nevis 1 
-    'Saint Lucia 1 
+    'Saint Lucia 1
     'Saint Pierre and Miquelon 508 
     'Saint Vincent and the Grenadines 1
     'Samoa (Independent State of) 685
@@ -705,7 +707,7 @@ Const
     'Solomon Islands 677 
     'Somali Democratic Republic 252
     'South Africa (Republic of) 27 
-    'Spain 34 
+    'Spain 34
     'Spare code 422 
     'Spare code 671
     'Sri Lanka 94
@@ -717,11 +719,11 @@ Const
     'Syrian Arab Republic 963
     'Tajikistan 992
     'Tanzania (United Republic of) 255 
-    'Thailand 66 
+    'Thailand 66
     'Togolese Republic 228 
     'Tokelau 690
     'Tonga (Kingdom of) 676 
-    'Trinidad and Tobago 1 
+    'Trinidad and Tobago 1
     'Tunisia 216 
     'Turkey 90
     'Turkmenistan 993
@@ -737,8 +739,8 @@ Const
     'Uzbekistan (Republic of) 998
     'Vanuatu (Republic of) 678
     'Vatican City State 39
-    'Vatican City State 379 
-    'Venezuela (Bolivarian Republic of) 58 
+    'Vatican City State 379
+    'Venezuela (Bolivarian Republic of) 58
     'Viet Nam (Socialist Republic of) 84
     'Wallis and Futuna 681
     'Yemen (Republic of) 967
@@ -833,7 +835,7 @@ begin
       end;
   end;
 
-  if Result = gcsUnknown then 
+  if Result = gcsUnknown then
     Result := gcs16bitUcs2; // use UCS2 if other failed
 end;
 
@@ -1471,10 +1473,10 @@ end;
 
 procedure TSMSStatusReport.Set_PDU(const Value: String);
 var
-  PDUType, ParamID, UDLen, NextStartPos: Integer;
+  PDUType, ParamID, UDLen, UDHLen, NextStartPos: Integer;
   SMSCLen, AddressLen, PDUTypeStartPos, SCTSStartPos, ParamIDStartPos: integer;
   MTI: byte;
-  TPDCS, TPUD: string;
+  TPDCS, TPUD, UDHnull: string;
 begin
   FPDU := Value;
 
@@ -1536,10 +1538,24 @@ begin
     end;
     if ParamID and 4 <> 0 then begin
       // TP-UDL here
+      UDHLen := 0;
       UDLen := StrToInt('$'+Copy(Value, NextStartPos, 2));
-      TPUD := Copy(Value, NextStartPos+2, UDLen*2);
+      Inc(NextStartPos,2);
+      if FIsUDH then begin
+        // rare, but UDH can be here
+        UDHLen := StrToInt('$'+Copy(Value, NextStartPos, 2));
+        FUDHI := Copy(Value, NextStartPos+2, 2*UDHLen);
+        NextStartPos := NextStartPos + 2*(UDHLen+1);
+        while UDHLen >= 0 do begin
+          UDHnull := UDHnull + '00';
+          Dec(UDHLen);
+        end;
+        UDHLen := Length(UDHnull) div 2;
+      end;
+      // TODO: check, will this work for 7bit-encoded reports?
+      TPUD := Copy(Value, NextStartPos, UDLen*2- 2*(UDHLen));
       case FDCS of
-        gcsDefault7Bit: FMessage := GSMDecode7Bit(IntToHex(UDLen,2)+TPUD);
+        gcsDefault7Bit: FMessage := GSMDecode7Bit(IntToHex(UDLen,2)+UDHnull+TPUD);
         gcs8BitOctets: FMessage := GSMDecode8Bit(TPUD);
         gcs16bitUcs2: FMessage := GSMDecodeUcs2(TPUD);
         gcsUnknown: FMessage := _('(Unsupported: Unknown coding scheme)');

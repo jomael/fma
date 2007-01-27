@@ -10,8 +10,9 @@ type
   TFmaMessage = class(TObject)
   private
     FChanged, FOutgoing, FUnread: boolean;
-    FData, FPDU: string;
+    FData, FPDU, FReportPDU: string;
     FIndex, FStat, FPDULength: Integer;
+    FStatusCode: byte;
     FTimeStamp: TDateTime;
     FLocation: TMessageLocation;
   protected
@@ -22,6 +23,7 @@ type
     procedure SetLocation(const NewLocation: TMessageLocation);
     procedure SetIndex(const NewIndex: Integer);
     procedure SetPDU(const NewPDU: string); virtual;
+    procedure SetReportPDU(const NewPDU: string); virtual;
     procedure SetOutgoing(const NewValue: boolean);
     procedure SetTimeStamp(const NewTimeStamp: TDateTime);
     procedure SetUnread(const NewValue: boolean);
@@ -33,6 +35,9 @@ type
     property IsOutgoing: boolean read GetOutgoing write SetOutgoing;
     property TimeStamp: TDateTime read GetTimeStamp write SetTimeStamp;
     property IsNew: boolean read FUnread write SetUnread;
+    { properties for Status reports }
+    property ReportPDU: string read FReportPDU write SetReportPDU;
+    property StatusCode: byte read FStatusCode;
     constructor Create(const AData: string = '');
   end;
 
@@ -41,7 +46,7 @@ type
   private
     FDecoded: boolean;
     FText: WideString;
-    FFrom: string;
+    FFrom, FMsgRef: string;
     ARef, ATot, An: integer;
   protected
     procedure SetPDU(const NewPDU: string); override;
@@ -52,6 +57,7 @@ type
     function GetTimeStamp: TDateTime; override;
     function GetIsLongSMS: boolean;
     function GetIsLongFirst: boolean;
+    function GetMsgRef: string;
     function GetARef: integer;
     function GetATot: integer;
     function GetAN: integer;
@@ -61,6 +67,7 @@ type
     property From: string read GetSMSFrom;
     property IsLong: boolean read GetIsLongSMS;
     property IsLongFirst: boolean read GetIsLongFirst;
+    property MessageRef: string read GetMsgRef;
     property Reference: integer read GetARef;
     property Total: integer read GetATot;
     property MsgNum: integer read GetAN;
@@ -75,6 +82,7 @@ begin
   FLocation := mlPC;
   FTimeStamp := 0;
   FUnread := False;
+  FStatusCode := $FF; // unknown
   if AData <> '' then
     AsString := AData;
 end;
@@ -99,6 +107,8 @@ begin
       wl[5] = PDU (+CMGL data)
       wl[6] = timestamp (FMA data)
       wl[7] = new flag (FMA data)
+      wl[8] = status report PDU (+CDS data)
+      wl[9] = status code (FMA data)
     }
     FLocation := TMessageLocation(StrToInt(wl[0]));
     FIndex := StrToInt(wl[1]);
@@ -137,6 +147,10 @@ begin
     end;
     if wl.Count > 7 then
       FUnread := wl[7] = '1';
+    if wl.Count > 8 then
+      FReportPDU := wl[8];
+    if wl.Count > 9 then
+      FStatusCode := Byte(StrToIntDef(wl[9], $FF));
   finally
     wl.Free;
   end;
@@ -152,7 +166,10 @@ begin
       FData := FData + DateTimeToHexString(FTimeStamp) + ','
     else
       FData := FData + ',';
-    FData := FData + IntToStr(Byte(FUnread));
+    FData := FData + IntToStr(Byte(FUnread)) + ',';
+    FData := FData + FReportPDU + ',';
+    if FReportPDU <> '' then
+      FData := FData + IntToStr(FStatusCode);
     FChanged := False;
   end;
   Result := FData;
@@ -192,6 +209,27 @@ begin
   FPDU := NewPDU;
   FPDULength := 0;
   // TODO: PDU sanity check
+end;
+
+procedure TFmaMessage.SetReportPDU(const NewPDU: string);
+var
+  sr: TSMSStatusReport;
+begin
+  if FOutgoing then begin
+    FChanged := True;
+    FReportPDU := NewPDU;
+    // DONE: decode and change timestamp, status code
+    sr := TSMSStatusReport.Create;
+    try
+      sr.PDU := FReportPDU;
+      FTimeStamp := sr.OriginalSentTime;
+      FStatusCode := sr.StatusCode;
+    finally
+      sr.Free;
+    end;
+  end
+  else
+    raise Exception.Create('Unable to add status report to SMS-DELIVER!');
 end;
 
 procedure TFmaMessage.SetOutgoing(const NewValue: boolean);
@@ -261,6 +299,13 @@ begin
   Result := FTimeStamp;
 end;
 
+function TFmaMessageData.GetMsgRef: string;
+begin
+  if (not FDecoded) then
+    DecodeSMS;
+  Result := FMsgRef;
+end;
+
 function TFmaMessageData.GetIsLongSMS: boolean;
 begin
   if (not FDecoded) then
@@ -312,6 +357,7 @@ begin
     FText := sms.Text;
     FFrom := sms.Number;
     dateTime := sms.TimeStamp;
+    FMsgRef := sms.MessageReference;
     if dateTime <> 0 then
       FTimeStamp := dateTime;
     FOutgoing := sms.IsOutgoing;
@@ -344,6 +390,8 @@ begin
         end;
       end;
     end;
+    if FReportPDU <> '' then
+      SetReportPDU(FReportPDU); // refresh data from report
   finally
     sms.Free;
     FDecoded := True;
