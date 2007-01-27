@@ -1363,6 +1363,7 @@ begin
   FValidityLen := 0;
   Offset := 0;
   if FIsSMSSumit then begin
+    FStatusRequest := (PDUType and 32) = 1;
     TPVPF := (PDUType and $18) shr 3;
 
     case TPVPF of

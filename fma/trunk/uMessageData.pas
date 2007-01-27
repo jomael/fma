@@ -44,7 +44,7 @@ type
   PFmaMessageData = ^TFmaMessageData;
   TFmaMessageData = class(TFmaMessage)
   private
-    FDecoded: boolean;
+    FDecoded, FReportReq: boolean;
     FText: WideString;
     FFrom, FMsgRef: string;
     ARef, ATot, An: integer;
@@ -61,6 +61,7 @@ type
     function GetARef: integer;
     function GetATot: integer;
     function GetAN: integer;
+    function GetReportReq: boolean;
     procedure DecodeSMS;
   public
     property Text: WideString read GetSMSText;
@@ -71,6 +72,7 @@ type
     property Reference: integer read GetARef;
     property Total: integer read GetATot;
     property MsgNum: integer read GetAN;
+    property ReportRequested: boolean read GetReportReq;
     constructor Create(const AData: string = '');
   end;
 
@@ -341,6 +343,13 @@ begin
   Result := An;
 end;
 
+function TFmaMessageData.GetReportReq: boolean;
+begin
+  if (not FDecoded) then
+   DecodeSMS;
+  Result := FReportReq;
+end;
+
 procedure TFmaMessageData.DecodeSMS;
 var
   sms: TSMS;
@@ -361,6 +370,7 @@ begin
     if dateTime <> 0 then
       FTimeStamp := dateTime;
     FOutgoing := sms.IsOutgoing;
+    FReportReq := sms.StatusRequest;
     // decode Long Msg Info
     ARef := -1; ATot := -1; An := -1;
     if sms.IsUDH then begin

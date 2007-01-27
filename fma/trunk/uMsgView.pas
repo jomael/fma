@@ -531,7 +531,7 @@ begin
           // Direction Bit
           if md.IsOutgoing then begin
             item.StateIndex := item.StateIndex or $020000;
-            if md.ReportPDU = '' then
+            if md.ReportRequested and (md.ReportPDU = '') then
               FindMatchingDeliveryReport(md);
           end
           else item.StateIndex := item.StateIndex or $010000;
