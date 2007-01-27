@@ -31,31 +31,38 @@ uses
 type
   TGSMCodingScheme = (gcsDefault7Bit, gcs8BitOctets, gcs16bitUcs2, gcsUnknown);
 
-  TSMS = class(TObject)
+  TSMSDecoder = class(TObject)
+  private
+    FPDU: String;
+    FDataCoding: Integer;
+    function ReverseOctets(Octets: String): String;
+    function DecodeNumber(raw: String): String;
+    function EncodeNumber(Number: String): String;
+    function MakeCRLF(str: Widestring): WideString;
+    function DecodeTimeStamp(raw: String): TDateTime;
+  public
+    property PDU: String read FPDU write FPDU;
+  end;
+
+  TSMS = class(TSMSDecoder)
   private
     FIsSMSSumit: Boolean;
     FValidityLen: Integer;
     FSMSCLen: Integer;
     FSenderLen: Integer;
     FSenderPos: Integer;
-    FPDU: String;
     FSMSDeliverStartPos: Integer;
     FMessage: WideString;
     FMessageRef: String;
     FAddress: String;
     FFlashSMS: Boolean;
     FRequestReply: Boolean;
-    FDataCoding: Integer;
     FMessageLength: Integer;
     FIsUDH: Boolean;
     FUDHI: String;
     FStatusRequest: Boolean;
     FSizeOfPDU: integer;
     FDCS: TGSMCodingScheme;
-    function ReverseOctets(Octets: String): String;
-    function DecodeNumber(raw: String): String;
-    function EncodeNumber(Number: String): String;
-    function MakeCRLF(str: Widestring): WideString;
     {}
     procedure Set_PDU(const Value: String);
     procedure Set_MessageRef(const Value: String);
@@ -89,6 +96,32 @@ type
     property IsUDH: Boolean read FIsUDH;
   end;
 
+  TSMSStatusReport = class(TSMSDecoder)
+  private
+    FSCAPresent, FIsUDH: boolean;
+    FSCA, FUDHI: string;
+    FStatus: byte;
+    FSCATS, FDTS: TDateTime;
+    FMessage: WideString;
+    FMessageRef: string;
+    FAddress: String;
+    FDCS: TGSMCodingScheme;
+    procedure Set_PDU(const Value: String);
+    function Get_IsDelivered: boolean;
+  public
+    property PDU: string write Set_PDU;
+    property MessageReference: string read FMessageRef;
+    property OriginalSentTime: TDateTime read FSCATS;
+    property DischargeTime: TDateTime read FDTS;
+    property Number: String read FAddress;
+    property Delivered: Boolean read Get_IsDelivered;
+    property Text: WideString read FMessage;
+    property UDHI: String read FUDHI;
+    property IsUDH: Boolean read FIsUDH;
+    property SMSC: String read FSCA;
+    constructor Create(ExpectSCA: boolean = False);
+  end;
+
 function GSMLongMsgData(PDU: string; var ARef, ATot, An: Integer): boolean;
 
 function GSMCodingScheme(const Value: WideString): TGSMCodingScheme;
@@ -116,7 +149,7 @@ uses
   http://www.unicode.org/Public/MAPPINGS/ETSI/GSM0338.TXT
   http://www.tvrelsat.com/sentinel/pdf/0338-700.pdf
   http://www.dreamfabric.com/sms/default_alphabet.html }
-  
+
 const
   Alphabet7Escape: byte = $1B; // 27
 
@@ -469,7 +502,7 @@ begin
 end;
 
 { Country Codes
-  ISO 3166 alphabetical list of country codes with the associated International Dialing Code 
+  ISO 3166 alphabetical list of country codes with the associated International Dialing Code
 
 Type
   TCountryCode = record
@@ -514,204 +547,204 @@ Const
     'Burkina Faso','226',
     'Burundi (Republic of)','257',
     // TODO...
-    'Cambodia (Kingdom of) 855 
-    'Cameroon (Republic of) 237 
-    'Canada 1 
-    'Cape Verde (Republic of) 238 
+    'Cambodia (Kingdom of) 855
+    'Cameroon (Republic of) 237
+    'Canada 1
+    'Cape Verde (Republic of) 238
     'Cayman Islands 1 
-    'Central African Republic 236 
-    'Chad (Republic of) 235 
-    'Chile 56 
-    'China (People's Republic of) 86 
+    'Central African Republic 236
+    'Chad (Republic of) 235
+    'Chile 56
+    'China (People's Republic of) 86
     'Colombia (Republic of) 57 
     'Comoros 269 
     'Congo (Republic of the) 242 
-    'Cook Islands 682 
+    'Cook Islands 682
     'Costa Rica 506
     'Côte d'Ivoire (Republic of) 225 
     'Croatia (Republic of) 385 
-    'Cuba 53 
-    'Cyprus (Republic of) 357 
-    'Czech Republic 420 
+    'Cuba 53
+    'Cyprus (Republic of) 357
+    'Czech Republic 420
     'Democratic People's Republic of Korea 850
     'Democratic Republic of the Congo 243 
-    'Denmark 45 
-    'Diego Garcia 246 
-    'Djibouti (Republic of) 253 
-    'Dominica (Commonwealth of) 1 
+    'Denmark 45
+    'Diego Garcia 246
+    'Djibouti (Republic of) 253
+    'Dominica (Commonwealth of) 1
     'Dominican Republic 1 
     'East Timor 670 
     'Ecuador 593 
-    'Egypt (Arab Republic of) 20 
+    'Egypt (Arab Republic of) 20
     'El Salvador (Republic of) 503 
     'Equatorial Guinea (Republic of) 240 
     'Eritrea 291 
-    'Estonia (Republic of) 372 
-    'Ethiopia 251 
-    'Falkland Islands (Malvinas) 500 
-    'Faroe Islands 298 
+    'Estonia (Republic of) 372
+    'Ethiopia 251
+    'Falkland Islands (Malvinas) 500
+    'Faroe Islands 298
     'Fiji (Republic of) 679 
-    'Finland 358 
-    'France 33 
-    'French Guiana 594 
+    'Finland 358
+    'France 33
+    'French Guiana 594
     'French Polynesia 689
     'Gabonese Republic 241 
-    'Gambia (Republic of the) 220 
+    'Gambia (Republic of the) 220
     'Georgia 995 
-    'Germany (Federal Republic of) 49 
+    'Germany (Federal Republic of) 49
     'Ghana 233 
     'Gibraltar 350 
     'Greece 30 
-    'Greenland (Denmark) 299 
-    'Grenada 1 
-    'Group of countries, shared code 388 
-    'Guadeloupe (French Department of) 590 
+    'Greenland (Denmark) 299
+    'Grenada 1
+    'Group of countries, shared code 388
+    'Guadeloupe (French Department of) 590
     'Guam 1 
-    'Guatemala (Republic of) 502 
-    'Guinea (Republic of) 224 
-    'Guinea-Bissau (Republic of) 245 
-    'Guyana 592 
+    'Guatemala (Republic of) 502
+    'Guinea (Republic of) 224
+    'Guinea-Bissau (Republic of) 245
+    'Guyana 592
     'Haiti (Republic of) 509 
     'Honduras (Republic of) 504 
     'Hongkong 852 
     'Hungary (Republic of) 36
     'Iceland 354
     'India (Republic of) 91 
-    'Indonesia (Republic of) 62 
-    'International Freephone Service 800 
-    'Iran 98 
-    'Iraq (Republic of) 964 
-    'Ireland 353 
+    'Indonesia (Republic of) 62
+    'International Freephone Service 800
+    'Iran 98
+    'Iraq (Republic of) 964
+    'Ireland 353
     'Israel (State of) 972 
-    'Italy 39 
-    'Jamaica 1 
-    'Japan 81 
-    'Jordan (Hashemite Kingdom of) 962 
+    'Italy 39
+    'Jamaica 1
+    'Japan 81
+    'Jordan (Hashemite Kingdom of) 962
     'Kazakstan (Republic of) 7 
     'Kenya (Republic of) 254 
     'Kiribati (Republic of) 686 
-    'Korea (Republic of) 82 
+    'Korea (Republic of) 82
     'Kuwait (State of) 965 
     'Kyrgyz Republic 996 
     'Lao People's Democratic Republic 856 
-    'Latvia (Republic of) 371 
-    'Lebanon 961 
+    'Latvia (Republic of) 371
+    'Lebanon 961
     'Lesotho (Kingdom of) 266
-    'Liberia (Republic of) 231 
-    'Libya 218 
-    'Liechtenstein (Principality of) 423 
-    'Lithuania (Republic of) 370 
-    'Luxembourg 352 
-    'Macau 853 
+    'Liberia (Republic of) 231
+    'Libya 218
+    'Liechtenstein (Principality of) 423
+    'Lithuania (Republic of) 370
+    'Luxembourg 352
+    'Macau 853
     'Macedonia 389 
     'Madagascar (Republic of) 261 
     'Malawi 265 
-    'Malaysia 60 
+    'Malaysia 60
     'Maldives (Republic of) 960 
     'Mali (Republic of) 223 
     'Malta 356 
-    'Marshall Islands (Republic of the) 692 
-    'Martinique (French Department of) 596 
-    'Mauritania (Islamic Republic of) 222 
-    'Mauritius (Republic of) 230 
+    'Marshall Islands (Republic of the) 692
+    'Martinique (French Department of) 596
+    'Mauritania (Islamic Republic of) 222
+    'Mauritius (Republic of) 230
     'Mayotte 269 
-    'Mexico 52 
-    'Micronesia (Federated States of) 691 
+    'Mexico 52
+    'Micronesia (Federated States of) 691
     'Moldova (Republic of) 373
-    'Monaco (Principality of) 377 
-    'Mongolia 976 
+    'Monaco (Principality of) 377
+    'Mongolia 976
     'Montserrat 1 
     'Morocco (Kingdom of) 212
-    'Mozambique (Republic of) 258 
+    'Mozambique (Republic of) 258
     'Myanmar (Union of) 95 
     'Namibia (Republic of) 264 
     'Nauru (Republic of) 674 
-    'Nepal 977 
-    'Netherlands (Kingdom of the) 31 
-    'Netherlands Antilles 599 
-    'New Caledonia 687 
+    'Nepal 977
+    'Netherlands (Kingdom of the) 31
+    'Netherlands Antilles 599
+    'New Caledonia 687
     'New Zealand 64 
-    'Nicaragua 505 
-    'Niger (Republic of the) 227 
-    'Nigeria (Federal Republic of) 234 
-    'Niue 683 
+    'Nicaragua 505
+    'Niger (Republic of the) 227
+    'Nigeria (Federal Republic of) 234
+    'Niue 683
     'Northern Mariana Islands 1 
     'Norway 47 
     'Oman (Sultanate of) 968 
     'Pakistan (Islamic Republic of) 92
     'Palau (Republic of) 680 
-    'Panama (Republic of) 507 
+    'Panama (Republic of) 507
     'Papua New Guinea 675 
-    'Paraguay (Republic of) 595 
-    'Peru 51 
-    'Philippines (Republic of the) 63 
-    'Poland (Republic of) 48 
+    'Paraguay (Republic of) 595
+    'Peru 51
+    'Philippines (Republic of the) 63
+    'Poland (Republic of) 48
     'Portugal 351 
-    'Puerto Rico 1 
-    'Qatar (State of) 974 
-    'Reserved 0 
-    'Reunion (French Department of) 262 
+    'Puerto Rico 1
+    'Qatar (State of) 974
+    'Reserved 0
+    'Reunion (French Department of) 262
     'Romania 40 
     'Russian Federation 7 
     'Rwandese Republic 250 
-    'Saint Helena 290 
+    'Saint Helena 290
     'Saint Kitts and Nevis 1 
     'Saint Lucia 1 
     'Saint Pierre and Miquelon 508 
-    'Saint Vincent and the Grenadines 1 
+    'Saint Vincent and the Grenadines 1
     'Samoa (Independent State of) 685
-    'San Marino (Republic of) 378 
-    'Sao Tome and Principe 239 
+    'San Marino (Republic of) 378
+    'Sao Tome and Principe 239
     'Saudi Arabia (Kingdom of) 966 
-    'Senegal (Republic of) 221 
-    'Seychelles (Republic of) 248 
-    'Sierra Leone 232 
-    'Singapore (Republic of) 65 
+    'Senegal (Republic of) 221
+    'Seychelles (Republic of) 248
+    'Sierra Leone 232
+    'Singapore (Republic of) 65
     'Slovak Republic 421 
     'Slovenia (Republic of) 386
     'Solomon Islands 677 
-    'Somali Democratic Republic 252 
+    'Somali Democratic Republic 252
     'South Africa (Republic of) 27 
     'Spain 34 
     'Spare code 422 
-    'Spare code 671 
-    'Sri Lanka 94 
-    'Sudan (Republic of the) 249 
-    'Suriname (Republic of) 597 
+    'Spare code 671
+    'Sri Lanka 94
+    'Sudan (Republic of the) 249
+    'Suriname (Republic of) 597
     'Swaziland (Kingdom of) 268 
-    'Sweden 46 
+    'Sweden 46
     'Switzerland (Confederation of) 41
-    'Syrian Arab Republic 963 
-    'Tajikistan 992 
+    'Syrian Arab Republic 963
+    'Tajikistan 992
     'Tanzania (United Republic of) 255 
     'Thailand 66 
     'Togolese Republic 228 
-    'Tokelau 690 
+    'Tokelau 690
     'Tonga (Kingdom of) 676 
     'Trinidad and Tobago 1 
     'Tunisia 216 
-    'Turkey 90 
-    'Turkmenistan 993 
-    'Turks and Caicos Islands 1 
-    'Tuvalu 688 
+    'Turkey 90
+    'Turkmenistan 993
+    'Turks and Caicos Islands 1
+    'Tuvalu 688
     'Uganda (Republic of) 256 
-    'Ukraine 380 
-    'United Arab Emirates 971 
-    'United Kingdom 44 
-    'United States 1 
+    'Ukraine 380
+    'United Arab Emirates 971
+    'United Kingdom 44
+    'United States 1
     'United States Virgin Islands 1 
     'Uruguay (Eastern Republic of) 598 
     'Uzbekistan (Republic of) 998
-    'Vanuatu (Republic of) 678 
-    'Vatican City State 39 
+    'Vanuatu (Republic of) 678
+    'Vatican City State 39
     'Vatican City State 379 
     'Venezuela (Bolivarian Republic of) 58 
-    'Viet Nam (Socialist Republic of) 84 
-    'Wallis and Futuna 681 
-    'Yemen (Republic of) 967 
-    'Yugoslavia (Federal Republic of) 381 
+    'Viet Nam (Socialist Republic of) 84
+    'Wallis and Futuna 681
+    'Yemen (Republic of) 967
+    'Yugoslavia (Federal Republic of) 381
     'Zambia (Republic of) 260 
-    'Zimbabwe (Republic of) 263 
+    'Zimbabwe (Republic of) 263
   end;
 }
 
@@ -853,7 +886,28 @@ end;
 
 { TSMS }
 
-function TSMS.DecodeNumber(raw: String): String;
+function TSMSDecoder.DecodeTimeStamp(raw: String): TDateTime;
+var
+  Year, Month, Day, Hour, Minute, Second: Integer;
+  offset: integer;
+begin
+  // raw must have 7 octets
+  raw := ReverseOctets(raw);
+
+  Year :=   StrToInt(copy(raw,  1, 2));
+  Month :=  StrToInt(copy(raw,  3, 2));
+  Day :=    StrToInt(copy(raw,  5, 2));
+  Hour :=   StrToInt(copy(raw,  7, 2));
+  Minute := StrToInt(copy(raw,  9, 2));
+  Second := StrToInt(copy(raw, 11, 2));
+  // TODO: 7th octet is TimeZone, decode it
+
+  if year >= 90 then offset := 1900
+  else offset := 2000;
+  Result := EncodeDateTime(offset+Year, Month, Day, Hour, Minute, Second, 0);
+end;
+
+function TSMSDecoder.DecodeNumber(raw: String): String;
 var
   addrType: Integer;
 begin
@@ -875,7 +929,7 @@ begin
   end;
 end;
 
-function TSMS.EncodeNumber(Number: String): String;
+function TSMSDecoder.EncodeNumber(Number: String): String;
 begin
   Result := '81'; // do not localize
 
@@ -1198,26 +1252,13 @@ begin
 end;
 
 function TSMS.Get_TimeStamp: TDateTime;
-var
-  str: String;
-  year, month, day, hour, minute, second: Integer;
 begin
   if FIsSMSSumit then Result := 0
-  else begin
-    str := ReverseOctets(copy(FPDU, FSMSDeliverStartPos + FSenderLen + 10, 12));
-
-    Year :=   StrToInt(copy(str,  1, 2));
-    Month :=  StrToInt(copy(str,  3, 2));
-    Day :=    StrToInt(copy(str,  5, 2));
-    Hour :=   StrToInt(copy(str,  7, 2));
-    Minute := StrToInt(copy(str,  9, 2));
-    Second := StrToInt(copy(str, 11, 2));
-
-    Result := EncodeDateTime(Year+2000, Month, Day, Hour, Minute, Second, 0);
-  end;
+  else
+    Result := DecodeTimeStamp(copy(FPDU, FSMSDeliverStartPos + FSenderLen + 10, 14));
 end;
 
-function TSMS.ReverseOctets(Octets: String): String;
+function TSMSDecoder.ReverseOctets(Octets: String): String;
 var
   i: Integer;
   buffer: char;
@@ -1352,7 +1393,7 @@ begin
     be accepted also when the message is destined to a recipient in the same country as the MSC or as the SGSN.
 
     Using the unknown format (i.e. the Type-of-Address 81 instead of 91) would yield the phone number octet
-    sequence 7080523185 (0708251358). Note that this has the length 10 (A), which is even. 
+    sequence 7080523185 (0708251358). Note that this has the length 10 (A), which is even.
     }
     TPDCS := StrToInt('$' + copy(FPDU, FSenderPos + FSenderLen + 4, 2));
   except
@@ -1371,7 +1412,7 @@ begin
   FDataCoding := (TPDCS and $0C) shr 2;
 end;
 
-function TSMS.MakeCRLF(str: Widestring): WideString;
+function TSMSDecoder.MakeCRLF(str: Widestring): WideString;
 var
   i: Integer;
   skipnext: boolean;
@@ -1420,6 +1461,131 @@ procedure TSMS.Set_UDHI(const Value: String);
 begin
   FUDHI := Value;
   FIsUDH := FUDHI <> '';
+end;
+
+constructor TSMSStatusReport.Create(ExpectSCA: boolean);
+begin
+  inherited Create;
+  FSCAPresent := ExpectSCA;
+end;
+
+procedure TSMSStatusReport.Set_PDU(const Value: String);
+var
+  PDUType, ParamID, UDLen, NextStartPos: Integer;
+  SMSCLen, AddressLen, PDUTypeStartPos, SCTSStartPos, ParamIDStartPos: integer;
+  MTI: byte;
+  TPDCS, TPUD: string;
+begin
+  FPDU := Value;
+
+  { read SCA if present, acording to documentation it should be there,
+    but real life tests show that it's not (at least not on K750) }
+  PDUTypeStartPos := 1;
+  if FSCAPresent then begin
+    SMSCLen := StrToInt('$'+Copy(Value, 1, 2));
+    FSCA := DecodeNumber(Copy(Value, 3, 2*SMSCLen));
+    PDUTypeStartPos := SMSCLen * 2 + 3;
+  end;
+
+  { check if this is really STATUS-REPORT by TP-MTI field }
+  PDUType := StrToInt('$'+Copy(Value, PDUTypeStartPos, 2));
+  { there's also MMS bit, we're not using it atm }
+  MTI := PDUType and 3;
+  if MTI <> 2 then raise EConvertError.Create('Invalid SMS-STATUS-REPORT!');
+  if (PDUType and 32) = 1 then Log.AddMessage('PDU Warning (TP-SRQ): Report of SMS-COMMAND', lsWarning);
+  FIsUDH := PDUType and 64 <> 0;
+
+  { Message reference }
+  FMessageRef := Copy(Value, PDUTypeStartPos + 2, 2);
+
+  { Destination address }
+  AddressLen := StrToInt('$'+Copy(Value, PDUTypeStartPos + 4, 2));
+  FAddress := DecodeNumber(Copy(Value, PDUTypeStartPos + 6, AddressLen+2));
+
+  { Service center timestamp >
+    Parameter identifying time when the SC received the previously sent SMS-SUBMIT }
+  SCTSStartPos := PDUTypeStartPos + 8 + AddressLen;
+  FSCATS := DecodeTimeStamp(Copy(Value, SCTSStartPos, 14));
+
+  { Discharge timestamp >
+    Parameter identifying the time associated with a particular TP-ST outcome
+    = time of successful delivery OR time of last delivery attempt }
+  FDTS := DecodeTimeStamp(Copy(Value, SCTSStartPos+14, 14));
+
+  { Status itself }
+  FStatus := Byte(StrToInt('$'+Copy(Value, SCTSStartPos+28, 2)));
+
+  { TP-PI is optional, but mandatory if TP-PID/TP-DCS/TP-UDL follow}
+  ParamIDStartPos := SCTSStartPos + 30;
+  if Copy(Value, ParamIDStartPos, 2) <> '' then begin
+    ParamID := StrToInt('$'+Copy(Value, ParamIDStartPos, 2));
+    NextStartPos := ParamIDStartPos + 2;
+    if ParamID and 1 <> 0 then begin
+      // TP-PID is here, skip it
+      NextStartPos := NextStartPos + 2;
+    end;
+    if ParamID and 2 <> 0 then begin
+      // TP-DCS here
+      TPDCS := Copy(Value, NextStartPos, 2);
+      FDataCoding := (StrToInt('$'+TPDCS) and $0C) shr 2;
+      if FDataCoding = 0 then FDCS := gcsDefault7Bit
+      else if FDataCoding = 1 then FDCS := gcs8BitOctets
+      else if FDataCoding = 2 then FDCS := gcs16bitUcs2
+      else FDCS := gcsUnknown;
+      NextStartPos := NextStartPos + 2;
+    end;
+    if ParamID and 4 <> 0 then begin
+      // TP-UDL here
+      UDLen := StrToInt('$'+Copy(Value, NextStartPos, 2));
+      TPUD := Copy(Value, NextStartPos+2, UDLen*2);
+      case FDCS of
+        gcsDefault7Bit: FMessage := GSMDecode7Bit(IntToHex(UDLen,2)+TPUD);
+        gcs8BitOctets: FMessage := GSMDecode8Bit(TPUD);
+        gcs16bitUcs2: FMessage := GSMDecodeUcs2(TPUD);
+        gcsUnknown: FMessage := _('(Unsupported: Unknown coding scheme)');
+      end;
+    end;
+  end;
+end;
+
+function TSMSStatusReport.Get_IsDelivered: boolean;
+begin
+{
+   bits 6-0
+  Short message transaction completed
+    0000000 Short message received by the SME
+    0000001 Short message forwarded by the SC to the SME but the SC is
+            unable to confirm delivery
+    0000010 Short message replaced by the SC
+  Reserved values
+    0000011..0001111 Reserved
+    0010000..0011111 Values specific to each SC
+  Temporary error, SC still trying to transfer SM
+    0100000 Congestion
+    0100001 SME busy
+    0100010 No response from SME
+    0100011 Service rejected
+    0100100 Quality of service not available
+    0100101 Error in SME
+    0100110..0101111 Reserved
+    0110000..0111111 Values specific to each SC
+  Permanent error, SC is not making any more transfer attempts
+    1000000 Remote procedure error
+    1000001 Incompatible destination
+    1000010 Connection rejected by SME
+    1000011 Not obtainable
+    1000100 Quality of service not available
+    1000101 No interworking available
+    1000110 SM Validity Period Expired
+    1000111 SM Deleted by originating SME
+    1001000 SM Deleted by SC Administration
+    1001001 SM does not exist (The SM may have previously existed in the SC but the SC
+            no longer has knowledge of it or the SM
+            may never have previously existed in the SC)
+    1001010..1001111 Reserved
+}
+  // if FStatus >= 128 then Result := unknown;
+  Result := FStatus = 0;
 end;
 
 end.

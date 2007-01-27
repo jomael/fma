@@ -254,13 +254,11 @@ procedure TfrmMessageContact.FormShow(Sender: TObject);
 begin
   try
     btnStatusReport.Enabled := Form1.FStatusReport;
+    btnStatusReport.Down := btnStatusReport.Enabled;
     if btnStatusReport.Enabled then
       btnStatusReport.Hint := _('Request Status Report')
     else
       btnStatusReport.Hint := _('Not supported by phone');
-
-    { Disable Delivery Report feature - it is not fully implemented yet }
-    btnStatusReport.Enabled := False;
 
     btnSave.Enabled := False;
     if Edit1.Text = '' then Edit1.SetFocus else

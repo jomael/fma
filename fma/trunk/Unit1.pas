@@ -792,7 +792,7 @@ type
 
     FMessage: String;
 
-    FNewMessageList,FNewPDUList: TStringList;
+    FNewMessageList,FNewPDUList,FStatusReportList: TStringList;
 
     FLookupList: TTntStringList;
 
@@ -870,6 +870,7 @@ type
     procedure HandleCLCK(AMsg: String);
     procedure HandleCMTI(AMsg: String);
     procedure HandleCIND(AMsg: String);
+    procedure HandleCDS(AMsg: String);
     procedure HandleStatus(AMsg: String; OverrideBatteryLow: Integer = -1);
     procedure LoadOptions;
     procedure RetrieveNewSMS(AMsg: String);
@@ -1468,7 +1469,18 @@ procedure TForm1.TntButton6Click(Sender: TObject);
 const s: string = '*EAPN: 1,"普通"';
 var
   ws: WideString;
+  smssr: TSMSStatusReport;
 begin
+  if TntEdit1.Text <> '' then begin
+    smssr := TSMSStatusReport.Create;
+    try
+      smssr.PDU := TntEdit1.Text;
+      ShowMessage(Format('MR: %s, Sent: %s, Received: %s, Number: %s', [smssr.MessageReference, DateTimeToStr(smssr.OriginalSentTime),
+        DateTimeToStr(smssr.DischargeTime), smssr.Number]));
+    finally
+      smssr.Free;
+    end;
+  end;
   ws := LongStringToWideString(s{LabeledEdit1.Text});
   ws := GetToken(ws, 1);
   TntEdit2.Text := UTF8StringToWideString(WideStringToLongString(ws));
@@ -2414,6 +2426,8 @@ begin
 end;
 
 procedure TForm1.HandleMessage(var Msg: TFmaHandleMessage);
+const
+  gotCDS: boolean = False;
 var
   AMsg: String;
 begin
@@ -2450,6 +2464,9 @@ begin
       end
       else if pos('+CMTI', AMsg) = 1 then begin // do not localize
         HandleCMTI(AMsg);
+      end
+      else if pos('+CDS', AMsg) = 1 then begin // do not localize
+        gotCDS := True;
       end
       else if pos('+CKEV', AMsg) = 1 then begin // do not localize
         HandleCKEV(AMsg);
@@ -2500,7 +2517,11 @@ begin
         HandleEBCA(AMsg);
       end
       else begin
-        if ThreadSafe.RxBuffer <> nil then
+        if gotCDS then begin
+          HandleCDS(AMsg);
+          gotCDS := False;
+        end
+        else if ThreadSafe.RxBuffer <> nil then
           ThreadSafe.RxBuffer.Add(AMsg);
 
         if ThreadSafe.WaitStr <> '' then begin
@@ -2802,6 +2823,7 @@ begin
   { Create DB tables }
   FNewMessageList := TStringList.Create;
   FNewPDUList := TStringList.Create;
+  FStatusReportList := TStringList.Create;
 
   FLookupList := TTntStringList.Create;
 
@@ -5591,6 +5613,7 @@ begin
   { Save database files }
   FNewPDUList.SaveToFile(Fullpath + 'SMSIncoming.dat'); // do not localize
   FNewMessageList.SaveToFile(Fullpath + 'SMSIncoming.Index.dat'); // do not localize
+  FStatusReportList.SaveToFile(Fullpath + 'SMSReports.dat'); // do not localize
 
   EData := ExplorerNew.GetNodeData(FNodeMsgInbox);
   SaveSMSMessages(EData.Data, Fullpath + 'SMSInbox.dat'); // do not localize
@@ -5622,6 +5645,7 @@ begin
       DeleteFile(ExePath + 'SMSInbox.dat'); // do not localize
       DeleteFile(ExePath + 'SMSIncoming.dat'); // do not localize
       DeleteFile(ExePath + 'SMSIncoming.Index.dat'); // do not localize
+      DeleteFile(ExePath + 'SMSReports.dat'); // do not localize
       DeleteFile(ExePath + 'SMSOutbox.dat'); // do not localize
       DeleteFile(ExePath + 'SMSSent.dat'); // do not localize
       DeleteFile(ExePath + 'SMSArchive.dat'); // do not localize
@@ -7100,6 +7124,7 @@ begin
         FreeAndNil(FObex);
         FreeAndNil(FNewMessageList);
         FreeAndNil(FNewPDUList);
+        FreeAndNil(FStatusReportList);
         FreeAndNil(FLookupList);
         FreeAndNil(FFavoriteRecipients);
         FreeAndNil(FFavoriteCalls);
@@ -9182,6 +9207,10 @@ begin
     FNewMessageList.LoadFromFile(Fullpath + 'SMSIncoming.Index.dat'); // do not localize
   except
     Result := False;
+  end;
+  try
+    FStatusReportList.LoadFromFile(Fullpath + 'SMSReports.dat'); // do not localize
+  except
   end;
   ProgressNotify;
   try
@@ -15924,6 +15953,12 @@ begin
     finally
       Free;
     end;
+end;
+
+procedure TForm1.HandleCDS(AMsg: String);
+begin
+  FStatusReportList.Add(AMsg);
+  // TODO: execute event xxx
 end;
 
 initialization
