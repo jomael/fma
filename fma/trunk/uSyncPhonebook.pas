@@ -1259,6 +1259,7 @@ end;
 
 procedure TfrmSyncPhonebook.btnSYNCClick(Sender: TObject);
 var
+  PrevCC: WideString;
   isModified: Boolean;
   Err: WideString;
 begin
@@ -1271,6 +1272,7 @@ begin
     Form1.Status(_('Start Sync Phonebook....'));
     Log.AddSynchronizationMessage(_('Sync Phonebook started.'));
     VCard.clear;
+    PrevCC := CC;
     try
       //Start the sync process
       isModified := Synchronize;
@@ -1283,6 +1285,11 @@ begin
       Log.AddSynchronizationMessage(_('Sync Phonebook completed.'));
     except
       on E: Exception do begin
+        { Partial changes applied? }
+        if CC <> PrevCC then begin
+          FSyncProgressDlg.SetDescr(_('Refreshing local phonebook'));
+          Form1.RefreshPhoneBook;
+        end;
         Err := WideFormat(_('Error: Sync Phonebook aborted - %s'), [E.Message]);
         Form1.Status(Err);
         Log.AddSynchronizationMessage(Err, lsError);
@@ -1598,18 +1605,18 @@ begin
       finally
         RenderGUIDs;
         ListContacts.EndUpdate;
-        // Do we have to perform a full refresh? (too many changes in phone)
-        {
-          SN:351956003653753
-          DID:6D25
-          Total-Records:100
-          Maximum-Records:510
-          *
-        }
-        // Local changes have been applied to the phone already, so we can do
-        // full refresh, if needed...
-        GetAll := (pl.Count <> 0) and (pl[pl.Count-1] = '*');
       end;
+      // Do we have to perform a full refresh? (too many changes in phone)
+      {
+        SN:351956003653753
+        DID:6D25
+        Total-Records:100
+        Maximum-Records:510
+        *
+      }
+      // Local changes have been applied to the phone already, so we can do
+      // full refresh, if needed...
+      GetAll := (pl.Count <> 0) and (pl[pl.Count-1] = '*');
     end
     else 
       GetAll := MessageDlgW(_('Entire phonebook should be downloaded from phone. All local changes will be LOST! Continue?'),
@@ -1692,13 +1699,16 @@ begin
       frmPromptConflict.Info := Info;
       if (ConflictVCardPhone.Raw.Count <> 0) and (ConflictVCardPC.Raw.Count <> 0) then
         frmPromptConflict.OnViewChanges := OnConflictChanges;
+      frmPromptConflict.CanBeAborted := True;
       if frmPromptConflict.ShowModal = mrOK then begin
         Result := frmPromptConflict.SelectedItem;
         if frmPromptConflict.cbDontAskAgain.Checked then begin
           Form1.FSyncContactPrio := Result;
           Form1.FormStorage1.StoredValue['Sync Contact'] := Form1.FSyncContactPrio; // do not localize  
         end;
-      end;
+      end
+      else
+        Abort; // cancel PB Sync
     finally
       frmPromptConflict.Free;
     end;
