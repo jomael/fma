@@ -1233,8 +1233,8 @@ begin
       03H: The PDU has to be treat as group4 telefax }
     pduPID := '00';
 
-    { Validity Period set to maximum }
-    pduTPVP := 'FF'; // do not localize
+    { Validity Period set to 1 week }
+    pduTPVP := 'AD'; // do not localize
 
     Result := pduFirst + pduMsgRef + pduAddr + pduPID + pduDCS + pduTPVP + pduMsgL;
     if FUDHI <> '' then begin
