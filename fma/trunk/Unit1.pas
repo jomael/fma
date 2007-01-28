@@ -36,7 +36,7 @@ uses
   LMDProgressFill, LMDHookComponent, LMDFMDrop, WSocket, WBluetoothSocket, WIrCOMMSocket, mmsystem, uAccessoriesMenu,
   uMissedCalls, uKeyPad, CoolTrayIcon, WebUtil, jpeg, AMixer, LMDFill, WebUpdate, aw_SCtrl, CPort, uScriptEditor,
   uContactSync, uChatSMS, GR32_Image, uFiles, uSyncCalendar, PBFolderDialog, uSIMEdit, uMEEdit, uMsgView, uInfoView,
-  uXML, uSyncPhonebook, uSyncBookmarks, uVCard, uLog, uLogger, SEProgress, USBMonitor, ActiveX;
+  uXML, uSyncPhonebook, uSyncBookmarks, uVCard, uLog, uLogger, uMessageData, SEProgress, USBMonitor, ActiveX;
 
 const
   LongOperationsTimeout = 45000; // 45 seconds (for searching in phone book, sending messages etc.)
@@ -1071,8 +1071,10 @@ type
 
     procedure SaveMsgToFolder(var rootNode: PVirtualNode; PDU: String;
       OverwriteOld: boolean = false; AsNew: boolean = true; UpdateView: boolean = true;
-      ForceIndex: Integer = -1; ForceDate: TDateTime = 0; AllowDuplicates: Boolean = false);
-    procedure SaveToArchive(PDU: String; OverwriteOld: boolean = false; UpdateView: boolean = True);
+      ForceIndex: Integer = -1; ForceDate: TDateTime = 0; AllowDuplicates: Boolean = false); overload;
+    procedure SaveMsgToFolder(var rootNode: PVirtualNode; msgData: TFmaMessageData;
+      OverwriteOld: boolean = false; AsNew: boolean = true; UpdateView: boolean = true;
+      ForceIndex: Integer = -1); overload;
     function DelMsgFromFolder(var rootNode: PVirtualNode; PDU: string; UpdateView: boolean = True): Boolean;
     function DeleteSMS(index: Integer; memType: String; CheckPDU: String = ''): Boolean;
 
@@ -1285,8 +1287,7 @@ uses
   uFolderProps, Types, uOfflineProfile, uFMASync, uOutlookSync, uPromptConflict, uChooseLink, uLogObserverWriter,
   uOrganizeFavs, uCallContact, uAddToPhonebook, StrUtils, uLogWriters, janXMLParser2, uInputQuery,
   uVBase, uVCalendar, uSplash, uConflictChanges, jclShell, MobileAgent_TLB, UrlMOn, uDialogs, uNewDeviceWizard,
-  uWelcome, LMDGradient, uBrowseFolders, JwaHtmlHelp, uPassword, uMessageData,
-  uPortable;
+  uWelcome, LMDGradient, uBrowseFolders, JwaHtmlHelp, uPassword, uPortable;
 
 {$R *.dfm}
 
@@ -3704,11 +3705,6 @@ begin
     Name := copy(Name, 1, length(Name) - 2);
   end
   else numType := 'O'; // do not localize
-end;
-
-procedure TForm1.SaveToArchive(PDU: String; OverwriteOld,UpdateView: boolean);
-begin
-  SaveMsgToFolder(FNodeMsgArchive,PDU,OverwriteOld,UpdateView);
 end;
 
 procedure TForm1.SetActionState(act: TTntAction; state: Boolean);
@@ -10292,35 +10288,53 @@ begin
       md := TFmaMessageData(sl.Objects[Idx]);
       md.AsString := buffer; // that should do it
     end;
-    {
-    for j := 0 to sl.Count-1 do begin
-      if AnsiCompareText(GetToken(sl[j],5),PDU) = 0 then begin
-        if OverwriteOld then begin
-          // Mark message as new depending of AsNew
-          buffer := sl[j];
-          // DB upgrade 0.10.29 build, where count is changed from 6 to 8
-          if GetTokenCount(buffer) = 6 then
-            buffer := buffer + ',"' + DateTimeToStr(dt) + '",' + IntToStr(Byte(AsNew))
-          else begin
-            if GetTokenCount(buffer) = 7 then
-              buffer := buffer + ',' + IntToStr(Byte(AsNew))
-            else begin
-              flag := GetToken(buffer,7);
-              if byte(AsNew) <> StrToInt(flag) then begin
-                buffer := Copy(buffer,1,Length(buffer)-Length(flag));
-                buffer := buffer + IntToStr(Byte(AsNew));
-              end;
-            end;
-          end;
-          sl[j] := buffer;
-        end;
-        EntryExist := True;
-        break;
-      end;
-    end;}
   end;
   if not EntryExist then begin
     md := TFmaMessageData.Create(buffer);
+    sl.AddObject(md.PDU, md);
+  end;
+
+  if UpdateView then begin
+    UpdateNewMessagesCounter(rootNode);
+    if (rootNode = ExplorerNew.FocusedNode) and frmMsgView.Visible then
+      frmMsgView.RenderListView(sl);
+  end;
+end;
+
+procedure TForm1.SaveMsgToFolder(var rootNode: PVirtualNode; msgData: TFmaMessageData;
+  OverwriteOld: boolean = false; AsNew: boolean = true; UpdateView: boolean = true;
+  ForceIndex: Integer = -1);
+var
+  Idx: Integer;
+  EntryExist: Boolean;
+  sl: TStringList;
+  EData: PFmaExplorerNode;
+  md: TFmaMessageData;
+begin
+  EData := ExplorerNew.GetNodeData(rootNode);
+  if not Assigned(rootNode) or (EData.StateIndex and FmaMessagesRootMask <> FmaMessagesRootFlag) then
+    exit;
+
+  if ForceIndex = -1 then ForceIndex := TStrings(EData.Data).Count + 1;
+  if AsNew then begin
+    if msgData.IsLong and not msgData.IsLongFirst then
+    { Do not mark as New long SMS entries, except the first one }
+      AsNew := False;
+  end;
+
+  sl := THashedStringList(EData.Data);
+  Idx := sl.IndexOf(msgData.PDU);
+  EntryExist := Idx <> -1;
+  if EntryExist and OverwriteOld then begin
+    md := TFmaMessageData(sl.Objects[Idx]);
+    md.AsString := msgData.AsString; // that should do it
+    md.IsNew := AsNew;
+    md.MsgIndex := ForceIndex;
+  end;
+  if not EntryExist then begin
+    md := TFmaMessageData.Create(msgData.AsString);
+    md.MsgIndex := ForceIndex;
+    md.IsNew := AsNew;
     sl.AddObject(md.PDU, md);
   end;
 
@@ -13939,7 +13953,7 @@ begin
           curr := PVirtualNode(wl.Objects[j]);
           if Assigned(curr) then begin
             item := frmMsgView.ListMsg.GetNodeData(curr);
-            SaveMsgToFolder(FolderNode,item.smsData.PDU,True,item.smsData.IsNew,False,-1,item.smsData.TimeStamp,FArchiveDublicates); // -1 = no index in PC folders
+            SaveMsgToFolder(FolderNode,item.smsData,True,item.smsData.IsNew,False,-1); // -1 = no index in PC folders
           end;
         end;
       finally
@@ -14567,13 +14581,10 @@ var
   sl: TStringList;
   fl: TTntStringList;
   i,MoveCount,msgIndex: Integer;
-  msgType: TMessageLocation;
   memType: string;
   who,sender: WideString;
   DeliveryNode: PVirtualNode;
   EData: PFmaExplorerNode;
-  smsDate: TDateTime;
-  smsNew: Boolean;
   md: TFmaMessageData;
 begin
   Status('Applying Rules...');
@@ -14602,12 +14613,9 @@ begin
         end;
         { Apply rule if needed }
         if Assigned(DeliveryNode) and (DeliveryNode <> Node) then begin
-          msgType := md.Location;
           msgIndex := md.MsgIndex;
-          smsDate := md.TimeStamp;
-          smsNew := md.IsNew;
           memType := ''; // In PC
-          case msgType of
+          case md.Location of
             mlME: memType := 'ME';
             mlSM: memType := 'SM';
           end;
@@ -14619,7 +14627,7 @@ begin
               { silently ignore delete failure - it means message is not in phone anyway }
             end;
           end;
-          SaveMsgToFolder(DeliveryNode,md.PDU,True,smsNew,False,-1,smsDate,True); // -1 = no index in PC folders
+          SaveMsgToFolder(DeliveryNode,md,True,md.IsNew,False);
           EData := ExplorerNew.GetNodeData(DeliveryNode);
           if fl.IndexOf(EData.Text) = -1 then
             fl.AddObject(EData.Text, Pointer(DeliveryNode));
