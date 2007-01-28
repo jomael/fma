@@ -8815,7 +8815,16 @@ begin
       SaveUserFoldersData(FullPath);
     end;
 
-    { TODO: Fix other databases too }
+    { DONE: Fix other databases too }
+
+    { Clear Status reports, we'd have found matching SMS by now }
+    FreeStatusReports;
+    FStatusReportList.SaveToFile(Fullpath + 'SMSReports.dat');
+    { Clear also incompletly downloaded new messages }
+    FNewPDUList.Clear;
+    FNewPDUList.SaveToFile(Fullpath + 'SMSIncoming.dat'); // do not localize
+    FNewMessageList.Clear;
+    FNewMessageList.SaveToFile(Fullpath + 'SMSIncoming.Index.dat'); // do not localize
 
   finally
     Enabled := True;

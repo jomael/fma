@@ -177,8 +177,6 @@ begin
     if FSMS.ReportPDU <> '' then begin
       mmoDRPDU.Lines.Add(WideFormat(_('Message Type: %s'),['SMS STATUS REPORT'])); // do not localize
       mmoDRPDU.Lines.Add(sLineBreak + FSMS.ReportPDU);
-    end;
-    if mmoDRPDU.Text <> '' then begin
       edDRStatus.Text := _('Response received');
       edDRRepDate.Text := DateTimeToStr(FSMS.TimeStamp);
       if FSMS.StatusCode = $FF then
@@ -186,27 +184,37 @@ begin
       else
         if FSMS.StatusCode = 0 then
           edDRInfo.Text := _('Delivery was successful')
-        else
-          edDRInfo.Text := WideFormat(_('Delivery failed with status code: %d'),[FSMS.StatusCode]);
+        else begin
+          if FSMS.StatusCode and $60 = $20 then
+            edDRInfo.Text := WideFormat(_('Delivery failed, still trying to deliver (code: $%.2x)'),[FSMS.StatusCode])
+          else
+            edDRInfo.Text := WideFormat(_('Delivery failed with status code: $%.2x'),[FSMS.StatusCode]);
+        end;
     end
     else begin
       if FSMS.StatusCode = $FF then begin
         edDRStatus.Text := _('Awaiting response...');
         edDRRepDate.Text := sNoInfo;
         edDRInfo.Text := sNoInfo;
+        mmoDRPDU.Lines.Text := sNoInfo;
       end
       else begin
         edDRStatus.Text := _('Not received');
         edDRRepDate.Text := sNoInfo;
         edDRInfo.Text := _('Validity period expired');
+        mmoDRPDU.Lines.Text := sNoInfo;
       end;
     end;
   end
-  else
+  else begin
+    edDRRepDate.Text := sNoInfo;
+    edDRInfo.Text := sNoInfo;
+    mmoDRPDU.Lines.Text := sNoInfo;
     if FSMS.IsOutgoing then
       edDRStatus.Text := _('Not requested')
     else
       edDRStatus.Text := _('Not applicable');
+  end;
 end;
 
 procedure TfrmDetail.OkButtonClick(Sender: TObject);
