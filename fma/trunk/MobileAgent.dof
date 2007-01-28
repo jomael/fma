@@ -100,7 +100,7 @@ Conditionals=
 DebugSourceDirs=
 UsePackages=0
 [Parameters]
-RunParams=-debug -debugobex -portable
+RunParams=-debug -debugobex
 HostApplication=
 Launcher=
 UseLauncher=0
@@ -114,8 +114,8 @@ IncludeVerInfo=1
 AutoIncBuild=0
 MajorVer=2
 MinorVer=1
-Release=3
-Build=99
+Release=4
+Build=0
 Debug=0
 PreRelease=1
 Special=0
@@ -126,13 +126,13 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=floAt
 FileDescription=Mobile Agent
-FileVersion=2.1.3.99
+FileVersion=2.1.4.0
 InternalName=Mobile Agent
-LegalCopyright=Copyright 2003-2006 by FMA Team
+LegalCopyright=Copyright 2003-2007 by FMA Team
 LegalTrademarks=floAt is originated by Warren Chin
 OriginalFilename=MobileAgent.exe
 ProductName=floAt's Mobile Agent
-ProductVersion=2.1 Beta 3
+ProductVersion=2.1 Beta 4
 Comments=Maintained by FMA Team
 URL=http://fma.sourceforge.net/
 [HistoryLists\hlUnitAliases]

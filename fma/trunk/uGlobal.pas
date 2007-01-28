@@ -22,6 +22,7 @@ uses
 const
   EmptyDate = 949998; // for Outlook compatability
 
+function IsPhoneNumber(ANum: WideString): boolean;
 function IsEmptyDate(ADate: TDateTime): boolean;
 function RemoveUnsafeChars(s: WideString): WideString;
 
@@ -62,6 +63,18 @@ implementation
 uses
   gnugettext,
   SysUtils, TntSysUtils, TntWideStrings;
+
+function IsPhoneNumber(ANum: WideString): boolean;
+var
+  i: integer;
+begin
+  Result := True;
+  for i := 1 to Length(ANum) do 
+    if not (Char(ANum[i]) in ['+','0'..'9','#','*','p']) then begin
+      Result := False;
+      break;
+    end;
+end;
 
 function IsEmptyDate(ADate: TDateTime): boolean;
 begin

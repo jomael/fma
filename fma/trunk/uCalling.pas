@@ -20,7 +20,7 @@ interface
 uses
   Windows, TntWindows, Messages, SysUtils, TntSysUtils, Variants, Classes, TntClasses, Graphics, TntGraphics, Controls, TntControls, Forms, TntForms,
   Dialogs, TntDialogs, StdCtrls, TntStdCtrls, Placemnt, GR32_Image, ExtCtrls, TntExtCtrls, MPlayer,
-  jpeg, MMSystem, uSyncPhonebook;
+  jpeg, MMSystem, uSyncPhonebook, Menus, TntMenus;
 
 type
   TfrmCalling = class(TTntForm)
@@ -37,13 +37,30 @@ type
     lblTime: TTntLabel;
     TimeTimer: TTimer;
     Memo: TTntMemo;
-    procedure CallButtonClick(Sender: TObject);
+    PopupMenu1: TTntPopupMenu;
+    SwitchtoHeadset1: TTntMenuItem;
+    N1: TTntMenuItem;
+    AddToPhonebook1: TTntMenuItem;
+    N2: TTntMenuItem;
+    MessageContact1: TTntMenuItem;
+    HangUp1: TTntMenuItem;
+    Answer1: TTntMenuItem;
+    N3: TTntMenuItem;
+    Ignore1: TTntMenuItem;
     procedure FormShow(Sender: TObject);
     procedure MediaPlayer1Notify(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure TimeTimerTimer(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure SwitchtoHeadset1Click(Sender: TObject);
+    procedure AddToPhonebook1Click(Sender: TObject);
+    procedure HeadsetButtonClick(Sender: TObject);
+    procedure Ignore1Click(Sender: TObject);
+    procedure AnswerButtonClick(Sender: TObject);
+    procedure HandupButtonClick(Sender: TObject);
+    procedure PopupMenu1Popup(Sender: TObject);
+    procedure MessageContact1Click(Sender: TObject);
   private
     { Private declarations }
     FContactData: TContactData;
@@ -86,45 +103,12 @@ implementation
 
 uses
   gnugettext, gnugettexthelpers,
-  uImg32Helper, Unit1, uMissedCalls, uDialogs, uSIMEdit;
+  uImg32Helper, Unit1, uMissedCalls, uDialogs, uSIMEdit, uComposeSMS;
 
 const
   DefRingOutgoingSecs = 5;
 
 {$R *.dfm}
-
-procedure TfrmCalling.CallButtonClick(Sender: TObject);
-begin
-  if Sender = HandupButton then begin
-    DoExiting;
-    try
-      Form1.VoiceHangUp;
-    except
-    end;
-  end
-  else
-  if Sender = AnswerButton then begin
-    DoInCall;
-    try
-      Form1.VoiceAnswer;
-    except // Error may occur if call is alerady active...
-    end;
-    FCheck := True;
-    if Visible and Memo.Visible then
-      Memo.SetFocus;
-  end
-  else
-  if Sender = HeadsetButton then begin
-    DoInCall;
-    try
-      Form1.VoiceAnswer;
-    except
-    end;
-    FCheck := True;
-    Form1.DoDisconnectTemporary;
-  end;
-  (Sender As TTntButton).Enabled := False;
-end;
 
 procedure TfrmCalling.FormShow(Sender: TObject);
 begin
@@ -144,7 +128,7 @@ begin
     FPersonalizedSem := True; // allow it only once
     { Lookup contact name }
     if (lbAlpha.Caption = sUnknownNumber) or (lbAlpha.Caption = sUnknownContact) then
-      lbAlpha.Caption := Form1.LookupContact(lbNumber.Caption,lbAlpha.Caption);
+      lbAlpha.Caption := Form1.ExtractContact(Form1.ContactNumberByTel(lbNumber.Caption));
     { Resize window if needed }
     DoResizeWide;
     { Personalize }
@@ -259,7 +243,7 @@ end;
 
 procedure TfrmCalling.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  CloseCall(false);
+  CloseCall(False);
 end;
 
 procedure TfrmCalling.TimeTimerTimer(Sender: TObject);
@@ -333,7 +317,7 @@ begin
   lbAlpha.AutoSize := True;
   lbAlpha.Caption := CallName;
   lbNumber.Caption := Number;
-  IsCustomImage := False;  
+  IsCustomImage := False;
   { Restore form position }
   FormPlacement1.RestoreFormPlacement;
   Application.ProcessMessages;
@@ -451,6 +435,85 @@ begin
     FormPlacement1.SaveFormPlacement;
   end;
   if CanClose then Close; // No stack overflow coz CanClose is false in Close().
+end;
+
+procedure TfrmCalling.SwitchtoHeadset1Click(Sender: TObject);
+begin
+  DoInCall;
+  try
+    Form1.VoiceAnswer;
+  except
+  end;
+  FCheck := True;
+  Form1.DoDisconnectTemporary;
+end;
+
+procedure TfrmCalling.AddToPhonebook1Click(Sender: TObject);
+begin
+  if Form1.AddNewToPhonebook(lbNumber.Caption) then begin
+    { Update view }
+    lbAlpha.Caption := Form1.ExtractContact(Form1.ContactNumberByTel(lbNumber.Caption));
+    Image32.Bitmap.Clear;
+    AddToPhonebook1.Enabled := False;
+    { Personalize again }
+    FPersonalized := False;
+    FPersonalizedSem := False;
+    DoPersonalize;
+  end;
+end;
+
+procedure TfrmCalling.HeadsetButtonClick(Sender: TObject);
+var
+  p: TPoint;
+begin
+  with (Sender as TTntButton) do
+    p := ClientToScreen(Point(0,Height));
+  PopupMenu1.Popup(p.X,p.Y);
+end;
+
+procedure TfrmCalling.AnswerButtonClick(Sender: TObject);
+begin
+  AnswerButton.Enabled := False;
+  DoExiting;
+  try
+    Form1.VoiceHangUp;
+  except
+  end;
+end;
+
+procedure TfrmCalling.HandupButtonClick(Sender: TObject);
+begin
+  HandupButton.Enabled := False;
+  DoInCall;
+  try
+    Form1.VoiceAnswer;
+  except // Error may occur if call is alerady active...
+  end;
+  FCheck := True;
+  if Visible and Memo.Visible then
+    Memo.SetFocus;
+end;
+
+procedure TfrmCalling.PopupMenu1Popup(Sender: TObject);
+begin
+  MessageContact1.Enabled := Pos(sUnknownNumber,lbAlpha.Caption) = 0;
+  { Add to ME if no name included or it is an unknown contact name }
+  AddToPhonebook1.Enabled := MessageContact1.Enabled and (Pos(sUnknownContact,lbAlpha.Caption) <> 0);
+end;
+
+procedure TfrmCalling.Ignore1Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmCalling.MessageContact1Click(Sender: TObject);
+begin
+  if lbNumber.Caption <> '' then begin
+    frmMessageContact.Clear;
+    Form1.ActionSMSNewMsg.Execute;
+    frmMessageContact.AddRecipient(Form1.ExtractContact(lbAlpha.Caption)+' ['+lbNumber.Caption+']');
+    frmMessageContact.Memo.SetFocus;
+  end;
 end;
 
 end.

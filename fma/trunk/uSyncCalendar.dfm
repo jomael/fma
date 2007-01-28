@@ -1,27 +1,27 @@
 object frmCalendarView: TfrmCalendarView
   Left = 0
   Top = 0
-  Width = 583
-  Height = 412
+  Width = 581
+  Height = 410
   TabOrder = 0
   object SplitterVertical: TTntSplitter
     Left = 217
     Top = 0
-    Height = 412
+    Height = 410
     AutoSnap = False
   end
   object Panel: TTntPanel
     Left = 220
     Top = 0
-    Width = 363
-    Height = 412
+    Width = 361
+    Height = 410
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
     object SplitterHorizontal: TTntSplitter
       Left = 0
       Top = 269
-      Width = 363
+      Width = 361
       Height = 3
       Cursor = crVSplit
       Align = alTop
@@ -30,7 +30,7 @@ object frmCalendarView: TfrmCalendarView
     object VpMonthView: TVpMonthView
       Left = 0
       Top = 0
-      Width = 363
+      Width = 361
       Height = 269
       ControlLink = VpControlLink
       Color = clWindow
@@ -69,8 +69,8 @@ object frmCalendarView: TfrmCalendarView
     object VpTaskList: TVpTaskList
       Left = 0
       Top = 272
-      Width = 363
-      Height = 140
+      Width = 361
+      Height = 138
       PopupMenu = PopupMenuTaskList
       ControlLink = VpControlLink
       Color = clWindow
@@ -109,7 +109,7 @@ object frmCalendarView: TfrmCalendarView
     Left = 0
     Top = 0
     Width = 217
-    Height = 412
+    Height = 410
     PopupMenu = PopupMenuDayView
     ControlLink = VpControlLink
     Color = clWindow

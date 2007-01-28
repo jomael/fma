@@ -38,7 +38,7 @@ type
     OkButton: TTntButton;
     ActionButton: TTntButton;
     PopupMenu1: TTntPopupMenu;
-    ReplyBack: TTntMenuItem;
+    Reply1: TTntMenuItem;
     Forward1: TTntMenuItem;
     N1: TTntMenuItem;
     Delete1: TTntMenuItem;
@@ -52,7 +52,7 @@ type
     CallContact1: TTntMenuItem;
     procedure Timer1Timer(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure ReplyBackClick(Sender: TObject);
+    procedure Reply1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure OkButtonClick(Sender: TObject);
     procedure ActionButtonClick(Sender: TObject);
@@ -220,13 +220,13 @@ end;
 
 procedure TfrmNewMessage.PopupMenu1Popup(Sender: TObject);
 begin
-  Chat1.Enabled := lbAlpha.Caption <> sUnknownNumber;
+  Chat1.Enabled := Pos(sUnknownNumber,lbAlpha.Caption) = 0;
+  Reply1.Enabled := Chat1.Enabled;
   CallContact1.Enabled := Chat1.Enabled;
-  AddContact1.Enabled := (Chat1.Enabled and (Pos('[',lbAlpha.Caption) = 0)) or
-    (Pos(sUnknownContact,lbAlpha.Caption) <> 0); // no name included or unknown contact name
+  AddContact1.Enabled := Chat1.Enabled and (Pos(sUnknownContact,lbAlpha.Caption) <> 0); 
 end;
 
-procedure TfrmNewMessage.ReplyBackClick(Sender: TObject);
+procedure TfrmNewMessage.Reply1Click(Sender: TObject);
 begin
   DoMarkMsgAsRead;
   frmMessageContact.Clear;
@@ -273,8 +273,16 @@ end;
 
 procedure TfrmNewMessage.AddContact1Click(Sender: TObject);
 begin
-  if Form1.AddNewToPhonebook(lbAlpha.Caption) then
+  if Form1.AddNewToPhonebook(lbAlpha.Caption) then begin
+    { Update view }
+    DoMarkMsgAsRead;
+    lbAlpha.Caption := Form1.ContactNumberByTel(lbAlpha.Caption);
+    { Personalize }
+    FPersonalized := False;
+    FPersonalizedSem := False;
+    DoPersonalize;
     AddContact1.Enabled := False;
+  end;
 end;
 
 procedure TfrmNewMessage.OnMouseEnter(Sender: TObject);

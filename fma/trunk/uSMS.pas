@@ -107,9 +107,12 @@ type
     FMessageRef: string;
     FAddress: String;
     FDCS: TGSMCodingScheme;
+    FUserNotified: Boolean;
     procedure Set_PDU(const Value: String);
     function Get_IsDelivered: boolean;
   public
+    constructor Create(ExpectSCA: boolean = False);
+
     property PDU: string read FPDU write Set_PDU;
     property MessageReference: string read FMessageRef;
     property OriginalSentTime: TDateTime read FSCATS;
@@ -121,7 +124,7 @@ type
     property UDHI: String read FUDHI;
     property IsUDH: Boolean read FIsUDH;
     property SMSC: String read FSCA;
-    constructor Create(ExpectSCA: boolean = False);
+    property IsUserNotified: Boolean read FUserNotified write FUserNotified; // FMA only field
   end;
 
 function GSMLongMsgData(PDU: string; var ARef, ATot, An: Integer): boolean;
@@ -886,7 +889,7 @@ begin
   end;
 end;
 
-{ TSMS }
+{ TSMSDecoder }
 
 function TSMSDecoder.DecodeTimeStamp(raw: String): TDateTime;
 var
@@ -945,6 +948,8 @@ begin
   if length(Number) mod 2 > 0 then Number := Number + 'F'; // do not localize
   Result := Result + ReverseOctets(Number);
 end;
+
+{ TSMS }
 
 function TSMS.Get_Message: WideString;
 var
@@ -1465,6 +1470,8 @@ begin
   FUDHI := Value;
   FIsUDH := FUDHI <> '';
 end;
+
+{ TSMSStatusReport }
 
 constructor TSMSStatusReport.Create(ExpectSCA: boolean);
 begin

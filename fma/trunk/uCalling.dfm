@@ -1,6 +1,6 @@
 object frmCalling: TfrmCalling
-  Left = 417
-  Top = 250
+  Left = 418
+  Top = 251
   HorzScrollBar.Visible = False
   VertScrollBar.Visible = False
   ActiveControl = HandupButton
@@ -65,9 +65,9 @@ object frmCalling: TfrmCalling
     Width = 58
     Height = 21
     Anchors = [akRight, akBottom]
-    Caption = 'Hang Up'
+    Caption = '&Hang Up'
     TabOrder = 1
-    OnClick = CallButtonClick
+    OnClick = HandupButtonClick
   end
   object AnswerButton: TTntButton
     Left = 203
@@ -75,9 +75,9 @@ object frmCalling: TfrmCalling
     Width = 58
     Height = 21
     Anchors = [akRight, akBottom]
-    Caption = 'Answer'
+    Caption = '&Answer'
     TabOrder = 0
-    OnClick = CallButtonClick
+    OnClick = AnswerButtonClick
   end
   object HeadsetButton: TTntButton
     Left = 139
@@ -85,9 +85,9 @@ object frmCalling: TfrmCalling
     Width = 58
     Height = 21
     Anchors = [akRight, akBottom]
-    Caption = 'Headset'
+    Caption = '&More '#187
     TabOrder = 5
-    OnClick = CallButtonClick
+    OnClick = HeadsetButtonClick
   end
   object ImagePanel: TTntPanel
     Left = 4
@@ -111,16 +111,6 @@ object frmCalling: TfrmCalling
       TabOrder = 0
     end
   end
-  object MediaPlayer1: TMediaPlayer
-    Left = 288
-    Top = 12
-    Width = 29
-    Height = 28
-    VisibleButtons = [btPlay]
-    Visible = False
-    TabOrder = 4
-    OnNotify = MediaPlayer1Notify
-  end
   object Memo: TTntMemo
     Left = 140
     Top = 56
@@ -133,6 +123,16 @@ object frmCalling: TfrmCalling
     TabOrder = 2
     Visible = False
   end
+  object MediaPlayer1: TMediaPlayer
+    Left = 272
+    Top = 64
+    Width = 29
+    Height = 28
+    VisibleButtons = [btPlay]
+    Visible = False
+    TabOrder = 4
+    OnNotify = MediaPlayer1Notify
+  end
   object FormPlacement1: TFormPlacement
     Active = False
     IniFileName = 'Software\floAt\MobileAgent'
@@ -144,7 +144,52 @@ object frmCalling: TfrmCalling
   object TimeTimer: TTimer
     Enabled = False
     OnTimer = TimeTimerTimer
+    Left = 288
+    Top = 12
+  end
+  object PopupMenu1: TTntPopupMenu
+    Images = Form1.ImageList2
+    OnPopup = PopupMenu1Popup
     Left = 224
     Top = 12
+    object Answer1: TTntMenuItem
+      Caption = '&Answer'
+      ImageIndex = 62
+      OnClick = AnswerButtonClick
+    end
+    object HangUp1: TTntMenuItem
+      Caption = '&Hang Up'
+      ImageIndex = 63
+      OnClick = HandupButtonClick
+    end
+    object SwitchtoHeadset1: TTntMenuItem
+      Caption = 'Use Headset...'
+      ImageIndex = 74
+      OnClick = SwitchtoHeadset1Click
+    end
+    object N1: TTntMenuItem
+      Caption = '-'
+    end
+    object AddToPhonebook1: TTntMenuItem
+      Caption = 'Add To &Phonebook...'
+      ImageIndex = 20
+      OnClick = AddToPhonebook1Click
+    end
+    object N2: TTntMenuItem
+      Caption = '-'
+    end
+    object Ignore1: TTntMenuItem
+      Caption = 'Ignore &Silently'
+      ImageIndex = 16
+      OnClick = Ignore1Click
+    end
+    object N3: TTntMenuItem
+      Caption = '-'
+    end
+    object MessageContact1: TTntMenuItem
+      Caption = '&Message Contact...'
+      ImageIndex = 7
+      OnClick = MessageContact1Click
+    end
   end
 end

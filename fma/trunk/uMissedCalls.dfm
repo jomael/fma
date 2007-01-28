@@ -72,12 +72,13 @@ object frmMissedCalls: TfrmMissedCalls
     Caption = 'Missed Calls List:'
   end
   object OkButton: TTntButton
-    Left = 320
+    Left = 312
     Top = 158
-    Width = 69
+    Width = 77
     Height = 25
     Anchors = [akRight, akBottom]
-    Caption = 'Close'
+    Cancel = True
+    Caption = '&Close'
     TabOrder = 2
     OnClick = OkButtonClick
   end
@@ -98,6 +99,7 @@ object frmMissedCalls: TfrmMissedCalls
       end>
     ColumnClick = False
     ReadOnly = True
+    RowSelect = True
     PopupMenu = PopupMenu1
     SmallImages = Form1.ImageList2
     TabOrder = 0
@@ -106,7 +108,7 @@ object frmMissedCalls: TfrmMissedCalls
   object CheckBox1: TTntCheckBox
     Left = 8
     Top = 160
-    Width = 229
+    Width = 273
     Height = 17
     Anchors = [akLeft, akBottom]
     Caption = 'I'#39've checked this out, clear the notification'
@@ -118,14 +120,14 @@ object frmMissedCalls: TfrmMissedCalls
     Left = 276
     Top = 56
     object SendMessage1: TTntMenuItem
-      Caption = 'Message Contact...'
+      Caption = '&Message Contact...'
       ImageIndex = 7
       ShortCut = 16461
       OnClick = SendMessage1Click
     end
     object VoiceCall1: TTntMenuItem
-      Caption = 'Call Contact...'
-      ImageIndex = 2
+      Caption = '&Call Contact...'
+      ImageIndex = 62
       ShortCut = 24643
       OnClick = VoiceCall1Click
     end
@@ -133,9 +135,17 @@ object frmMissedCalls: TfrmMissedCalls
       Caption = '-'
     end
     object AddContact1: TTntMenuItem
-      Caption = '&Add To Phonebook...'
+      Caption = 'Add To &Phonebook...'
       ImageIndex = 20
       OnClick = AddContact1Click
+    end
+    object N2: TTntMenuItem
+      Caption = '-'
+    end
+    object ClearNotifications1: TTntMenuItem
+      Caption = 'Clear All Notifications'
+      ImageIndex = 6
+      OnClick = ClearNotifications1Click
     end
   end
 end

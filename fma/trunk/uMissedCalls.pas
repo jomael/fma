@@ -36,6 +36,8 @@ type
     CheckBox1: TTntCheckBox;
     N1: TTntMenuItem;
     AddContact1: TTntMenuItem;
+    N2: TTntMenuItem;
+    ClearNotifications1: TTntMenuItem;
     procedure OkButtonClick(Sender: TObject);
     procedure PopupMenu1Popup(Sender: TObject);
     procedure SendMessage1Click(Sender: TObject);
@@ -43,6 +45,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure AddContact1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure ClearNotifications1Click(Sender: TObject);
   private
     FMissedCalls: integer;
     { Private declarations }
@@ -50,8 +53,8 @@ type
     procedure Set_MissedCalls(const Value: integer);
   public
     { Public declarations }
-  property
-    RecentMissedCalls: integer read FMissedCalls write Set_MissedCalls;
+    procedure RefreshAllSenders;
+    property RecentMissedCalls: integer read FMissedCalls write Set_MissedCalls;
   end;
 
 var
@@ -77,50 +80,45 @@ begin
 end;
 
 function TfrmMissedCalls.GetSelNumber: string;
-var
-  s: string;
-  i: integer;
 begin
   Result := '';
-  if (MissedCalls.Selected <> nil) and (MissedCalls.Selected.Caption <> sUnknownNumber) then begin
-    s := MissedCalls.Selected.Caption;
-    i := Pos('[',s);
-    if i <> 0 then begin
-      Delete(s,1,i);
-      Delete(s,Length(s),1);
-    end;
-    Result := s;
-  end;
+  if (MissedCalls.Selected <> nil) and (MissedCalls.Selected.Caption <> sUnknownNumber) then
+    Result := MissedCalls.Selected.Caption;
 end;
 
 procedure TfrmMissedCalls.PopupMenu1Popup(Sender: TObject);
 begin
-  VoiceCall1.Enabled := (MissedCalls.Selected <> nil) and (GetSelNumber <> '');
+  VoiceCall1.Enabled := GetSelNumber <> '';
   SendMessage1.Enabled := VoiceCall1.Enabled;
   AddContact1.Enabled := VoiceCall1.Enabled and (Pos(sUnknownContact,MissedCalls.Selected.Caption) <> 0);
 end;
 
 procedure TfrmMissedCalls.SendMessage1Click(Sender: TObject);
 begin
-  if not frmMessageContact.Visible then
-    frmMessageContact.Clear;
+  frmMessageContact.Clear;
   Form1.ActionSMSNewMsg.Execute;
   frmMessageContact.AddRecipient(GetSelNumber);
+  frmMessageContact.Memo.SetFocus;
 end;
 
 procedure TfrmMissedCalls.VoiceCall1Click(Sender: TObject);
 begin
-  Form1.VoiceCall(GetSelNumber);
+  Form1.DoCallContact(GetSelNumber);
 end;
 
 procedure TfrmMissedCalls.FormShow(Sender: TObject);
 begin
+  RefreshAllSenders;
   CheckBox1.Checked := False;
 end;
 
 procedure TfrmMissedCalls.AddContact1Click(Sender: TObject);
 begin
-  Form1.frmSyncPhonebook.DoEdit(True,GetSelNumber);
+  if Form1.AddNewToPhonebook(GetSelNumber) then begin
+    { Update view }
+    RefreshAllSenders;
+    AddContact1.Enabled := False;
+  end;
 end;
 
 procedure TfrmMissedCalls.Set_MissedCalls(const Value: integer);
@@ -139,6 +137,20 @@ end;
 procedure TfrmMissedCalls.FormCreate(Sender: TObject);
 begin
   gghTranslateComponent(self);
+end;
+
+procedure TfrmMissedCalls.ClearNotifications1Click(Sender: TObject);
+begin
+  CheckBox1.Checked := True;
+  OkButton.Click;
+end;
+
+procedure TfrmMissedCalls.RefreshAllSenders;
+var
+  i: integer;
+begin
+  for i := 0 to MissedCalls.Items.Count-1 do
+    MissedCalls.Items[i].Caption := Form1.ContactNumberByTel(MissedCalls.Items[i].Caption);
 end;
 
 end.

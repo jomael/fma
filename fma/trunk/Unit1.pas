@@ -505,14 +505,15 @@ type
     pmToolbars: TTntPopupMenu;
     ToolButton18: TToolButton;
     DatabaseManager1: TTntMenuItem;
-    LabeledEdit1: TLabeledEdit;
-    TntButton6: TTntButton;
     ActionToolsExportCalendar: TTntAction;
     ActionToolsImportCalendar: TTntAction;
     ImportCalendar1: TTntMenuItem;
     ExportCalendar1: TTntMenuItem;
     VoiceMailNumber1: TTntMenuItem;
     ActionEditVoiceMail: TTntAction;
+    pmStatusbar: TTntPopupMenu;
+    ToggleConnect1: TTntMenuItem;
+    ToggleConnect2: TTntMenuItem;
     procedure ActionConnectionConnectExecute(Sender: TObject);
     procedure ActionConnectionDisconnectExecute(Sender: TObject);
     procedure ActionConnectionDownloadExecute(Sender: TObject);
@@ -758,7 +759,6 @@ type
     procedure Memo3Change(Sender: TObject);
     procedure ActionNotInObexUpdate(Sender: TObject);
     procedure ActionToolsPostAlarmExecute(Sender: TObject);
-    procedure TntButton6Click(Sender: TObject);
     procedure ActionToolsExportCalendarExecute(Sender: TObject);
     procedure ActionToolsExportCalendarUpdate(Sender: TObject);
     procedure ActionToolsImportCalendarExecute(Sender: TObject);
@@ -1044,6 +1044,7 @@ type
     procedure ClearSMSMessages(Node: PVirtualNode); overload;
 
     procedure LoadStatusReports(APath: String);
+    procedure FreeStatusReports;
 
     function LoadPhoneDataFiles(ID: string = ''; ShowStatus: Boolean = True; ShowProgress: Boolean = False; SaveLocalChanges: Boolean = True): boolean;
     function OpenPhoneDataFiles(ID: string = ''): boolean;
@@ -1114,6 +1115,8 @@ type
     procedure ExtractName(var Name,numType: WideString);
     function ExtractNumber(ContactNumber: WideString): WideString;
     function ExtractContact(ContactNumber: WideString): WideString;
+
+    { Next two funcs will return 'name [number]' if found }
     function ContactNumberByTel(ContactNumber: string): WideString;
     function ContactNumberByName(ContactName: WideString): WideString;
 
@@ -1130,6 +1133,8 @@ type
     function WriteSMS(memLocation, PDU: String; Stat: Integer = -1): boolean;
 
     procedure RefreshPhoneBook;
+    procedure RefreshSendersView;
+    
     procedure UpdateMEPhonebook;
     procedure UpdateSMPhonebook;
 
@@ -1160,6 +1165,7 @@ type
     procedure DoProcessOutbox;
 
     procedure DoCleanupOutbox;
+    procedure DoRefreshCallSenders;
 
     function GetSMSMembers(Index: Integer; NodeData: TStringList; var Members: TStringList): boolean;
 
@@ -1470,26 +1476,6 @@ begin
   TntEdit2.Text := GSMDecode8Bit(TntEdit1.Text);
 end;
 
-procedure TForm1.TntButton6Click(Sender: TObject);
-const s: string = '*EAPN: 1,"普通"';
-var
-  ws: WideString;
-  smssr: TSMSStatusReport;
-begin
-  if TntEdit1.Text <> '' then begin
-    smssr := TSMSStatusReport.Create;
-    try
-      smssr.PDU := TntEdit1.Text;
-      ShowMessage(Format('MR: %s, Sent: %s, Received: %s, Number: %s', [smssr.MessageReference, DateTimeToStr(smssr.OriginalSentTime),
-        DateTimeToStr(smssr.DischargeTime), smssr.Number]));
-    finally
-      smssr.Free;
-    end;
-  end;
-  ws := LongStringToWideString(s{LabeledEdit1.Text});
-  ws := GetToken(ws, 1);
-  TntEdit2.Text := UTF8StringToWideString(WideStringToLongString(ws));
-end;
 { Form1 }
 
 procedure TForm1.Button1Click(Sender: TObject);
@@ -3053,7 +3039,7 @@ begin
         RenderContactList(FNodeContactsSM);
         frmSMEdit.RenderData;
         { clear contact lookup cache }
-        FLookupList.Clear;
+        RefreshSendersView;
       end;
       { Update database }
       SavePhoneDataFiles(True);
@@ -3249,8 +3235,7 @@ begin
     ExplorerNew.Sort(RootNode, 0, sdAscending);
     ExplorerNew.EndUpdate;
     { Update explorer default view if nessesery }
-    if (ExplorerNew.FocusedNode = rootNode) and frmExplore.Visible then
-      frmExplore.RootNode := rootNode;
+    if (ExplorerNew.FocusedNode = rootNode) and frmExplore.Visible then frmExplore.RefreshView; // update view
   end;
 end;
 
@@ -4192,11 +4177,6 @@ begin
 end;
 
 procedure TForm1.HandleECAV(AMsg: String);
-var
-  timestamp: String;
-  str: String;
-  ccstatus: Integer;
-  IsAutoAnswer: boolean; // When using headset
 resourcestring
   sIdle = 'Idle';
   sCalling = 'Calling';
@@ -4208,6 +4188,11 @@ resourcestring
   sBusy = 'Busy';
 const
   ccsDesc: array[0..7] of string = (sIdle, sCalling, sConnecting, sActive, sHold, sWaiting, sAlerting, sBusy);
+var
+  str,timestamp: String;
+  ccstatus: Integer;
+  IsAutoAnswer: boolean; // When using headset
+  w: WideString;
 begin
   DateTimeToString(timestamp, 'yyyy"/"mm"/"dd,hh":"nn', now); //TODO -cl10n: localize?
 
@@ -4227,9 +4212,9 @@ begin
     if (ccstatus = 1) and not frmCalling.IsTalking then begin
       { Outgoing call }
       frmCalling.Caption := _('Calling...');
-      frmCalling.lbNumber.Caption := GetToken(str, 5);
-      if (GetToken(str, 6) = '145') and (frmCalling.lbNumber.Caption <> '') and (frmCalling.lbNumber.Caption[1] <> '+') then
-        frmCalling.lbNumber.Caption := '+' + frmCalling.lbNumber.Caption;
+      w := GetToken(str, 5);
+      if (GetToken(str, 6) = '145') and (w <> '') and (w[1] <> '+') then w := '+' + w;
+      frmCalling.lbNumber.Caption := w;
       if frmCalling.lbAlpha.Caption = sUnknownNumber then
         frmCalling.lbAlpha.Caption := sUnknownContact;
       frmCalling.AnswerButton.Visible := False;
@@ -4259,9 +4244,10 @@ begin
     if (ccstatus = 6) and not frmCalling.IsTalking then begin
       { Incoming call }
       frmCalling.Caption := _('Incoming Call...');
-      frmCalling.lbNumber.Caption := GetToken(str, 5);
-      if (GetToken(str, 6) = '145') and (frmCalling.lbNumber.Caption <> '') and (frmCalling.lbNumber.Caption[1] <> '+') then
-        frmCalling.lbNumber.Caption := '+' + frmCalling.lbNumber.Caption;
+      frmCalling.lbAlpha.Caption := sUnknownContact;
+      w := GetToken(str, 5);
+      if (GetToken(str, 6) = '145') and (w <> '') and (w[1] <> '+') then w := '+' + w;
+      frmCalling.lbNumber.Caption := w;
       frmCalling.HeadsetButton.Visible := True;
       frmCalling.HandupButton.Visible := True;
       frmCalling.AnswerButton.Visible := True;
@@ -4302,8 +4288,10 @@ begin
         CoolTrayIcon1.HideBalloonHint; // hide calling baloon
         if frmCalling.IsIncoming and not frmCalling.IsTalking then begin
           { Add to explorer missed calls }
-          str := ContactNumberByTel(frmCalling.lbNumber.Caption);
-          AddCall(FNodeCallsMissed,str,timestamp,True);
+          w := ContactNumberByTel(frmCalling.lbNumber.Caption);
+          Log.AddMessageFmt('Add Missed Call: Number %s resolved as %s', // do not localize debug
+            [frmCalling.lbNumber.Caption,w],lsDebug);
+          AddCall(FNodeCallsMissed,w,timestamp,True);
           { Add to Recent missed calls counter }
           if frmMissedCalls <> nil then
             frmMissedCalls.RecentMissedCalls := frmMissedCalls.RecentMissedCalls + 1;
@@ -4339,12 +4327,12 @@ begin
   { Get Caller ID }
   if (pos('*EOLP', AMsg) = 1) or (pos('*ELIP', AMsg) = 1) then begin // do not localize
     if FUseUTF8 then
-      str := UTF8StringToWideString(WideStringToLongString(GetToken(LongStringToWideString(str), 0)))
+      w := UTF8StringToWideString(WideStringToLongString(GetToken(LongStringToWideString(str), 0)))
     else
-      str := GetToken(str, 0);
+      w := GetToken(str, 0);
     { TODO: Handle miltiple calls }
     if not frmCalling.IsTalking then begin
-      frmCalling.lbAlpha.Caption := str;
+      frmCalling.lbAlpha.Caption := w;
       frmCalling.DoShowNotes; // in case they are not shown yet
     end;
   end;
@@ -5767,7 +5755,10 @@ begin
 
     { Cancel call silently, i.e. Remove ringing }
     try
-      TxAndWait('AT+CKPD="c"'); // do not localize
+      if IsK610orBetter then
+        TxAndWait('AT+CKPD="#"') // do not localize
+      else
+        TxAndWait('AT+CKPD="c"'); // do not localize
     except
     end;
     { Lock keyboard again if needed }
@@ -5960,7 +5951,7 @@ begin
       end;
     finally
       sl.Free;
-      if frmExplore.Visible then frmExplore.RootNode := ExplorerNew.FocusedNode;
+      if frmExplore.Visible then frmExplore.RefreshView; // update view
     end;
     TxAndWait('AT*EAPS?'); // do not localize
     str := Copy(ThreadSafe.RxBuffer.Strings[0], 8, length(ThreadSafe.RxBuffer.Strings[0]));
@@ -6571,7 +6562,7 @@ begin
   RenderContactList(FNodeContactsME);
   if ATMode then frmMEEdit.RenderData;
   { clear contact lookup cache }
-  FLookupList.Clear;
+  RefreshSendersView;
 end;
 
 procedure TForm1.ActionExitExecute(Sender: TObject);
@@ -7359,7 +7350,7 @@ begin
         sl.Free;
         it.Free;
         if frmInfoView.Visible then EBCAState(True);
-        if frmExplore.Visible then frmExplore.RootNode := ExplorerNew.FocusedNode;
+        if frmExplore.Visible then frmExplore.RefreshView; // update view
       end;
       if IsMEModified then UpdateMEPhonebook;
     except
@@ -7469,7 +7460,7 @@ begin
     ReindexGroup;
     if FromView then begin
       frmExplore.ListItems.DeleteNode(SelNode);
-      frmExplore.RootNode := ExplorerNew.FocusedNode; // update view
+      frmExplore.RefreshView; // update view
     end;
   end;
 
@@ -7526,7 +7517,7 @@ begin
           end;
         finally
           frmExplore.ListItems.Enabled := True;
-          frmExplore.RootNode := ExplorerNew.FocusedNode;
+          frmExplore.RefreshView; // update view
         end
         else begin
           try
@@ -7534,7 +7525,7 @@ begin
             ReindexFolder; // Delete node from Explorer too
             if FromView then begin
               frmExplore.ListItems.DeleteNode(SelNode);
-              frmExplore.RootNode := ExplorerNew.FocusedNode; // update view
+              frmExplore.RefreshView; // update view
             end
             else
               ExplorerNew.DeleteNode(ExplorerNew.FocusedNode);
@@ -7780,7 +7771,7 @@ begin
       finally
         if not CoolTrayIcon1.CycleIcons then
           Status('');
-        if frmExplore.Visible then frmExplore.RootNode := ExplorerNew.FocusedNode;
+        if frmExplore.Visible then frmExplore.RefreshView;
       end;
     finally
       FreeProgressDialog;
@@ -10848,22 +10839,20 @@ begin
   else
     ParsePhonebookListFromEditor(FNodeContactsME);
   RenderContactList(FNodeContactsME);
+  RefreshSendersView;
 
   { Update database }
   SavePhoneDataFiles(True);
-  { clear contact lookup cache }
-  FLookupList.Clear;
 end;
 
 procedure TForm1.UpdateSMPhonebook;
 begin
   ParsePhonebookListFromEditor(FNodeContactsSM);
   RenderContactList(FNodeContactsSM);
+  RefreshSendersView;
 
   { Update database }
   SavePhoneDataFiles(True);
-  { clear contact lookup cache }
-  FLookupList.Clear;
 end;
 
 procedure TForm1.ParsePhonebookListFromEditor(ANode: PVirtualNode);
@@ -11427,6 +11416,8 @@ begin
       if Assigned(FNodeProfiles) then ExplorerNew.DeleteChildren(FNodeProfiles);
       if Assigned(FNodeGroups) then ExplorerNew.DeleteChildren(FNodeGroups);
       if ExplorerNew.GetFirst.ChildCount <> 0 then ClearUserFolders(ExplorerNew.GetFirst);
+
+      FreeStatusReports;
     finally
       PhoneIdentity := '';
       FPhoneModel := '';
@@ -11882,6 +11873,7 @@ procedure TForm1.AddCall(Node: PVirtualNode; contact: WideString;
   time: string; AsFirst: boolean);
 var
   itm: PVirtualNode;
+  lst: TTntListItem;
   data, data2: PFmaExplorerNode;
 begin
   if AsFirst then begin
@@ -11899,12 +11891,15 @@ begin
   data2.ImageIndex := 52 + (data.StateIndex and FmaNodeSubitemsMask) shr 16;
   data2.StateIndex := Node.ChildCount;
 
-  if (Node = FNodeCallsMissed) and (frmMissedCalls <> nil) then
-    with frmMissedCalls.MissedCalls.Items.Add do begin
-      Caption := contact;
-      SubItems.Add(time);
-      ImageIndex := 16;
-    end;
+  if (Node = FNodeCallsMissed) and (frmMissedCalls <> nil) then begin
+    if AsFirst then
+      lst := frmMissedCalls.MissedCalls.Items.Insert(0)
+    else
+      lst := frmMissedCalls.MissedCalls.Items.Add;
+    lst.Caption := contact;
+    lst.SubItems.Add(time);
+    lst.ImageIndex := 16;
+  end;
   if AsFirst then ReindexCallsNode(Node);
 end;
 
@@ -11919,7 +11914,8 @@ begin
   ExplorerNew.DeleteChildren(Node);
   data := ExplorerNew.GetNodeData(Node);
   TStrings(data.Data).Clear;
-  if Node = FNodeCallsMissed then frmMissedCalls.MissedCalls.Clear;
+  if Node = FNodeCallsMissed then
+    frmMissedCalls.MissedCalls.Clear;
   if frmInfoView.Visible then EBCAState(False);
   { Retrieve Calls now }
   sl := TStringList.Create;
@@ -11955,8 +11951,6 @@ begin
         stop := slTmp.Strings[2];
         TxAndWait('AT+CPBR=' + start + ',' + stop); // do not localize
         it.Text := ThreadSafe.RxBuffer.Text;
-        if grp = FNodeCallsMissed then
-          frmMissedCalls.MissedCalls.Clear;
         //idx := 1;
         for j := 0 to it.Count - 2 do begin
           if pos('+CPBR', it[j]) = 1 then begin // do not localize
@@ -11994,7 +11988,7 @@ begin
       frmInfoView.UpdateWelcomePage(True);
       EBCAState(True);
     end;
-    if frmExplore.Visible then frmExplore.RootNode := ExplorerNew.FocusedNode;
+    if frmExplore.Visible then frmExplore.RefreshView; // update view
   end;
   //UpdateMEPhonebook;
 end;
@@ -12019,7 +12013,7 @@ function TForm1.ContactNumberByTel(ContactNumber: string): WideString;
 begin
   ContactNumber := ExtractNumber(ContactNumber);
   if (ContactNumber <> '') and (ContactNumber <> sUnknownNumber) then
-    Result := LookupContact(ContactNumber,sUnknownContact) + ' [' + ContactNumber + ']'
+    Result := WideFormat('%s [%s]',[LookupContact(ContactNumber,sUnknownContact),ContactNumber])
   else
     Result := sUnknownNumber;
 end;
@@ -12055,7 +12049,7 @@ begin
     end;
   end;
   if ContactName = '' then ContactName := sUnknownContact;
-  Result := ContactName + ' [' + Number + ']';
+  Result := WideFormat('%s [%s]',[ContactName,Number]);
 end;
 
 function TForm1.GetPartialNumber(Number: string): string;
@@ -15167,6 +15161,9 @@ begin
     ExplorerNew.Selected[ExplorerNew.FocusedNode] := True;
     ExplorerNew.SetFocus;
   end;
+  ToggleConnect2.ImageIndex := 28 + byte(FConnected);
+  ToggleConnect2.Enabled := not FConnectingStarted or FConnectingComplete;
+  ToggleConnect2.Visible := ExplorerNew.FocusedNode = ExplorerNew.GetFirst;
 end;
 
 procedure TForm1.SetExplorerNode(Node: PVirtualNode);
@@ -15304,7 +15301,7 @@ begin
       end;
     finally
       sl.Free;
-      if frmExplore.Visible then frmExplore.RootNode := ExplorerNew.FocusedNode;
+      if frmExplore.Visible then frmExplore.RefreshView; // update view
     end;
     if frmInfoView.Visible then EBCAState(True);
     //ExplorerNew.Expanded[FNodeAlarms] := true;
@@ -15896,25 +15893,31 @@ var
   ContactData: PContactData;
   SIMData: PSIMData;
   procedure UpdateView;
-  var
-    EData: PFmaExplorerNode;
   begin
+    DoRefreshCallSenders;
     if frmSyncPhonebook.Visible then
-      frmSyncPhonebook.ListContacts.Repaint;
+      frmSyncPhonebook.ListContacts.Repaint
+    else
     if frmSMEdit.Visible then
-      frmSMEdit.ListNumbers.Repaint;
+      frmSMEdit.ListNumbers.Repaint
+    else
     if frmMEEdit.Visible then
-      frmMEEdit.ListNumbers.Repaint;
-    if frmMsgView.Visible then begin
-      EData := ExplorerNew.GetNodeData(ExplorerNew.FocusedNode);
-      frmMsgView.RenderListView(TStringList(EData.Data));
-    end;
+      frmMEEdit.ListNumbers.Repaint
+    else
+    if frmMsgView.Visible then
+      frmMsgView.RefreshAllSenders
+    else
     if frmInfoView.Visible then
-      frmInfoView.UpdateWelcomePage(True);
+      frmInfoView.UpdateWelcomePage(True)
+    else
+    if frmExplore.Visible then
+      frmExplore.RefreshView;
   end;
 begin
   Result := False;
-  with TfrmAddContact.Create(nil) do
+  Number := ExtractNumber(Number);
+  if Number <> '' then 
+    with TfrmAddContact.Create(nil) do
     try
       NewNumber := Number;
       if ShowModal = mrOk then begin
@@ -15975,12 +15978,51 @@ begin
     FStatusReportList.Objects[i] := sr;
     b := Byte(StrToInt('$'+sr.MessageReference));
     Inc(FReportLookupList[b]);
-    // TODO: show balloon, but what if message was long?
+    // TODO: show balloon, but what if message was long? Use sr.IsUserNotified somehow...
     if sr.Delivered then
       ShowBaloonInfo(WideFormat(_('Message sent to %s was successfully delivered.'), [LookupContact(sr.Number)]));
   except
     sr.Free;
   end;
+end;
+
+procedure TForm1.DoRefreshCallSenders;
+  procedure RefreshCallNames(Node: PVirtualNode);
+  var
+    i: integer;
+    w,newname: WideString;
+    sl: TStringList;
+    data: PFmaExplorerNode;
+    data1: PFmaExplorerNode;
+    node1: PVirtualNode;
+  begin
+    data := ExplorerNew.GetNodeData(Node);
+    node1 := ExplorerNew.GetFirstChild(Node);
+    sl := TStringList(data.Data);
+    for i := 0 to sl.Count-1 do begin
+      w := UTF8StringToWideString(sl[i]);
+      newname := ContactNumberByTel(GetFirstToken(w));
+      w := WideQuoteStr(newname) + ',"' + GetFirstToken(w) + '"';
+      sl[i] := WideStringToUTF8String(w);
+      data1 := ExplorerNew.GetNodeData(node1);
+      data1.Text := newname;
+      node1 := ExplorerNew.GetNextSibling(node1);
+    end;
+  end;
+begin
+  RefreshCallNames(FNodeCallsIn);
+  RefreshCallNames(FNodeCallsOut);
+  RefreshCallNames(FNodeCallsMissed);
+end;
+
+procedure TForm1.RefreshSendersView;
+begin
+  { Clear contact lookup cache }
+  FLookupList.Clear;
+  { Update view }
+  DoRefreshCallSenders;
+  if Assigned(frmMissedCalls) and frmMissedCalls.Visible then
+    frmMissedCalls.RefreshAllSenders;
 end;
 
 procedure TForm1.LoadStatusReports(APath: String);
@@ -15989,12 +16031,10 @@ var
   b: byte;
   sr: TSMSStatusReport;
 begin
-  // clear cache
-  for i:=0 to 255 do
-    FReportLookupList[i] := 0;
+  FreeStatusReports;
 
   FStatusReportList.LoadFromFile(APath);
-  for i:=0 to FStatusReportList.Count-1 do begin
+  for i := 0 to FStatusReportList.Count-1 do begin
     sr := TSMSStatusReport.Create;
     try
       sr.PDU := FStatusReportList[i];
@@ -16005,6 +16045,19 @@ begin
       sr.Free;
     end;
   end;
+end;
+
+procedure TForm1.FreeStatusReports;
+var
+  i: integer;
+begin
+  { Clear cache }
+  for i := 0 to 255 do FReportLookupList[i] := 0;
+  { Clear reports }
+  for i := 0 to FStatusReportList.Count-1 do
+    if Assigned(FStatusReportList.Objects[i]) then
+      TSMSStatusReport(FStatusReportList.Objects[i]).Free;
+  FStatusReportList.Clear;
 end;
 
 initialization

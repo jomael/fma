@@ -71,6 +71,7 @@ type
     procedure NodeProperties(Node: PVirtualNode);
   public
     { Public declarations }
+    procedure RefreshView;
     function GetSelectedNode: PVirtualNode; // returns Form1.ExplorerNew's node!
     property RootNode: PVirtualNode read FRootNode write Set_RootNode default nil;
   end;
@@ -342,6 +343,11 @@ end;
 procedure TfrmExplore.FormStorage1RestorePlacement(Sender: TObject);
 begin
   with ListItems do Header.Font.Assign(Font); // hack! Update Header font according to default theme font
+end;
+
+procedure TfrmExplore.RefreshView;
+begin
+  RootNode := FRootNode;
 end;
 
 end.

@@ -1,14 +1,14 @@
 object frmMsgView: TfrmMsgView
   Left = 0
   Top = 0
-  Width = 569
-  Height = 376
+  Width = 567
+  Height = 371
   TabOrder = 0
   Visible = False
   object Splitter2: TTntSplitter
     Left = 0
-    Top = 216
-    Width = 569
+    Top = 211
+    Width = 567
     Height = 2
     Cursor = crVSplit
     Align = alBottom
@@ -17,8 +17,8 @@ object frmMsgView: TfrmMsgView
   end
   object PreviewPanel: TTntPanel
     Left = 0
-    Top = 218
-    Width = 569
+    Top = 213
+    Width = 567
     Height = 158
     Align = alBottom
     BevelOuter = bvNone
@@ -27,7 +27,7 @@ object frmMsgView: TfrmMsgView
     object MemoMsgBody: TTntRichEdit
       Left = 135
       Top = 22
-      Width = 321
+      Width = 319
       Height = 132
       Align = alClient
       BorderStyle = bsNone
@@ -83,16 +83,16 @@ object frmMsgView: TfrmMsgView
     object DetailsPanel: TTntPanel
       Left = 0
       Top = 0
-      Width = 565
+      Width = 563
       Height = 22
       Align = alTop
       Alignment = taLeftJustify
       TabOrder = 2
       DesignSize = (
-        565
+        563
         22)
       object SpeedButton1: TTntSpeedButton
-        Left = 545
+        Left = 543
         Top = 3
         Width = 18
         Height = 17
@@ -121,7 +121,7 @@ object frmMsgView: TfrmMsgView
       end
     end
     object tbCommands: TToolBar
-      Left = 456
+      Left = 454
       Top = 22
       Width = 109
       Height = 132
@@ -176,17 +176,17 @@ object frmMsgView: TfrmMsgView
   object SearchPanel: TTntPanel
     Left = 0
     Top = 0
-    Width = 569
+    Width = 567
     Height = 22
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
     Visible = False
     DesignSize = (
-      569
+      567
       22)
     object sbClearSearch: TTntSpeedButton
-      Left = 549
+      Left = 547
       Top = 3
       Width = 18
       Height = 17
@@ -222,7 +222,7 @@ object frmMsgView: TfrmMsgView
       Visible = False
     end
     object lblFiltered: TTntLabel
-      Left = 505
+      Left = 503
       Top = 4
       Width = 40
       Height = 13
@@ -368,19 +368,19 @@ object frmMsgView: TfrmMsgView
   object ListPanel: TTntPanel
     Left = 0
     Top = 22
-    Width = 569
-    Height = 194
+    Width = 567
+    Height = 189
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
     DesignSize = (
-      569
-      194)
+      567
+      189)
     object ListMsg: TVirtualStringTree
       Left = 0
       Top = 0
-      Width = 569
-      Height = 194
+      Width = 567
+      Height = 189
       Align = alClient
       DefaultNodeHeight = 17
       DragMode = dmAutomatic
@@ -429,7 +429,7 @@ object frmMsgView: TfrmMsgView
         end
         item
           Position = 1
-          Width = 245
+          Width = 243
           WideText = 'Message'
         end
         item
@@ -451,7 +451,7 @@ object frmMsgView: TfrmMsgView
     object NoItemsPanel: TTntPanel
       Left = 8
       Top = 28
-      Width = 553
+      Width = 551
       Height = 22
       Anchors = [akLeft, akTop, akRight]
       BevelOuter = bvNone
@@ -463,8 +463,8 @@ object frmMsgView: TfrmMsgView
       TabOrder = 0
     end
     object Animate1: TAnimate
-      Left = 245
-      Top = 79
+      Left = 244
+      Top = 76
       Width = 80
       Height = 50
       Anchors = []

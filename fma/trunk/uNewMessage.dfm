@@ -1,6 +1,6 @@
 object frmNewMessage: TfrmNewMessage
-  Left = 427
-  Top = 256
+  Left = 428
+  Top = 257
   Width = 337
   Height = 164
   HorzScrollBar.Visible = False
@@ -26,7 +26,7 @@ object frmNewMessage: TfrmNewMessage
   OnShow = FormShow
   DesignSize = (
     329
-    133)
+    137)
   PixelsPerInch = 96
   TextHeight = 13
   object Image1: TTntImage
@@ -44,7 +44,7 @@ object frmNewMessage: TfrmNewMessage
     Caption = 'Text'
     ShowAccelChar = False
     Transparent = True
-    OnDblClick = ReplyBackClick
+    OnDblClick = Reply1Click
     OnMouseEnter = OnMouseEnter
     OnMouseLeave = OnMouseLeave
   end
@@ -63,7 +63,7 @@ object frmNewMessage: TfrmNewMessage
     Height = 21
     Anchors = [akRight, akBottom]
     Cancel = True
-    Caption = 'Close'
+    Caption = '&Close'
     TabOrder = 3
     OnClick = OkButtonClick
   end
@@ -73,7 +73,7 @@ object frmNewMessage: TfrmNewMessage
     Width = 58
     Height = 21
     Anchors = [akRight, akBottom]
-    Caption = 'More '#187
+    Caption = '&More '#187
     TabOrder = 1
     OnClick = ActionButtonClick
   end
@@ -106,9 +106,9 @@ object frmNewMessage: TfrmNewMessage
     Height = 21
     Anchors = [akRight, akBottom]
     Cancel = True
-    Caption = 'Reply'
+    Caption = '&Reply'
     TabOrder = 2
-    OnClick = ReplyBackClick
+    OnClick = Reply1Click
   end
   object FormPlacement1: TFormPlacement
     Active = False
@@ -126,13 +126,14 @@ object frmNewMessage: TfrmNewMessage
     Top = 16
   end
   object PopupMenu1: TTntPopupMenu
+    Images = Form1.ImageList2
     OnPopup = PopupMenu1Popup
     Left = 224
     Top = 16
-    object ReplyBack: TTntMenuItem
+    object Reply1: TTntMenuItem
       Caption = '&Reply'
       ImageIndex = 3
-      OnClick = ReplyBackClick
+      OnClick = Reply1Click
     end
     object Forward1: TTntMenuItem
       Caption = '&Forward'
@@ -148,7 +149,7 @@ object frmNewMessage: TfrmNewMessage
       Caption = '-'
     end
     object AddContact1: TTntMenuItem
-      Caption = '&Add To Phonebook...'
+      Caption = 'Add To &Phonebook...'
       ImageIndex = 20
       OnClick = AddContact1Click
     end

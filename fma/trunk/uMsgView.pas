@@ -218,6 +218,7 @@ type
     constructor Create(AOwner: TComponent); override;
     procedure ClearView;
     procedure RenderListView(sl: TStringList);
+    procedure RefreshAllSenders;
     procedure ExportList(FileType:Integer; Filename: WideString);
 
     procedure DeleteSelected(Ask: boolean = True);
@@ -499,9 +500,9 @@ begin
           item := ListMsg.GetNodeData(Node);
           item.smsData := md;
 
-          // DONE: check if smsData.From is number (can be alpha string)
+          // Check if smsData.From is number (can be alpha string)
           isNumber := item.smsData.From = '';
-          for j:=1 to Length(item.smsData.From) do
+          for j := 1 to Length(item.smsData.From) do
             if IsDelimiter('+0123456789', item.smsData.From, j) then begin
               isNumber := True;
               break;
@@ -2279,6 +2280,42 @@ begin
   TntLabel1.Visible := Value <> '';
   TntLabel2.Visible := TntLabel1.Visible;
   TntLabel2.Caption := Value;
+end;
+
+procedure TfrmMsgView.RefreshAllSenders;
+var
+  item: PListData;
+  Node: PVirtualNode;
+  isNumber: boolean;
+  j: integer;
+begin
+  { Build message list }
+  ListMsg.BeginUpdate;
+  try
+    Node := ListMsg.GetFirst;
+    while Assigned(Node) do begin
+      item := ListMsg.GetNodeData(Node);
+      if Assigned(item) then begin
+        // Check if smsData.From is number (can be alpha string)
+        isNumber := item.smsData.From = '';
+        for j := 1 to Length(item.smsData.From) do
+          if IsDelimiter('+0123456789', item.smsData.From, j) then begin
+            isNumber := True;
+            break;
+          end;
+        if isNumber then
+          item.from := Form1.ContactNumberByTel(item.smsData.From)
+        else
+          item.from := item.smsData.From;
+        item.sender := Form1.ExtractContact(item.from);
+      end;
+      Node := ListMsg.GetNext(Node);
+    end;
+  finally
+    ListMsg.Sort(nil, ListMsg.Header.SortColumn, ListMsg.Header.SortDirection);
+    ListMsg.EndUpdate;
+    UpdatePropertiesStatus;
+  end;
 end;
 
 end.
