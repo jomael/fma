@@ -29,7 +29,7 @@ type
     FormPlacement1: TFormPlacement;
     lbAlpha: TTntLabel;
     lbNumber: TTntLabel;
-    HeadsetButton: TTntButton;
+    MoreButton: TTntButton;
     ImagePanel: TTntPanel;
     Image32: TImage32;
     MediaPlayer1: TMediaPlayer;
@@ -38,7 +38,7 @@ type
     TimeTimer: TTimer;
     Memo: TTntMemo;
     PopupMenu1: TTntPopupMenu;
-    SwitchtoHeadset1: TTntMenuItem;
+    HeadsetButton: TTntMenuItem;
     N1: TTntMenuItem;
     AddToPhonebook1: TTntMenuItem;
     N2: TTntMenuItem;
@@ -53,9 +53,9 @@ type
     procedure FormCreate(Sender: TObject);
     procedure TimeTimerTimer(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure SwitchtoHeadset1Click(Sender: TObject);
-    procedure AddToPhonebook1Click(Sender: TObject);
     procedure HeadsetButtonClick(Sender: TObject);
+    procedure AddToPhonebook1Click(Sender: TObject);
+    procedure MoreButtonClick(Sender: TObject);
     procedure Ignore1Click(Sender: TObject);
     procedure AnswerButtonClick(Sender: TObject);
     procedure HandupButtonClick(Sender: TObject);
@@ -303,9 +303,7 @@ begin
   Memo.Clear;
   Memo.Visible := False;
   HeadsetButton.Enabled := True;
-  HeadsetButton.Visible := False;
   AnswerButton.Enabled := True;
-  AnswerButton.Visible := False;
   HandupButton.Enabled := True;
   { Prepare transparancy }
   AlphaBlendValue := AlphaBlend;
@@ -437,7 +435,7 @@ begin
   if CanClose then Close; // No stack overflow coz CanClose is false in Close().
 end;
 
-procedure TfrmCalling.SwitchtoHeadset1Click(Sender: TObject);
+procedure TfrmCalling.HeadsetButtonClick(Sender: TObject);
 begin
   DoInCall;
   try
@@ -462,7 +460,7 @@ begin
   end;
 end;
 
-procedure TfrmCalling.HeadsetButtonClick(Sender: TObject);
+procedure TfrmCalling.MoreButtonClick(Sender: TObject);
 var
   p: TPoint;
 begin
@@ -474,16 +472,6 @@ end;
 procedure TfrmCalling.AnswerButtonClick(Sender: TObject);
 begin
   AnswerButton.Enabled := False;
-  DoExiting;
-  try
-    Form1.VoiceHangUp;
-  except
-  end;
-end;
-
-procedure TfrmCalling.HandupButtonClick(Sender: TObject);
-begin
-  HandupButton.Enabled := False;
   DoInCall;
   try
     Form1.VoiceAnswer;
@@ -494,8 +482,20 @@ begin
     Memo.SetFocus;
 end;
 
+procedure TfrmCalling.HandupButtonClick(Sender: TObject);
+begin
+  HandupButton.Enabled := False;
+  DoExiting;
+  try
+    Form1.VoiceHangUp;
+  except
+  end;
+end;
+
 procedure TfrmCalling.PopupMenu1Popup(Sender: TObject);
 begin
+  Answer1.Enabled := AnswerButton.Enabled;
+  HangUp1.Enabled := HandupButton.Enabled;
   MessageContact1.Enabled := Pos(sUnknownNumber,lbAlpha.Caption) = 0;
   { Add to ME if no name included or it is an unknown contact name }
   AddToPhonebook1.Enabled := MessageContact1.Enabled and (Pos(sUnknownContact,lbAlpha.Caption) <> 0);

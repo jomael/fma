@@ -9,7 +9,6 @@ unit Unit1;
 * Todo:
 *   - Replace all 'name + [ + number + ]' with ContactNumberByTel and ContactNumberByName
 *   - split implementation to different smaller units
-*   - store msg to folder not by pdu but by index and location
 *
 * Change Log:
 * $Log: Unit1.pas,v $
@@ -4207,9 +4206,9 @@ begin
       frmCalling.lbNumber.Caption := w;
       if frmCalling.lbAlpha.Caption = sUnknownNumber then
         frmCalling.lbAlpha.Caption := sUnknownContact;
-      frmCalling.AnswerButton.Visible := False;
-      frmCalling.HeadsetButton.Visible := False;
-      frmCalling.HandupButton.Visible := True;
+      frmCalling.AnswerButton.Enabled := False;
+      frmCalling.HeadsetButton.Enabled := False;
+      frmCalling.HandupButton.Enabled := True;
       if frmCalling.Visible then
         frmCalling.HandupButton.SetFocus;
       frmCalling.IsIncoming := False;
@@ -4238,9 +4237,9 @@ begin
       w := GetToken(str, 5);
       if (GetToken(str, 6) = '145') and (w <> '') and (w[1] <> '+') then w := '+' + w;
       frmCalling.lbNumber.Caption := w;
-      frmCalling.HeadsetButton.Visible := True;
-      frmCalling.HandupButton.Visible := True;
-      frmCalling.AnswerButton.Visible := True;
+      frmCalling.HeadsetButton.Enabled := True;
+      frmCalling.HandupButton.Enabled := True;
+      frmCalling.AnswerButton.Enabled := True;
       if frmCalling.Visible then
         frmCalling.AnswerButton.SetFocus;
       frmCalling.IsIncoming := True;
@@ -4254,8 +4253,8 @@ begin
       IsAutoAnswer := frmCalling.AnswerButton.Enabled and frmCalling.IsIncoming; // Using BT Audio Gateway?
       frmCalling.DoInCall;
       frmCalling.AnswerButton.Enabled := False;
-      frmCalling.HeadsetButton.Visible := False;
-      frmCalling.HandupButton.Visible := True;
+      frmCalling.HeadsetButton.Enabled := False;
+      frmCalling.HandupButton.Enabled := True;
       if frmCalling.Visible and (frmCalling.ActiveControl <> frmCalling.Memo) then
         frmCalling.HandupButton.SetFocus;
       { Active call, so mark it as processed, i.e. not missed one }
@@ -5714,10 +5713,7 @@ begin
   if FHaveVoiceDialCommand_Dial then
     TxAndWait('AT*EVD="' + number + '"') // do not localize
   else
-  if IsK610Clone then
-    TxAndWait('ATDT' + number) // do not localize
-  else
-    TxAndWait('ATDT' + number + ';'); // do not localize
+    TxAndWait('ATD' + number + ';'); // do not localize
 end;
 
 procedure TForm1.VoiceAnswer;
@@ -5760,7 +5756,14 @@ begin
     if FHaveVoiceDialCommand_Hangup then
       TxAndWait('AT*EVH') // do not localize
     else
-      ScheduleTxAndWait('AT+CHUP'); // do not localize
+    if IsK610orBetter then
+      { TODO: check if command is supported
+      AT+BRSF=7
+      +BRSF: bit 5 = Ability to reject call (AT+CHUP supported).
+      }
+      TxAndWait('AT+CHUP') // do not localize
+    else
+      TxAndWait('ATH'); // do not localize
   if Assigned(frmCalling) and frmCalling.IsCreated then begin
     if not SilentMode then
       frmCalling.IsCalling := False;

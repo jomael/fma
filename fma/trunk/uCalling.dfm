@@ -79,7 +79,7 @@ object frmCalling: TfrmCalling
     TabOrder = 0
     OnClick = AnswerButtonClick
   end
-  object HeadsetButton: TTntButton
+  object MoreButton: TTntButton
     Left = 139
     Top = 112
     Width = 58
@@ -87,7 +87,7 @@ object frmCalling: TfrmCalling
     Anchors = [akRight, akBottom]
     Caption = '&More '#187
     TabOrder = 5
-    OnClick = HeadsetButtonClick
+    OnClick = MoreButtonClick
   end
   object ImagePanel: TTntPanel
     Left = 4
@@ -162,10 +162,10 @@ object frmCalling: TfrmCalling
       ImageIndex = 63
       OnClick = HandupButtonClick
     end
-    object SwitchtoHeadset1: TTntMenuItem
+    object HeadsetButton: TTntMenuItem
       Caption = 'Use Headset...'
       ImageIndex = 74
-      OnClick = SwitchtoHeadset1Click
+      OnClick = HeadsetButtonClick
     end
     object N1: TTntMenuItem
       Caption = '-'
