@@ -24,7 +24,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
     Header.Font.Style = []
     Header.Height = 20
     Header.MainColumn = 1
-    Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoHotTrack, hoShowImages, hoShowSortGlyphs, hoVisible]
+    Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoHotTrack, hoShowHint, hoShowImages, hoShowSortGlyphs, hoVisible]
     Header.SortColumn = 1
     Header.Style = hsFlatButtons
     HintAnimation = hatNone
@@ -34,8 +34,10 @@ object frmSyncPhonebook: TfrmSyncPhonebook
     IncrementalSearchTimeout = 500
     Indent = 0
     LineMode = lmBands
+    ParentShowHint = False
     PopupMenu = PopupMenu1
     ScrollBarOptions.AlwaysVisible = True
+    ShowHint = True
     TabOrder = 0
     TextMargin = 2
     TreeOptions.AutoOptions = [toAutoDropExpand, toAutoScrollOnExpand, toAutoSpanColumns, toAutoTristateTracking, toAutoDeleteMovedNodes]
@@ -60,6 +62,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
         Spacing = 2
         Width = 53
         WideText = 'Status'
+        WideHint = 'Right-click to select columns'
       end
       item
         Margin = 2
@@ -68,6 +71,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
         Spacing = 2
         Width = 140
         WideText = 'Full Name'
+        WideHint = 'Right-click to change order'
       end
       item
         Margin = 2
@@ -76,6 +80,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
         Spacing = 2
         Width = 40
         WideText = 'Title'
+        WideHint = 'Right-click to select columns'
       end
       item
         Margin = 2
@@ -84,6 +89,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
         Spacing = 2
         Width = 60
         WideText = 'Organization'
+        WideHint = 'Right-click to select columns'
       end
       item
         ImageIndex = 14
@@ -93,6 +99,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
         Spacing = 2
         Width = 100
         WideText = 'Email'
+        WideHint = 'Right-click to select columns'
       end
       item
         ImageIndex = 9
@@ -102,6 +109,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
         Spacing = 2
         Width = 120
         WideText = 'Home'
+        WideHint = 'Right-click to select columns'
       end
       item
         ImageIndex = 11
@@ -111,6 +119,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
         Spacing = 2
         Width = 120
         WideText = 'Work'
+        WideHint = 'Right-click to select columns'
       end
       item
         ImageIndex = 10
@@ -120,6 +129,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
         Spacing = 2
         Width = 120
         WideText = 'Cell'
+        WideHint = 'Right-click to select columns'
       end
       item
         ImageIndex = 12
@@ -129,6 +139,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
         Spacing = 2
         Width = 120
         WideText = 'Fax'
+        WideHint = 'Right-click to select columns'
       end
       item
         ImageIndex = 13
@@ -138,6 +149,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
         Spacing = 2
         Width = 70
         WideText = 'Other'
+        WideHint = 'Right-click to select columns'
       end
       item
         Margin = 2
@@ -146,6 +158,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
         Spacing = 2
         Width = 40
         WideText = 'Street'
+        WideHint = 'Right-click to select columns'
       end
       item
         Margin = 2
@@ -154,6 +167,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
         Spacing = 2
         Width = 40
         WideText = 'City'
+        WideHint = 'Right-click to select columns'
       end
       item
         Margin = 2
@@ -162,6 +176,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
         Spacing = 2
         Width = 40
         WideText = 'Region'
+        WideHint = 'Right-click to select columns'
       end
       item
         Margin = 2
@@ -170,6 +185,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
         Spacing = 2
         Width = 40
         WideText = 'PostalCode'
+        WideHint = 'Right-click to select columns'
       end
       item
         Margin = 2
@@ -178,6 +194,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
         Spacing = 2
         Width = 40
         WideText = 'Country'
+        WideHint = 'Right-click to select columns'
       end
       item
         Margin = 2
@@ -186,6 +203,7 @@ object frmSyncPhonebook: TfrmSyncPhonebook
         Spacing = 2
         Width = 70
         WideText = 'DisplayName'
+        WideHint = 'Right-click to select columns'
       end>
   end
   object NoItemsPanel: TTntPanel

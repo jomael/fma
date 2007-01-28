@@ -253,7 +253,10 @@ end;
 procedure TfrmMessageContact.FormShow(Sender: TObject);
 begin
   try
-    btnStatusReport.Enabled := Form1.FStatusReport;
+    if Form1.FConnected then
+      btnStatusReport.Enabled := Form1.FStatusReport
+    else
+      btnStatusReport.Enabled := Form1.IsK750orBetter;
     btnStatusReport.Down := btnStatusReport.Enabled;
     if btnStatusReport.Enabled then
       btnStatusReport.Hint := _('Request Status Report')

@@ -206,6 +206,7 @@ end;
 procedure TfrmNewMessage.OkButtonClick(Sender: TObject);
 begin
   Timer1.Enabled := False;
+  DoMarkMsgAsRead;
   Close;
 end;
 

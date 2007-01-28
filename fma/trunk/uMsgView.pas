@@ -210,6 +210,7 @@ type
     procedure DoShowDetails(Node: PVirtualNode);
     procedure DoCloseDetails;
     procedure DoShowPreview(Node: PVirtualNode);
+    procedure DoFindDeliveryReport(var sd: TFmaMessageData);
     procedure UpdatePreview;
     procedure SetSearchMode(const Value: TSearchMode);
     procedure SetSearchWhat(const Value: WideString);
@@ -219,7 +220,10 @@ type
     
     procedure ClearView;
     procedure RenderListView(sl: TStringList);
+
     procedure RefreshAllSenders;
+    procedure RefreshAllDeliveries;
+
     procedure ExportList(FileType:Integer; Filename: WideString);
 
     procedure DeleteSelected(Ask: boolean = True);
@@ -341,7 +345,7 @@ begin
         item := Sender.GetNodeData(Node);
         try
           if item.smsData.IsNew then
-            ImageIndex := 21  // unread
+            ImageIndex := 21 // unread
           else
             ImageIndex := 20; // read
         except
@@ -355,12 +359,12 @@ begin
         item := Sender.GetNodeData(Node);
         try
           if item.smsData.ReportRequested then
-            ImageIndex := 20  // report sent
+            ImageIndex := 0 // report sent
           else
-            ImageIndex := -1; // reporting off
+            ImageIndex := 20; // reporting off
           if item.smsData.ReportPDU <> '' then
             if item.smsData.StatusCode = 0 then
-              ImageIndex := 25  // delivered
+              ImageIndex := 25 // delivered
             else
               ImageIndex := 24; // not delivered (yet)
         except
@@ -440,40 +444,9 @@ var
   isNumber: boolean;
   item: PListData;
   Node: PVirtualNode;
-  dbfixed,dbmodified: boolean;
+  dbfixed: boolean;
   md: TFmaMessageData;
   test: DWord;
-  procedure FindMatchingDeliveryReport(var sd: TFmaMessageData);
-  var
-    i,num: integer;
-    b: byte;
-    sr: TSMSStatusReport;
-  begin
-    b := StrToIntDef('$'+sd.MessageRef,0);
-    num := Form1.FReportLookupList[b];
-    if (num > 0) and (b > 0) then begin // skip messages with reference 0
-      for i := 0 to Form1.FStatusReportList.Count-1 do begin
-        sr := TSMSStatusReport(Form1.FStatusReportList.Objects[i]);
-        if Assigned(sr) then begin
-          if sr.MessageReference = sd.MessageRef then begin
-            Dec(Num);
-            if sr.Number = sd.From then begin
-              // this is really it!
-              Log.AddMessageFmt('DB: Found matching Status Report! [Index: %d]', [i], lsDebug); // do not localize debug
-              Dec(Form1.FReportLookupList[b]);
-              sd.ReportPDU := sr.PDU; // this will set sd.StatusCode too
-              dbmodified := True;
-              // dispose object
-              sr.Free;
-              Form1.FStatusReportList.Delete(i);
-              Break;
-            end;
-          end;
-        end;
-        if num <= 0 then break; // it can't be here now
-      end;
-    end;
-  end;
 begin
   if Sem then exit;
   Sem := True;
@@ -481,7 +454,6 @@ begin
   { Clear view }
   DoCloseDetails;
   dbfixed := False;
-  dbmodified := False;
   SearchName := '';
   SearchMode := smAll;
   edSearchFor.Text := '';
@@ -566,7 +538,7 @@ begin
           if md.IsOutgoing then begin
             item.StateIndex := item.StateIndex or $020000;
             if md.ReportRequested and (md.ReportPDU = '') then
-              FindMatchingDeliveryReport(md);
+              DoFindDeliveryReport(md);
           end
           else
             item.StateIndex := item.StateIndex or $010000;
@@ -623,8 +595,6 @@ begin
   finally
     Sem := False;
     NoItemsPanel.Visible := ListMsg.ChildCount[nil] = 0;
-    if dbmodified then
-      ; { TODO: Do we have to update Form1?}
     if dbfixed then
       Form1.UpdateNewMessagesCounter(Form1.ExplorerNew.FocusedNode);
     FIsRendered := True;
@@ -2337,7 +2307,7 @@ var
   isNumber: boolean;
   j: integer;
 begin
-  { Build message list }
+  { Update senders in message list }
   ListMsg.BeginUpdate;
   try
     Node := ListMsg.GetFirst;
@@ -2356,6 +2326,61 @@ begin
         else
           item.from := item.smsData.From;
         item.sender := Form1.ExtractContact(item.from);
+      end;
+      Node := ListMsg.GetNext(Node);
+    end;
+  finally
+    ListMsg.Sort(nil, ListMsg.Header.SortColumn, ListMsg.Header.SortDirection);
+    ListMsg.EndUpdate;
+    UpdatePropertiesStatus;
+  end;
+end;
+
+procedure TfrmMsgView.DoFindDeliveryReport(var sd: TFmaMessageData);
+var
+  i,num: integer;
+  b: byte;
+  sr: TSMSStatusReport;
+begin
+  b := StrToIntDef('$'+sd.MessageRef,0);
+  num := Form1.FReportLookupList[b];
+  if (num > 0) and (b > 0) then begin // skip messages with reference 0
+    for i := 0 to Form1.FStatusReportList.Count-1 do begin
+      sr := TSMSStatusReport(Form1.FStatusReportList.Objects[i]);
+      if Assigned(sr) then begin
+        if sr.MessageReference = sd.MessageRef then begin
+          Dec(Num);
+          if sr.Number = sd.From then begin
+            // this is really it!
+            Log.AddMessageFmt('DB: Found matching Status Report! [Index: %d]', [i], lsDebug); // do not localize debug
+            Dec(Form1.FReportLookupList[b]);
+            sd.ReportPDU := sr.PDU; // this will set sd.StatusCode too
+            // dispose object
+            sr.Free;
+            Form1.FStatusReportList.Delete(i);
+            Break;
+          end;
+        end;
+      end;
+      if num <= 0 then break; // it can't be here now
+    end;
+  end;
+end;
+
+procedure TfrmMsgView.RefreshAllDeliveries;
+var
+  node: PVirtualNode;
+  item: PListData;
+begin
+  { Update delivery in message list }
+  ListMsg.BeginUpdate;
+  try
+    Node := ListMsg.GetFirst;
+    while Assigned(Node) do begin
+      item := ListMsg.GetNodeData(Node);
+      if Assigned(item) then begin
+        if item.smsData.ReportRequested and (item.smsData.ReportPDU = '') then
+          DoFindDeliveryReport(item.smsData);
       end;
       Node := ListMsg.GetNext(Node);
     end;

@@ -78,6 +78,7 @@ type
     function Get_Validity: TDateTime;
     function Get_CodingScheme: TGSMCodingScheme;
   public
+    function NewMessageRefPDU(NewRef: String): String;
     { tech.info }
     property PDU: String read Get_PDU write Set_PDU;
     property UDHI: String read FUDHI write Set_UDHI;
@@ -1506,6 +1507,25 @@ begin
   FIsUDH := FUDHI <> '';
 end;
 
+function TSMS.NewMessageRefPDU(NewRef: String): String;
+var
+  FSMSCLen,FSMSDeliverStartPos: integer;
+  Value: String;
+begin
+  MessageReference := NewRef;
+  Value := FPDU;
+
+  FSMSCLen := StrToInt('$' + copy(Value, 1, 2)) * 2; // length in octets * 2 = number of chars
+
+  FSMSDeliverStartPos := 3; // char number, first 2 represent FSMSCLen octet
+  if FSMSCLen > 0 then FSMSDeliverStartPos := FSMSDeliverStartPos + FSMSCLen;
+
+  Value[FSMSDeliverStartPos + 2] := FMessageRef[1];
+  Value[FSMSDeliverStartPos + 3] := FMessageRef[2];
+
+  Result := Value;
+end;
+
 { TSMSStatusReport }
 
 constructor TSMSStatusReport.Create(ExpectSCA: boolean);
@@ -1526,7 +1546,7 @@ begin
   { read SCA if present, acording to documentation it should be there,
     but real life tests show that it's not (at least not on K750) }
   PDUTypeStartPos := 1;
-  if FSCAPresent then begin
+  if FSCAPresent then begin 
     SMSCLen := StrToInt('$'+Copy(Value, 1, 2));
     FSCA := DecodeNumber(Copy(Value, 3, 2*SMSCLen));
     PDUTypeStartPos := SMSCLen * 2 + 3;

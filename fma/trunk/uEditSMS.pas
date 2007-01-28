@@ -175,12 +175,11 @@ begin
   if FSMS.ReportRequested then begin
     mmoDRPDU.Lines.Clear;
     if FSMS.ReportPDU <> '' then begin
-      mmoDRPDU.Lines.Add(WideFormat(_('Message Type: %s'),
-        ['SMS STATUS REPORT'])); // do not localize
+      mmoDRPDU.Lines.Add(WideFormat(_('Message Type: %s'),['SMS STATUS REPORT'])); // do not localize
       mmoDRPDU.Lines.Add(sLineBreak + FSMS.ReportPDU);
     end;
     if mmoDRPDU.Text <> '' then begin
-      edDRStatus.Text := _('Responce Received');
+      edDRStatus.Text := _('Responce received');
       edDRRepDate.Text := DateTimeToStr(FSMS.TimeStamp);
       if FSMS.StatusCode = $FF then
         edDRInfo.Text := sNoInfo // unknown
@@ -192,19 +191,22 @@ begin
     end
     else begin
       if FSMS.StatusCode = $FF then begin
-        edDRStatus.Text := _('Awaiting Responce...');
+        edDRStatus.Text := _('Awaiting responce...');
         edDRRepDate.Text := sNoInfo;
         edDRInfo.Text := sNoInfo;
       end
       else begin
-        edDRStatus.Text := _('Not Received');
+        edDRStatus.Text := _('Not received');
         edDRRepDate.Text := sNoInfo;
         edDRInfo.Text := _('Validity period expired');
       end;
     end;
   end
   else
-    edDRStatus.Text := _('Not Requested');
+    if FSMS.IsOutgoing then
+      edDRStatus.Text := _('Not requested')
+    else
+      edDRStatus.Text := _('Not applicable');
 end;
 
 procedure TfrmDetail.OkButtonClick(Sender: TObject);

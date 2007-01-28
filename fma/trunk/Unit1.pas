@@ -5541,6 +5541,7 @@ begin
     WriteString('Global','PhoneName',WideStringToUTF8String(FSelPhone)); // do not localize
     WriteString('Global','VoiceMail',WideStringToUTF8String(FVoiceMail)); // do not localize
     WriteString('Global','PhoneBrand',WideStringToUTF8String(FPhoneModel)); // do not localize
+    WriteBool('SMS','Delivery Report',FStatusReport); // do not localize
     WriteBool('SMS','Reset',FSMSCounterReseted); // do not localize
     WriteInteger('SMS','Reset Day',FSMSCounterResetDay); // do not localize
     WriteInteger('SMS','Reset Last Month',FSMSCounterResetLastMonth); // do not localize
@@ -9091,6 +9092,7 @@ begin
         end;
         FVoiceMail := UTF8StringToWideString(ReadString('Global','VoiceMail','')); // do not localize
         FDatabaseVersion := UTF8StringToWideString(ReadString('Global','DBVersion','')); // do not localize
+        FStatusReport := ReadBool('SMS','Delivery Report',False); // do not localize
         FSMSCounterReseted := ReadBool('SMS','Reset',False); // do not localize
         FSMSCounterResetDay := ReadInteger('SMS','Reset Day',1); // do not localize
         FSMSCounterResetLastMonth := ReadInteger('SMS','Reset Last Month',0); // do not localize
@@ -10432,9 +10434,7 @@ var
                 if OldRef <> NewRef then begin
                   Log.AddCommunicationMessage(Format('Message reference changed to %sh',[NewRef]), lsDebug); // do not localize debug
                   { Return modified PDU }
-                  { TODO: must be done so Status Reports can work }
-                  sms.MessageReference := NewRef;
-                  pdu := sms.PDU;
+                  pdu := sms.NewMessageRefPDU(NewRef);
                 end;
               except
                 // just in case
@@ -15981,7 +15981,9 @@ begin
     Inc(FReportLookupList[b]);
     // TODO: show balloon, but what if message was long? Use sr.IsUserNotified somehow...
     if sr.Delivered then
-      ShowBaloonInfo(WideFormat(_('Message sent to %s was successfully delivered.'), [LookupContact(sr.Number)]));
+      ShowBaloonInfo(WideFormat(_('Message to %s was delivered.'), [LookupContact(sr.Number)]));
+    if frmMsgView.Visible then
+      frmMsgView.RefreshAllDeliveries;
   except
     sr.Free;
   end;
