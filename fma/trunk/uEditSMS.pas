@@ -56,6 +56,18 @@ type
     ChangeButton: TTntButton;
     CancelButton: TTntButton;
     ApplyButton: TTntButton;
+    TntTabSheet1: TTntTabSheet;
+    lblName3: TTntLabel;
+    Image3: TTntImage;
+    TntBevel1: TTntBevel;
+    TntLabel3: TTntLabel;
+    mmoDRPDU: TTntMemo;
+    TntLabel4: TTntLabel;
+    edDRStatus: TTntEdit;
+    TntLabel5: TTntLabel;
+    edDRRepDate: TTntEdit;
+    TntLabel6: TTntLabel;
+    edDRInfo: TTntEdit;
     procedure OkButtonClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -150,6 +162,7 @@ begin
 
     lblName.Caption := Form1.LookupContact(sms.Number,sUnknownContact);
     lblName2.Caption := lblName.Caption;
+    lblName3.Caption := lblName.Caption;
     if ATot > 1 then
       Caption := _('Long Message')
     else
@@ -158,6 +171,35 @@ begin
   finally
     sms.Destroy;
   end;
+
+  if FSMS.ReportRequested then begin
+    mmoDRPDU.Text := FSMS.ReportPDU;
+    if mmoDRPDU.Text <> '' then begin
+      edDRStatus.Text := _('Responce Received');
+      edDRRepDate.Text := DateTimeToStr(FSMS.TimeStamp);
+      if FSMS.StatusCode = $FF then
+        edDRInfo.Text := sNoInfo // unknown
+      else
+        if FSMS.StatusCode = 0 then
+          edDRInfo.Text := _('Delivery was successful')
+        else
+          edDRInfo.Text := WideFormat(_('Delivery failed with status code: %d'),[FSMS.StatusCode]);
+    end
+    else begin
+      if FSMS.StatusCode = $FF then begin
+        edDRStatus.Text := _('Awaiting Responce...');
+        edDRRepDate.Text := sNoInfo;
+        edDRInfo.Text := sNoInfo;
+      end
+      else begin
+        edDRStatus.Text := _('Not Received');
+        edDRRepDate.Text := sNoInfo;
+        edDRInfo.Text := _('Validity period expired');
+      end;
+    end;
+  end
+  else
+    edDRStatus.Text := _('Not Requested');
 end;
 
 procedure TfrmDetail.OkButtonClick(Sender: TObject);
@@ -171,6 +213,7 @@ begin
   gghTranslateComponent(self);
 
   Image2.Picture.Assign(Image1.Picture);
+  Image3.Picture.Assign(Image1.Picture);
 
 {$IFNDEF VER150}
   Form1.ThemeManager1.CollectForms(Self);

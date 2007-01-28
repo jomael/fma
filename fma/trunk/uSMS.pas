@@ -1230,6 +1230,7 @@ begin
       03H: The PDU has to be treat as group4 telefax }
     pduPID := '00';
 
+    { Validity Period set to maximum }
     pduTPVP := 'FF'; // do not localize
 
     Result := pduFirst + pduMsgRef + pduAddr + pduPID + pduDCS + pduTPVP + pduMsgL;
@@ -1371,11 +1372,17 @@ begin
     FStatusRequest := (PDUType and 32) <> 0;
     TPVPF := (PDUType and $18) shr 3;
 
+    { VPF  bit4 bit3  Validity Period 
+           0    0     VP field is not present
+           0    1     Reserved
+           1    0     VP field present an integer represented (relative)
+           1    1     VP field present an semi-octet represented (absolute)
+    }
     case TPVPF of
-      1: FValidityLen := 14;
-      2: FValidityLen := 2;
-      3: FValidityLen := 14;
-    else FValidityLen := 0;
+      1: FValidityLen := 14; // reserved
+      2: FValidityLen := 2;  // integer
+      3: FValidityLen := 14; // semi-octets
+    else FValidityLen := 0;  // not present
     end;
 
     Offset := 2;
@@ -1600,7 +1607,7 @@ begin
     1000011 Not obtainable
     1000100 Quality of service not available
     1000101 No interworking available
-    1000110 SM Validity Period Expired
+    1000110 SM Validity Period Expired  ($46)
     1000111 SM Deleted by originating SME
     1001000 SM Deleted by SC Administration
     1001001 SM does not exist (The SM may have previously existed in the SC but the SC

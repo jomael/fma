@@ -338,9 +338,9 @@ object frmDetail: TfrmDetail
       object Label6: TTntLabel
         Left = 8
         Top = 108
-        Width = 54
+        Width = 56
         Height = 13
-        Caption = 'UDHI data:'
+        Caption = 'UDHI Data:'
         Transparent = True
       end
       object Label7: TTntLabel
@@ -354,9 +354,9 @@ object frmDetail: TfrmDetail
       object Label5: TTntLabel
         Left = 8
         Top = 172
-        Width = 50
+        Width = 52
         Height = 13
-        Caption = 'PDU data:'
+        Caption = 'PDU Data:'
       end
       object edLongCount: TTntEdit
         Left = 92
@@ -399,6 +399,110 @@ object frmDetail: TfrmDetail
         ParentFont = False
         ReadOnly = True
         ScrollBars = ssVertical
+        TabOrder = 3
+      end
+    end
+    object TntTabSheet1: TTntTabSheet
+      Caption = 'Delivery Report'
+      object lblName3: TTntLabel
+        Left = 64
+        Top = 20
+        Width = 15
+        Height = 13
+        Caption = '     '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Image3: TTntImage
+        Left = 12
+        Top = 16
+        Width = 32
+        Height = 32
+        Transparent = True
+      end
+      object TntBevel1: TTntBevel
+        Left = 8
+        Top = 56
+        Width = 341
+        Height = 9
+        Shape = bsTopLine
+      end
+      object TntLabel3: TTntLabel
+        Left = 8
+        Top = 172
+        Width = 52
+        Height = 13
+        Caption = 'PDU Data:'
+      end
+      object TntLabel4: TTntLabel
+        Left = 8
+        Top = 76
+        Width = 33
+        Height = 13
+        Caption = 'Status:'
+        Transparent = True
+      end
+      object TntLabel5: TTntLabel
+        Left = 8
+        Top = 108
+        Width = 26
+        Height = 13
+        Caption = 'Date:'
+        Transparent = True
+      end
+      object TntLabel6: TTntLabel
+        Left = 8
+        Top = 140
+        Width = 40
+        Height = 13
+        Caption = 'Reason:'
+        Transparent = True
+      end
+      object mmoDRPDU: TTntMemo
+        Left = 92
+        Top = 168
+        Width = 257
+        Height = 203
+        Color = clBtnFace
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Lucida Console'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        ScrollBars = ssVertical
+        TabOrder = 0
+      end
+      object edDRStatus: TTntEdit
+        Left = 92
+        Top = 72
+        Width = 257
+        Height = 21
+        Color = clBtnFace
+        ReadOnly = True
+        TabOrder = 1
+      end
+      object edDRRepDate: TTntEdit
+        Left = 92
+        Top = 104
+        Width = 257
+        Height = 21
+        Color = clBtnFace
+        ReadOnly = True
+        TabOrder = 2
+      end
+      object edDRInfo: TTntEdit
+        Left = 92
+        Top = 136
+        Width = 257
+        Height = 21
+        Color = clBtnFace
+        ReadOnly = True
         TabOrder = 3
       end
     end

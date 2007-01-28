@@ -1188,8 +1188,6 @@ type
     function FindObexFolderNode(AType: byte): PVirtualNode; // 0-pics,1-snds
     function FindObexFolderName(AType: byte): WideString; // 0-pics,1-snds
 
-    procedure SetActionState(act: TTntAction; state: Boolean);
-
     { Obex routines within Connect/disconnect block }
     procedure ObexConnect(Target: String = '');
     procedure ObexDisconnect;
@@ -2513,7 +2511,8 @@ begin
           HandleCDS(AMsg);
           gotCDS := False;
         end
-        else if ThreadSafe.RxBuffer <> nil then
+        else 
+        if ThreadSafe.RxBuffer <> nil then
           ThreadSafe.RxBuffer.Add(AMsg);
 
         if ThreadSafe.WaitStr <> '' then begin
@@ -3705,12 +3704,6 @@ begin
     Name := copy(Name, 1, length(Name) - 2);
   end
   else numType := 'O'; // do not localize
-end;
-
-procedure TForm1.SetActionState(act: TTntAction; state: Boolean);
-begin
-  act.Enabled := state;
-//  act.Visible := state;
 end;
 
 procedure TForm1.ActionContactsNewMsgExecute(Sender: TObject);
@@ -7767,7 +7760,7 @@ begin
       finally
         if not CoolTrayIcon1.CycleIcons then
           Status('');
-        if frmExplore.Visible then frmExplore.RefreshView;
+        if frmExplore.Visible then frmExplore.RefreshView; // update view
       end;
     finally
       FreeProgressDialog;

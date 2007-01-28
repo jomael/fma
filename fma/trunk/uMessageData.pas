@@ -28,6 +28,8 @@ type
     procedure SetTimeStamp(const NewTimeStamp: TDateTime);
     procedure SetUnread(const NewValue: boolean);
   public
+    constructor Create(const AData: string = '');
+
     property AsString: string read GetString write SetString;
     property Location: TMessageLocation read FLocation write SetLocation;
     property MsgIndex: Integer read FIndex write SetIndex;
@@ -38,7 +40,6 @@ type
     { properties for Status reports }
     property ReportPDU: string read FReportPDU write SetReportPDU;
     property StatusCode: byte read FStatusCode;
-    constructor Create(const AData: string = '');
   end;
 
   PFmaMessageData = ^TFmaMessageData;
@@ -64,6 +65,8 @@ type
     function GetReportReq: boolean;
     procedure DecodeSMS;
   public
+    constructor Create(const AData: string = '');
+
     property Text: WideString read GetSMSText;
     property From: string read GetSMSFrom;
     property IsLong: boolean read GetIsLongSMS;
@@ -73,7 +76,6 @@ type
     property Total: integer read GetATot;
     property MsgNum: integer read GetAN;
     property ReportRequested: boolean read GetReportReq;
-    constructor Create(const AData: string = '');
   end;
 
 implementation
@@ -400,8 +402,13 @@ begin
         end;
       end;
     end;
-    if FReportPDU <> '' then
+    if FReportReq and (FReportPDU <> '') then
       SetReportPDU(FReportPDU); // refresh data from report
+    // check report timeout
+    if FReportReq and (FReportPDU = '') and (dateTime <> 0) and
+      { TODO: Use Validity Period!!! }
+      ((Now - dateTime) > 14) then
+      FStatusCode := $46;
   finally
     sms.Free;
     FDecoded := True;

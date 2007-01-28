@@ -216,6 +216,7 @@ type
     procedure SetSearchName(const Value: WideString);
   public
     constructor Create(AOwner: TComponent); override;
+    
     procedure ClearView;
     procedure RenderListView(sl: TStringList);
     procedure RefreshAllSenders;
@@ -322,25 +323,46 @@ var
   item: PListData;
 begin
   case Column of
-  0:begin
+    0: begin
       if (Kind = ikNormal) or (Kind = ikSelected) then begin
         item := Sender.GetNodeData(Node);
         ImageIndex := item.imageindex;
       end
-      else ImageIndex := -1;
+      else
+        ImageIndex := -1;
     end;
-  2:begin
+    2: begin
       if (Kind = ikNormal) or (Kind = ikSelected) then begin
         item := Sender.GetNodeData(Node);
         try
           if item.smsData.IsNew then
-            ImageIndex := 21
+            ImageIndex := 21  // unread
           else
-            ImageIndex := 20;
+            ImageIndex := 20; // read
         except
         end;
       end
-      else ImageIndex := -1;
+      else
+        ImageIndex := -1;
+    end;
+    3: begin
+      if (Kind = ikNormal) or (Kind = ikSelected) then begin
+        item := Sender.GetNodeData(Node);
+        try
+          if item.smsData.ReportRequested then
+            ImageIndex := 3    // report sent
+          else
+            ImageIndex := -1;  // reporting off
+          if item.smsData.ReportPDU <> '' then
+            if item.smsData.StatusCode = 0 then
+              ImageIndex := 4  // delivered
+            else
+              ImageIndex := 5; // not delivered yet
+        except
+        end;
+      end
+      else
+        ImageIndex := -1;
     end;
   end;
 end;
@@ -372,9 +394,9 @@ begin
     }
   end
   else
-  if Column = 2 then CellText := #32 // span columns doesnt take effect
+  if Column in [2,3] then CellText := #32 // span columns doesnt take effect
   else
-  if Column = 3 then begin
+  if Column = 4 then begin
     try
       if (Assigned(item.smsData) and (item.smsData.TimeStamp > 0)) then begin
         if isToday(item.smsData.TimeStamp) then CellText := TimeToStr(item.smsData.TimeStamp)
@@ -409,10 +431,10 @@ var
   isNumber: boolean;
   item: PListData;
   Node: PVirtualNode;
-  dbfixed: boolean;
+  dbfixed,dbmodified: boolean;
   md: TFmaMessageData;
   test: DWord;
-  procedure FindMatchingDeliveryReport(sd: TFmaMessageData);
+  procedure FindMatchingDeliveryReport(var sd: TFmaMessageData);
   var
     i,num: integer;
     b: byte;
@@ -421,16 +443,17 @@ var
     b := StrToIntDef('$'+sd.MessageRef,0);
     num := Form1.FReportLookupList[b];
     if (num > 0) and (b > 0) then begin // skip messages with reference 0
-      for i:=0 to Form1.FStatusReportList.Count-1 do begin
+      for i := 0 to Form1.FStatusReportList.Count-1 do begin
         sr := TSMSStatusReport(Form1.FStatusReportList.Objects[i]);
         if Assigned(sr) then begin
           if sr.MessageReference = sd.MessageRef then begin
             Dec(Num);
             if sr.Number = sd.From then begin
               // this is really it!
-              Log.AddMessageFmt('DB: Found matching Status Report! [Index %d]', [i]);
+              Log.AddMessageFmt('DB: Found matching Status Report! [Index: %d]', [i], lsDebug); // do not localize debug
               Dec(Form1.FReportLookupList[b]);
-              sd.ReportPDU := sr.PDU;
+              sd.ReportPDU := sr.PDU; // this will set sd.StatusCode too
+              dbmodified := True;
               // dispose object
               sr.Free;
               Form1.FStatusReportList.Delete(i);
@@ -449,6 +472,7 @@ begin
   { Clear view }
   DoCloseDetails;
   dbfixed := False;
+  dbmodified := False;
   SearchName := '';
   SearchMode := smAll;
   edSearchFor.Text := '';
@@ -535,7 +559,8 @@ begin
             if md.ReportRequested and (md.ReportPDU = '') then
               FindMatchingDeliveryReport(md);
           end
-          else item.StateIndex := item.StateIndex or $010000;
+          else
+            item.StateIndex := item.StateIndex or $010000;
 
           // Long SMS? - show only first SMS message
           if (md.IsLong) and (not md.IsLongFirst) then begin
@@ -566,6 +591,7 @@ begin
         end;
         Inc(i);
       end;
+      { All done }
       FRendered := sl;
       Log.AddMessageFmt('Rendering messages took: %d ms', [GetTickCount - test], lsDebug);
     finally
@@ -574,17 +600,22 @@ begin
       ListMsg.Sort(nil, ListMsg.Header.SortColumn, ListMsg.Header.SortDirection);
       ListMsg.EndUpdate;
       UpdatePropertiesStatus;
+      {
       i := 0;
       Node := ListMsg.GetFirstVisible;
         while Assigned(Node) do begin
           Inc(i);
           Node := ListMsg.GetNextVisible(Node);
         end;
+      }
+      i := ListMsg.VisibleCount;
       Form1.Status(WideFormat(_('%d %s'),[i,ngettext('message','messages',i)]),False);
     end;
   finally
     Sem := False;
     NoItemsPanel.Visible := ListMsg.ChildCount[nil] = 0;
+    if dbmodified then
+      ; { TODO: Do we have to update Form1?}
     if dbfixed then
       Form1.UpdateNewMessagesCounter(Form1.ExplorerNew.FocusedNode);
     FIsRendered := True;
@@ -1528,6 +1559,7 @@ begin
       with ListMsg.Header do begin
         SortColumn := StrToInt(GetFirstToken(s));
         SortDirection := TSortDirection(StrToInt(GetFirstToken(s)));
+        if SortColumn in [2,3] then SortColumn := 4;
         for i := 0 to Columns.Count-1 do begin
           Columns[i].Width := StrToInt(GetFirstToken(s));
           Columns[i].Position := StrToInt(GetFirstToken(s));
