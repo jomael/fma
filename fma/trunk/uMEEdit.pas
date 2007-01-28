@@ -102,13 +102,13 @@ type
     FExplore: PVirtualNode; // remember last rendered data's explorer node
     FOldText: String;
     function IsUniqueGUID(who: PSIMData): boolean;
-    function FindFreePos: integer;
     procedure FullRefresh;
     procedure UpdatePhone(MaxItems: cardinal = 0);
     procedure RenderGUIDs;
   protected
     { Protected declarations }
     FRendered: Boolean;
+    function FindFreePos: integer;
     function GetCapacity(Target, LogName: string): Integer;
     procedure DoForceSelectedAs(State: integer);
   public
@@ -117,17 +117,22 @@ type
     FMaxNumbers: Cardinal;
     FMaxNameLen,FMaxTelLen: integer;
     constructor Create(AOwner: TComponent); override;
-    function RenderData(ForceDBNode: PVirtualNode = nil): boolean;
+
     procedure UpdatePhonebook;
     procedure OnConnected; virtual;
     procedure ExportList(FileType:Integer; Filename: WideString); virtual;
+    function RenderData(ForceDBNode: PVirtualNode = nil): boolean;
+
     function IsMEMode: boolean; virtual;
     function IsRendered: boolean;
+
     function DoEdit(AsNew: boolean = False; NewNumber: string = ''): boolean;
+
     function FindContact(Number: WideString): WideString; overload;
     function FindContact(FullName: WideString; var AContact: PSIMData): boolean; overload;
     function FindContact(FullName,NumberType: WideString; var AContact: PSIMData): boolean; overload;
     function FindContact(FullName: WideString; var ANode: PVirtualNode): boolean; overload;
+
     procedure CheckForChanges;
   end;
 
@@ -241,7 +246,7 @@ var
   Item: PSIMData;
   Node: PVirtualNode;
   mcount,dcount,count: cardinal;
-  s: WideString;
+  s,d: WideString;
 begin
   mcount := 0; dcount := 0;
 
@@ -272,11 +277,19 @@ begin
 
   count := mcount + dcount;
   if count <> 0 then begin
-    s := '';
     if mcount <> 0 then
-      s := WideFormat(ngettext('%d modified contact', '%d modified contacts', mcount), [mcount]);
-    if dcount <> 0 then
-      s := WideFormat('%s and %d %s', [s, dcount, ngettext('deleted contact', 'deleted contacts', dcount)]);
+      s := WideFormat(ngettext('%d modified contact', '%d modified contacts', mcount), [mcount])
+    else
+      s := '';
+    if dcount <> 0 then 
+      d := WideFormat(ngettext('%d deleted contact', '%d deleted contacts', dcount), [dcount])
+    else
+      d := '';
+    if s <> '' then begin
+      if d <> '' then s := WideFormat('%s and %d',[s,d]);
+    end
+    else
+      s := d;
     case MessageDlgW(WideFormat(_('Confirm sending %s to Phonebook?'),[s]), mtConfirmation, MB_YESNOCANCEL) of
       ID_YES: UpdatePhone(count);
       ID_CANCEL: Abort;
@@ -662,17 +675,17 @@ function TfrmContactsMEEdit.FindFreePos: integer;
 var
   Node :PVirtualNode;
   Item: PSIMData;
-  Pos: cardinal;
+  Pos: integer;
   found: boolean;
 begin
   Pos := 1;
-  while Pos <= FMaxNumbers do begin
+  while cardinal(Pos) <= FMaxNumbers do begin
     found := false;
     Node := ListNumbers.GetFirst;
     while Node <> nil do
     try
       item := ListNumbers.GetNodeData(Node);
-      if cardinal(item.position) = Pos then begin
+      if item.position = Pos then begin
         found := true;
         break;
       end;
@@ -682,8 +695,7 @@ begin
     if not found then break;
     Pos := Pos + 1;
   end;
-  if Pos <= FMaxNumbers then Result := Pos
-    else Result := -1;
+  if cardinal(Pos) <= FMaxNumbers then Result := Pos else Result := -1;
 end;
 
 procedure TfrmContactsMEEdit.UpdateContactsPosition1Click(Sender: TObject);
@@ -1173,10 +1185,11 @@ var
   procedure AddNumber(AName,Kind: WideString; ANumber: string);
   var
     cnode,nnode: PVirtualNode;
-    i,j,image,FoundIndex: Integer;
+    i,j,image,FoundIndex,cpos: Integer;
     utf8s: String;
   begin
-    if Cardinal(dl.Count) >= Form1.frmSMEdit.FMaxNumbers then Abort;
+    cpos := Form1.frmSMEdit.FindFreePos(dl);
+    if cpos = -1 then Abort;
     FoundIndex := -1;
 
     { Try to locate contact }
@@ -1239,11 +1252,15 @@ var
     { Add to SIM database }
     if Kind <> '' then Kind := '/' + Kind;
     utf8s := UTF8Encode(WideQuoteStr(AName + Kind, True));
-    dl.Add(utf8s + ',' + WideStringToLongString(ANumber) + ',' + IntToStr(dl.Count+1) + ',1,' + // and mark (1) as modified
+    dl.Add(utf8s + ',' + WideStringToLongString(ANumber) + ',' + IntToStr(cpos) + ',1,' + // and mark (1) as modified
       GUIDToString(NewGUID)+','); // No LUID
     if FoundIndex = -1 then inc(NewCnt) else inc(UpdCnt);
   end;
 begin
+  if MessageDlgW(WideFormat(_('Confirm sending %d %s to SIM Memory?'),
+    [ListNumbers.SelectedCount,ngettext('contact','contacts',ListNumbers.SelectedCount)]),
+    mtConfirmation,MB_YESNO) <> ID_YES then
+    exit;
   Form1.frmSMEdit.ResetConflictState;
   Answer := 0;
   NewCnt := 0;

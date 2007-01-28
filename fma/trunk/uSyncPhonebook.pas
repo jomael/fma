@@ -3125,10 +3125,11 @@ var
   procedure AddNumber(AName,Kind: WideString; ANumber: string);
   var
     cnode,nnode: PVirtualNode;
-    i,j,image,FoundIndex: Integer;
+    i,j,image,FoundIndex,cpos: Integer;
     utf8s: String;
   begin
-    if Cardinal(dl.Count) >= Form1.frmSMEdit.FMaxNumbers then Abort;
+    cpos := Form1.frmSMEdit.FindFreePos(dl);
+    if cpos = -1 then Abort;
     FoundIndex := -1;
 
     { Try to locate contact }
@@ -3191,11 +3192,15 @@ var
     { Add to SIM database }
     if Kind <> '' then Kind := '/' + Kind;
     utf8s := UTF8Encode(WideQuoteStr(AName + Kind, True));
-    dl.Add(utf8s + ',' + WideStringToLongString(ANumber) + ',' + IntToStr(dl.Count+1) + ',1,' + // and mark (1) as modified
+    dl.Add(utf8s + ',' + WideStringToLongString(ANumber) + ',' + IntToStr(cpos) + ',1,' + // and mark (1) as modified
       GUIDToString(NewGUID)+','); // No LUID
     if FoundIndex = -1 then inc(NewCnt) else inc(UpdCnt);
   end;
 begin
+  if MessageDlgW(WideFormat(_('Confirm sending %d %s to Phone Memory?'),
+    [ListContacts.SelectedCount,ngettext('contact','contacts',ListContacts.SelectedCount)]),
+    mtConfirmation,MB_YESNO) <> ID_YES then
+    exit;
   Form1.frmSMEdit.ResetConflictState;
   Answer := 0;
   NewCnt := 0;
