@@ -1043,6 +1043,7 @@ type
     procedure ClearSMSMessages(sl: TStringList); overload;
     procedure ClearSMSMessages(Node: PVirtualNode); overload;
 
+    procedure AddStatusReportToList(Report: TSMSStatusReport);
     procedure LoadStatusReports(APath: String);
     procedure FreeStatusReports;
 
@@ -11644,13 +11645,12 @@ procedure TForm1.DownloadMessages(Node: PVirtualNode);
 const
   slProcessed  = $01;
 var
-  sl,nl,ml,movedMsgsList: TStringList;
-  updatedNodes: TList;
+  sl,nl: TStringList;
+  movedMsgsList, updatedNodes: TList;
   dlg,dlg2: TfrmConnect;
   i,k,NewCount,ModCount,MovedCount: Integer;
   EData: PFmaExplorerNode;
   md: TFmaMessageData;
-  found: boolean;
 
   function FindPDUinList(var AList: TStringList; AType: Integer; APDU: String; FixType: boolean): integer;
   var
@@ -11671,42 +11671,25 @@ var
         Result := -1;
     end;
   end;
-  procedure ApplyDeliveryRulesAndCopyMessage(var ml: TStringList);
+  procedure ApplyDeliveryRulesAndCopyMessage(msg: TFmaMessageData);
   var
     DeliveryNode: PVirtualNode;
-    j: integer;
     who, sender: WideString;
-    sms: TSMS;
   begin
     DeliveryNode := FNodeMsgArchive;
-    j := 0;
-    while j < ml.Count do begin
-      sms := TSMS.Create;
-      try
-        sms.PDU := ml[j];
-        if j = 0 then begin
-        { First message part - extract sender information etc. }
-          if sms.Number <> '' then begin
-            who := LookupContact(sms.Number);
-            if who = '' then who := sUnknownContact;
-            sender := who + ' [' + sms.Number + ']';
-            DeliveryNode := GetSMSDeliveryNode(sender);
-          end;
-        end;
-      finally
-        sms.Free;
-      end;
-      inc(j);
+    { extract sender information }
+    if msg.From <> '' then begin
+      who := LookupContact(msg.From);
+      if who = '' then who := sUnknownContact;
+      sender := who + ' [' + msg.From + ']';
+      DeliveryNode := GetSMSDeliveryNode(sender);
     end;
-    if j = ml.Count then begin
-    // is message complete?
-      for j := 0 to ml.Count-1 do begin
-        { File message part }
-        SaveMsgToFolder(DeliveryNode,ml[j],False,False,False); // put in archive
-      end;
-      if updatedNodes.IndexOf(DeliveryNode) = -1 then // remember changed node
-        updatedNodes.Add(DeliveryNode);
-    end;
+    { Change data and save message part }
+    if msg.TimeStamp = 0 then msg.TimeStamp := Now;
+    msg.Location := mlPC;
+    SaveMsgToFolder(DeliveryNode,msg,False,msg.IsNew,False); // put in archive
+    if updatedNodes.IndexOf(DeliveryNode) = -1 then // remember changed node
+      updatedNodes.Add(DeliveryNode);
   end;
 begin
   AskRequestConnection;
@@ -11765,54 +11748,40 @@ begin
     dlg2 := GetProgressDialog;
     try
       { move old sl messages to FMA Text Folders}
-      movedMsgsList := TStringList.Create;
+      movedMsgsList := TList.Create;
       try
-        i := 0;
-        while i < sl.Count do begin
+        for i := 0 to sl.Count-1 do begin
           md := TFmaMessageData(sl.Objects[i]);
           if FindPDUinList(nl, Ord(md.Location), sl[i], False) = -1 then begin
-            // not needed anymore, msgs will be moved
-            { if GetToken(sl[i],0) <> '3' then begin
-              sl[i] := SetToken(sl[i],'3',0); // 3 = in PC
-            end; }
             inc(MovedCount); // count of SMS messages no longer in ME/SM
-            movedMsgsList.AddObject(md.AsString, nil);
-            md.Free;
-            sl.Delete(i);
-            Dec(i);
+            movedMsgsList.Add(md);
           end;
-          Inc(i);
         end;
         dlg2.Initialize(MovedCount,_('Moving deleted messages to FMA Text Folders'));
         // group long sms, move to proper folders
-        ml := TStringList.Create;
         updatedNodes := TList.Create;
         try
-          i := 0;
-          while i < movedMsgsList.Count do begin
-            if movedMsgsList.Objects[i] = nil then begin
-            { Check if entire message is here (in case of Long SMS) }
-              found := GetSMSMembers(i,movedMsgsList,ml);
-              { Mark parts as processed }
-              for k := 0 to ml.Count-1 do
-                movedMsgsList.Objects[Integer(ml.Objects[k])] := Pointer(slProcessed);
-
-              if found then begin
-                ApplyDeliveryRulesAndCopyMessage(ml); // ml = entire message's pdus
-
-                dlg2.IncProgress(ml.Count);
-                Application.ProcessMessages;
-              end;
-            end;
-            Inc(i);
+          for i := 0 to movedMsgsList.Count-1 do begin
+            { Don't check if entire message is here, it must be here,
+              otherwise Cleanup will delete it anyway }
+            // must move entire message object to retain status reports etc.
+            ApplyDeliveryRulesAndCopyMessage(movedMsgsList[i]); // message object
+            // delete PDU
+            k := sl.IndexOfObject(movedMsgsList[i]);
+            if k <> -1 then begin
+              sl.Delete(k);
+              // dispose object
+              TFmaMessageData(movedMsgsList[i]).Free;
+            end
+            else Log.AddMessage('Error occured during message part move!', lsError);
+            dlg2.IncProgress(1);
+            dlg2.Update;
           end;
-          for k := 0 to updatedNodes.Count-1 do begin
-            // update views
+          // update views
+          for k := 0 to updatedNodes.Count-1 do
             UpdateNewMessagesCounter(updatedNodes[k]);
-          end;
         finally
           updatedNodes.Free;
-          ml.Free;
         end;
       finally
         movedMsgsList.Free;
@@ -15975,28 +15944,36 @@ begin
     end;
 end;
 
-procedure TForm1.HandleCDS(AMsg: String);
+procedure TForm1.AddStatusReportToList(Report: TSMSStatusReport);
 var
   i: integer;
   b: byte;
+begin
+  if Assigned(Report) then begin
+    i := FStatusReportList.Add(Report.PDU);
+    FStatusReportList.Objects[i] := Report;
+    b := Byte(StrToInt('$'+Report.MessageReference));
+    Inc(FReportLookupList[b]);
+  end;
+end;
+
+procedure TForm1.HandleCDS(AMsg: String);
+var
   sr: TSMSStatusReport;
 begin
-  i := FStatusReportList.Add(AMsg);
   sr := TSMSStatusReport.Create;
   try
     sr.PDU := AMsg;
-    FStatusReportList.Objects[i] := sr;
-    b := Byte(StrToInt('$'+sr.MessageReference));
-    Inc(FReportLookupList[b]);
+    AddStatusReportToList(sr);
     // TODO: show balloon, but what if message was long? Use sr.IsUserNotified somehow...
     Log.AddMessage(_('Received status report message.'));
     if sr.Delivered then
       ShowBaloonInfo(WideFormat(_('Message to %s was delivered.'), [LookupContact(sr.Number)]));
-    if frmMsgView.Visible then
-      frmMsgView.RefreshAllDeliveries;
   except
     sr.Free;
   end;
+  if frmMsgView.Visible then
+    frmMsgView.RefreshAllDeliveries;
 end;
 
 procedure TForm1.DoRefreshCallSenders;
