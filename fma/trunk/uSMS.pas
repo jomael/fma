@@ -61,6 +61,7 @@ type
     FMessageLength: Integer;
     FIsUDH: Boolean;
     FUDHI: String;
+    FVPF: Byte;
     FStatusRequest: Boolean;
     FSizeOfPDU: integer;
     FDCS: TGSMCodingScheme;
@@ -74,6 +75,7 @@ type
     function Get_Address: String;
     function Get_SMSC: String;
     function Get_TimeStamp: TDateTime;
+    function Get_Validity: TDateTime;
     function Get_CodingScheme: TGSMCodingScheme;
   public
     { tech.info }
@@ -82,6 +84,7 @@ type
     property TPLength: integer read FSizeOfPDU;
     property TimeStamp: TDateTime read Get_TimeStamp;
     property MessageReference: String read FMessageRef write Set_MessageRef;
+    property Validity: TDateTime read Get_Validity;
     { text }
     property Text: WideString read Get_Message write Set_Message;
     property TextEncoding: TGSMCodingScheme read Get_CodingScheme write FDCS;
@@ -579,7 +582,7 @@ Const
     'Dominica (Commonwealth of) 1
     'Dominican Republic 1 
     'East Timor 670 
-    'Ecuador 593 
+    'Ecuador 593
     'Egypt (Arab Republic of) 20
     'El Salvador (Republic of) 503 
     'Equatorial Guinea (Republic of) 240
@@ -642,7 +645,7 @@ Const
     'Luxembourg 352
     'Macau 853
     'Macedonia 389 
-    'Madagascar (Republic of) 261 
+    'Madagascar (Republic of) 261
     'Malawi 265 
     'Malaysia 60
     'Maldives (Republic of) 960 
@@ -663,7 +666,7 @@ Const
     'Mozambique (Republic of) 258
     'Myanmar (Union of) 95 
     'Namibia (Republic of) 264
-    'Nauru (Republic of) 674 
+    'Nauru (Republic of) 674
     'Nepal 977
     'Netherlands (Kingdom of the) 31
     'Netherlands Antilles 599
@@ -684,7 +687,7 @@ Const
     'Peru 51
     'Philippines (Republic of the) 63
     'Poland (Republic of) 48
-    'Portugal 351 
+    'Portugal 351
     'Puerto Rico 1
     'Qatar (State of) 974
     'Reserved 0
@@ -705,7 +708,7 @@ Const
     'Seychelles (Republic of) 248
     'Sierra Leone 232
     'Singapore (Republic of) 65
-    'Slovak Republic 421 
+    'Slovak Republic 421
     'Slovenia (Republic of) 386
     'Solomon Islands 677 
     'Somali Democratic Republic 252
@@ -1266,6 +1269,30 @@ begin
     Result := DecodeTimeStamp(copy(FPDU, FSMSDeliverStartPos + FSenderLen + 10, 14));
 end;
 
+function TSMS.Get_Validity: TDateTime;
+var
+  TPVP: string;
+  val: integer;
+begin
+  Result := 0;
+  TPVP := Copy(FPDU, FSenderPos + FSenderLen + 6, FValidityLen);
+  case FVPF of
+    // 1: TODO: enhanced format support
+    2:
+    begin
+      // we will use negative values to identify offset value
+      val := StrToInt('$'+TPVP);
+      case val of
+        0..143: Result := (-1/24/12)*(val+1); // 5mins*(val-1)
+        144..167: Result := (-1/2)+(-1/24/2)*(val-143); // 12h + 30mins*(val-143)
+        168..196: Result := (-1)*(val-166); // (val-166)*1day
+        197..255: Result := (-7)*(val-192); // (val-192)*1week
+      end;
+    end;
+    3: Result := DecodeTimeStamp(TPVP); // absolute format
+  end;
+end;
+
 function TSMSDecoder.ReverseOctets(Octets: String): String;
 var
   i: Integer;
@@ -1371,15 +1398,16 @@ begin
   if FIsSMSSumit then begin
     FStatusRequest := (PDUType and 32) <> 0;
     TPVPF := (PDUType and $18) shr 3;
+    FVPF := TPVPF;
 
-    { VPF  bit4 bit3  Validity Period 
+    { VPF  bit4 bit3  Validity Period
            0    0     VP field is not present
-           0    1     Reserved
+           0    1     VP field present an semi-octet represented (enhanced)
            1    0     VP field present an integer represented (relative)
            1    1     VP field present an semi-octet represented (absolute)
     }
     case TPVPF of
-      1: FValidityLen := 14; // reserved
+      1: FValidityLen := 14; // enhanced format
       2: FValidityLen := 2;  // integer
       3: FValidityLen := 14; // semi-octets
     else FValidityLen := 0;  // not present
@@ -1614,6 +1642,16 @@ begin
             no longer has knowledge of it or the SM
             may never have previously existed in the SC)
     1001010..1001111 Reserved
+  Temporary error, SC is not making any more transfer attempts
+    1100000 Congestion
+    1100001 SME busy
+    1100010 No response from SME
+    1100011 Service rejected
+    1100100 Quality of service not available
+    1100101 Error in SME
+    1100110..1101001 Reserved
+    1101010..1101111 Reserved
+    1110000..1111111 Values specific to each SC
 }
   // if FStatus >= 128 then Result := unknown;
   Result := FStatus = 0;

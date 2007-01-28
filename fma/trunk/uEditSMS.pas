@@ -173,7 +173,12 @@ begin
   end;
 
   if FSMS.ReportRequested then begin
-    mmoDRPDU.Text := FSMS.ReportPDU;
+    mmoDRPDU.Lines.Clear;
+    if FSMS.ReportPDU <> '' then begin
+      mmoDRPDU.Lines.Add(WideFormat(_('Message Type: %s'),
+        ['SMS STATUS REPORT'])); // do not localize
+      mmoDRPDU.Lines.Add(sLineBreak + FSMS.ReportPDU);
+    end;
     if mmoDRPDU.Text <> '' then begin
       edDRStatus.Text := _('Responce Received');
       edDRRepDate.Text := DateTimeToStr(FSMS.TimeStamp);

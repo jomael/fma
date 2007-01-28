@@ -318,7 +318,7 @@ begin
 
   if Column = 0 then Result := CompareStr(item1.from, item2.from)
   else if Column = 1 then Result := WideCompareStr(item1.smsData.Text, item2.smsData.Text)
-  else if Column = 3 then Result := CompareDateTime(item1.smsData.TimeStamp, item2.smsData.TimeStamp);
+  else if Column = 4 then Result := CompareDateTime(item1.smsData.TimeStamp, item2.smsData.TimeStamp);
 end;
 
 procedure TfrmMsgView.ListMsgGetImageIndex(Sender: TBaseVirtualTree;

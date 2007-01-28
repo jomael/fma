@@ -424,10 +424,13 @@ begin
     if FReportReq and (FReportPDU <> '') then
       SetReportPDU(FReportPDU); // refresh data from report
     // check report timeout
-    if FReportReq and (FReportPDU = '') and (dateTime <> 0) and
-      { TODO: Use Validity Period!!! }
-      ((Now - dateTime) > 14) then
-      FStatusCode := $46;
+    if FReportReq and (FReportPDU = '') and (FTimeStamp <> 0) then
+      if sms.Validity < 0 then begin // offset value
+        if Now > FTimeStamp - sms.Validity then FStatusCode := $46;
+      end
+      else if sms.Validity > 0 then begin // absolute value
+        if Now > sms.Validity then FStatusCode := $46;
+      end;
   finally
     sms.Free;
     FDecoded := True;
