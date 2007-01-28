@@ -3197,7 +3197,7 @@ var
     if FoundIndex = -1 then inc(NewCnt) else inc(UpdCnt);
   end;
 begin
-  if MessageDlgW(WideFormat(_('Confirm sending %d %s to Phone Memory?'),
+  if MessageDlgW(WideFormat(_('Confirm sending %d %s to SIM Memory?'),
     [ListContacts.SelectedCount,ngettext('contact','contacts',ListContacts.SelectedCount)]),
     mtConfirmation,MB_YESNO) <> ID_YES then
     exit;
