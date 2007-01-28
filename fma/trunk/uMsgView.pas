@@ -363,7 +363,7 @@ begin
           else
             ImageIndex := -1; // reporting off
           if item.smsData.ReportPDU <> '' then
-            if item.smsData.StatusCode = 0 then
+            if item.smsData.IsDelivered then
               ImageIndex := 25 // delivered
             else
               ImageIndex := 24; // not delivered (yet)
@@ -537,7 +537,7 @@ begin
           // Direction Bit
           if md.IsOutgoing then begin
             item.StateIndex := item.StateIndex or $020000;
-            if md.ReportRequested and (md.ReportPDU = '') then
+            if md.ReportRequested and not md.IsDelivered then
               DoFindDeliveryReport(md);
           end
           else
@@ -2379,7 +2379,7 @@ begin
     while Assigned(Node) do begin
       item := ListMsg.GetNodeData(Node);
       if Assigned(item) then begin
-        if item.smsData.ReportRequested then
+        if item.smsData.ReportRequested and not item.smsData.IsDelivered then
           DoFindDeliveryReport(item.smsData);
       end;
       Node := ListMsg.GetNext(Node);

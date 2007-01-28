@@ -64,6 +64,7 @@ type
     FFrom, FMsgRef: string;
     ARef, ATot, An: integer;
     FBusinessCard: TVCard;
+    function GetIsDelivered: boolean;
   protected
     procedure SetPDU(const NewPDU: string); override;
     procedure SetString(const AData: string); override;
@@ -94,6 +95,7 @@ type
     property MsgNum: integer read GetAN;
     // next are FMA specific
     property ReportRequested: boolean read GetReportReq;
+    property IsDelivered: boolean read GetIsDelivered;
     property BusinessCard: TVCard read FBusinessCard write FBusinessCard;
   end;
 
@@ -470,6 +472,11 @@ begin
     FreeAndNil(FBusinessCard);
     
   inherited;
+end;
+
+function TFmaMessageData.GetIsDelivered: boolean;
+begin
+  Result := IsOutgoing and (StatusCode = 0);
 end;
 
 end.
