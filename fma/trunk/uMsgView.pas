@@ -668,7 +668,7 @@ procedure TfrmMsgView.Properties1Click(Sender: TObject);
 var
   Node :PVirtualNode;
 begin
-  if Form1.ExplorerNew.FocusedNode = Form1.FNodeMsgDrafts then
+  if Form1.ExplorerNew.FocusedNode = Form1.FNodeMsgDrafts then // just in case
     exit;
   Node := ListMsg.FocusedNode;
   if Assigned(Node) then begin
@@ -2333,6 +2333,9 @@ begin
     ListMsg.Sort(nil, ListMsg.Header.SortColumn, ListMsg.Header.SortDirection);
     ListMsg.EndUpdate;
     UpdatePropertiesStatus;
+    { Update SMS Properties dialog if available }
+    if Properties1.Enabled and Assigned(frmDetail) then
+      Properties1.Click;
   end;
 end;
 
@@ -2388,6 +2391,9 @@ begin
     ListMsg.Sort(nil, ListMsg.Header.SortColumn, ListMsg.Header.SortDirection);
     ListMsg.EndUpdate;
     UpdatePropertiesStatus;
+    { Update SMS Properties dialog if available }
+    if Properties1.Enabled and Assigned(frmDetail) then
+      Properties1.Click;
   end;
 end;
 
