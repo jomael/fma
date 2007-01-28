@@ -2379,7 +2379,7 @@ begin
     while Assigned(Node) do begin
       item := ListMsg.GetNodeData(Node);
       if Assigned(item) then begin
-        if item.smsData.ReportRequested and (item.smsData.ReportPDU = '') then
+        if item.smsData.ReportRequested then
           DoFindDeliveryReport(item.smsData);
       end;
       Node := ListMsg.GetNext(Node);

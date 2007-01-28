@@ -15980,6 +15980,7 @@ begin
     b := Byte(StrToInt('$'+sr.MessageReference));
     Inc(FReportLookupList[b]);
     // TODO: show balloon, but what if message was long? Use sr.IsUserNotified somehow...
+    Log.AddMessage(_('Received status report message.'));
     if sr.Delivered then
       ShowBaloonInfo(WideFormat(_('Message to %s was delivered.'), [LookupContact(sr.Number)]));
     if frmMsgView.Visible then
