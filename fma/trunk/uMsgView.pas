@@ -361,7 +361,7 @@ begin
           if item.smsData.ReportRequested then
             ImageIndex := 0 // report sent
           else
-            ImageIndex := 20; // reporting off
+            ImageIndex := -1; // reporting off
           if item.smsData.ReportPDU <> '' then
             if item.smsData.StatusCode = 0 then
               ImageIndex := 25 // delivered

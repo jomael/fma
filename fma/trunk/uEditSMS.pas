@@ -179,7 +179,7 @@ begin
       mmoDRPDU.Lines.Add(sLineBreak + FSMS.ReportPDU);
     end;
     if mmoDRPDU.Text <> '' then begin
-      edDRStatus.Text := _('Responce received');
+      edDRStatus.Text := _('Response received');
       edDRRepDate.Text := DateTimeToStr(FSMS.TimeStamp);
       if FSMS.StatusCode = $FF then
         edDRInfo.Text := sNoInfo // unknown
@@ -191,7 +191,7 @@ begin
     end
     else begin
       if FSMS.StatusCode = $FF then begin
-        edDRStatus.Text := _('Awaiting responce...');
+        edDRStatus.Text := _('Awaiting response...');
         edDRRepDate.Text := sNoInfo;
         edDRInfo.Text := sNoInfo;
       end
