@@ -21,7 +21,9 @@ we have plans to add full support for them in final FMA 2.2.
 Always do a backup of profile databases before using this 
 new FMA Beta 4.
 
-Important Notice:
+Important Notices:
+
+- User Folders and Delivery Rules:
 
 All Custom Text Messages folders (if any) were moved under 
 new Explorer's node named FMA Text Folders. On first FMA
@@ -31,6 +33,14 @@ Just create an appripriate new folder for every old one.
 And all Delivery Rules attached to the old folders will be 
 automatically relocated to the corresponding new folders.
 You don't have to care about this.
+
+- FMA Portable Mode settings:
+
+If you have chosen "Don't ask me again for this device"
+option in Portable Mode dialog and want to revert this
+setting, then hold down CTRL key to ignore any Portable 
+Mode settings and show FMA Startup mode selection dialog 
+again.
 
 Known Issues:
 
@@ -60,6 +70,14 @@ What's New?
 The following is a brief list of most important but not all
 changes in FMA Beta 4 release. You can explore it searching
 for more. Here we go:
+
+- Text Message status report support for new phones.
+
+- New Portable startup mode dialog by device detection.
+
+- Start in Portable mode will store data under FMA dir.
+
+- Copy selected contacts between SIM and Phone memory.
 
 - Full K610 calendar support with event reccurence.
 
@@ -211,13 +229,13 @@ FMA Beta 3. The change log is following:
 - Changed Calendar Events and tasks popup menus.
 - Changed Do not download phonebook on new phone.
 - Fixed Database Manager implementation support.
-- Fixed Relocate old database to Application Data folder.
-- Fixed Manage, Delete and Relocate phone profile changes.
-- Fixed Set friendly name once in Getting Started wizard.
-- Added Set default K750 clones settings for new phones.
-- Added Check OBEX compatability on Getting Started finish.
-- Added Show currentlly opened phone name in Caption.
-- Added Profiles database new unique ID by phone name.
+- Fixed Relocate old DN to Application Data folder.
+- Fixed Manage, Delete and Relocate phone profile.
+- Fixed Set friendly name in Getting Started wizard.
+- Added Set default K750+ settings for new phones.
+- Added Check OBEX suport on Getting Started finish.
+- Added Show current DB's phone name in FMA Caption.
+- Added Profiles DB new unique ID by phone name.
 - Fixed Calling dialog crash on call hangup.
 - Fixed New message trayicon not disappearing.
 - Fixed Open DB Manager only in Offline mode.
@@ -344,75 +362,81 @@ FMA Beta 3. The change log is following:
 - Added: Long SMS properties to TFmaMessageData.
 - Added: Support for Contact's photo from VCard.
 - Added: Dismiss Calendar Alarm windows on ESC (vox).
-
 - Fixed: Message archive lost on exception.
 - Fixed: A few message fixes.
 - Fixed: Multiple datetime encode/decode issues.
 - Fixed: Unable to close alarm window. 
-- Added: Support for long SMS with 16bit reference number.
+- Added: Support for long SMS with 16bit RefID.
 - Added: Support for SMS with non-number sender.
 - Changed: Message timestamp now saved as hex string.
-- Changed: Search for SMS checks message text OR sender name.
+- Changed: Search SMS message text OR sender name.
 - Changed: TListData record.
-
-- Fixed: Patches Subversion revision numbering
-- Fixed: Pressing hangup with newer phones
-- Fixed: Call contact dialog not displaying Unicode
-- Fixed: Various file handling fixes
-- Fixed: GUI fixes for SMS timestamp editing
-- Fixed: Small PDU decode hack
-- Fixed: Minor accessory menu fixes
-- Added: Outgoing SMS timestamp can now be edited
-- Added: .wav and .mp3 files can be played in FMA
-- Added: Support for using JavaScript as FMA script
-- Added: am.AddItemEx method
-- Added: am.MenuType property
-- Added: Usage of CMMS command (multiple SMS sending)
-- Changed: SFramework core to support am.AddItemEx
-- Changed: PluginManager now uses new am.AddItemEx 
-- Changed: Reverted changes to SMS UCS2 encoding
-
-- Fixed: GetSMSMembers returning wrong result
-- Added: DB Repair now also compacts database
-- Added: Advanced Text Messages searching
-- Added: Text Messages Saved Searches support
-
-- Fixed: Editing new SIM card contacts (K700+)
-- Fixed: Upload SIM changes to phones (K610+)
-- Fixed: Copy contacts between SIM and Phone
-- Fixed: Close SMS details dialog memory leak
-- Fixed: Edit Birthday field disabled status
-- Fixed: Calendar reccurence for K700+ phones
-- Fixed: Edit SMS Timestamp will resort list
-- Changed: Show SMS Message details dialog GUI
-- Added: NewSMS AddToPhonebook will use wizard
-- Added: Add phonebook contact to New group
-- Added: Copy SIM contacts to Phone (IRMC off)
-- Added: Copy contacts from Phone to SIM book
-- Added: Copy SIM <-> Phone contacts conflicts
-- Added: Outlook Sync conflict can be canceled
-- Added: Force change contacts state (IRMC off)
-- Added: Support and auto-detect Portable mode
-
-- Fixed: Getting Started wizard COMs detection
-- Fixed: Sanity check routines on some places
-- Fixed: Web Update wizard GUI (wrapped text)
-- Fixed: Portable mode dialog GUI transparency
-- Fixed: Today screen battery panel background
-- Fixed: Properties Find Target is not working
-- Fixed: SM/ME popup menus are reorganized now
-- Fixed: Changing SMS folder will hide Filtered
-- Fixed: Don't alter registry if no start mode
-- Fixed: Cleanup settings on FMA application exit
-- Fixed: Calendar Event/Task GUI (fonts, colors)
-- Fixed: Today page GUI (fonts, colors) changes
-- Changed: SMS Messages search visible by default
-- Changed: About dialog legal notices and GUI
-- Changed: Log event details dialog GUI changes
-- Added: Remember Portable mode startup settings
-- Added: Portable Mode dialog mode auto-detection
-- Added: FMA in portable mode program setup icon
-
-Note: Hold down CTRL to ignore portable settings and to show Startup Mode dialog.
+- Fixed: Patches Subversion revision numbering.
+- Fixed: Pressing hangup with newer phones.
+- Fixed: Call contact dialog not displaying Unicode.
+- Fixed: Various file handling fixes.
+- Fixed: GUI fixes for SMS timestamp editing.
+- Fixed: Small PDU decode hack.
+- Fixed: Minor accessory menu fixes.
+- Added: Outgoing SMS timestamp can now be edited.
+- Added: .wav and .mp3 files can be played in FMA.
+- Added: Support for using JavaScript as FMA script.
+- Added: am.AddItemEx method.
+- Added: am.MenuType property.
+- Added: Use CMMS command for multiple SMS sending.
+- Changed: SFramework core to support am.AddItemEx.
+- Changed: PluginManager now uses new am.AddItemEx.
+- Changed: Reverted changes to SMS UCS2 encoding.
+- Fixed: GetSMSMembers returning wrong result.
+- Added: DB Repair now also compacts database.
+- Added: Advanced Text Messages searching.
+- Added: Text Messages Saved Searches support.
+- Fixed: Editing new SIM card contacts (K700+).
+- Fixed: Upload SIM changes to phones (K610+).
+- Fixed: Copy contacts between SIM and Phone.
+- Fixed: Close SMS details dialog memory leak.
+- Fixed: Edit Birthday field disabled status.
+- Fixed: Calendar reccurence for K700+ phones.
+- Fixed: Edit SMS Timestamp will resort list.
+- Changed: Show SMS Message details dialog GUI.
+- Added: NewSMS AddToPhonebook will use wizard.
+- Added: Add phonebook contact to New group.
+- Added: Copy SIM contacts to Phone (IRMC off).
+- Added: Copy contacts from Phone to SIM book.
+- Added: Copy SIM <-> Phone contacts conflicts.
+- Added: Outlook Sync conflict can be canceled.
+- Added: Force change contacts state (IRMC off).
+- Added: Support and auto-detect Portable mode.
+- Fixed: Getting Started search on MS Vista OS.
+- Fixed: Phone model on Getting Started finish.
+- Fixed: Getting Started wizard finish tasks.
+- Fixed: Very important IsXXorBetter functions.
+- Fixed: Getting Started wizard COMs detection.
+- Fixed: Sanity check routines on some places.
+- Fixed: Web Update wizard GUI (wrapped text).
+- Fixed: Portable mode dialog GUI transparency.
+- Fixed: Today screen battery panel background.
+- Fixed: Properties Find Target is not working.
+- Fixed: SM/ME popup menus are reorganized now.
+- Fixed: Changing SMS folder will hide Filtered.
+- Fixed: Don't alter registry if no start mode.
+- Fixed: Cleanup settings on FMA application exit.
+- Fixed: Calendar Event/Task GUI (fonts, colors).
+- Fixed: Today page GUI (fonts, colors) changes.
+- Changed: SMS Messages search visible by default.
+- Changed: About dialog legal notices and GUI.
+- Changed: Log event details dialog GUI changes.
+- Added: Remember Portable mode startup settings.
+- Added: Portable Mode dialog mode auto-detection.
+- Added: FMA in portable mode program setup icon.
+- Fixed: Copy contacts Phone-SIM memory.
+- Fixed: Ignore call (silently) on K610+.
+- Fixed: View update on Add to Phonebook.
+- Fixed: Missing Calls dialog popup menu.
+- Fixed: Missing Calls dialog list order.
+- Fixed: New message popup menu images.
+- Fixed: New message 'Add to Phonebook'.
+- Added: New Call dialog More popup menu.
+- Added: Confirm copying SIM-Phone memory.
 
 The FMA Team
