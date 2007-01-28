@@ -355,14 +355,14 @@ begin
         item := Sender.GetNodeData(Node);
         try
           if item.smsData.ReportRequested then
-            ImageIndex := 3    // report sent
+            ImageIndex := 20  // report sent
           else
-            ImageIndex := -1;  // reporting off
+            ImageIndex := -1; // reporting off
           if item.smsData.ReportPDU <> '' then
             if item.smsData.StatusCode = 0 then
-              ImageIndex := 4  // delivered
+              ImageIndex := 25  // delivered
             else
-              ImageIndex := 5; // not delivered yet
+              ImageIndex := 24; // not delivered (yet)
         except
         end;
       end
