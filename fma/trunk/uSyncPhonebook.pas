@@ -2412,12 +2412,11 @@ begin
         begin
           slPart := TStringList.Create;
           try
-            for j := 0 to sl.Count-1 do
-            begin
-              if Length(sl.Strings[j])<>0 then
+            for j := 0 to sl.Count-1 do begin
+              if Length(sl.Strings[j]) <> 0 then
                 slPart.Add(sl.Strings[j])
               else
-                if slPart.Count>0 then
+                if slPart.Count > 0 then
                   try
                     if VCard.LoadFromLDIF(slPart) then
                       ProcessContact;

@@ -32,6 +32,7 @@ type
     { Private declarations }
     Grouping,PropertyName: Widestring;
     sl,mails: TStringList;
+    FIsValid: boolean;
     function GetRaw: TStrings;
     procedure SetRaw(const ValueRaw: TStrings);
     procedure setProperty(Value: String);
@@ -40,6 +41,7 @@ type
     function DecodePropertyValue(const PParams, PValue: String): WideString;
     function GetLDIF: TStrings;
     function GetMail: TStrings;
+    function GetDisplayName: WideString; 
     procedure SetMail(const Value: TStrings);
   public
     { Public declarations }
@@ -76,6 +78,7 @@ type
     property Raw: TStrings read GetRaw write SetRaw;
     property MoreEmails: TStrings read GetMail write SetMail;
     property LDIF: TStrings read GetLDIF;
+    property IsValidVCard: boolean read FIsValid;
   end;
 
 var
@@ -129,6 +132,7 @@ begin
     FreeAndNil(Photo);
     mails.Clear;
     sl.Clear;
+    FIsValid := False;
 end;
 
 constructor TVCard.Create;
@@ -210,14 +214,7 @@ begin
   end else
     sl.Add('N;CHARSET=UTF-8:' + strTemp);
 
-  if DisplayName = '' then begin
-    { build default 'file as' field }
-    DisplayName := Name;
-    if Surname <> '' then
-      DisplayName := DisplayName + ' ' + Surname;
-    if Name = '' then
-      DisplayName := Surname;
-  end;
+  DisplayName := GetDisplayName;
   if DisplayName <> '' then begin
     strTemp := WideStringToUTF8(DisplayName);
     if not Form1.FUseUTF8 or (strTemp = DisplayName) then begin
@@ -683,70 +680,82 @@ begin
       Continue;
     end;
 
-    if pos('BEGIN', Value.Strings[i]) = 1 then isBody := True
-    else if pos('END', Value.Strings[i]) = 1 then isBody := False
-    else if pos('PHOTO', Value.Strings[i]) = 1 then isPhoto :=True
-    else if Value.Strings[i] = '' then
-        isPhoto := False;
+    if pos('BEGIN', Value.Strings[i]) = 1 then begin
+      isBody := True;
+    end
+    else
+    if pos('END', Value.Strings[i]) = 1 then begin
+      FIsValid := isBody;
+      break;
+    end
+    else
+    if pos('PHOTO', Value.Strings[i]) = 1 then isPhoto :=True
+    else
+    if Value.Strings[i] = '' then
+      isPhoto := False;
 
     if isBody then begin
-        if isPhoto then begin
-          if Pos('PHOTO', Value.Strings[i]) = 1 then begin
-            { check image encoding }
-            if Pos('TYPE=GIF', Value.Strings[i]) <> 0 then
-              PhotoType := 1
-            else if Pos('TYPE=JPEG', Value.Strings[i]) <> 0 then
-              PhotoType := 2;
-            {
-            In the case of the vCard being transported within a MIME email message, the property value
-            can be specified as being located in a separate MIME entity with the "Content-ID" value, or
-            "CID" for short. In this case, the property value is the Content-ID for the MIME entity
-            containing the property value. In addition, the property value can be specified as being
-            located out on the network within some Internet resource with the "URL" value. In this case,
-            the property value is the Uniform Resource Locator for the Internet resource containing the
-            property value. The following specifies a value not located inline with the vCard but out
-            in the Internet:
+      if isPhoto then begin
+        if Pos('PHOTO', Value.Strings[i]) = 1 then begin
+          { check image encoding }
+          if Pos('TYPE=GIF', Value.Strings[i]) <> 0 then
+            PhotoType := 1
+          else if Pos('TYPE=JPEG', Value.Strings[i]) <> 0 then
+            PhotoType := 2;
+          {
+          In the case of the vCard being transported within a MIME email message, the property value
+          can be specified as being located in a separate MIME entity with the "Content-ID" value, or
+          "CID" for short. In this case, the property value is the Content-ID for the MIME entity
+          containing the property value. In addition, the property value can be specified as being
+          located out on the network within some Internet resource with the "URL" value. In this case,
+          the property value is the Uniform Resource Locator for the Internet resource containing the
+          property value. The following specifies a value not located inline with the vCard but out
+          in the Internet:
 
-            PHOTO;VALUE=URL;TYPE=GIF:http://www.abc.com/dir_photos/my_photo.gif
-            SOUND;VALUE=CONTENT-ID:<jsmith.part3.960817T083000.xyzMail@host1.com
-            }
-            if Pos('VALUE=URL', Value.Strings[i]) <> 0 then begin
-              s := copy(Value.Strings[i], pos(':', Value.Strings[i]) + 1, length(Value.Strings[i]));
-              if Pos('file:///',s) = 1 then begin
-                Delete(s,1,8);
-                try
-                  PhotoStream := TFileStream.Create(s,fmOpenRead);
-                except
-                  PhotoType := 0; // ignore image on error (file not found etc.)
-                end;
-              end
-              else
-                // TODO: Add support for vCard external images (http)
-                PhotoType := 0; // ignore image - not implemented
+          PHOTO;VALUE=URL;TYPE=GIF:http://www.abc.com/dir_photos/my_photo.gif
+          SOUND;VALUE=CONTENT-ID:<jsmith.part3.960817T083000.xyzMail@host1.com
+          }
+          if Pos('VALUE=URL', Value.Strings[i]) <> 0 then begin
+            s := copy(Value.Strings[i], pos(':', Value.Strings[i]) + 1, length(Value.Strings[i]));
+            if Pos('file:///',s) = 1 then begin
+              Delete(s,1,8);
+              try
+                PhotoStream := TFileStream.Create(s,fmOpenRead);
+              except
+                PhotoType := 0; // ignore image on error (file not found etc.)
+              end;
             end
-            else if Pos('VALUE=CONTENT-ID', Value.Strings[i]) <> 0 then begin
-              // TODO: Add support for vCard MIME content-id
+            else
+              // TODO: Add support for vCard external images (http)
               PhotoType := 0; // ignore image - not implemented
-            end
-            else begin
-              { begin collecting image data... }
-              isPhotoQP := Pos('QUOTED-PRINTABLE',Value.Strings[i]) <> 0;
-              sl.Add(Trim(copy(Value.Strings[i], pos(':', Value.Strings[i]) + 1, length(Value.Strings[i]))));
-            end;
+          end
+          else if Pos('VALUE=CONTENT-ID', Value.Strings[i]) <> 0 then begin
+            // TODO: Add support for vCard MIME content-id
+            PhotoType := 0; // ignore image - not implemented
           end
           else begin
-            { ...adding more image data }
-            sl.add(Trim(Value.Strings[i]));
+            { begin collecting image data... }
+            isPhotoQP := Pos('QUOTED-PRINTABLE',Value.Strings[i]) <> 0;
+            sl.Add(Trim(copy(Value.Strings[i], pos(':', Value.Strings[i]) + 1, length(Value.Strings[i]))));
           end;
         end
-        else
-          SetProperty(Value.Strings[i]);
+        else begin
+          { ...adding more image data }
+          sl.add(Trim(Value.Strings[i]));
+        end;
+      end
+      else
+        SetProperty(Value.Strings[i]);
     end;
   end;
   { Flush any unfolded vCard raw }
   SetProperty('');
 
-  { check if photo image exists }
+  { Check display name setting  --- disabled for now
+  DisplayName := GetDisplayName;
+  {}
+  
+  { Check if photo image exists }
   stream := TMemoryStream.Create;
   try
     sl.SaveToStream(stream);
@@ -1123,6 +1132,19 @@ end;
 procedure TVCard.SetMail(const Value: TStrings);
 begin
   mails.Text := Value.Text;
+end;
+
+function TVCard.GetDisplayName: WideString;
+begin
+  if DisplayName = '' then begin
+    { build default 'file as' field }
+    DisplayName := Name;
+    if Surname <> '' then
+      DisplayName := DisplayName + ' ' + Surname;
+    if Name = '' then
+      DisplayName := Surname;
+  end;
+  Result := DisplayName;
 end;
 
 end.

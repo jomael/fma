@@ -250,7 +250,7 @@ implementation
 
 uses
   gnugettext, gnugettexthelpers, cUnicodeCodecs,
-  Unit1, uEditSMS, uLogger, uInputQuery, uThreadSafe, uMissedCalls, uSyncPhonebook,
+  Unit1, uEditSMS, uLogger, uInputQuery, uThreadSafe, uMissedCalls, uSyncPhonebook, uVcard,
   uSMS, uGlobal, uComposeSMS, uConnProgress, WebUtil, uDialogs, uImg32Helper;
 
 {$R *.dfm}
@@ -259,18 +259,23 @@ uses
 
 function TfrmMsgView.FlattenText(str: WideString; link: WideString): WideString;
 var
-  sl: TTntStrings;
+  wl: TTntStrings;
   i: Integer;
 begin
-  sl := TTntStringList.Create;
-  sl.Text := str;
+  Result := '';
 
-  for i := 0 to sl.Count - 1 do begin
-    Result := Result + link + sl.Strings[i];
+  wl := TTntStringList.Create;
+  try
+    wl.Text := str;
+
+    for i := 0 to wl.Count - 1 do begin
+      Result := Result + link + wl[i];
+    end;
+  finally
+    wl.Free;
   end;
-  sl.Destroy;
 
-  Result := Trim(Result);
+  Result := WideTrim(Result);
 end;
 
 procedure TfrmMsgView.ListMsgBeforeCellPaint(Sender: TBaseVirtualTree;
@@ -380,8 +385,12 @@ begin
   if Column = 1 then begin
     try
       if Assigned(item.smsData) then begin
-        CellText := FlattenText(item.smsData.Text);
-        if IsLongSMSNode(Node) then CellText := CellText + ' (...)'; // do not localize
+        if Assigned(item.smsData.BusinessCard) then
+          CellText := WideFormat(_('Business Card [%s]'),[GetvCardFullName(item.smsData.BusinessCard)])
+        else begin
+          CellText := FlattenText(item.smsData.Text);
+          if item.smsData.IsLong then CellText := CellText + ' (...)'; // do not localize
+        end;
       end;
     except
       item.smsData := nil;
@@ -1857,17 +1866,24 @@ var
   s: WideString;
   //SL: TWideStringList;
   //i: Integer;
+  vcardcontact: TContactData;
 begin
   IsCustomImage := False;
   if Node = nil then begin
     MemoMsgBody.Clear;
     exit;
   end;
+  item := ListMsg.GetNodeData(Node);
+
+  if Assigned(item.smsData.BusinessCard) then begin
+    vCard2Contact(item.smsData.BusinessCard,@vcardcontact);
+    GetContactDetails(@vcardcontact,MemoMsgBody.Lines);
+    exit;
+  end;
 
   sms := TSMS.Create;//ADD
   try
     //posTemp := 0;
-    item := ListMsg.GetNodeData(Node);
     MemoMsgBody.Text := item.smsData.Text;// + inttostr(length(item.msg));
     MemoMsgBody.DefAttributes.Color := clWindowText;
     MemoMsgBody.DefAttributes.Size  := 10;

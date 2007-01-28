@@ -1,8 +1,22 @@
 unit uMessageData;
 
+{
+*******************************************************************************
+* Descriptions: SMS message FMA implementaton
+* $Source: /cvsroot/fma/fma/uVCard.pas,v $
+* $Locker:  $
+*
+* Todo:
+*   - explore source for comments
+*
+* Change Log:
+* $Log: uVCard.pas,v $
+*
+}
+
 interface
 
-uses uSMS, uGlobal, Classes, TntClasses, SysUtils;
+uses uSMS, uGlobal, Classes, TntClasses, SysUtils, uVCard;
 
 type
   TMessageLocation = (mlME = 1, mlSM = 2, mlPC = 3);
@@ -49,6 +63,7 @@ type
     FText: WideString;
     FFrom, FMsgRef: string;
     ARef, ATot, An: integer;
+    FBusinessCard: TVCard;
   protected
     procedure SetPDU(const NewPDU: string); override;
     procedure SetString(const AData: string); override;
@@ -64,8 +79,10 @@ type
     function GetAN: integer;
     function GetReportReq: boolean;
     procedure DecodeSMS;
+    procedure SetText(AText: WideString);
   public
     constructor Create(const AData: string = '');
+    destructor Destroy; override;
 
     property Text: WideString read GetSMSText;
     property From: string read GetSMSFrom;
@@ -75,7 +92,9 @@ type
     property Reference: integer read GetARef;
     property Total: integer read GetATot;
     property MsgNum: integer read GetAN;
+    // next are FMA specific
     property ReportRequested: boolean read GetReportReq;
+    property BusinessCard: TVCard read FBusinessCard write FBusinessCard;
   end;
 
 implementation
@@ -365,7 +384,7 @@ begin
   try
     sms.PDU := FPDU;
     // set all necessary props
-    FText := sms.Text;
+    SetText(sms.Text);
     FFrom := sms.Number;
     dateTime := sms.TimeStamp;
     FMsgRef := sms.MessageReference;
@@ -418,6 +437,36 @@ begin
     FUnread := False;
     FChanged := True;
   end;
+end;
+
+procedure TFmaMessageData.SetText(AText: WideString);
+var
+  sl: TStrings;
+begin
+  FText := AText;
+  { check if Text is just a Business Card }
+  sl := TStringList.Create;
+  try
+    sl.Text := AText;
+
+    FBusinessCard := TVCard.Create;
+    try
+      FBusinessCard.Raw := sl;
+    finally
+      if not FBusinessCard.IsValidVCard then
+        FreeAndNil(FBusinessCard);
+    end;
+  finally
+    sl.Free;
+  end;
+end;
+
+destructor TFmaMessageData.Destroy;
+begin
+  if Assigned(FBusinessCard) then
+    FreeAndNil(FBusinessCard);
+    
+  inherited;
 end;
 
 end.
