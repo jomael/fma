@@ -1536,7 +1536,16 @@ begin
   PDUType := StrToInt('$'+Copy(Value, PDUTypeStartPos, 2));
   { there's also MMS bit, we're not using it atm }
   MTI := PDUType and 3;
-  if MTI <> 2 then raise EConvertError.Create('Invalid SMS-STATUS-REPORT!');
+  if MTI <> 2 then begin
+    // maybe there is SCA, try that
+    if not FSCAPresent then begin
+      FSCAPresent := True;
+      Set_PDU(Value);
+    end
+    else
+      raise EConvertError.Create('Invalid SMS-STATUS-REPORT!');
+    Exit;
+  end;
   if (PDUType and 32) = 1 then Log.AddMessage('PDU Warning (TP-SRQ): Report of SMS-COMMAND', lsWarning);
   FIsUDH := PDUType and 64 <> 0;
 
