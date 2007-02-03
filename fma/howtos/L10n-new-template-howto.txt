@@ -15,10 +15,10 @@ in order to help Fma Translators and keep them with up-to-date inforation.
 1. Create new default.po file:
 
    New template is created by windows explorer (if we have installed dxGetText):
-   click with right mouse button over FMA folder (in Explorer's tree view!) and 
+   click with right mouse button over trunk folder (in Explorer's tree view!) and 
    select from local menu option "Extract translations to template". Check all 
    checkboxes in dialog and click OK. This will produce file ...\fma\default.po
-   which is the new template file.
+   which is the new template file (click Yes to override file when/if promted).
 
 2. VERY IMPORTANT STEP, DO NOT PASS IT BY, since it has to be done by hand and 
    takes some time to complete, but it is strongly recommended task:
@@ -84,9 +84,9 @@ in order to help Fma Translators and keep them with up-to-date inforation.
    new POT file is updated by PoEdit with old translation and translator must translate 
    only new texts.
 
-4. Publish template to CVS and FMA Files page.
+4. Publish template to SVN and FMA Files page.
 
-   Copy this file to ...\fma\locale\en\LC_MESSAGES and upload it to CVS. Also if you
+   Copy this file to ...\fma\locale\en\LC_MESSAGES and upload it to SVN. Also if you
    are Release Technician you could ZIP the LC_MESSAGES folder and publish it to FMA
    Files section at sf.net web site (optional but recommended).
    
