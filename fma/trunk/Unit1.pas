@@ -10330,6 +10330,7 @@ begin
       AsNew := False;
   end;
 
+  md := nil;
   sl := THashedStringList(EData.Data);
   Idx := sl.IndexOf(msgData.PDU);
   EntryExist := Idx <> -1;
@@ -10344,6 +10345,14 @@ begin
     md.MsgIndex := ForceIndex;
     md.IsNew := AsNew;
     sl.AddObject(md.PDU, md);
+  end;
+
+  if Assigned(md) then begin
+    { Set location: 1 = ME, 2 = SM, 3 = PC }
+    if EData.StateIndex and FmaMessageFolderFlag <> 0 then
+      md.Location := mlPC  // message moved to custom folder
+    else
+      md.Location := mlME; // downloaded new message from ME
   end;
 
   if UpdateView then begin
@@ -10484,8 +10493,10 @@ begin
         EData := ExplorerNew.GetNodeData(FNodeMsgOutbox);
         for i := 0 to TStrings(EData.Data).Count-1 do begin
           md := TFmaMessageData(TStrings(EData.Data).Objects[i]);
-          if Assigned(md) then
-            sl.AddObject(md.AsString,nil); // Objects will be used as flag if message is processed, so clear it now
+          if Assigned(md) then begin
+            md.InternalStatus := seReady;
+            sl.AddObject(md.AsString,md);
+          end;
         end;
         //sl.AddStrings(TStrings(EData.Data));
 
@@ -10519,12 +10530,15 @@ begin
           if ThreadSafe.AbortDetected then Abort;
 
           { Is message processed or sent? }
-          if sl.Objects[i] = nil then begin
+          md := TFmaMessageData(sl.Objects[i]);
+          if md.InternalStatus = seReady then begin
             found := GetSMSMembers(i,sl,ml);
 
             { Mark messages as processed, message could be found entirely or partialy }
-            for m := 0 to ml.Count-1 do
-              sl.Objects[Integer(ml.Objects[m])] := Pointer(slProcessed);
+            for m := 0 to ml.Count-1 do begin
+              md := TFmaMessageData(sl.Objects[Integer(ml.Objects[m])]);
+              md.InternalStatus := seProcessing;
+            end;
 
             if found then begin
               DeliveryNode := FNodeMsgArchive;
@@ -10556,7 +10570,15 @@ begin
                 fl.Clear;
                 for mok := 0 to ml.Count-1 do begin
                   { Mark message parts as Sent - needed for debug only! }
-                  sl.Objects[Integer(ml.Objects[mok])] := Pointer(slSentOK);
+                  md := TFmaMessageData(sl.Objects[Integer(ml.Objects[mok])]);
+                  md.InternalStatus := seDone;
+                  { Store it in Archive folder.
+                    Modified PDU is stored in Archive (with MessageReferance changed by phone) }
+                  md.PDU := newpdu[mok];
+                  SaveMsgToFolder(DeliveryNode,md,True,False,False);
+                  EData := ExplorerNew.GetNodeData(DeliveryNode);
+                  if fl.IndexOf(EData.Text) = -1 then
+                    fl.AddObject(EData.Text, Pointer(DeliveryNode));
                   { Remove from Outbox }
                   if DelMsgFromFolder(FNodeMsgOutbox,ml[mok],False) then begin
                     EData := ExplorerNew.GetNodeData(FNodeMsgOutbox);
@@ -10569,12 +10591,6 @@ begin
                     if fl.IndexOf(EData.Text) = -1 then
                       fl.AddObject(EData.Text, Pointer(FNodeMsgDrafts));
                   end;
-                  { Store it in Archive folder.
-                    Modified PDU is stored in Archive (with MessageReferance changed by phone) }
-                  SaveMsgToFolder(DeliveryNode,newpdu[mok],True,False,False);
-                  EData := ExplorerNew.GetNodeData(DeliveryNode);
-                  if fl.IndexOf(EData.Text) = -1 then
-                    fl.AddObject(EData.Text, Pointer(DeliveryNode));
                 end;
                 { Refresh folders if needed }
                 for mok := 0 to fl.Count-1 do begin

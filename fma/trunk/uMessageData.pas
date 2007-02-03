@@ -56,6 +56,8 @@ type
     property StatusCode: byte read FStatusCode;
   end;
 
+  TInternalStatus = (seUnknown,seReady,seProcessing,seDone);
+
   PFmaMessageData = ^TFmaMessageData;
   TFmaMessageData = class(TFmaMessage)
   private
@@ -64,6 +66,7 @@ type
     FFrom, FMsgRef: string;
     ARef, ATot, An: integer;
     FBusinessCard: TVCard;
+    FIntStatus: TInternalStatus;
     function GetIsDelivered: boolean;
   protected
     procedure SetPDU(const NewPDU: string); override;
@@ -97,6 +100,7 @@ type
     property ReportRequested: boolean read GetReportReq;
     property IsDelivered: boolean read GetIsDelivered;
     property BusinessCard: TVCard read FBusinessCard write FBusinessCard;
+    property InternalStatus: TInternalStatus read FIntStatus write FIntStatus;
   end;
 
 implementation

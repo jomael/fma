@@ -518,30 +518,24 @@ begin
             item.from := item.smsData.From;
           item.sender := Form1.ExtractContact(item.from);
 
-          item.stateindex := md.MsgIndex and $FFFF; // index
+          item.stateindex := md.MsgIndex; // index
 
-          if Ord(md.Location) = 1 then begin // ME
+          if md.Location = mlME then begin // ME
             item.ImageIndex := 14;
-            item.StateIndex := item.StateIndex or $600000; // set to 0 shl 16
           end
-          else if Ord(md.Location) = 2 then begin // SM
+          else if md.Location = mlSM then begin // SM
             item.ImageIndex := 15;
-            item.StateIndex := item.StateIndex or $640000; // set to 4 shl 16
           end
-          else {3} begin // PC
+          else { if md.Location = mlPC then } begin // PC
             if md.IsOutgoing then item.ImageIndex := 17
             else item.ImageIndex := 16;
-            item.StateIndex := item.StateIndex or $680000; // set to 8 shl 16
           end;
 
           // Direction Bit
           if md.IsOutgoing then begin
-            item.StateIndex := item.StateIndex or $020000;
             if md.ReportRequested and not md.IsDelivered then
               DoFindDeliveryReport(md);
-          end
-          else
-            item.StateIndex := item.StateIndex or $010000;
+          end;
 
           // Long SMS? - show only first SMS message
           if (md.IsLong) and (not md.IsLongFirst) then begin
@@ -617,13 +611,13 @@ begin
 
       frmDetail.SMS := item.smsData;
 
-      if item.StateIndex and $C0000 = 0 then // ME
+      if item.smsData.Location = mlME then // ME
         frmDetail.edLocation.Text := _('FMA and Phone')
       else
-      if item.StateIndex and $C0000 = $40000 then // SM
+      if item.smsData.Location = mlSM then // SM
         frmDetail.edLocation.Text := _('FMA and SIM card')
       else
-      {if item.StateIndex and $C0000 = $80000 then} // PC
+      {if item.smsData.Location = mlPC then} // PC
         frmDetail.edLocation.Text := _('FMA only');
 
       if IsLongSMSNode(node) then begin
@@ -732,7 +726,7 @@ begin
                        ss := '"SMS","' + WideStringToUTF8String(Tnt_WideStringReplace(item.smsData.Text, '"', '""', [rfReplaceAll])) + '",'; // do not localize
                        s := item.smsData.From;
                        t := Form1.ExtractContact(item.from);
-                       if item.StateIndex and $20000 <> 0 then begin // outgoing message
+                       if item.smsData.IsOutgoing then begin // outgoing message
                          ss := ss + '"(Outgoing)","' + WideStringToUTF8String(item.from) + '","PHONE",';  // do not localize
                          ss := ss + '"' + WideStringToUTF8String(t) + '","' + s + '","PHONE",';  // do not localize
                        end
@@ -918,11 +912,10 @@ begin
                   1 Received read message
                   2 Stored unsent message (only applicable to SMs)
                   3 Stored sent message (only applicable to SMs) }
-                if item.StateIndex and $10000 <> 0 then // incoming message
-                  State := 1
+                if item.smsData.IsOutgoing then // outgoing message
+                  State := 3
                 else
-                if item.StateIndex and $20000 <> 0 then // outgoing message
-                  State := 3;
+                  State := 1;
               end;
               if State = -1 then State := 0;
               { Upload to phone }
@@ -992,6 +985,7 @@ begin
       node := ListMsg.GetNext(node);
     Until node = nil;
   end;
+  data := Form1.ExplorerNew.GetNodeData(Form1.ExplorerNew.FocusedNode);
   { Check other options }
   SendMessage1.Visible := Form1.ExplorerNew.FocusedNode = Form1.FNodeMsgDrafts;
   SendMessage1.Enabled := ListMsg.SelectedCount = 1;
@@ -1001,7 +995,6 @@ begin
   MarkAllRead1.Enabled := CanModifyReadStatus;
   DownloadSMS1.Enabled := (not Form1.FConnected or not Form1.FObex.Connected) and
     ((Form1.ExplorerNew.FocusedNode = Form1.FNodeMsgInbox) or (Form1.ExplorerNew.FocusedNode = Form1.FNodeMsgSent));
-  data := Form1.ExplorerNew.GetNodeData(Form1.ExplorerNew.FocusedNode);
   SendToPhone1.Enabled := not SendMessage1.Visible and Form1.FConnected and not Form1.FObex.Connected and
     ((Form1.ExplorerNew.FocusedNode = Form1.FNodeMsgArchive) or (data.StateIndex = FmaSMSSubFolderFlag));
   SendToSIM1.Enabled := SendToPhone1.Enabled;
@@ -1067,15 +1060,15 @@ begin
                 prev := PVirtualNode(wl.Objects[j]);
                 if Assigned(prev) then begin
                   item := ListMsg.GetNodeData(prev);
-                  index := item.StateIndex and $FFFF;
+                  index := item.StateIndex;
 
-                  if item.StateIndex and $C0000 = 0 then // ME
+                  if item.smsData.Location = mlME then // ME
                     memType := 'ME' // do not localize
                   else
-                  if item.StateIndex and $C0000 = $40000 then // SM
+                  if item.smsData.Location = mlSM then // SM
                     memType := 'SM' // do not localize
                   else
-                  {if item.StateIndex and $C0000 = $80000 then} // PC
+                  {if item.smsData.Location = mlPC then} // PC
                     memType := '';
 
                   { If deleteing from Outbox, notify and enable Chat window }
@@ -1754,10 +1747,11 @@ var
 begin
   item := Sender.GetNodeData(Node);
 
-  if item.smsData.IsNew then
-    TargetCanvas.Font.Style := [fsBold]
-  else
-    TargetCanvas.Font.Style := [];
+  if Assigned(item) and Assigned(item.smsData) then
+    if item.smsData.IsNew then
+      TargetCanvas.Font.Style := [fsBold]
+    else
+      TargetCanvas.Font.Style := [];
 end;
 
 procedure TfrmMsgView.edSearchForKeyDown(Sender: TObject; var Key: Word;
