@@ -15,61 +15,22 @@ before.
 
 This BETA version does not include latest support for Sony
 Ericsson phones W900, M600 and similar. Some new brands as
-K610 are partially supported (no Calls, no Bookmarks), and
-we have plans to add full support for them in final FMA 2.2.
+K610 are partially supported (no Groups, no Bookmarks), and
+we have plans to add full support for them in final FMA 2.2
+if possible.
 
 Always do a backup of profile databases before using this 
 new FMA Beta 4.
-
-Important Notices:
-
-- User Folders and Delivery Rules:
-
-All Custom Text Messages folders (if any) were moved under 
-new Explorer's node named FMA Text Folders. On first FMA
-start you will be prompted to relocate all of these folders.
-Just create an appripriate new folder for every old one.
-
-And all Delivery Rules attached to the old folders will be 
-automatically relocated to the corresponding new folders.
-You don't have to care about this.
-
-- FMA Portable Mode settings:
-
-If you have chosen "Don't ask me again for this device"
-option in Portable Mode dialog and want to revert this
-setting, then hold down CTRL key to ignore any Portable 
-Mode settings and show FMA Startup mode selection dialog 
-again.
-
-Known Issues:
-
-This applies only to FMA 2.1.3.33. If you are using or
-installing a different version, skip this notes.
-
-How to update from 2.1.3.33 version which hang-ups?
-
-- Exit FMA and go to following directory:
-C:\Documents and Settings\<your-user-name>\Application Data
-
-- Rename FMA folder to FMA_old
-
-- Start 2.1.3.33 version and update it to 33a patch
-
-- Exit FMA and go back to directory:
-C:\Documents and Settings\<your-user-name>\Application Data
-
-- Delete FMA folder (remember, your data is in FMA_old one)
-
-- Rename FMA_old folder back to FMA
-
-Now you can use new patched FMA with your data preserved.
 
 What's New?
 
 The following is a brief list of most important but not all
 changes in FMA Beta 4 release. You can explore it searching
 for more. Here we go:
+
+- New advanced Text Messages folders search implemented.
+
+- Text Messages searches could be saved for later use.
 
 - Text Message status report support for new phones.
 
@@ -126,6 +87,50 @@ for more. Here we go:
 - Check for incorrect COM port number on Profile load.
 
 - Getting Started wizard search type filtering support.
+
+Important Notices:
+
+o User Folders and Delivery Rules:
+
+All Custom Text Messages folders (if any) were moved under 
+new Explorer's node named FMA Text Folders. On first FMA
+start you will be prompted to relocate all of these folders.
+Just create an appripriate new folder for every old one.
+
+And all Delivery Rules attached to the old folders will be 
+automatically relocated to the corresponding new folders.
+You don't have to care about this.
+
+o FMA Portable Mode settings:
+
+If you have chosen "Don't ask me again for this device"
+option in Portable Mode dialog and want to revert this
+setting, then hold down CTRL key to ignore any Portable 
+Mode settings and show FMA Startup mode selection dialog 
+again.
+
+o Web Update from version 2.1.3.33:
+
+This applies only to FMA 2.1.3.33. If you are using or
+installing a different version, skip this notes.
+
+How to update from 2.1.3.33 version which hang-ups?
+
+- Exit FMA and go to following directory:
+C:\Documents and Settings\<your-user-name>\Application Data
+
+- Rename FMA folder to FMA_old
+
+- Start 2.1.3.33 version and update it to 33a patch
+
+- Exit FMA and go back to directory:
+C:\Documents and Settings\<your-user-name>\Application Data
+
+- Delete FMA folder (remember, your data is in FMA_old one)
+
+- Rename FMA_old folder back to FMA
+
+Now you can use new patched FMA with your data preserved.
 
 What's Changed?
 
@@ -429,6 +434,9 @@ FMA Beta 3. The change log is following:
 - Added: Remember Portable mode startup settings.
 - Added: Portable Mode dialog mode auto-detection.
 - Added: FMA in portable mode program setup icon.
+- Fixed: Support for >65k SMS in folder.
+- Fixed: Call popup functionality K610+.
+- Fixed: Default outgoing SMS validity.
 - Fixed: Copy contacts Phone-SIM memory.
 - Fixed: Ignore call (silently) on K610+.
 - Fixed: View update on Add to Phonebook.
@@ -438,5 +446,8 @@ FMA Beta 3. The change log is following:
 - Fixed: New message 'Add to Phonebook'.
 - Added: New Call dialog More popup menu.
 - Added: Confirm copying SIM-Phone memory.
+- Added: SMS Delivery Report GUI support.
+- Added: View SMS embedded vCard support.
+- Added: Phonebook Syncro can be aborted.
 
 The FMA Team
