@@ -129,7 +129,7 @@ begin
       { Incoming SMS }
       if not FResponseReceived then begin
         FResponseReceived := True;
-        AddChatText(_(WideFormat('[%s joined chat session]',[Sender])));
+        AddChatText(WideFormat(_('[%s joined chat session]'),[Sender]));
       end;
       col := clNavy;
     end;
@@ -176,7 +176,7 @@ begin
   SendButton.Top := Memo.Top;
   Chat.Height := Memo.Top - Chat.Top - 2;
   AddChatText(_('Do not send any confidential information as passwords via your phone using text messages!'));
-  AddChatText(_(WideFormat('[%s joined chat session]',[Form1.FChatNick])));
+  AddChatText(WideFormat(_('[%s joined chat session]'),[Form1.FChatNick]));
 end;
 
 procedure TfrmCharMessage.EnableSending(WithError: boolean);

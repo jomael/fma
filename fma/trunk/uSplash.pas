@@ -25,7 +25,6 @@ type
     Image1: TTntImage;
     Label1: TTntLabel;
     Timer1: TTimer;
-    Label2: TTntLabel;
     Timer2: TTimer;
     SEProgress1: TSEProgress;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -120,11 +119,10 @@ begin
   gghTranslateComponent(self);
 
   Label1.Font.Color := $00458946;
-  Label2.Font.Color := clRed;
 
   SEProgress1.Top := Label1.Top + Label1.Height + 4;
-  SEProgress1.Left := Label1.Left + 3;
-  SEProgress1.Width := Label1.Width - 7;
+  SEProgress1.Left := Label1.Left + Canvas.TextWidth(' ');
+  SEProgress1.Width := ClientWidth - SEProgress1.Left - 10; // 252
   SEProgress1.BarColor := Label1.Font.Color;
 
   VerInfo.dwOSVersionInfoSize := SizeOf(VerInfo);

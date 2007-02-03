@@ -56,6 +56,7 @@ object frmAbout: TfrmAbout
       Top = 61
       Width = 394
       Height = 386
+      Anchors = [akTop, akRight]
       AutoSize = True
       Transparent = True
     end
@@ -72,6 +73,7 @@ object frmAbout: TfrmAbout
       Top = 72
       Width = 469
       Height = 173
+      Anchors = [akLeft, akTop, akRight]
       AutoSize = False
       Caption = '<url>'
       Transparent = True
@@ -82,6 +84,7 @@ object frmAbout: TfrmAbout
       Top = 256
       Width = 469
       Height = 29
+      Anchors = [akLeft, akTop, akRight]
       AutoSize = False
       Caption = 
         'Please do not contact the developers personally, but use the FMA' +
@@ -148,9 +151,9 @@ object frmAbout: TfrmAbout
       OnClick = OpenWebLinkClick
     end
     object lbVersion: TTntLabel
-      Left = 368
+      Left = 435
       Top = 292
-      Width = 113
+      Width = 46
       Height = 13
       Alignment = taRightJustify
       Caption = '<version>'

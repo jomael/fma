@@ -1042,32 +1042,21 @@ object frmSplash: TfrmSplash
       3FFEDCFF00DEE7F77FFA8A3A3E1ECFDBFDA751FFD9}
     OnMouseUp = OnMouseUp
   end
-  object Label2: TTntLabel
-    Left = 431
-    Top = 48
-    Width = 9
-    Height = 13
-    Alignment = taRightJustify
-    Anchors = []
-    Caption = '...'
-    Transparent = True
-    Visible = False
-  end
   object Label1: TTntLabel
     Left = 186
     Top = 201
     Width = 259
     Height = 13
-    Anchors = []
+    Anchors = [akLeft, akTop, akRight]
     AutoSize = False
     Caption = ' Starting...'
     Transparent = True
     OnMouseUp = OnMouseUp
   end
   object SEProgress1: TSEProgress
-    Left = 189
+    Left = 190
     Top = 218
-    Width = 252
+    Width = 250
     Height = 19
     BevelOuter = bvLowered
     Position = 0
