@@ -1,16 +1,16 @@
 #  Doesn't have any letters
 #. frmNewDeviceWizard..LocalWBtSocket..LineEnd
-#: uNewDeviceWizard.dfm:917
+#: uNewDeviceWizard.dfm:987
 #. frmNewDeviceWizard..LocalWIrSocket..LineEnd
-#: uNewDeviceWizard.dfm:934
+#: uNewDeviceWizard.dfm:1004
 #. Form1..WBtSocket..LineEnd
-#: Unit1.dfm:7484
+#: Unit1.dfm:7579
 #. Form1..WIrSocket..LineEnd
-#: Unit1.dfm:7505
+#: Unit1.dfm:7600
 #. frmOptions..LocalWBtSocket..LineEnd
-#: uOptions.dfm:3102
+#: uOptions.dfm:3225
 #. frmOptions..LocalWIrSocket..LineEnd
-#: uOptions.dfm:3119
+#: uOptions.dfm:3242
 msgid "\n"
 msgstr ""
 
@@ -24,34 +24,40 @@ msgstr[0] ""
 #  Doesn't have any letters
 #. frmCallContact..FavoritesPopupMenu..N2..Caption
 #: uCallContact.dfm:278
+#. frmCalling..PopupMenu1..N1..Caption
+#: uCalling.dfm:171
+#. frmCalling..PopupMenu1..N2..Caption
+#: uCalling.dfm:179
+#. frmCalling..PopupMenu1..N3..Caption
+#: uCalling.dfm:187
 #. frmMessageContact..FavoritesPopupMenu..N2..Caption
-#: uComposeSMS.dfm:332
+#: uComposeSMS.dfm:334
 #. frmMessageContact..ToPopupMenu..N3..Caption
-#: uComposeSMS.dfm:355
+#: uComposeSMS.dfm:357
 #. frmMessageContact..ToPopupMenu..N1..Caption
-#: uComposeSMS.dfm:363
+#: uComposeSMS.dfm:365
 #. frmDebug..MainMenu1..Log1..N1..Caption
 #: uDebug.dfm:59
 #. frmDebug..MainMenu1..Log1..N2..Caption
 #: uDebug.dfm:68
 #. frmExplore..PopupMenu1..N7..Caption
-#: uExploreView.dfm:84
+#: uExploreView.dfm:83
 #. frmExplore..PopupMenu1..N2..Caption
-#: uExploreView.dfm:96
+#: uExploreView.dfm:95
 #. frmExplore..PopupMenu1..N4..Caption
-#: uExploreView.dfm:131
+#: uExploreView.dfm:130
 #. frmExplore..PopupMenu1..N1..Caption
-#: uExploreView.dfm:140
+#: uExploreView.dfm:143
 #. frmExplore..PopupMenu1..N3..Caption
-#: uExploreView.dfm:146
+#: uExploreView.dfm:149
 #. frmExplore..PopupMenu1..N5..Caption
-#: uExploreView.dfm:152
+#: uExploreView.dfm:155
 #. frmInfoView..PopupMenu2..N1..Caption
-#: uInfoView.dfm:2579
+#: uInfoView.dfm:2531
 #. frmInfoView..PopupMenu2..N2..Caption
-#: uInfoView.dfm:2585
+#: uInfoView.dfm:2537
 #. frmInfoView..PopupMenu2..N3..Caption
-#: uInfoView.dfm:2593
+#: uInfoView.dfm:2545
 #. frmLog..MainMenu..Log1..N1..Caption
 #: uLog.dfm:84
 #. frmLog..MainMenu..Log1..N2..Caption
@@ -63,125 +69,131 @@ msgstr[0] ""
 #. frmLog..MainMenu..View1..N5..Caption
 #: uLog.dfm:141
 #. frmContactsMEEdit..PopupMenu1..N3..Caption
-#: uMEEdit.dfm:137
+#: uMEEdit.dfm:139
 #. frmContactsMEEdit..PopupMenu1..N5..Caption
-#: uMEEdit.dfm:149
+#: uMEEdit.dfm:156
 #. frmContactsMEEdit..PopupMenu1..N7..Caption
-#: uMEEdit.dfm:188
+#: uMEEdit.dfm:192
 #. frmContactsMEEdit..PopupMenu1..N1..Caption
-#: uMEEdit.dfm:196
+#: uMEEdit.dfm:200
 #. frmContactsMEEdit..PopupMenu1..N2..Caption
-#: uMEEdit.dfm:202
+#: uMEEdit.dfm:206
 #. frmContactsMEEdit..PopupMenu1..N4..Caption
-#: uMEEdit.dfm:212
+#: uMEEdit.dfm:216
 #. frmMissedCalls..PopupMenu1..N1..Caption
-#: uMissedCalls.dfm:133
+#: uMissedCalls.dfm:135
+#. frmMissedCalls..PopupMenu1..N2..Caption
+#: uMissedCalls.dfm:143
 #. frmMsgView..pmListMsg..N5..Caption
-#: uMsgView.dfm:1158
+#: uMsgView.dfm:1482
 #. frmMsgView..pmListMsg..N6..Caption
-#: uMsgView.dfm:1173
+#: uMsgView.dfm:1497
 #. frmMsgView..pmListMsg..Advanced1..N10..Caption
-#: uMsgView.dfm:1183
+#: uMsgView.dfm:1514
 #. frmMsgView..pmListMsg..Advanced1..N11..Caption
-#: uMsgView.dfm:1198
+#: uMsgView.dfm:1534
+#. frmMsgView..pmListMsg..Advanced1..N13..Caption
+#: uMsgView.dfm:1543
 #. frmMsgView..pmListMsg..MarkAs1..N9..Caption
-#: uMsgView.dfm:1220
+#: uMsgView.dfm:1568
 #. frmMsgView..pmListMsg..FileAs1..N3..Caption
-#: uMsgView.dfm:1234
+#: uMsgView.dfm:1582
 #. frmMsgView..pmListMsg..N7..Caption
-#: uMsgView.dfm:1255
+#: uMsgView.dfm:1603
 #. frmMsgView..pmListMsg..N15..Caption
-#: uMsgView.dfm:1264
+#: uMsgView.dfm:1612
 #. frmMsgView..pmListMsg..N1..Caption
-#: uMsgView.dfm:1270
+#: uMsgView.dfm:1618
 #. frmMsgView..pmListMsg..N2..Caption
-#: uMsgView.dfm:1280
+#: uMsgView.dfm:1628
 #. frmMsgView..pmRich..N8..Caption
-#: uMsgView.dfm:1296
+#: uMsgView.dfm:1644
 #. frmMsgView..pmRich..N4..Caption
-#: uMsgView.dfm:1305
+#: uMsgView.dfm:1653
+#. frmMsgView..pmSearch..N12..Caption
+#: uMsgView.dfm:1706
 #. frmNewDeviceWizard..TntPopupMenu1..N1..Caption
-#: uNewDeviceWizard.dfm:2039
+#: uNewDeviceWizard.dfm:2109
 #. frmNewMessage..PopupMenu1..N1..Caption
-#: uNewMessage.dfm:148
+#: uNewMessage.dfm:149
 #. frmNewMessage..PopupMenu1..N2..Caption
-#: uNewMessage.dfm:156
+#: uNewMessage.dfm:157
 #. frmNewMessage..PopupMenu1..N3..Caption
-#: uNewMessage.dfm:164
+#: uNewMessage.dfm:165
 #. Form1..PopupMenu1..N40..Caption
-#: Unit1.dfm:4034
+#: Unit1.dfm:4066
 #. Form1..PopupMenu1..N26..Caption
-#: Unit1.dfm:4049
+#: Unit1.dfm:4081
 #. Form1..PopupMenu1..N25..Caption
-#: Unit1.dfm:4055
+#: Unit1.dfm:4087
 #. Form1..trayMenu..N24..Caption
-#: Unit1.dfm:4089
+#: Unit1.dfm:4121
 #. Form1..trayMenu..N11..Caption
-#: Unit1.dfm:4098
+#: Unit1.dfm:4130
 #. Form1..trayMenu..N32..Caption
-#: Unit1.dfm:4143
+#: Unit1.dfm:4175
 #. Form1..trayMenu..N1..Caption
-#: Unit1.dfm:4149
+#: Unit1.dfm:4181
 #. Form1..trayMenu..N28..Caption
-#: Unit1.dfm:4155
+#: Unit1.dfm:4187
 #. Form1..MainMenu1..Connection1..N18..Caption
-#: Unit1.dfm:4174
+#: Unit1.dfm:4211
 #. Form1..MainMenu1..Connection1..N29..Caption
-#: Unit1.dfm:4183
+#: Unit1.dfm:4220
 #. Form1..MainMenu1..Connection1..N14..Caption
-#: Unit1.dfm:4189
-#. Form1..MainMenu1..Connection1..N3..Caption
-#: Unit1.dfm:4200
+#: Unit1.dfm:4226
 #. Form1..MainMenu1..Connection1..N16..Caption
-#: Unit1.dfm:4206
+#: Unit1.dfm:4237
 #. Form1..MainMenu1..Edit1..N21..Caption
-#: Unit1.dfm:4218
-#. Form1..MainMenu1..Edit1..N15..Caption
-#: Unit1.dfm:4233
+#: Unit1.dfm:4255
 #. Form1..MainMenu1..Edit1..Phone1..N27..Caption
-#: Unit1.dfm:4262
+#: Unit1.dfm:4269
 #. Form1..MainMenu1..Edit1..Phone1..N4..Caption
-#: Unit1.dfm:4274
-#. Form1..MainMenu1..Edit1..N12..Caption
 #: Unit1.dfm:4281
+#. Form1..MainMenu1..Edit1..N15..Caption
+#: Unit1.dfm:4303
+#. Form1..MainMenu1..Edit1..N12..Caption
+#: Unit1.dfm:4318
 #. Form1..MainMenu1..Edit1..N10..Caption
-#: Unit1.dfm:4287
+#: Unit1.dfm:4324
 #. Form1..MainMenu1..View1..N6..Caption
-#: Unit1.dfm:4305
+#: Unit1.dfm:4342
 #. Form1..MainMenu1..View1..N9..Caption
-#: Unit1.dfm:4328
+#: Unit1.dfm:4367
 #. Form1..MainMenu1..View1..N23..Caption
-#: Unit1.dfm:4354
+#: Unit1.dfm:4391
 #. Form1..MainMenu1..Action2..N31..Caption
-#: Unit1.dfm:4377
+#: Unit1.dfm:4411
 #. Form1..MainMenu1..Action2..Message1..N35..Caption
-#: Unit1.dfm:4409
+#: Unit1.dfm:4443
 #. Form1..MainMenu1..Action2..N17..Caption
-#: Unit1.dfm:4419
+#: Unit1.dfm:4453
+#. Form1..MainMenu1..Action2..N34..Caption
+#: Unit1.dfm:4462
 #. Form1..MainMenu1..Action2..N19..Caption
-#: Unit1.dfm:4428
+#: Unit1.dfm:4468
 #. Form1..MainMenu1..Sync1..N2..Caption
-#: Unit1.dfm:4455
+#: Unit1.dfm:4495
 #. Form1..MainMenu1..Sync1..N8..Caption
-#: Unit1.dfm:4461
+#: Unit1.dfm:4501
 #. Form1..MainMenu1..Tools1..N37..Caption
-#: Unit1.dfm:4486
+#: Unit1.dfm:4526
 #. Form1..MainMenu1..Tools1..N5..Caption
-#: Unit1.dfm:4494
+#: Unit1.dfm:4534
 #. Form1..MainMenu1..Tools1..N20..Caption
-#: Unit1.dfm:4531
-#. Form1..MainMenu1..Help1..N7..Caption
-#: Unit1.dfm:4556
+#: Unit1.dfm:4580
 #. Form1..MainMenu1..Help1..N22..Caption
-#: Unit1.dfm:4565
+#: Unit1.dfm:4605
 #. Form1..MainMenu1..Help1..FmaOnTheWeb2..N13..Caption
-#: Unit1.dfm:4584
+#: Unit1.dfm:4624
 #. Form1..MainMenu1..Help1..N39..Caption
-#: Unit1.dfm:4594
+#: Unit1.dfm:4634
+#. Form1..MainMenu1..Help1..N7..Caption
+#: Unit1.dfm:4643
 #. Form1..PopupMenu2..N30..Caption
-#: Unit1.dfm:7993
+#: Unit1.dfm:8088
 #. Form1..PopupMenu2..N33..Caption
-#: Unit1.dfm:8004
+#: Unit1.dfm:8099
 #. frmOrganizeFavs..PopupMenu1..N2..Caption
 #: uOrganizeFavs.dfm:135
 #. frmOrganizeFavs..PopupMenu1..N1..Caption
@@ -199,57 +211,67 @@ msgstr[0] ""
 #. frmSelContact..PopupMenu1..N1..Caption
 #: uSelectContact.dfm:493
 #. frmContactsSMEdit..PopupMenu1..N3..Caption
-#: uSIMEdit.dfm:137
+#: uSIMEdit.dfm:139
 #. frmContactsSMEdit..PopupMenu1..N5..Caption
-#: uSIMEdit.dfm:149
+#: uSIMEdit.dfm:156
 #. frmContactsSMEdit..PopupMenu1..N7..Caption
-#: uSIMEdit.dfm:188
+#: uSIMEdit.dfm:192
 #. frmContactsSMEdit..PopupMenu1..N1..Caption
-#: uSIMEdit.dfm:196
+#: uSIMEdit.dfm:200
 #. frmContactsSMEdit..PopupMenu1..N2..Caption
-#: uSIMEdit.dfm:202
+#: uSIMEdit.dfm:206
 #. frmContactsSMEdit..PopupMenu1..N4..Caption
-#: uSIMEdit.dfm:212
+#: uSIMEdit.dfm:216
 #. frmSyncBookmarks..PopupMenu1..N3..Caption
-#: uSyncBookmarks.dfm:108
+#: uSyncBookmarks.dfm:110
 #. frmSyncBookmarks..PopupMenu1..N8..Caption
-#: uSyncBookmarks.dfm:117
+#: uSyncBookmarks.dfm:119
 #. frmSyncBookmarks..PopupMenu1..N4..Caption
-#: uSyncBookmarks.dfm:128
+#: uSyncBookmarks.dfm:130
 #. frmSyncBookmarks..PopupMenu1..SyncTo1..N7..Caption
-#: uSyncBookmarks.dfm:137
+#: uSyncBookmarks.dfm:139
 #. frmSyncBookmarks..PopupMenu1..N2..Caption
-#: uSyncBookmarks.dfm:168
+#: uSyncBookmarks.dfm:170
 #. frmSyncBookmarks..PopupMenu1..N5..Caption
-#: uSyncBookmarks.dfm:177
+#: uSyncBookmarks.dfm:179
 #. frmSyncBookmarks..PopupMenu1..N6..Caption
-#: uSyncBookmarks.dfm:183
+#: uSyncBookmarks.dfm:185
 #. frmSyncBookmarks..PopupMenu1..N1..Caption
-#: uSyncBookmarks.dfm:194
+#: uSyncBookmarks.dfm:196
+#. frmCalendarView..PopupMenuDayView..N1..Caption
+#: uSyncCalendar.dfm:508
+#. frmCalendarView..PopupMenuDayView..N2..Caption
+#: uSyncCalendar.dfm:516
+#. frmCalendarView..PopupMenuDayView..N5..Caption
+#: uSyncCalendar.dfm:542
+#. frmCalendarView..PopupMenuDayView..N7..Caption
+#: uSyncCalendar.dfm:551
+#. frmCalendarView..PopupMenuTaskList..N3..Caption
+#: uSyncCalendar.dfm:579
+#. frmCalendarView..PopupMenuTaskList..N4..Caption
+#: uSyncCalendar.dfm:587
+#. frmCalendarView..PopupMenuTaskList..N6..Caption
+#: uSyncCalendar.dfm:601
+#. frmCalendarView..PopupMenuTaskList..N8..Caption
+#: uSyncCalendar.dfm:610
 #. frmSyncPhonebook..PopupMenu1..N2..Caption
-#: uSyncPhonebook.dfm:216
-#. frmSyncPhonebook..PopupMenu1..N10..Caption
-#: uSyncPhonebook.dfm:228
-#. frmSyncPhonebook..PopupMenu1..SynchronizeTo1..N11..Caption
 #: uSyncPhonebook.dfm:236
+#. frmSyncPhonebook..PopupMenu1..N10..Caption
+#: uSyncPhonebook.dfm:253
+#. frmSyncPhonebook..PopupMenu1..SynchronizeTo1..N11..Caption
+#: uSyncPhonebook.dfm:261
 #. frmSyncPhonebook..PopupMenu1..CurrentView1..N9..Caption
-#: uSyncPhonebook.dfm:263
+#: uSyncPhonebook.dfm:288
+#. frmSyncPhonebook..PopupMenu1..AddtoGroup1..GroupsDiv..Caption
+#: uSyncPhonebook.dfm:315
 #. frmSyncPhonebook..PopupMenu1..N7..Caption
-#: uSyncPhonebook.dfm:287
+#: uSyncPhonebook.dfm:319
 #. frmSyncPhonebook..PopupMenu1..N3..Caption
-#: uSyncPhonebook.dfm:295
+#: uSyncPhonebook.dfm:327
 #. frmSyncPhonebook..PopupMenu1..N1..Caption
-#: uSyncPhonebook.dfm:301
+#: uSyncPhonebook.dfm:333
 #. frmSyncPhonebook..PopupMenu1..N4..Caption
-#: uSyncPhonebook.dfm:311
-#. MainForm..MainMenu1..File1..N1..Caption
-#: express/WAB/Demos/WabDemoMain.dfm:203
-#. MainForm..MainMenu1..Tools1..N2..Caption
-#: express/WAB/Demos/WabDemoMain.dfm:218
-#. MainForm..MainMenu1..Tools1..N4..Caption
-#: express/WAB/Demos/WabDemoMain.dfm:224
-#. MainForm..AdrBookPopupMenu..N3..Caption
-#: express/WAB/Demos/WabDemoMain.dfm:861
+#: uSyncPhonebook.dfm:343
 msgid "-"
 msgstr ""
 
@@ -278,14 +300,16 @@ msgstr ""
 #: uEditEvent.dfm:243
 #. frmEditEvent..PageControl1..TabSheet2..lblName2..Caption
 #: uEditEvent.dfm:351
+#. frmEditEvent..PageControl1..TabSheet3..lblName4..Caption
+#: uEditEvent.dfm:522
 #. frmEditEvent..PageControl1..TabSheet5..lblName3..Caption
-#: uEditEvent.dfm:453
+#: uEditEvent.dfm:700
 #. frmEditProfile..PageControl1..TabSheet2..lblNameCopy..Caption
 #: uEditProfile.dfm:400
 #. frmEditTask..PageControl1..TabSheet1..lblName..Caption
 #: uEditTask.dfm:229
 #. frmEditTask..PageControl1..TabSheet5..lblName2..Caption
-#: uEditTask.dfm:335
+#: uEditTask.dfm:337
 #. frmBookmark..PageControl1..TabSheet1..lblName..Caption
 #: uPostURL.dfm:5124
 msgid "   "
@@ -293,9 +317,11 @@ msgstr ""
 
 #  Doesn't have any letters
 #. frmDetail..PageControl1..TabSheet1..lblName..Caption
-#: uSMSDetail.dfm:212
+#: uEditSMS.dfm:213
 #. frmDetail..PageControl1..TabSheet2..lblName2..Caption
-#: uSMSDetail.dfm:282
+#: uEditSMS.dfm:308
+#. frmDetail..PageControl1..TntTabSheet1..lblName3..Caption
+#: uEditSMS.dfm:412
 msgid "     "
 msgstr ""
 
@@ -352,9 +378,9 @@ msgstr ""
 
 #  Doesn't have any letters
 #. frmInfoView..TodayCaptionPanel..DiagramPanel..Chart1..LeftAxis.AxisValuesFormat
-#: uInfoView.dfm:2430
+#: uInfoView.dfm:2382
 #. frmInfoView..TodayCaptionPanel..DiagramPanel..Chart1..RightAxis.AxisValuesFormat
-#: uInfoView.dfm:2469
+#: uInfoView.dfm:2421
 msgid "###0.###"
 msgstr ""
 
@@ -386,13 +412,23 @@ msgstr ""
 msgid "%s: Fieldname is blank"
 msgstr ""
 
+#. frmKRMTest..btnCloseWizard..Caption
+#: components/Kagi/Samples/Delphi/krmForm.dfm:61
+msgid "&Close Wizard"
+msgstr ""
+
 #. frmImageListXPEdt..ImagesGroupBox..DeleteButton..Caption
 #: components/ImageListXPEditor.dfm:62
 msgid "&Delete..."
 msgstr ""
 
-#. frmImageListXPEdt..ImagesGroupBox..ExportButton..Caption
-#: components/ImageListXPEditor.dfm:112
+#. frmKRMTest..btnExit..Caption
+#: components/Kagi/Samples/Delphi/krmForm.dfm:52
+msgid "&Exit"
+msgstr ""
+
+#. frmEditContact..PageControl1..tsCallNotes..btNotesSave..Caption
+#: uEditContact.dfm:802
 msgid "&Export..."
 msgstr ""
 
@@ -427,15 +463,18 @@ msgstr ""
 msgid "&Selected Image"
 msgstr ""
 
+#. frmKRMTest..btnStartWizard..Caption
+#: components/Kagi/Samples/Delphi/krmForm.dfm:42
+msgid "&Start Wizard"
+msgstr ""
+
 #. Programmer's name for it: RsMissingVersionInfo
 #: uCrash.pas:138
 msgid "(no version info)"
 msgstr ""
 
 #. Form1..FmaWebUpdate1..CurrentBuild
-#: Unit1.dfm:8711
-#. Form1..FmaWebUpdate1..CurrentBuild
-#: webupdate/WebWizardTestForm.dfm:930
+#: Unit1.dfm:8806
 msgid "(unknown)"
 msgstr ""
 
@@ -454,45 +493,59 @@ msgstr ""
 #: uOptions.dfm:174
 #. frmOptions..OptionPages..tabConnectivity..TntGroupBox11..lblDevice..Caption
 #: uOptions.dfm:183
+#. frmPassword..edPassword..PasswordCharW
+#: uPassword.dfm:272
+#. frmPassword..edNewPassword1..PasswordCharW
+#: uPassword.dfm:281
+#. frmPassword..edNewPassword2..PasswordCharW
+#: uPassword.dfm:290
 #. frmEditor..Panel2..DetailsPanel..lblCaption..Caption
 #: uScriptEditor.dfm:134
 msgid "*"
 msgstr ""
 
 #  Doesn't have any letters
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:154
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:161
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:174
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:179
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:213
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:220
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:227
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:236
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:241
 #. frmInfoView..TodayCaptionPanel..wDate..Caption
-#: uInfoView.dfm:1765
+#: uInfoView.dfm:1729
 #. frmInfoView..TodayCaptionPanel..wSignal..Caption
-#: uInfoView.dfm:2371
+#: uInfoView.dfm:2323
 #. frmInfoView..TodayCaptionPanel..wOperator..Caption
-#: uInfoView.dfm:2381
-#. frmSplash..Label2..Caption
-#: uSplash.dfm:1203
+#: uInfoView.dfm:2333
 msgid "..."
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. frmMsgView..OpenDialog1..DefaultExt
-#: uMsgView.dfm:1346
+#: uMsgView.dfm:1449
 msgid ".csv"
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. frmContactsMEEdit..OpenDialog1..DefaultExt
-#: uMEEdit.dfm:236
+#: uMEEdit.dfm:240
 #. frmContactsSMEdit..OpenDialog1..DefaultExt
-#: uSIMEdit.dfm:236
+#: uSIMEdit.dfm:240
 #. frmSyncPhonebook..OpenDialog1..DefaultExt
-#: uSyncPhonebook.dfm:338
+#: uSyncPhonebook.dfm:370
 msgid ".vcf"
+msgstr ""
+
+#  Looks like a file extension or file mask
+#. frmCalendarView..OpenDialog1..DefaultExt
+#: uSyncCalendar.dfm:620
+#. frmCalendarView..TntSaveDialog1..DefaultExt
+#: uSyncCalendar.dfm:629
+msgid ".vcs"
 msgstr ""
 
 #  Doesn't have any letters
@@ -513,41 +566,41 @@ msgstr ""
 
 #  Doesn't have any letters
 #. frmInfoView..Panel1..CallsPanel..wRecentCallsNum..Caption
-#: uInfoView.dfm:332
-#. frmInfoView..Panel1..BatteryPanel..wCharge..Caption
-#: uInfoView.dfm:578
-#. frmInfoView..Panel1..BatteryPanel..lblTimeLeft..Caption
-#: uInfoView.dfm:589
-#. frmInfoView..Panel1..BatteryPanel..wBattery..Caption
-#: uInfoView.dfm:600
-#. frmInfoView..Panel1..BatteryPanel..lbPower..Caption
-#: uInfoView.dfm:610
-#. frmInfoView..Panel1..BatteryPanel..lbvbat..Caption
-#: uInfoView.dfm:619
-#. frmInfoView..Panel1..BatteryPanel..lbdcio..Caption
-#: uInfoView.dfm:629
-#. frmInfoView..Panel1..BatteryPanel..lbcyclescharge..Caption
-#: uInfoView.dfm:640
-#. frmInfoView..Panel1..BatteryPanel..lbicharge..Caption
-#: uInfoView.dfm:650
-#. frmInfoView..Panel1..BatteryPanel..lbiphone..Caption
-#: uInfoView.dfm:660
-#. frmInfoView..Panel1..BatteryPanel..lbtempbatt..Caption
-#: uInfoView.dfm:670
-#. frmInfoView..Panel1..BatteryPanel..lbSerialNumber..Caption
-#: uInfoView.dfm:798
-#. frmInfoView..Panel1..BatteryPanel..lbSWRevision..Caption
-#: uInfoView.dfm:809
-#. frmInfoView..Panel1..BatteryPanel..lbModel..Caption
-#: uInfoView.dfm:820
-#. frmInfoView..Panel1..BatteryPanel..lbManufacturer..Caption
-#: uInfoView.dfm:831
-#. frmInfoView..Panel1..BatteryPanel..lbtempphone..Caption
-#: uInfoView.dfm:842
+#: uInfoView.dfm:311
+#. frmInfoView..Panel1..BatteryPanel..BatteryPanelLeft..lbvbat..Caption
+#: uInfoView.dfm:481
+#. frmInfoView..Panel1..BatteryPanel..BatteryPanelLeft..lbtempbatt..Caption
+#: uInfoView.dfm:492
+#. frmInfoView..Panel1..BatteryPanel..BatteryPanelLeft..lbiphone..Caption
+#: uInfoView.dfm:503
+#. frmInfoView..Panel1..BatteryPanel..BatteryPanelLeft..lbicharge..Caption
+#: uInfoView.dfm:514
+#. frmInfoView..Panel1..BatteryPanel..BatteryPanelLeft..lbdcio..Caption
+#: uInfoView.dfm:525
+#. frmInfoView..Panel1..BatteryPanel..BatteryPanelRight..wBattery..Caption
+#: uInfoView.dfm:665
+#. frmInfoView..Panel1..BatteryPanel..BatteryPanelRight..wCharge..Caption
+#: uInfoView.dfm:675
+#. frmInfoView..Panel1..BatteryPanel..BatteryPanelRight..lbtempphone..Caption
+#: uInfoView.dfm:686
+#. frmInfoView..Panel1..BatteryPanel..BatteryPanelRight..lbSWRevision..Caption
+#: uInfoView.dfm:697
+#. frmInfoView..Panel1..BatteryPanel..BatteryPanelRight..lbSerialNumber..Caption
+#: uInfoView.dfm:708
+#. frmInfoView..Panel1..BatteryPanel..BatteryPanelRight..lbPower..Caption
+#: uInfoView.dfm:719
+#. frmInfoView..Panel1..BatteryPanel..BatteryPanelRight..lbModel..Caption
+#: uInfoView.dfm:729
+#. frmInfoView..Panel1..BatteryPanel..BatteryPanelRight..lbManufacturer..Caption
+#: uInfoView.dfm:740
+#. frmInfoView..Panel1..BatteryPanel..BatteryPanelRight..lblTimeLeft..Caption
+#: uInfoView.dfm:751
+#. frmInfoView..Panel1..BatteryPanel..BatteryPanelRight..lbcyclescharge..Caption
+#: uInfoView.dfm:762
 #. frmInfoView..Panel2..PhoneAddressPanel..wMENum..Caption
-#: uInfoView.dfm:1349
+#: uInfoView.dfm:1313
 #. frmInfoView..Panel2..PhoneAddressPanel..wArchiveNum..Caption
-#: uInfoView.dfm:1514
+#: uInfoView.dfm:1478
 #. frmKeyPad..Button25..Caption
 #: uKeyPad.dfm:461
 msgid "?"
@@ -587,6 +640,14 @@ msgstr ""
 #. frmKeyPad..Button1..Caption
 #: uKeyPad.dfm:121
 msgid "^"
+msgstr ""
+
+#  Doesn't have any letters
+#. frmAbout..Panel1..TntLabel1..Caption
+#: uAbout.dfm:116
+#. frmAbout..Panel1..TntLabel3..Caption
+#: uAbout.dfm:138
+msgid "|"
 msgstr ""
 
 #  Doesn't have any letters
@@ -645,14 +706,12 @@ msgid "<<"
 msgstr ""
 
 #. frmOptions..OptionPages..tabSMS..GroupBox13..lblSMSCount..Caption
-#: uOptions.dfm:1426
+#: uOptions.dfm:1457
 msgid "<counter>"
 msgstr ""
 
 #. frmStatusDlg..Label1..Caption
 #: uStatusDlg.dfm:27
-#. frmWebUpdate..nbWizard....lblCurrentTask..Caption
-#: components/WebUpdateWizard.dfm:714
 msgid "<description>"
 msgstr ""
 
@@ -672,14 +731,12 @@ msgid "<hint>"
 msgstr ""
 
 #. frmNewDeviceWizard..nbWizard....lblSearchInfo..Caption
-#: uNewDeviceWizard.dfm:582
-#. frmWebUpdate..nbWizard....WelcomePanel..lbDescription..Caption
-#: components/WebUpdateWizard.dfm:134
+#: uNewDeviceWizard.dfm:642
 msgid "<info>"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:178
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:240
 msgid "<localization-list>"
 msgstr ""
 
@@ -688,20 +745,24 @@ msgstr ""
 #. frmCharMessage..TalkToPanel..lblName..Caption
 #: uChatSMS.dfm:65
 #. frmEditContact..PageControl1..tsCallNotes..TntLabel4..Caption
-#: uEditContact.dfm:745
+#: uEditContact.dfm:765
 #. frmEditContact..PageControl1..TabSheet7..TntLabel1..Caption
-#: uEditContact.dfm:853
+#: uEditContact.dfm:873
+#. frmEditContact..PageControl1..TntTabSheet1..TntLabel7..Caption
+#: uEditContact.dfm:993
 #. frmEditContact..PageControl1..TabSheet5..TntLabel2..Caption
-#: uEditContact.dfm:916
+#: uEditContact.dfm:1117
 #. frmEditContact..PageControl1..TabSheet3..TntLabel3..Caption
-#: uEditContact.dfm:1058
+#: uEditContact.dfm:1259
+#. frmMsgView..SearchPanel..TntLabel2..Caption
+#: uMsgView.dfm:221
 msgid "<name>"
 msgstr ""
 
 #. frmAddToGroup..Panel1..lblNumber..Caption
 #: uAddToGroup.dfm:119
 #. frmAddContact..Panel1..lblNumber..Caption
-#: uAddToPhonebook.dfm:100
+#: uAddToPhonebook.dfm:99
 msgid "<num>"
 msgstr ""
 
@@ -710,22 +771,18 @@ msgstr ""
 msgid "<ready>"
 msgstr ""
 
-#. frmAbout..Panel1..lbURL..Caption
-#: uAbout.dfm:97
+#. frmAbout..Panel1..MainLabel..Caption
+#: uAbout.dfm:78
 msgid "<url>"
 msgstr ""
 
 #. frmAbout..Panel1..lbVersion..Caption
-#: uAbout.dfm:64
-#. frmWebUpdate..nbWizard....lblNameVer..Caption
-#: components/WebUpdateWizard.dfm:303
-#. Form1..lblVersion..Caption
-#: webupdate/WebWizardTestForm.dfm:31
+#: uAbout.dfm:159
 msgid "<version>"
 msgstr ""
 
 #. frmMessageContact..WarningPanel..Panel1..lbWarning..Caption
-#: uComposeSMS.dfm:304
+#: uComposeSMS.dfm:306
 msgid "<warning>"
 msgstr ""
 
@@ -758,13 +815,15 @@ msgstr ""
 
 #  Doesn't have any letters
 #. frmCalling..lblTime..Caption
-#: uCalling.dfm:60
+#: uCalling.dfm:59
+#. frmNewAlarm..lbTime..Caption
+#: uNewAlarm.dfm:43
 msgid "00:00"
 msgstr ""
 
 #  Doesn't have any letters
 #. Form1..FormStorage1......Value
-#: Unit1.dfm:7155
+#: Unit1.dfm:7204
 msgid "000000000000"
 msgstr ""
 
@@ -779,52 +838,52 @@ msgid "0009"
 msgstr ""
 
 #. frmOptions..PBFolderDialog1....LabelCaptions.Strings
-#: uOptions.dfm:3139
+#: uOptions.dfm:3262
 msgid "0009=Current folder:"
 msgstr ""
 
 #. frmOptions..PBFolderDialog1....NewFolderCaptions.Strings
-#: uOptions.dfm:3146
+#: uOptions.dfm:3269
 msgid "0009=New folder"
 msgstr ""
 
 #. frmOptions..PBFolderDialog1....NewFolderCaptions.Strings
-#: uOptions.dfm:3147
+#: uOptions.dfm:3270
 msgid "0406=Ny mappe"
 msgstr ""
 
 #. frmOptions..PBFolderDialog1....LabelCaptions.Strings
-#: uOptions.dfm:3140
+#: uOptions.dfm:3263
 msgid "0406=Valgt mappe:"
 msgstr ""
 
 #. frmOptions..PBFolderDialog1....LabelCaptions.Strings
-#: uOptions.dfm:3141
+#: uOptions.dfm:3264
 msgid "0407=Mappe gew?hlt:"
 msgstr ""
 
 #. frmOptions..PBFolderDialog1....NewFolderCaptions.Strings
-#: uOptions.dfm:3148
+#: uOptions.dfm:3271
 msgid "0407=Neu Mappe"
 msgstr ""
 
 #. frmOptions..PBFolderDialog1....LabelCaptions.Strings
-#: uOptions.dfm:3142
+#: uOptions.dfm:3265
 msgid "0409=Current folder:"
 msgstr ""
 
 #. frmOptions..PBFolderDialog1....NewFolderCaptions.Strings
-#: uOptions.dfm:3149
+#: uOptions.dfm:3272
 msgid "0409=New folder"
 msgstr ""
 
 #. frmOptions..PBFolderDialog1....LabelCaptions.Strings
-#: uOptions.dfm:3143
+#: uOptions.dfm:3266
 msgid "0413=Huidige map"
 msgstr ""
 
 #. frmOptions..PBFolderDialog1....NewFolderCaptions.Strings
-#: uOptions.dfm:3150
+#: uOptions.dfm:3273
 msgid "0413=Nieuwe map"
 msgstr ""
 
@@ -848,7 +907,7 @@ msgstr ""
 
 #  Doesn't have any letters
 #. frmOptions..PBFolderDialog1..Version
-#: uOptions.dfm:3151
+#: uOptions.dfm:3274
 msgid "1.30.00.00"
 msgstr ""
 
@@ -860,38 +919,38 @@ msgstr ""
 
 #  Doesn't look like text
 #. frmOptions..OptionPages..tabOBEX..cbObexPacketSize..seMaxPacketSize..Text
-#: uOptions.dfm:886
+#: uOptions.dfm:894
 msgid "1 024"
 msgstr ""
 
 #  Doesn't have any letters
 #. frmFolderProps..ThemeContainer1..ThemeCreatedTime
-#: uFolderProps.dfm:1082
+#: uFolderProps.dfm:1065
 msgid "26.3.2004 18:45:36"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet3..TntButton3..Caption
-#: Unit1.dfm:370
+#: Unit1.dfm:371
 msgid "7-Bit Decode"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet3..TntButton2..Caption
-#: Unit1.dfm:361
+#: Unit1.dfm:362
 msgid "7-Bit Encode"
 msgstr ""
 
 #  Doesn't look like text
-#: uComposeSMS.pas:287
+#: uComposeSMS.pas:138
 msgid "8-bit"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet3..TntButton5..Caption
-#: Unit1.dfm:388
+#: Unit1.dfm:389
 msgid "8-Bit Decode"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet3..TntButton4..Caption
-#: Unit1.dfm:379
+#: Unit1.dfm:380
 msgid "8-Bit Encode"
 msgstr ""
 
@@ -901,18 +960,28 @@ msgstr ""
 msgid "AA:AA:AA:AA:AA:AA;0;_"
 msgstr ""
 
+#. AboutBox..Caption
+#: express/WAB/Demos/About.dfm:5
+msgid "About ..."
+msgstr ""
+
+#. MainForm..ActionList1..About1..Caption
+#: express/WAB/Demos/WabDemoMain.dfm:278
+msgid "About..."
+msgstr ""
+
 #. Form1..FormStorage1....StoredProps.Strings
-#: Unit1.dfm:7126
+#: Unit1.dfm:7175
 msgid "ActionConnectionAutoConnect.Checked"
 msgstr ""
 
 #. Form1..FormStorage1....StoredProps.Strings
-#: Unit1.dfm:7125
+#: Unit1.dfm:7174
 msgid "ActionConnectionMonitor.Checked"
 msgstr ""
 
 #. Form1..FormStorage1....StoredProps.Strings
-#: Unit1.dfm:7127
+#: Unit1.dfm:7176
 msgid "ActionViewMsgPreview.Checked"
 msgstr ""
 
@@ -932,30 +1001,30 @@ msgstr ""
 msgid "ActivityLogWindow"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:159
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:218
 msgid "Alex Yeo,"
 msgstr ""
 
 #. Form1..ObexOpenDialog..Filter
-#: Unit1.dfm:7466
+#: Unit1.dfm:7559
 msgid "All Files (*.*)|*.*"
 msgstr ""
 
 #. Form1..ObexSaveDialog..Filter
-#: Unit1.dfm:7969
+#: Unit1.dfm:8064
 msgid "All Files|*.*"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7166
+#: Unit1.dfm:7215
 msgid "AlphaCall"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7174
+#: Unit1.dfm:7223
 msgid "AlphaCompose"
 msgstr ""
 
@@ -967,19 +1036,19 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7170
+#: Unit1.dfm:7219
 msgid "AlphaLog"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7178
+#: Unit1.dfm:7227
 msgid "AlphaMessage"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7378
+#: Unit1.dfm:7427
 msgid "Always Minimized"
 msgstr ""
 
@@ -990,7 +1059,7 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7446
+#: Unit1.dfm:7495
 msgid "ArchiveDubs"
 msgstr ""
 
@@ -1042,26 +1111,37 @@ msgstr ""
 msgid "Arial Unicode MS"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:137
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:195
 msgid "Arnoldc,"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7354
+#: Unit1.dfm:7535
+msgid "Ask Cal Recurr"
+msgstr ""
+
+#. AboutBox..Label3..Caption
+#: express/WAB/Demos/About.dfm:68
+msgid "Author: Petr Vones"
+msgstr ""
+
+#  Seems like a component name
+#. Form1..FormStorage1......Name
+#: Unit1.dfm:7403
 msgid "AutoBookmarks"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7358
+#: Unit1.dfm:7407
 msgid "AutoCalendar"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7258
+#: Unit1.dfm:7307
 msgid "AutoInbox"
 msgstr ""
 
@@ -1073,31 +1153,31 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7346
+#: Unit1.dfm:7395
 msgid "AutoProfileName"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7262
+#: Unit1.dfm:7311
 msgid "AutoSync"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7350
+#: Unit1.dfm:7399
 msgid "AutoSyncOutlook"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7242
+#: Unit1.dfm:7291
 msgid "AwayLock"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7250
+#: Unit1.dfm:7299
 msgid "AwayMusicMode"
 msgstr ""
 
@@ -1108,18 +1188,18 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7406
+#: Unit1.dfm:7455
 msgid "Bands"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7386
+#: Unit1.dfm:7435
 msgid "Battery Monitor"
 msgstr ""
 
 #. frmFolderProps..ThemeContainer1..ModifiedBy
-#: uFolderProps.dfm:1083
+#: uFolderProps.dfm:1066
 msgid "BigTurca"
 msgstr ""
 
@@ -1130,19 +1210,19 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7154
+#: Unit1.dfm:7203
 msgid "BluetoothAddr"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7414
+#: Unit1.dfm:7463
 msgid "BluetoothName"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7158
+#: Unit1.dfm:7207
 msgid "BluetoothPort"
 msgstr ""
 
@@ -1151,8 +1231,8 @@ msgstr ""
 msgid "bmp"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:147
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:205
 msgid "boocko,"
 msgstr ""
 
@@ -1174,7 +1254,7 @@ msgstr ""
 msgid "Book Antiqua"
 msgstr ""
 
-#: uOptions.pas:2843
+#: uOptions.pas:2498
 msgid "Bookmark synchronization is not implemented "
 "yet!"
 msgstr ""
@@ -1184,8 +1264,8 @@ msgstr ""
 msgid "Bramus!"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:172
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:234
 msgid "Bramus!,"
 msgstr ""
 
@@ -1196,7 +1276,25 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7182
+#: Unit1.dfm:7539
+msgid "Calendar Birthday"
+msgstr ""
+
+#  Seems like a component name
+#. Form1..FormStorage1......Name
+#: Unit1.dfm:7531
+msgid "Calendar Recurr"
+msgstr ""
+
+#  Seems like a component name
+#. Form1..FormStorage1......Name
+#: Unit1.dfm:7527
+msgid "Calendar Wide"
+msgstr ""
+
+#  Seems like a component name
+#. Form1..FormStorage1......Name
+#: Unit1.dfm:7231
 msgid "Call Monitor"
 msgstr ""
 
@@ -1205,24 +1303,36 @@ msgstr ""
 msgid "CallContactWindow"
 msgstr ""
 
+#  Seems like a component name
+#. Form1..FormStorage1......Name
+#: Unit1.dfm:7523
+msgid "CallNoBaloon"
+msgstr ""
+
+#  Seems like a component name
+#. Form1..FormStorage1......Name
+#: Unit1.dfm:7519
+msgid "CallNoPopup"
+msgstr ""
+
 #. frmCalling..FormPlacement1..IniSection
 #: uCalling.dfm:139
 msgid "CallWindow"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:130
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:188
 msgid "Carl-Magnus,"
 msgstr ""
 
 #  Doesn't look like text
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:170
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:232
 msgid "CarpeDi3m,"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..Button10..Caption
-#: Unit1.dfm:226
+#: Unit1.dfm:227
 msgid "CD"
 msgstr ""
 
@@ -1233,7 +1343,7 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7290
+#: Unit1.dfm:7339
 msgid "Check Outbox"
 msgstr ""
 
@@ -1249,20 +1359,16 @@ msgstr ""
 msgid "CheckBox1.Enabled"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:131
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:189
 msgid "Christian Hans,"
 msgstr ""
 
 #  Seems like a Database field name or index field name
 #. frmSyncPhonebook..ListContacts......WideText
-#: uSyncPhonebook.dfm:156
-#. Form1..ADODataSet1..ADODataSet1city..FieldName
-#: express/Fma2Wab/Unit1.dfm:278
-#. Form1..ADODataSet2..ADODataSet2City..FieldName
-#: express/Fma2Wab/Unit1.dfm:325
-#: Unit1.pas:14438
-#: uSyncPhonebook.pas:3221
+#: uSyncPhonebook.dfm:169
+#: Unit1.pas:13657
+#: uSyncPhonebook.pas:3002
 msgid "City"
 msgstr ""
 
@@ -1278,7 +1384,7 @@ msgid "Clock Sync"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet3..Caption
-#: Unit1.dfm:250
+#: Unit1.dfm:251
 msgid "Codec"
 msgstr ""
 
@@ -1289,16 +1395,14 @@ msgid "COM1"
 msgstr ""
 
 #  Doesn't look like text
-#. frmNewDeviceWizard..nbWizard....cbCOM..Text
-#: uNewDeviceWizard.dfm:726
 #. frmNewDeviceWizard..LocalComPort..Port
-#: uNewDeviceWizard.dfm:896
+#: uNewDeviceWizard.dfm:966
 #. Form1..ComPort..Port
-#: Unit1.dfm:8722
+#: Unit1.dfm:8819
 #. frmOptions..OptionPages..tabConnectivity..pcConnectDetails..tsConnectCOM..groupSerialPortSetup..sePort..Text
 #: uOptions.dfm:401
 #. frmOptions..LocalComPort..Port
-#: uOptions.dfm:3183
+#: uOptions.dfm:3306
 msgid "COM4"
 msgstr ""
 
@@ -1309,7 +1413,7 @@ msgid "ComboBox1.ItemIndex"
 msgstr ""
 
 #. frmMsgView..OpenDialog1..Filter
-#: uMsgView.dfm:1347
+#: uMsgView.dfm:1450
 msgid "Comma Separated Values Files (*.csv)|*.csv|All "
 "Files|*.*"
 msgstr ""
@@ -1322,7 +1426,7 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7142
+#: Unit1.dfm:7191
 msgid "CommTimeout"
 msgstr ""
 
@@ -1332,63 +1436,64 @@ msgid "CompleteNotes"
 msgstr ""
 
 #. Form1..FormStorage1....StoredProps.Strings
-#: Unit1.dfm:7128
+#: Unit1.dfm:7177
 msgid "ComPort.BaudRate"
 msgstr ""
 
 #. Form1..FormStorage1....StoredProps.Strings
-#: Unit1.dfm:7129
+#: Unit1.dfm:7178
 msgid "ComPort.Port"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7330
+#: Unit1.dfm:7379
 msgid "ComPortControlDTR"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7334
+#: Unit1.dfm:7383
 msgid "ComPortControlRTS"
 msgstr ""
 
 #. Form1..ActionList1..ActionConnectionConnect..Category
-#: Unit1.dfm:1130
+#: Unit1.dfm:1134
 #. Form1..ActionList1..ActionConnectionDisconnect..Category
-#: Unit1.dfm:1139
+#: Unit1.dfm:1143
 #. Form1..ActionList1..ActionConnectionDownload..Category
-#: Unit1.dfm:1155
+#: Unit1.dfm:1159
 #. Form1..ActionList1..ActionConnectionToggle..Category
-#: Unit1.dfm:1228
+#: Unit1.dfm:1232
 #. Form1..ActionList1..ActionConnectionMonitor..Category
-#: Unit1.dfm:1296
+#: Unit1.dfm:1300
 #. Form1..ActionList1..ActionConnectionAutoConnect..Category
-#: Unit1.dfm:1303
+#: Unit1.dfm:1307
 #. Form1..ActionList1..ActionConnectionAbort..Category
-#: Unit1.dfm:1317
+#: Unit1.dfm:1321
 #. Form1..ActionList1..ActionConnectionSendOutboxMsgs..Category
-#: Unit1.dfm:1524
+#: Unit1.dfm:1529
 #. Form1..ActionList1..ActionSwitchUserProfile..Category
-#: Unit1.dfm:1543
+#: Unit1.dfm:1548
 msgid "Connection"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7162
+#: Unit1.dfm:7211
 msgid "ConnectionType"
+msgstr ""
+
+#. Form1..Panel1..PageControl1..TabSheet1..Panel2..Edit1..Text
+#: express/Fma2Wab/Unit1.dfm:84
+msgid "Contacts.SYNC.dat"
 msgstr ""
 
 #  Seems like a Database field name or index field name
 #. frmSyncPhonebook..ListContacts......WideText
-#: uSyncPhonebook.dfm:180
-#. Form1..ADODataSet1..ADODataSet1country..FieldName
-#: express/Fma2Wab/Unit1.dfm:290
-#. Form1..ADODataSet2..ADODataSet2Country..FieldName
-#: express/Fma2Wab/Unit1.dfm:334
-#: Unit1.pas:14447
-#: uSyncPhonebook.pas:3230
+#: uSyncPhonebook.dfm:196
+#: Unit1.pas:13666
+#: uSyncPhonebook.pas:3011
 msgid "Country"
 msgstr ""
 
@@ -1405,9 +1510,14 @@ msgstr ""
 msgid "CPU utilization is too high!"
 msgstr ""
 
+#. MainForm..ActionList1..NewUser1..Hint
+#: express/WAB/Demos/WabDemoMain.dfm:284
+msgid "Create new user"
+msgstr ""
+
 #  Doesn't look like text
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:122
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:183
 msgid "Crino77,"
 msgstr ""
 
@@ -1417,8 +1527,8 @@ msgid "CSV"
 msgstr ""
 
 #. Form1..SaveDialog1....Filter
-#: Unit1.dfm:7524
-#: Unit1.pas:7632
+#: Unit1.dfm:7619
+#: Unit1.pas:6431
 msgid "CSV files (*.csv)|*.csv|XML files (*.xml)|*.xml|Html files "
 "(*.html)|*.html"
 msgstr ""
@@ -1429,7 +1539,7 @@ msgid "Current Build:"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..RadioButton2..Caption
-#: Unit1.dfm:196
+#: Unit1.dfm:197
 msgid "Custom:"
 msgstr ""
 
@@ -1439,14 +1549,14 @@ msgid "D"
 msgstr ""
 
 #. frmCalendarView..Panel..VpTaskList..DisplayOptions.DueDateFormat
-#: uCalendarView.dfm:84
+#: uSyncCalendar.dfm:84
 msgid "d.M.yyyy"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:123
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:158
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:184
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:217
 msgid "Dako,"
 msgstr ""
 
@@ -1463,7 +1573,7 @@ msgid "Database name missing"
 msgstr ""
 
 #. frmCalendarView..VpDayView..DateLabelFormat
-#: uCalendarView.dfm:181
+#: uSyncCalendar.dfm:184
 msgid "dddd, mmmm dd, yyyy"
 msgstr ""
 
@@ -1484,13 +1594,18 @@ msgid "DEFAULT"
 msgstr ""
 
 #. frmOptions..PBFolderDialog1....LabelCaptions.Strings
-#: uOptions.dfm:3138
+#: uOptions.dfm:3261
 msgid "Default=Current folder:"
 msgstr ""
 
 #. frmOptions..PBFolderDialog1....NewFolderCaptions.Strings
-#: uOptions.dfm:3145
+#: uOptions.dfm:3268
 msgid "Default=New folder"
+msgstr ""
+
+#. MainForm..ActionList1..Delete1..Hint
+#: express/WAB/Demos/WabDemoMain.dfm:271
+msgid "Delete item"
 msgstr ""
 
 #. Programmer's name for it: RsScreenRes
@@ -1500,13 +1615,13 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7418
+#: Unit1.dfm:7467
 msgid "DisplayNameFormat"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7210
+#: Unit1.dfm:7259
 msgid "Dont Progress"
 msgstr ""
 
@@ -1550,27 +1665,50 @@ msgid "E"
 msgstr ""
 
 #. Form1..ActionList1..ActionExplorerUpFolder..Category
-#: Unit1.dfm:1475
+#: Unit1.dfm:1480
 #. Form1..ActionList1..ActionEditGoUp..Category
-#: Unit1.dfm:1483
+#: Unit1.dfm:1488
 #. Form1..ActionList1..ActionEditGoDown..Category
-#: Unit1.dfm:1491
+#: Unit1.dfm:1496
 #. Form1..ActionList1..ActionDelete..Category
-#: Unit1.dfm:1499
+#: Unit1.dfm:1504
 #. Form1..ActionList1..ActionSelectAll..Category
-#: Unit1.dfm:1508
+#: Unit1.dfm:1513
+#. Form1..ActionList1..ActionEditVoiceMail..Category
+#: Unit1.dfm:1784
 msgid "Edit"
+msgstr ""
+
+#. MainForm..ActionList1..EditValue1..Hint
+#: express/WAB/Demos/WabDemoMain.dfm:292
+msgid "Edit prop value"
+msgstr ""
+
+#. MainForm..ActionList1..EditValue1..Caption
+#: express/WAB/Demos/WabDemoMain.dfm:291
+msgid "Edit value"
 msgstr ""
 
 #  Seems like a Database field name or index field name
 #. frmSyncPhonebook..ListContacts......WideText
-#: uSyncPhonebook.dfm:95
-#. Form1..ADODataSet1..ADODataSet1Email..FieldName
-#: express/Fma2Wab/Unit1.dfm:221
-#. Form1..ADODataSet2..StringField3..FieldName
-#: express/Fma2Wab/Unit1.dfm:309
-#: uSyncPhonebook.pas:3209
+#: uSyncPhonebook.dfm:101
+#: uSyncPhonebook.pas:2984
 msgid "Email"
+msgstr ""
+
+#. MainForm..AdrBookListView......Caption
+#: express/WAB/Demos/WabDemoMain.dfm:127
+msgid "Email address"
+msgstr ""
+
+#. frmKRMTest..oKagiRegModule..LangCode
+#: components/Kagi/Samples/Delphi/krmForm.dfm:85
+msgid "en"
+msgstr ""
+
+#. frmKRMTest..oKagiRegModule....ProductName.Strings
+#: components/Kagi/Samples/Delphi/krmForm.dfm:84
+msgid "en=Digital Metronome"
 msgstr ""
 
 #  Seems like a Database field name or index field name
@@ -1579,9 +1717,14 @@ msgstr ""
 msgid "EntryId"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:140
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:198
 msgid "Epedemic,"
+msgstr ""
+
+#. frmKRMTest..oKagiRegModule..Currency
+#: components/Kagi/Samples/Delphi/krmForm.dfm:71
+msgid "EUR"
 msgstr ""
 
 #. Programmer's name for it: RsExceptionAddr
@@ -1604,9 +1747,14 @@ msgstr ""
 msgid "ExceptionDialog"
 msgstr ""
 
+#. MainForm..ActionList1..Exit1..Caption
+#: express/WAB/Demos/WabDemoMain.dfm:249
+msgid "Exit"
+msgstr ""
+
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7294
+#: Unit1.dfm:7343
 msgid "ExplorerStartup"
 msgstr ""
 
@@ -1617,11 +1765,9 @@ msgstr ""
 
 #  Seems like a Database field name or index field name
 #. frmSyncPhonebook..ListContacts......WideText
-#: uSyncPhonebook.dfm:131
-#. Form1..ADODataSet1..ADODataSet1Fax..FieldName
-#: express/Fma2Wab/Unit1.dfm:234
-#: uMEEdit.pas:611
-#: uSIMEdit.pas:794
+#: uSyncPhonebook.dfm:141
+#: uMEEdit.pas:473
+#: uSIMEdit.pas:493
 msgid "Fax"
 msgstr ""
 
@@ -1653,14 +1799,12 @@ msgid "Fieldname %s exceeds %d chars"
 msgstr ""
 
 #. frmMsgView..pmListMsg..FileAs1..Caption
-#: uMsgView.dfm:1228
+#: uMsgView.dfm:1576
 #. Form1..ActionList1..ActionAbout..Category
-#: Unit1.dfm:1278
+#: Unit1.dfm:1282
 #. Form1..ActionList1..ActionExit..Category
-#: Unit1.dfm:1419
-#. MainForm..MainMenu1..File1..Caption
-#: express/WAB/Demos/WabDemoMain.dfm:195
-#: uExploreView.pas:262
+#: Unit1.dfm:1424
+#: uExploreView.pas:137
 msgid "File"
 msgstr ""
 
@@ -1681,13 +1825,13 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7450
+#: Unit1.dfm:7499
 msgid "First Run"
 msgstr ""
 
 #  Doesn't look like text
 #. frmSyncPhonebook..FormStorage1....StoredProps.Strings
-#: uSyncPhonebook.dfm:327
+#: uSyncPhonebook.dfm:359
 msgid "FirstLast1.Checked"
 msgstr ""
 
@@ -1697,36 +1841,49 @@ msgstr ""
 msgid "FirstName"
 msgstr ""
 
+#. frmKRMTest..oKagiRegModule..SupplierName
+#: components/Kagi/Samples/Delphi/krmForm.dfm:75
+msgid "fkWare"
+msgstr ""
+
 #. set to '1' if language is right-to-left
 #: gginitialize2.pas:58
 msgid "FlipFlag"
 msgstr ""
 
 #. Form1..FmaWebUpdate1..AppName
-#: Unit1.dfm:8303
+#: Unit1.dfm:8398
 #. frmOptions..OptionPages..tabSynchronization..rbOutlookSync....Items.Strings
-#: uOptions.dfm:652
+#: uOptions.dfm:650
 #. frmStatusDlg..Caption
 #: uStatusDlg.dfm:6
-#. Form1..Panel1..PageControl1..TabSheet1..Caption
-#: express/Fma2Wab/Unit1.dfm:39
 msgid "FMA"
+msgstr ""
+
+#. Form1..Caption
+#: express/Fma2Wab/Unit1.dfm:6
+msgid "FMA - Outlook Express - Demo"
+msgstr ""
+
+#. Form1..Panel1..PageControl1..TabSheet3..Panel4..Button3..Caption
+#: express/Fma2Wab/Unit1.dfm:166
+msgid "FMA -> WAB"
 msgstr ""
 
 #  Doesn't look like text
 #. Form1..FormStorage1....StoredProps.Strings
-#: Unit1.dfm:7135
+#: Unit1.dfm:7184
 msgid "FmaWebUpdate1.UpdatesURL"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..RadioButton1..Caption
-#: Unit1.dfm:188
+#: Unit1.dfm:189
 msgid "Folder browser"
 msgstr ""
 
 #  Doesn't look like text
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7370
+#: Unit1.dfm:7419
 msgid "ForceUCS2"
 msgstr ""
 
@@ -1756,8 +1913,12 @@ msgstr ""
 msgid "frmSplash"
 msgstr ""
 
+#. frmDetail..PageControl1..TabSheet1..lblTarget..Caption
+#: uEditSMS.dfm:32
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet3..Label2..Caption
-#: Unit1.dfm:259
+#: Unit1.dfm:260
+#. do not localize
+#: uEditSMS.pas:151
 msgid "From:"
 msgstr ""
 
@@ -1767,28 +1928,33 @@ msgid "G:"
 msgstr ""
 
 #  Doesn't look like text
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:143
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:201
 msgid "Garyd9,"
 msgstr ""
 
+#. frmKRMTest..oKagiRegModule..Country
+#: components/Kagi/Samples/Delphi/krmForm.dfm:69
+msgid "Germany"
+msgstr ""
+
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..Button1..Caption
-#: Unit1.dfm:162
+#: Unit1.dfm:163
 msgid "GET"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:133
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:191
 msgid "GOwin,"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:151
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:209
 msgid "Gravanov,"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:132
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:190
 msgid "Guajon Petursson,"
 msgstr ""
 
@@ -1800,11 +1966,7 @@ msgstr ""
 #. frmKeyPad..Button25..Hint
 #: uKeyPad.dfm:459
 #. frmOptions..btnHelp..Caption
-#: uOptions.dfm:2680
-#. frmImageListXPEdt..HelpButton..Caption
-#: components/ImageListXPEditor.dfm:300
-#. MainForm..MainMenu1..Help1..Caption
-#: express/WAB/Demos/WabDemoMain.dfm:231
+#: uOptions.dfm:2803
 msgid "Help"
 msgstr ""
 
@@ -1822,8 +1984,13 @@ msgstr ""
 
 #  Seems like a format string
 #. frmFolderProps..PageControl1..tsGeneral..pcGeneral..tsAlarm..dtAlarmTime..Format
-#: uFolderProps.dfm:600
+#: uFolderProps.dfm:583
 msgid "HH:mm"
+msgstr ""
+
+#. MainForm..AdrBookListView......Caption
+#: express/WAB/Demos/WabDemoMain.dfm:131
+msgid "Home page"
 msgstr ""
 
 #  Seems like a Database field name or index field name
@@ -1835,12 +2002,12 @@ msgid "HomePhone"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet3..TntButton1..Caption
-#: Unit1.dfm:352
+#: Unit1.dfm:353
 msgid "HTML Decode"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet3..Button12..Caption
-#: Unit1.dfm:343
+#: Unit1.dfm:344
 msgid "HTML Encode"
 msgstr ""
 
@@ -1849,22 +2016,25 @@ msgstr ""
 msgid "HTML Format"
 msgstr ""
 
+#. AboutBox..JediLinkLabel..Caption
+#: express/WAB/Demos/About.dfm:25
+msgid "http://delphi-jedi.org/"
+msgstr ""
+
 #. Form1..FmaWebUpdate1..SupportURL
 #: webupdate/WebWizardTestForm.dfm:44
 msgid "http://fma.sourceforge.net"
 msgstr ""
 
+#. frmAbout..Panel1..lbForumsURL..Hint
+#: uAbout.dfm:102
 #. Form1..FmaWebUpdate1..SupportURL
-#: Unit1.dfm:7619
-#. Form1..FmaWebUpdate1..SupportURL
-#: tmp/Unit1.dfm:7874
-#. Form1..FmaWebUpdate1..SupportURL
-#: tmp/New_Folder/Unit1.dfm:7873
+#: Unit1.dfm:8397
 msgid "http://fma.sourceforge.net/"
 msgstr ""
 
 #. Form1..FmaWebUpdate1..UpdatesURL
-#: Unit1.dfm:8301
+#: Unit1.dfm:8396
 msgid "http://fma.sourceforge.net/updates"
 msgstr ""
 
@@ -1874,20 +2044,31 @@ msgid "http://fma.sourceforge.net/updates/testapp"
 msgstr ""
 
 #. frmFolderProps..PageControl1..tsFilePreview..pcFile..tsFileTheme..lblThemeCreatorLink..Caption
-#: uFolderProps.dfm:986
+#: uFolderProps.dfm:969
 msgid "http://members.lycos.co.uk/themecreator"
 msgstr ""
 
 #  Doesn't look like text
+#. frmAbout..Panel1..lbDonateURL..Hint
+#: uAbout.dfm:147
+msgid "http://order.kagi.com/?6CYME&lang=en"
+msgstr ""
+
+#  Doesn't look like text
 #. frmOptions..OptionPages..tabLanguage..GroupBox90..lblLinkL10N....Hint
-#: uOptions.dfm:1884
+#: uOptions.dfm:1915
 msgid "http://sourceforge.net/project/showfiles.php?group_id=71167&package_id"
 "=138922"
 msgstr ""
 
 #. frmFolderProps..PageControl1..tsFilePreview..pcFile..tsFileImage..lblAltPEToolLink..Caption
-#: uFolderProps.dfm:815
+#: uFolderProps.dfm:798
 msgid "http://timsara.zetafleet.com/altpe.html"
+msgstr ""
+
+#. frmKRMTest..oKagiRegModule..SupplierURL
+#: components/Kagi/Samples/Delphi/krmForm.dfm:76
+msgid "http://www.fkware.com"
 msgstr ""
 
 #. Form1..FmaWebUpdate1..SupportURL
@@ -1895,14 +2076,24 @@ msgstr ""
 msgid "http://www.mobileagent.info/"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:152
+#. frmKRMTest..oKagiRegModule..ConnectFailureURL
+#: components/Kagi/Samples/Delphi/krmForm.dfm:79
+msgid "http://www.mywebsite.com/connectionFailure.htm"
+msgstr ""
+
+#. frmKRMTest..oKagiRegModule..TransactionFailureURL
+#: components/Kagi/Samples/Delphi/krmForm.dfm:78
+msgid "http://www.mywebsite.com/transactionFailure.htm"
+msgstr ""
+
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:210
 msgid "Iceberg,"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7382
+#: Unit1.dfm:7431
 msgid "Ignore Low Battery"
 msgstr ""
 
@@ -1922,6 +2113,16 @@ msgstr ""
 msgid "Import Images..."
 msgstr ""
 
+#. MainForm..DetailListView......Caption
+#: express/WAB/Demos/WabDemoMain.dfm:168
+msgid "Index"
+msgstr ""
+
+#. MainForm..ToolBar1..ToolButton11..Hint
+#: express/WAB/Demos/WabDemoMain.dfm:109
+msgid "Insert GUID"
+msgstr ""
+
 #  Seems like a component name
 #. HTTPServer......Name
 #: Vcl/HTTPIntr.dfm:8
@@ -1935,12 +2136,17 @@ msgid "Invalid session name %s"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..Edit2..Text
-#: Unit1.dfm:181
+#: Unit1.dfm:182
 msgid "IRMC-SYNC"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:135
+#. MainForm..ActionList1..Properties1..Hint
+#: express/WAB/Demos/WabDemoMain.dfm:255
+msgid "Item properties"
+msgstr ""
+
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:193
 msgid "Ju Ming,"
 msgstr ""
 
@@ -1950,14 +2156,14 @@ msgstr ""
 msgid "KART_TEST_COMPLEX_ACG_UC9"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:148
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:206
 msgid "Kevin Davison,"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7402
+#: Unit1.dfm:7451
 msgid "Keylock Monitor"
 msgstr ""
 
@@ -1966,32 +2172,47 @@ msgstr ""
 msgid "KeypadWindow"
 msgstr ""
 
+#. frmKRMTest..Caption
+#: components/Kagi/Samples/Delphi/krmForm.dfm:6
+msgid "KRM Test"
+msgstr ""
+
+#. frmKRMTest..oKagiRegModule..DLL
+#: components/Kagi/Samples/Delphi/krmForm.dfm:67
+msgid "krm.dll"
+msgstr ""
+
+#. frmKRMTest..oKagiRegModule..SupplierEmail
+#: components/Kagi/Samples/Delphi/krmForm.dfm:77
+msgid "krm@fkware.com"
+msgstr ""
+
 #  Doesn't look like text
 #. frmOptions..Label34..Caption
 #: uOptions.dfm:32
 msgid "Label34"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:139
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:197
 msgid "Laffen,"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7410
+#: Unit1.dfm:7459
 msgid "LANG"
 msgstr ""
 
 #  Doesn't look like text
 #. frmSyncPhonebook..FormStorage1....StoredProps.Strings
-#: uSyncPhonebook.dfm:328
+#: uSyncPhonebook.dfm:360
 msgid "LastFirst1.Checked"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7266
+#: Unit1.dfm:7315
 msgid "LastIdentity"
 msgstr ""
 
@@ -2002,17 +2223,17 @@ msgid "LastName"
 msgstr ""
 
 #. frmNewMessage..lbAlpha..Caption
-#: uNewMessage.dfm:57
+#: uNewMessage.dfm:56
 msgid "lbAlpha"
 msgstr ""
 
 #. Form1..FramePanel..DescrPanel..lblCurrentPageDtls..Caption
-#: Unit1.dfm:499
+#: Unit1.dfm:500
 msgid "lblCurrentPageDtls"
 msgstr ""
 
 #. frmFolderProps..PageControl1..tsFilePreview..lblName2..Caption
-#: uFolderProps.dfm:695
+#: uFolderProps.dfm:678
 msgid "lblName"
 msgstr ""
 
@@ -2022,8 +2243,8 @@ msgstr ""
 msgid "lblName1"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:138
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:196
 msgid "Lethal,"
 msgstr ""
 
@@ -2032,8 +2253,8 @@ msgstr ""
 msgid "Lexy"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:150
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:208
 msgid "Lexy,"
 msgstr ""
 
@@ -2044,20 +2265,20 @@ msgstr ""
 
 #  Seems like a component name
 #. frmContactsMEEdit..FormStorage1......Name
-#: uMEEdit.dfm:229
+#: uMEEdit.dfm:233
 #. frmMsgView..FormStorage1......Name
-#: uMsgView.dfm:1340
+#: uMsgView.dfm:1443
 #. frmContactsSMEdit..FormStorage1......Name
-#: uSIMEdit.dfm:229
+#: uSIMEdit.dfm:233
 #. frmSyncBookmarks..FormStorage1......Name
-#: uSyncBookmarks.dfm:93
+#: uSyncBookmarks.dfm:95
 #. frmSyncPhonebook..FormStorage1......Name
-#: uSyncPhonebook.dfm:331
+#: uSyncPhonebook.dfm:363
 msgid "ListHeader"
 msgstr ""
 
 #. frmExplore..FormStorage1....StoredProps.Strings
-#: uExploreView.dfm:167
+#: uExploreView.dfm:170
 msgid "ListItems.Header"
 msgstr ""
 
@@ -2073,8 +2294,6 @@ msgstr ""
 msgid "log"
 msgstr ""
 
-#. frmCalendarView..PanelDebug..btnLOG..Caption
-#: uCalendarView.dfm:227
 #. frmLog..FormStorage1..IniSection
 #: uLog.dfm:492
 msgid "LOG"
@@ -2097,8 +2316,8 @@ msgstr ""
 msgid "Lord Larry"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:124
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:185
 msgid "LordLarry,"
 msgstr ""
 
@@ -2108,17 +2327,19 @@ msgid "lordlarry@users.sourceforge.net"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..Button11..Caption
-#: Unit1.dfm:235
+#: Unit1.dfm:236
 msgid "LS"
 msgstr ""
 
 #  Seems like a Font.Name extract
 #. frmDebug..Memo..Font.Name
 #: uDebug.dfm:31
-#. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet2..Memo3..Font.Name
-#: Unit1.dfm:72
 #. frmDetail..PageControl1..TabSheet2..memoPDU..Font.Name
-#: uSMSDetail.dfm:371
+#: uEditSMS.dfm:397
+#. frmDetail..PageControl1..TntTabSheet1..mmoDRPDU..Font.Name
+#: uEditSMS.dfm:474
+#. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet2..Memo3..Font.Name
+#: Unit1.dfm:73
 msgid "Lucida Console"
 msgstr ""
 
@@ -2129,12 +2350,12 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7138
+#: Unit1.dfm:7187
 msgid "MaxPacketSize"
 msgstr ""
 
 #. frmSyncPhonebook..FormStorage1..IniSection
-#: uSyncPhonebook.dfm:321
+#: uSyncPhonebook.dfm:353
 msgid "ME"
 msgstr ""
 
@@ -2148,39 +2369,46 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7186
+#: Unit1.dfm:7235
 msgid "Message Monitor"
 msgstr ""
 
+#. frmKRMTest..lblMessages..Caption
+#: components/Kagi/Samples/Delphi/krmForm.dfm:27
+msgid "Messages:"
+msgstr ""
+
 #. frmMessageContact..FormPlacement1..IniSection
-#: uComposeSMS.dfm:310
+#: uComposeSMS.dfm:312
 msgid "MessageWindow"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:173
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:212
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:235
 msgid "mhr"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:136
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:194
 msgid "Mimzo,"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:145
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:203
 msgid "Mindstormpt,"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7202
+#: Unit1.dfm:7251
 msgid "Minimize"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7398
+#: Unit1.dfm:7447
 msgid "Minute Monitor"
 msgstr ""
 
@@ -2191,7 +2419,7 @@ msgid "Missing Database property"
 msgstr ""
 
 #. frmCalendarView..Panel..VpMonthView..DateLabelFormat
-#: uCalendarView.dfm:41
+#: uSyncCalendar.dfm:41
 msgid "mmmm yyyy"
 msgstr ""
 
@@ -2200,16 +2428,16 @@ msgstr ""
 msgid "Mo&ve Left"
 msgstr ""
 
-#. frmCalendarView..FormStorage1..IniSection
-#: uCalendarView.dfm:243
 #. frmExplore..FormStorage1..IniSection
-#: uExploreView.dfm:162
+#: uExploreView.dfm:165
 #. frmMsgView..FormStorage1..IniSection
-#: uMsgView.dfm:1329
+#: uMsgView.dfm:1434
 #. Form1..FormStorage1..IniSection
-#: Unit1.dfm:7121
+#: Unit1.dfm:7170
 #. frmSelContact..FormStorage1..IniSection
 #: uSelectContact.dfm:503
+#. frmCalendarView..FormStorage1..IniSection
+#: uSyncCalendar.dfm:204
 msgid "MobileAgent"
 msgstr ""
 
@@ -2225,15 +2453,7 @@ msgstr ""
 #. frmBrowseFolders..tvFolders..Header.Font.Name
 #: uBrowseFolders.dfm:76
 #. Form1..PanelExplorer..ExplorerNew..Header.Font.Name
-#: Unit1.dfm:1089
-#. frmKRMTest..Font.Name
-#: components/Kagi/Samples/Delphi/krmForm.dfm:13
-#. AboutBox..Font.Name
-#: express/WAB/Demos/About.dfm:12
-#. AboutBox..JediLinkLabel..Font.Name
-#: express/WAB/Demos/About.dfm:29
-#. MainForm..Font.Name
-#: express/WAB/Demos/WabDemoMain.dfm:13
+#: Unit1.dfm:1091
 msgid "MS Sans Serif"
 msgstr ""
 
@@ -2245,31 +2465,36 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7282
+#: Unit1.dfm:7331
 msgid "MsgAutoArchive"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7366
+#: Unit1.dfm:7415
 msgid "MsgFullWarning"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7278
+#: Unit1.dfm:7327
 msgid "MsgNoBaloon"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7274
+#: Unit1.dfm:7323
 msgid "MsgNoPopup"
 msgstr ""
 
 #. frmFolderProps..ThemeContainer1..XMLFile
-#: uFolderProps.dfm:1132
+#: uFolderProps.dfm:1115
 msgid "MyTheme.xml"
+msgstr ""
+
+#. frmKRMTest..oKagiRegModule..ProductSupplierSKU
+#: components/Kagi/Samples/Delphi/krmForm.dfm:80
+msgid "n/a"
 msgstr ""
 
 #  Doesn't look like text
@@ -2310,13 +2535,13 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7254
+#: Unit1.dfm:7303
 msgid "NearMusicMode"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7246
+#: Unit1.dfm:7295
 msgid "NearUnlock"
 msgstr ""
 
@@ -2326,9 +2551,26 @@ msgstr ""
 msgid "New Lookup Field"
 msgstr ""
 
+#. MainForm..ActionList1..NewUser1..Caption
+#: express/WAB/Demos/WabDemoMain.dfm:283
+msgid "New user"
+msgstr ""
+
 #. frmNewMessage..FormPlacement1..IniSection
 #: uNewMessage.dfm:116
 msgid "NewMsgWindow"
+msgstr ""
+
+#  Seems like a component name
+#. Form1..FormStorage1......Name
+#: Unit1.dfm:7507
+msgid "NoAlarms"
+msgstr ""
+
+#  Seems like a component name
+#. Form1..FormStorage1......Name
+#: Unit1.dfm:7511
+msgid "NoBaloons"
 msgstr ""
 
 #  Seems like a component name
@@ -2339,51 +2581,57 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7238
+#: Unit1.dfm:7287
 msgid "NoCalls"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7230
+#: Unit1.dfm:7515
+msgid "NoClock"
+msgstr ""
+
+#  Seems like a component name
+#. Form1..FormStorage1......Name
+#: Unit1.dfm:7279
 msgid "NoFolders"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7226
+#: Unit1.dfm:7275
 msgid "NoGroups"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7222
+#: Unit1.dfm:7271
 msgid "NoIRMC"
 msgstr ""
 
-#: uScriptEditor.pas:151
+#: uScriptEditor.pas:111
 msgid "Noname.vbs"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7218
+#: Unit1.dfm:7267
 msgid "NoObex"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7234
+#: Unit1.dfm:7283
 msgid "NoProfiles"
 msgstr ""
 
-#: uMEEdit.pas:1328
-#: uSIMEdit.pas:1511
+#: uMEEdit.pas:1059
+#: uSIMEdit.pas:1097
 msgid "Not implemented yet"
 msgstr ""
 
 #. frmOptions..OptionPages..tabScriptEditor..TntGroupBox6..edScriptEditor..Text
-#: uOptions.dfm:2225
+#: uOptions.dfm:2254
 msgid "notepad.exe"
 msgstr ""
 
@@ -2399,12 +2647,12 @@ msgid "null+bin+db.ibx"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..Caption
-#: Unit1.dfm:103
+#: Unit1.dfm:104
 msgid "Obex"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..Label5..Caption
-#: Unit1.dfm:135
+#: Unit1.dfm:136
 msgid "Object:"
 msgstr ""
 
@@ -2414,19 +2662,30 @@ msgstr ""
 msgid "OnTop"
 msgstr ""
 
+#. MainForm..ActionList1..Open1..Caption
+#: express/WAB/Demos/WabDemoMain.dfm:242
+msgid "Open ..."
+msgstr ""
+
+#. MainForm..OpenDialog..Title
+#: express/WAB/Demos/WabDemoMain.dfm:304
+msgid "Open a copy of the selected file"
+msgstr ""
+
+#. MainForm..ActionList1..Open1..Hint
+#: express/WAB/Demos/WabDemoMain.dfm:243
+msgid "Open a WAB file"
+msgstr ""
+
 #  Seems like a Database field name or index field name
 #. frmSyncPhonebook..ListContacts......WideText
-#: uSyncPhonebook.dfm:86
-#. Form1..ADODataSet1..ADODataSet1Organization..FieldName
-#: express/Fma2Wab/Unit1.dfm:217
-#. Form1..ADODataSet2..ADODataSet2Company..FieldName
-#: express/Fma2Wab/Unit1.dfm:337
-#: Unit1.pas:14414
+#: uSyncPhonebook.dfm:91
+#: Unit1.pas:13633
 msgid "Organization"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:153
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:211
 msgid "Otherland,"
 msgstr ""
 
@@ -2436,9 +2695,14 @@ msgstr ""
 msgid "OtherPhone"
 msgstr ""
 
+#. Form1..Panel1..PageControl1..TabSheet2..Caption
+#: express/Fma2Wab/Unit1.dfm:89
+msgid "Outlook Express"
+msgstr ""
+
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7322
+#: Unit1.dfm:7371
 msgid "Outlook New Action"
 msgstr ""
 
@@ -2462,6 +2726,12 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
+#: Unit1.dfm:7543
+msgid "Outlook No SyncAll"
+msgstr ""
+
+#  Seems like a component name
+#. Form1..FormStorage1......Name
 #: Unit1.dfm:6755
 msgid "Outlook Selected Folders"
 msgstr ""
@@ -2474,50 +2744,50 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7310
+#: Unit1.dfm:7359
 msgid "Outlook Sync Confirm Adding"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7318
+#: Unit1.dfm:7367
 msgid "Outlook Sync Confirm Deleting"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7314
+#: Unit1.dfm:7363
 msgid "Outlook Sync Confirm Updating"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7306
+#: Unit1.dfm:7355
 msgid "Outlook Sync Conflict"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:142
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:200
 msgid "PananzaMan,"
 msgstr ""
 
 #. Form1..FormStorage1....StoredProps.Strings
-#: Unit1.dfm:7133
+#: Unit1.dfm:7182
 msgid "PanelExplorer.Visible"
 msgstr ""
 
 #. Form1..FormStorage1....StoredProps.Strings
-#: Unit1.dfm:7132
+#: Unit1.dfm:7181
 msgid "PanelExplorer.Width"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..Button2..Caption
-#: Unit1.dfm:171
+#: Unit1.dfm:172
 msgid "PARSE"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..Button13..Caption
-#: Unit1.dfm:244
+#: Unit1.dfm:245
 msgid "PARSE VObj"
 msgstr ""
 
@@ -2528,12 +2798,12 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7326
+#: Unit1.dfm:7375
 msgid "Phone Diagram"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..Label1..Caption
-#: Unit1.dfm:113
+#: Unit1.dfm:114
 msgid "Photo vcard:"
 msgstr ""
 
@@ -2544,7 +2814,7 @@ msgid "Picture1.Checked"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..cbObex....Items.Strings
-#: Unit1.dfm:217
+#: Unit1.dfm:218
 msgid "Pictures"
 msgstr ""
 
@@ -2560,16 +2830,12 @@ msgstr ""
 
 #  Seems like a Database field name or index field name
 #. frmSyncPhonebook..ListContacts......WideText
-#: uSyncPhonebook.dfm:172
-#. Form1..ADODataSet1..ADODataSet1postcode..FieldName
-#: express/Fma2Wab/Unit1.dfm:286
-#. Form1..ADODataSet2..ADODataSet2PostalCode..FieldName
-#: express/Fma2Wab/Unit1.dfm:331
+#: uSyncPhonebook.dfm:187
 msgid "PostalCode"
 msgstr ""
 
 #. frmMsgView..FormStorage1....StoredProps.Strings
-#: uMsgView.dfm:1335
+#: uMsgView.dfm:1440
 msgid "PreviewPanel.Height"
 msgstr ""
 
@@ -2580,29 +2846,39 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7422
+#: Unit1.dfm:7471
 msgid "Progress Indicator"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7214
+#: Unit1.dfm:7263
 msgid "Progress Long"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7270
+#: Unit1.dfm:7319
 msgid "Progress Restored"
 msgstr ""
 
+#. MainForm..DetailListView......Caption
+#: express/WAB/Demos/WabDemoMain.dfm:172
+msgid "Prop ID"
+msgstr ""
+
+#. MainForm..DetailListView......Caption
+#: express/WAB/Demos/WabDemoMain.dfm:176
+msgid "Prop value"
+msgstr ""
+
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet3..Button9..Caption
-#: Unit1.dfm:334
+#: Unit1.dfm:335
 msgid "QP Decode"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet3..Button8..Caption
-#: Unit1.dfm:325
+#: Unit1.dfm:326
 msgid "QP Encode"
 msgstr ""
 
@@ -2611,11 +2887,7 @@ msgstr ""
 msgid "R:"
 msgstr ""
 
-#. Form1..Panel1..PageControl1..TabSheet3..Panel4..Label1..Caption
-#: express/Fma2Wab/Unit1.dfm:158
-#. MainForm..Label1..Caption
-#: webupdate/uolTestMainForm.dfm:21
-#: Unit1.pas:8125
+#: Unit1.pas:6944
 msgid "Ready"
 msgstr ""
 
@@ -2633,13 +2905,9 @@ msgstr ""
 
 #  Seems like a Database field name or index field name
 #. frmSyncPhonebook..ListContacts......WideText
-#: uSyncPhonebook.dfm:164
-#. Form1..ADODataSet1..ADODataSet1region..FieldName
-#: express/Fma2Wab/Unit1.dfm:282
-#. Form1..ADODataSet2..ADODataSet2Region..FieldName
-#: express/Fma2Wab/Unit1.dfm:328
-#: Unit1.pas:14441
-#: uSyncPhonebook.pas:3224
+#: uSyncPhonebook.dfm:178
+#: Unit1.pas:13660
+#: uSyncPhonebook.pas:3005
 msgid "Region"
 msgstr ""
 
@@ -2653,8 +2921,8 @@ msgstr ""
 msgid "Rich Text Format Without Objects"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:141
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:199
 msgid "Rog,"
 msgstr ""
 
@@ -2665,7 +2933,7 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7286
+#: Unit1.dfm:7335
 msgid "RunSS"
 msgstr ""
 
@@ -2707,19 +2975,19 @@ msgid "s5"
 msgstr ""
 
 #. Form1..FormStorage1....StoredProps.Strings
-#: Unit1.dfm:7130
+#: Unit1.dfm:7179
 msgid "ScriptControl.Timeout"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7430
+#: Unit1.dfm:7479
 msgid "ScriptEditor"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7150
+#: Unit1.dfm:7199
 msgid "ScriptFile"
 msgstr ""
 
@@ -2729,14 +2997,12 @@ msgid "Sebastian Baciu"
 msgstr ""
 
 #. Form1..ActionList1..ActionSelectAll..Caption
-#: Unit1.dfm:1509
-#. frmImageListXPEdt..ImagesGroupBox..AllButton..Caption
-#: components/ImageListXPEditor.dfm:131
+#: Unit1.dfm:1514
 msgid "Select All"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet2..Button3..Caption
-#: Unit1.dfm:86
+#: Unit1.dfm:87
 msgid "Send AT"
 msgstr ""
 
@@ -2747,33 +3013,33 @@ msgid "Session name missing"
 msgstr ""
 
 #  Doesn't look like text
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:134
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:192
 msgid "Shaw0,"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7374
+#: Unit1.dfm:7423
 msgid "Show Splash"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7390
+#: Unit1.dfm:7439
 msgid "Signal Monitor"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7394
+#: Unit1.dfm:7443
 msgid "Silent Monitor"
 msgstr ""
 
 #. frmContactsMEEdit..FormStorage1..IniSection
-#: uMEEdit.dfm:222
+#: uMEEdit.dfm:226
 #. frmContactsSMEdit..FormStorage1..IniSection
-#: uSIMEdit.dfm:222
+#: uSIMEdit.dfm:226
 msgid "SM"
 msgstr ""
 
@@ -2790,62 +3056,60 @@ msgid "Small Fonts"
 msgstr ""
 
 #. Form1..ActionList1..ActionSMSDownloadInbox..Category
-#: Unit1.dfm:1164
+#: Unit1.dfm:1168
 #. Form1..ActionList1..ActionSMSArchiveMsg..Category
-#: Unit1.dfm:1169
+#: Unit1.dfm:1173
 #. Form1..ActionList1..ActionSMSMoveMsgToArchive..Category
-#: Unit1.dfm:1177
+#: Unit1.dfm:1181
 #. Form1..ActionList1..ActionSMSToFolder..Category
-#: Unit1.dfm:1185
+#: Unit1.dfm:1189
 #. Form1..ActionList1..ActionSMSNewMsg..Category
-#: Unit1.dfm:1193
+#: Unit1.dfm:1197
 #. Form1..ActionList1..ActionSMSReplyMsg..Category
-#: Unit1.dfm:1210
+#: Unit1.dfm:1214
 #. Form1..ActionList1..ActionSMSForwardMsg..Category
-#: Unit1.dfm:1219
+#: Unit1.dfm:1223
 #. Form1..ActionList1..ActionSMSImport..Category
-#: Unit1.dfm:1364
+#: Unit1.dfm:1368
 #. Form1..ActionList1..ActionSMSExport..Category
-#: Unit1.dfm:1371
+#: Unit1.dfm:1375
 #. Form1..ActionList1..ActionSMSDelivery..Category
-#: Unit1.dfm:1749
-#. frmOptions..OptionPages..tabSMS..Caption
-#: uOptions.dfm:1349
+#: Unit1.dfm:1754
 msgid "SMS"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7302
+#: Unit1.dfm:7351
 msgid "SMSDoReset"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7298
+#: Unit1.dfm:7347
 msgid "SMSDoWarning"
 msgstr ""
 
-#. frmCalendarView..FormStorage1..IniFileName
-#: uCalendarView.dfm:242
 #. frmExplore..FormStorage1..IniFileName
-#: uExploreView.dfm:161
+#: uExploreView.dfm:164
 #. frmLog..FormStorage1..IniFileName
 #: uLog.dfm:491
 #. frmContactsMEEdit..FormStorage1..IniFileName
-#: uMEEdit.dfm:221
+#: uMEEdit.dfm:225
 #. frmMsgView..FormStorage1..IniFileName
-#: uMsgView.dfm:1328
+#: uMsgView.dfm:1433
 #. Form1..FormStorage1..IniFileName
-#: Unit1.dfm:7120
+#: Unit1.dfm:7169
 #. frmSelContact..FormStorage1..IniFileName
 #: uSelectContact.dfm:502
 #. frmContactsSMEdit..FormStorage1..IniFileName
-#: uSIMEdit.dfm:221
+#: uSIMEdit.dfm:225
 #. frmSyncBookmarks..FormStorage1..IniFileName
-#: uSyncBookmarks.dfm:85
+#: uSyncBookmarks.dfm:87
+#. frmCalendarView..FormStorage1..IniFileName
+#: uSyncCalendar.dfm:203
 #. frmSyncPhonebook..FormStorage1..IniFileName
-#: uSyncPhonebook.dfm:320
+#: uSyncPhonebook.dfm:352
 msgid "Software\\floAt"
 msgstr ""
 
@@ -2854,26 +3118,28 @@ msgstr ""
 #. frmCalling..FormPlacement1..IniFileName
 #: uCalling.dfm:138
 #. frmMessageContact..FormPlacement1..IniFileName
-#: uComposeSMS.dfm:309
+#: uComposeSMS.dfm:311
 #. frmDebug..FormPlacement1..IniFileName
 #: uDebug.dfm:40
 #. frmKeyPad..FormPlacement1..IniFileName
 #: uKeyPad.dfm:473
 #. frmLog..FormPlacement..IniFileName
 #: uLog.dfm:158
+#. frmNewAlarm..FormPlacement1..IniFileName
+#: uNewAlarm.dfm:5133
 #. frmNewMessage..FormPlacement1..IniFileName
 #: uNewMessage.dfm:115
 msgid "Software\\floAt\\MobileAgent"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..cbObex....Items.Strings
-#: Unit1.dfm:218
+#: Unit1.dfm:219
 msgid "Sounds"
 msgstr ""
 
 #  Doesn't look like text
 #. Form1..FormStorage1....StoredProps.Strings
-#: Unit1.dfm:7134
+#: Unit1.dfm:7183
 msgid "Splitter1.Visible"
 msgstr ""
 
@@ -2884,7 +3150,7 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7206
+#: Unit1.dfm:7255
 msgid "StartMinimized"
 msgstr ""
 
@@ -2896,7 +3162,7 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7146
+#: Unit1.dfm:7195
 msgid "State Monitor"
 msgstr ""
 
@@ -2908,15 +3174,13 @@ msgstr ""
 #. frmSyncBookmarks..ListBookmarks......WideText
 #: uSyncBookmarks.dfm:69
 #. frmSyncPhonebook..ListContacts......WideText
-#: uSyncPhonebook.dfm:62
-#. Form1..ADODataSet1..ADODataSet1Status..FieldName
-#: express/Fma2Wab/Unit1.dfm:203
-#: uCalendarView.pas:1077
+#: uSyncPhonebook.dfm:64
+#: uSyncCalendar.pas:1118
 msgid "Status"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:160
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:219
 msgid "Stefan Jaeger"
 msgstr ""
 
@@ -2925,20 +3189,16 @@ msgstr ""
 msgid "Stefan Jaeger,"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:169
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:231
 msgid "streawkceur,"
 msgstr ""
 
 #  Seems like a Database field name or index field name
 #. frmSyncPhonebook..ListContacts......WideText
-#: uSyncPhonebook.dfm:148
-#. Form1..ADODataSet1..ADODataSet1street..FieldName
-#: express/Fma2Wab/Unit1.dfm:274
-#. Form1..ADODataSet2..ADODataSet2Street..FieldName
-#: express/Fma2Wab/Unit1.dfm:322
-#: Unit1.pas:14435
-#: uSyncPhonebook.pas:3218
+#: uSyncPhonebook.dfm:160
+#: Unit1.pas:13654
+#: uSyncPhonebook.pas:2999
 msgid "Street"
 msgstr ""
 
@@ -2959,19 +3219,19 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7442
+#: Unit1.dfm:7491
 msgid "Sync Bookmarks"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7194
+#: Unit1.dfm:7243
 msgid "Sync Calendar"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7198
+#: Unit1.dfm:7247
 msgid "Sync Clock"
 msgstr ""
 
@@ -2983,7 +3243,7 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7190
+#: Unit1.dfm:7239
 msgid "Sync Contact"
 msgstr ""
 
@@ -3023,135 +3283,95 @@ msgstr ""
 #. frmAddToGroup..Panel1..lbProductName..Font.Name
 #: uAddToGroup.dfm:109
 #. frmAddContact..Panel1..lbProductName..Font.Name
-#: uAddToPhonebook.dfm:83
-#. frmCalendarView..Panel..VpMonthView..DayHeadAttributes.Font.Name
-#: uCalendarView.dfm:46
-#. frmCalendarView..Panel..VpMonthView..DayNumberFont.Name
-#: uCalendarView.dfm:52
-#. frmCalendarView..Panel..VpMonthView..EventFont.Name
-#: uCalendarView.dfm:59
-#. frmCalendarView..Panel..VpTaskList..TaskHeadAttributes.Font.Name
-#: uCalendarView.dfm:97
-#. frmCalendarView..VpDayView..AllDayEventAttributes.Font.Name
-#: uCalendarView.dfm:123
-#. frmCalendarView..VpDayView..HeadAttributes.Font.Name
-#: uCalendarView.dfm:137
-#. frmCalendarView..VpDayView..RowHeadAttributes.HourFont.Name
-#: uCalendarView.dfm:143
-#. frmCalendarView..VpDayView..RowHeadAttributes.MinuteFont.Name
-#: uCalendarView.dfm:148
+#: uAddToPhonebook.dfm:82
 #. frmConnect..ListTasks..Header.Font.Name
 #: uConnProgress.dfm:48
 #. frmDebug..Font.Name
 #: uDebug.dfm:12
+#. frmDetail..PageControl1..TabSheet1..lblName..Font.Name
+#: uEditSMS.dfm:217
+#. frmDetail..PageControl1..TabSheet2..lblName2..Font.Name
+#: uEditSMS.dfm:312
+#. frmDetail..PageControl1..TntTabSheet1..lblName3..Font.Name
+#: uEditSMS.dfm:416
 #. frmExplore..ListItems..Header.Font.Name
 #: uExploreView.dfm:23
-#. frmInfoView..Panel1..InboxPanel..Label17..Font.Name
-#: uInfoView.dfm:84
-#. frmInfoView..Panel1..CallsPanel..Label21..Font.Name
-#: uInfoView.dfm:268
-#. frmInfoView..Panel1..BatteryPanel..Label27..Font.Name
-#: uInfoView.dfm:438
-#. frmInfoView..Panel2..OuboxPanel..Label19..Font.Name
-#: uInfoView.dfm:912
-#. frmInfoView..Panel2..MissedCallsPanel..Label25..Font.Name
-#: uInfoView.dfm:1096
-#. frmInfoView..Panel2..PhoneAddressPanel..Label33..Font.Name
-#: uInfoView.dfm:1272
 #. frmInfoView..TodayCaptionPanel..LMDFill2..Caption.Font.Name
-#: uInfoView.dfm:1751
-#. frmInfoView..TodayCaptionPanel..wDate..Font.Name
-#: uInfoView.dfm:1769
+#: uInfoView.dfm:1715
 #. frmInfoView..TodayCaptionPanel..DiagramPanel..Chart1..Title.Font.Name
-#: uInfoView.dfm:2418
+#: uInfoView.dfm:2370
 #. frmInfoView..TodayCaptionPanel..DiagramPanel..Chart1..LeftAxis.LabelsFont.Name
-#: uInfoView.dfm:2437
+#: uInfoView.dfm:2389
 #. frmInfoView..TodayCaptionPanel..DiagramPanel..Chart1..LeftAxis.Title.Font.Name
-#: uInfoView.dfm:2452
+#: uInfoView.dfm:2404
 #. frmInfoView..TodayCaptionPanel..DiagramPanel..Chart1..Legend.Font.Name
-#: uInfoView.dfm:2458
+#: uInfoView.dfm:2410
 #. frmInfoView..TodayCaptionPanel..DiagramPanel..Chart1..RightAxis.LabelsFont.Name
-#: uInfoView.dfm:2477
+#: uInfoView.dfm:2429
 #. frmInfoView..TodayCaptionPanel..DiagramPanel..Chart1..RightAxis.Title.Font.Name
-#: uInfoView.dfm:2493
+#: uInfoView.dfm:2445
 #. frmLog..vstLog..Header.Font.Name
 #: uLog.dfm:42
 #. frmContactsMEEdit..ListNumbers..Header.Font.Name
 #: uMEEdit.dfm:59
 #. frmMsgView..ListPanel..ListMsg..Header.Font.Name
-#: uMsgView.dfm:255
+#: uMsgView.dfm:391
 #. frmNewDeviceWizard..nbWizard....WelcomePanel..lbProductName..Font.Name
 #: uNewDeviceWizard.dfm:119
 #. frmNewDeviceWizard..nbWizard....TopPanel1..TopCaptionLabel5..Font.Name
-#: uNewDeviceWizard.dfm:551
+#: uNewDeviceWizard.dfm:568
 #. frmNewDeviceWizard..nbWizard....TopPanel2..TntLabel8..Font.Name
-#: uNewDeviceWizard.dfm:665
+#: uNewDeviceWizard.dfm:725
 #. frmNewDeviceWizard..nbWizard....TopPanel3..TntLabel6..Font.Name
-#: uNewDeviceWizard.dfm:806
+#: uNewDeviceWizard.dfm:868
 #. frmNewDeviceWizard..nbWizard....FinishedPanel..Label3..Font.Name
-#: uNewDeviceWizard.dfm:857
+#: uNewDeviceWizard.dfm:919
 #. Form1..FramePanel..DescrPanel..LMDFill1..Caption.Font.Name
-#: Unit1.dfm:415
+#: Unit1.dfm:416
 #. Form1..FramePanel..DescrPanel..lblCurrentPage..Font.Name
-#: Unit1.dfm:432
+#: Unit1.dfm:433
 #. Form1..FramePanel..DescrPanel..pbRSSI..Font.Name
-#: Unit1.dfm:456
+#: Unit1.dfm:457
 #. Form1..FramePanel..DescrPanel..pbPower..Font.Name
-#: Unit1.dfm:484
+#: Unit1.dfm:485
 #. Form1..FramePanel..DescrPanel..lblCurrentPageDtls..Font.Name
-#: Unit1.dfm:503
+#: Unit1.dfm:504
 #. frmOptions..LMDFill1..Caption.Font.Name
 #: uOptions.dfm:31
 #. frmOptions..lblPageCaption..Font.Name
 #: uOptions.dfm:52
 #. frmOptions..OptionPages..tabOutlookContactFolders..GroupBox14..tvOutlookContactFolders..Header.Font.Name
-#: uOptions.dfm:800
+#: uOptions.dfm:814
 #. frmOptions..OptionPages..tabOutlookTaskFolders..gbOutlookTaskFolders..tvOutlookTaskFolders..Header.Font.Name
-#: uOptions.dfm:1817
+#: uOptions.dfm:1848
 #. frmOptions..OptionPages..tabOutlookCalendarFolders..TntGroupBox1..tvOutlookCalendarFolders..Header.Font.Name
-#: uOptions.dfm:1955
+#: uOptions.dfm:1986
 #. frmOptions..OptionTree..Header.Font.Name
-#: uOptions.dfm:2648
+#: uOptions.dfm:2771
 #. frmEditor..Panel2..Script..Gutter.Font.Name
 #: uScriptEditor.dfm:157
 #. frmContactsSMEdit..ListNumbers..Header.Font.Name
 #: uSIMEdit.dfm:59
-#. frmDetail..PageControl1..TabSheet1..lblName..Font.Name
-#: uSMSDetail.dfm:216
-#. frmDetail..PageControl1..TabSheet2..lblName2..Font.Name
-#: uSMSDetail.dfm:286
 #. frmSyncBookmarks..ListBookmarks..Header.Font.Name
 #: uSyncBookmarks.dfm:22
+#. frmCalendarView..Panel..VpMonthView..DayHeadAttributes.Font.Name
+#: uSyncCalendar.dfm:46
+#. frmCalendarView..Panel..VpMonthView..DayNumberFont.Name
+#: uSyncCalendar.dfm:52
+#. frmCalendarView..Panel..VpMonthView..EventFont.Name
+#: uSyncCalendar.dfm:59
+#. frmCalendarView..Panel..VpTaskList..TaskHeadAttributes.Font.Name
+#: uSyncCalendar.dfm:97
+#. frmCalendarView..VpDayView..AllDayEventAttributes.Font.Name
+#: uSyncCalendar.dfm:126
+#. frmCalendarView..VpDayView..HeadAttributes.Font.Name
+#: uSyncCalendar.dfm:140
+#. frmCalendarView..VpDayView..RowHeadAttributes.HourFont.Name
+#: uSyncCalendar.dfm:146
+#. frmCalendarView..VpDayView..RowHeadAttributes.MinuteFont.Name
+#: uSyncCalendar.dfm:151
 #. frmSyncPhonebook..ListContacts..Header.Font.Name
 #: uSyncPhonebook.dfm:23
-#. frmWebUpdate..Font.Name
-#: components/WebUpdateWizard.dfm:13
-#. frmWebUpdate..nbWizard....WelcomePanel..lbProductName..Font.Name
-#: components/WebUpdateWizard.dfm:123
-#. frmWebUpdate..nbWizard....TopPanel1..TopCaptionLabel1..Font.Name
-#: components/WebUpdateWizard.dfm:245
-#. frmWebUpdate..nbWizard....TopPanel2..TopCaptionLabel2..Font.Name
-#: components/WebUpdateWizard.dfm:387
-#. frmWebUpdate..nbWizard....TopPanel3..TopCaptionLabel3..Font.Name
-#: components/WebUpdateWizard.dfm:494
-#. frmWebUpdate..nbWizard....TopPanel4..TopCaptionLabel4..Font.Name
-#: components/WebUpdateWizard.dfm:584
-#. frmWebUpdate..nbWizard....TopPanel5..TopCaptionLabel5..Font.Name
-#: components/WebUpdateWizard.dfm:765
-#. frmWebUpdate..nbWizard....TopPanel6..TopCaptionLabel6..Font.Name
-#: components/WebUpdateWizard.dfm:841
-#. frmWebUpdate..nbWizard....FinishedPanel..Label3..Font.Name
-#: components/WebUpdateWizard.dfm:896
-#. Form1..Font.Name
-#: express/Fma2Wab/Unit1.dfm:11
-#. Form1..Panel1..PageControl1..TabSheet1..DBGrid1..TitleFont.Name
-#: express/Fma2Wab/Unit1.dfm:53
-#. Form1..Panel1..PageControl1..TabSheet2..DBGrid2..TitleFont.Name
-#: express/Fma2Wab/Unit1.dfm:135
-#. MainForm..Font.Name
-#: webupdate/uolTestMainForm.dfm:11
-#. Form1..Font.Name
-#: webupdate/WebWizardTestForm.dfm:12
 msgid "Tahoma"
 msgstr ""
 
@@ -3160,17 +3380,17 @@ msgstr ""
 #. frmConflictChanges..lblType..Caption
 #: uConflictChanges.dfm:21
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..Label4..Caption
-#: Unit1.dfm:128
+#: Unit1.dfm:129
 msgid "Target:"
 msgstr ""
 
 #. Form1..CoolBar..tbExplorer..Caption
-#: Unit1.dfm:964
+#: Unit1.dfm:960
 msgid "tbExplorer"
 msgstr ""
 
 #. Form1..CoolBar..tbMainMenu..Caption
-#: Unit1.dfm:910
+#: Unit1.dfm:903
 msgid "tbMainMenu"
 msgstr ""
 
@@ -3179,46 +3399,51 @@ msgstr ""
 msgid "tbMessage"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:146
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:204
 msgid "tdjohnston,"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..cbObex....Items.Strings
-#: Unit1.dfm:213
+#: Unit1.dfm:214
 msgid "telecom/cal.vcs"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..cbObex....Items.Strings
-#: Unit1.dfm:214
+#: Unit1.dfm:215
 msgid "telecom/cal/info.log"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..cbObex....Items.Strings
-#: Unit1.dfm:215
+#: Unit1.dfm:216
 msgid "telecom/cal/luid/cc.log"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..cbObex..Text
-#: Unit1.dfm:208
+#: Unit1.dfm:209
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..cbObex....Items.Strings
-#: Unit1.dfm:210
+#: Unit1.dfm:211
 msgid "telecom/pb.vcf"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..cbObex....Items.Strings
-#: Unit1.dfm:211
+#: Unit1.dfm:212
 msgid "telecom/pb/info.log"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..cbObex....Items.Strings
-#: Unit1.dfm:212
+#: Unit1.dfm:213
 msgid "telecom/pb/luid/cc.log"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet2..Caption
-#: Unit1.dfm:59
+#: Unit1.dfm:60
 msgid "Terminal"
+msgstr ""
+
+#. MainForm..ToolBar1..ToolButton10..Hint
+#: express/WAB/Demos/WabDemoMain.dfm:101
+msgid "Test 1"
 msgstr ""
 
 #. Form1..Caption
@@ -3234,13 +3459,15 @@ msgstr ""
 msgid "testACG1=111"
 msgstr ""
 
+#. frmNewAlarm..lbText..Caption
+#: uNewAlarm.dfm:33
 #. frmNewMessage..lbText..Caption
-#: uNewMessage.dfm:45
+#: uNewMessage.dfm:44
 msgid "Text"
 msgstr ""
 
 #. frmEditContact..SaveDialog1..Filter
-#: uEditContact.dfm:1116
+#: uEditContact.dfm:1317
 msgid "Text Files (*.txt)|*.txt|All Files|*.*"
 msgstr ""
 
@@ -3250,12 +3477,12 @@ msgid "TextLabel"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..cbObex....Items.Strings
-#: Unit1.dfm:219
+#: Unit1.dfm:220
 msgid "Themes"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:144
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:202
 msgid "Thomas,"
 msgstr ""
 
@@ -3266,44 +3493,39 @@ msgstr ""
 
 #  Doesn't look like text
 #. Form1..FormStorage1....StoredProps.Strings
-#: Unit1.dfm:7131
+#: Unit1.dfm:7180
 msgid "Timer1.Interval"
 msgstr ""
 
 #  Seems like a Database field name or index field name
 #. frmSyncPhonebook..ListContacts......WideText
-#: uSyncPhonebook.dfm:78
-#. Form1..ADODataSet1..ADODataSet1Title..FieldName
-#: express/Fma2Wab/Unit1.dfm:206
-#. Form1..ADODataSet2..ADODataSet2Title..FieldName
-#: express/Fma2Wab/Unit1.dfm:306
-#: Unit1.pas:14402
-#: uSyncBookmarks.pas:1008
-#: uSyncPhonebook.pas:3212
+#: uSyncPhonebook.dfm:82
+#: Unit1.pas:13621
+#: uSyncBookmarks.pas:955
+#: uSyncPhonebook.pas:2993
 msgid "Title"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet3..Label3..Caption
-#: Unit1.dfm:266
+#: Unit1.dfm:267
+#: uEditSMS.pas:145
 msgid "To:"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:149
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:207
 msgid "Todd_jg,"
 msgstr ""
 
 #  Doesn't look like text
 #. frmMessageContact..CoolBar1..ToolBar1..Caption
 #: uComposeSMS.dfm:55
-#. MainForm..ToolBar1..Caption
-#: express/WAB/Demos/WabDemoMain.dfm:39
 msgid "ToolBar1"
 msgstr ""
 
 #  Doesn't look like text
 #. frmMessageContact..CoolBar1..ToolBar2..Caption
-#: uComposeSMS.dfm:164
+#: uComposeSMS.dfm:165
 msgid "ToolBar2"
 msgstr ""
 
@@ -3315,7 +3537,7 @@ msgstr ""
 
 #  Doesn't look like text
 #. frmMessageContact..CoolBar1..ToolBar1..ToolButton1..Caption
-#: uComposeSMS.dfm:133
+#: uComposeSMS.dfm:134
 msgid "ToolButton1"
 msgstr ""
 
@@ -3333,13 +3555,13 @@ msgstr ""
 
 #  Doesn't look like text
 #. Form1..CoolBar..tbStandard..ToolButton14..Caption
-#: Unit1.dfm:696
+#: Unit1.dfm:687
 msgid "ToolButton14"
 msgstr ""
 
 #  Doesn't look like text
 #. Form1..CoolBar..tbStandard..ToolButton15..Caption
-#: Unit1.dfm:735
+#: Unit1.dfm:726
 msgid "ToolButton15"
 msgstr ""
 
@@ -3351,25 +3573,25 @@ msgstr ""
 
 #  Doesn't look like text
 #. Form1..CoolBar..tbMessages..ToolButton19..Caption
-#: Unit1.dfm:802
+#: Unit1.dfm:795
 msgid "ToolButton19"
 msgstr ""
 
 #  Doesn't look like text
 #. Form1..CoolBar..tbStandard..ToolButton2..Caption
-#: Unit1.dfm:670
+#: Unit1.dfm:674
 msgid "ToolButton2"
 msgstr ""
 
 #  Doesn't look like text
 #. Form1..CoolBar..tbStandard..ToolButton21..Caption
-#: Unit1.dfm:657
+#: Unit1.dfm:661
 msgid "ToolButton21"
 msgstr ""
 
 #  Doesn't look like text
 #. Form1..CoolBar..tbExplorer..ToolButton22..Caption
-#: Unit1.dfm:980
+#: Unit1.dfm:977
 msgid "ToolButton22"
 msgstr ""
 
@@ -3387,116 +3609,112 @@ msgstr ""
 
 #  Doesn't look like text
 #. Form1..CoolBar..tbMessages..ToolButton28..Caption
-#: Unit1.dfm:853
+#: Unit1.dfm:846
 msgid "ToolButton28"
 msgstr ""
 
 #  Doesn't look like text
 #. Form1..CoolBar..tbStandard..ToolButton3..Caption
-#: Unit1.dfm:714
+#: Unit1.dfm:705
 msgid "ToolButton3"
 msgstr ""
 
 #  Doesn't look like text
 #. Form1..CoolBar..tbCalls..ToolButton33..Caption
-#: Unit1.dfm:892
+#: Unit1.dfm:885
 msgid "ToolButton33"
 msgstr ""
 
 #  Doesn't look like text
 #. Form1..CoolBar..tbStandard..ToolButton36..Caption
-#: Unit1.dfm:727
+#: Unit1.dfm:718
 msgid "ToolButton36"
 msgstr ""
 
 #  Doesn't look like text
 #. Form1..CoolBar..tbMessages..ToolButton4..Caption
-#: Unit1.dfm:835
-#. MainForm..ToolBar1..ToolButton4..Caption
-#: express/WAB/Demos/WabDemoMain.dfm:53
+#: Unit1.dfm:828
 msgid "ToolButton4"
 msgstr ""
 
 #  Doesn't look like text
 #. Form1..CoolBar..tbExplorer..ToolButton40..Caption
-#: Unit1.dfm:998
+#: Unit1.dfm:990
 msgid "ToolButton40"
 msgstr ""
 
 #  Doesn't look like text
 #. frmMessageContact..CoolBar1..ToolBar1..ToolButton6..Caption
-#: uComposeSMS.dfm:74
+#: uComposeSMS.dfm:75
 msgid "ToolButton6"
 msgstr ""
 
 #  Doesn't look like text
 #. frmMessageContact..CoolBar1..ToolBar1..ToolButton8..Caption
-#: uComposeSMS.dfm:91
-#. MainForm..ToolBar1..ToolButton8..Caption
-#: express/WAB/Demos/WabDemoMain.dfm:76
+#: uComposeSMS.dfm:92
 msgid "ToolButton8"
 msgstr ""
 
 #  Doesn't look like text
 #. frmMessageContact..CoolBar1..ToolBar1..ToolButton9..Caption
-#: uComposeSMS.dfm:107
+#: uComposeSMS.dfm:108
 #. Form1..CoolBar..tbExplorer..ToolButton9..Caption
-#: Unit1.dfm:1011
-#. MainForm..ToolBar1..ToolButton9..Caption
-#: express/WAB/Demos/WabDemoMain.dfm:94
+#: Unit1.dfm:1013
 msgid "ToolButton9"
 msgstr ""
 
 #. Form1..ActionList1..ActionToolsKeyPad..Category
-#: Unit1.dfm:1262
+#: Unit1.dfm:1266
 #. Form1..ActionList1..ActionToolsMinuteMinder..Category
-#: Unit1.dfm:1269
+#: Unit1.dfm:1273
 #. Form1..ActionList1..ActionToolsOptions..Category
-#: Unit1.dfm:1289
+#: Unit1.dfm:1293
 #. Form1..ActionList1..ActionToolsEditScript..Category
-#: Unit1.dfm:1310
+#: Unit1.dfm:1314
 #. Form1..ActionList1..ActionToolsPostNote..Category
-#: Unit1.dfm:1324
+#: Unit1.dfm:1328
 #. Form1..ActionList1..ActionToolsPostBookmark..Category
-#: Unit1.dfm:1332
+#: Unit1.dfm:1336
 #. Form1..ActionList1..ActionToolsPostAlarm..Category
-#: Unit1.dfm:1340
+#: Unit1.dfm:1344
 #. Form1..ActionList1..ActionToolsChangeProfile..Category
-#: Unit1.dfm:1348
+#: Unit1.dfm:1352
 #. Form1..ActionList1..ActionToolsEditProfile..Category
-#: Unit1.dfm:1356
+#: Unit1.dfm:1360
 #. Form1..ActionList1..ActionToolsUpload..Category
-#: Unit1.dfm:1411
+#: Unit1.dfm:1416
 #. Form1..ActionList1..ActionToolsDownload..Category
-#: Unit1.dfm:1467
+#: Unit1.dfm:1472
 #. Form1..ActionList1..ActionContactsOwn..Category
-#: Unit1.dfm:1516
+#: Unit1.dfm:1521
 #. Form1..ActionList1..ActionToolsKeybLock..Category
-#: Unit1.dfm:1533
+#: Unit1.dfm:1538
 #. Form1..ActionList1..ActionToolsWapHomepage..Category
-#: Unit1.dfm:1573
+#: Unit1.dfm:1578
 #. Form1..ActionList1..ActionToolsCreateGroup..Category
-#: Unit1.dfm:1589
+#: Unit1.dfm:1594
 #. Form1..ActionList1..ActionToolsSilent..Category
-#: Unit1.dfm:1597
+#: Unit1.dfm:1602
 #. Form1..ActionList1..ActionToolsPowerOff..Category
-#: Unit1.dfm:1606
+#: Unit1.dfm:1611
 #. Form1..ActionList1..ActionSyncPhonebook..Category
-#: Unit1.dfm:1614
+#: Unit1.dfm:1619
 #. Form1..ActionList1..ActionSyncCalendar..Category
-#: Unit1.dfm:1622
+#: Unit1.dfm:1627
 #. Form1..ActionList1..ActionSyncWithOutlook..Category
-#: Unit1.dfm:1630
+#: Unit1.dfm:1635
 #. Form1..ActionList1..ActionSyncBookmarks..Category
-#: Unit1.dfm:1638
+#: Unit1.dfm:1643
 #. Form1..ActionList1..ActionSyncClock..Category
-#: Unit1.dfm:1702
+#: Unit1.dfm:1707
 #. Form1..ActionList1..ActionSyncAll..Category
-#: Unit1.dfm:1726
+#: Unit1.dfm:1731
 #. Form1..ActionList1..ActionSyncMessages..Category
-#: Unit1.dfm:1734
-#. MainForm..MainMenu1..Tools1..Caption
-#: express/WAB/Demos/WabDemoMain.dfm:210
+#: Unit1.dfm:1739
+#. Form1..ActionList1..ActionToolsExportCalendar..Category
+#: Unit1.dfm:1770
+#. Form1..ActionList1..ActionToolsImportCalendar..Category
+#: Unit1.dfm:1777
 msgid "Tools"
 msgstr ""
 
@@ -3513,6 +3731,11 @@ msgstr ""
 #. Form1..FormStorage1......Value
 #: Unit1.dfm:6748
 msgid "True"
+msgstr ""
+
+#. frmFolderProps..PageControl1..tsGeneral..pcGeneral..tsAlarm..Caption
+#: uFolderProps.dfm:553
+msgid "tsAlarm"
 msgstr ""
 
 #. frmOptions..OptionPages..tabConnectivity..pcConnectDetails..tsConnectBT..Caption
@@ -3536,32 +3759,32 @@ msgid "tsContact"
 msgstr ""
 
 #. frmFolderProps..PageControl1..tsGeneral..pcGeneral..tsDatabase..Caption
-#: uFolderProps.dfm:364
+#: uFolderProps.dfm:348
 msgid "tsDatabase"
 msgstr ""
 
 #. frmFolderProps..PageControl1..tsGeneral..pcGeneral..tsFile..Caption
-#: uFolderProps.dfm:420
+#: uFolderProps.dfm:404
 msgid "tsFile"
 msgstr ""
 
 #. frmFolderProps..PageControl1..tsFilePreview..pcFile..tsFileImage..Caption
-#: uFolderProps.dfm:722
+#: uFolderProps.dfm:705
 msgid "tsFileImage"
 msgstr ""
 
 #. frmFolderProps..PageControl1..tsFilePreview..pcFile..tsFileSound..Caption
-#: uFolderProps.dfm:893
+#: uFolderProps.dfm:876
 msgid "tsFileSound"
 msgstr ""
 
 #. frmFolderProps..PageControl1..tsFilePreview..pcFile..tsFileTheme..Caption
-#: uFolderProps.dfm:967
+#: uFolderProps.dfm:950
 msgid "tsFileTheme"
 msgstr ""
 
 #. frmFolderProps..PageControl1..tsGeneral..pcGeneral..tsGroup..Caption
-#: uFolderProps.dfm:522
+#: uFolderProps.dfm:506
 msgid "tsGroup"
 msgstr ""
 
@@ -3571,7 +3794,7 @@ msgid "tsPhone"
 msgstr ""
 
 #. frmEditContact..SaveDialog1..DefaultExt
-#: uEditContact.dfm:1115
+#: uEditContact.dfm:1316
 msgid "txt"
 msgstr ""
 
@@ -3592,22 +3815,22 @@ msgid "UC9"
 msgstr ""
 
 #  Doesn't look like text
-#: uComposeSMS.pas:282
+#: uComposeSMS.pas:133
 msgid "UCS-2"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet3..Button7..Caption
-#: Unit1.dfm:316
+#: Unit1.dfm:317
 msgid "UCS-2 Decode"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet3..Button6..Caption
-#: Unit1.dfm:307
+#: Unit1.dfm:308
 msgid "UCS-2 Encode"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:171
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:233
 msgid "Ultimatex,"
 msgstr ""
 
@@ -3638,31 +3861,34 @@ msgid "Update..."
 msgstr ""
 
 #. Form1..FmaWebUpdate1..LogFilename
-#: Unit1.dfm:8712
-#. Form1..FmaWebUpdate1..LogFilename
-#: webupdate/WebWizardTestForm.dfm:931
+#: Unit1.dfm:8807
 msgid "update.txt"
+msgstr ""
+
+#. Form1..Panel1..PageControl1..TabSheet2..Panel3..Edit2..Text
+#: express/Fma2Wab/Unit1.dfm:119
+msgid "username.wab"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7362
+#: Unit1.dfm:7411
 msgid "UseScript"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7434
+#: Unit1.dfm:7483
 msgid "UseScriptEditorExt"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet3..Button5..Caption
-#: Unit1.dfm:298
+#: Unit1.dfm:299
 msgid "UTF8 Decode"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet3..Button4..Caption
-#: Unit1.dfm:289
+#: Unit1.dfm:290
 msgid "UTF8 Encode"
 msgstr ""
 
@@ -3674,17 +3900,15 @@ msgid "v"
 msgstr ""
 
 #. frmOptions..OptionPages..tabScripting..GroupBox19..lblScriptType..Caption
-#: uOptions.dfm:1016
+#: uOptions.dfm:1024
 msgid "vbscript"
 msgstr ""
 
 #. Form1..ScriptControl..Language
-#: Unit1.dfm:7457
+#: Unit1.dfm:7550
 msgid "VBScript"
 msgstr ""
 
-#. frmOptions..OpenDialog1....Filter
-#: uOptions.dfm:2687
 #. frmEditor..OpenDialog1....Filter
 #: uScriptEditor.dfm:592
 #. frmEditor..SaveDialog1....Filter
@@ -3699,14 +3923,14 @@ msgid "VBScript Files (*.vbs)|*.vbs"
 msgstr ""
 
 #. frmContactsMEEdit..OpenDialog1..Filter
-#: uMEEdit.dfm:237
+#: uMEEdit.dfm:241
 #. frmContactsSMEdit..OpenDialog1..Filter
-#: uSIMEdit.dfm:237
+#: uSIMEdit.dfm:241
 msgid "vCard Files (*.vcf)|*.vcf|All Files|*.*"
 msgstr ""
 
 #. Form1..SaveDialog2....Filter
-#: Unit1.dfm:7533
+#: Unit1.dfm:7628
 msgid "vCard files (*.vcf)|*.vcf|CSV files (*.csv)|*.csv|XML files "
 "(*.xml)|*.xml|Html files (*.html)|*.html"
 msgstr ""
@@ -3717,9 +3941,14 @@ msgid "vCard files (*.vcf)|*.vcf|CSV files (*.csv)|*.csv|XML files "
 "(*.adr)|*.adr"
 msgstr ""
 
-#: Unit1.pas:7796
+#: Unit1.pas:6595
 msgid "vCard files (*.vcf)|*.vcf|XML files "
 "(*.xml)|*.xml|"
+msgstr ""
+
+#. AboutBox..Label2..Caption
+#: express/WAB/Demos/About.dfm:61
+msgid "Version 1.0"
 msgstr ""
 
 #. frmAbout..Panel1..LMDScrollText1....Lines.Strings
@@ -3737,8 +3966,8 @@ msgstr ""
 msgid "Vo.x"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:129
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:187
 msgid "VoSSy,"
 msgstr ""
 
@@ -3748,23 +3977,44 @@ msgid "voxik@users.sourceforge.net"
 msgstr ""
 
 #. frmCalendarView..FormStorage1....StoredProps.Strings
-#: uCalendarView.dfm:248
+#: uSyncCalendar.dfm:209
 msgid "VpDayView.Width"
 msgstr ""
 
 #. frmCalendarView..FormStorage1....StoredProps.Strings
-#: uCalendarView.dfm:247
+#: uSyncCalendar.dfm:208
 msgid "VpMonthView.Height"
 msgstr ""
 
-#. frmAbout..Panel1..TntPanel1..CreditsText....Lines.Strings
-#: uAbout.dfm:121
+#. MainForm..OpenDialog..DefaultExt
+#: express/WAB/Demos/WabDemoMain.dfm:301
+msgid "wab"
+msgstr ""
+
+#. MainForm..OpenDialog..Filter
+#: express/WAB/Demos/WabDemoMain.dfm:302
+msgid "WAB file (*.wab)|*.wab"
+msgstr ""
+
+#. MainForm..Caption
+#: express/WAB/Demos/WabDemoMain.dfm:6
+msgid "WAB viewer"
+msgstr ""
+
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:182
 msgid "Warren,"
 msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7426
+#: Unit1.dfm:7503
+msgid "Web Update Date"
+msgstr ""
+
+#  Seems like a component name
+#. Form1..FormStorage1......Name
+#: Unit1.dfm:7475
 msgid "Web Update Mode"
 msgstr ""
 
@@ -3790,19 +4040,24 @@ msgstr ""
 
 #  Seems like a component name
 #. Form1..FormStorage1......Name
-#: Unit1.dfm:7438
+#: Unit1.dfm:7487
 msgid "Welcome Tips"
 msgstr ""
 
 #. Form1..ActionList1..ActionWindowRestore..Category
-#: Unit1.dfm:1284
+#: Unit1.dfm:1288
 #. Form1..ActionList1..ActionWindowMinimize..Category
-#: Unit1.dfm:1462
+#: Unit1.dfm:1467
 msgid "Window"
 msgstr ""
 
+#. AboutBox..Label1..Caption
+#: express/WAB/Demos/About.dfm:54
+msgid "Window address book API demo"
+msgstr ""
+
 #. frmFolderProps..SaveDialog1..Filter
-#: uFolderProps.dfm:1137
+#: uFolderProps.dfm:1120
 msgid "Windows Bitmap (*.bmp)|*.bmp|All Files|*.*"
 msgstr ""
 
@@ -3815,25 +4070,25 @@ msgid "WorkPhone"
 msgstr ""
 
 #. frmInfoView..TodayCaptionPanel..DiagramPanel..Chart1..Series1..XValues.Name
-#: uInfoView.dfm:2514
+#: uInfoView.dfm:2466
 #. frmInfoView..TodayCaptionPanel..DiagramPanel..Chart1..Series3..XValues.Name
-#: uInfoView.dfm:2532
+#: uInfoView.dfm:2484
 #. frmInfoView..TodayCaptionPanel..DiagramPanel..Chart1..Series2..XValues.Name
-#: uInfoView.dfm:2553
+#: uInfoView.dfm:2505
 msgid "X"
 msgstr ""
 
 #. Form1..FramePanel..PanelTest..TntPageControl1..TntTabSheet1..cbObex....Items.Strings
-#: Unit1.dfm:216
+#: Unit1.dfm:217
 msgid "x-obex/folder-listing"
 msgstr ""
 
 #. frmInfoView..TodayCaptionPanel..DiagramPanel..Chart1..Series1..YValues.Name
-#: uInfoView.dfm:2518
+#: uInfoView.dfm:2470
 #. frmInfoView..TodayCaptionPanel..DiagramPanel..Chart1..Series3..YValues.Name
-#: uInfoView.dfm:2536
+#: uInfoView.dfm:2488
 #. frmInfoView..TodayCaptionPanel..DiagramPanel..Chart1..Series2..YValues.Name
-#: uInfoView.dfm:2557
+#: uInfoView.dfm:2509
 msgid "Y"
 msgstr ""
 
@@ -3842,243 +4097,38 @@ msgstr ""
 msgid "z_stoichev@users.sourceforge.net"
 msgstr ""
 
-#. frmFolderProps..PageControl1..tsGeneral..pcGeneral..tsAlarm..Caption
-#: uFolderProps.dfm:570 
-msgid "tsAlarm"
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:186
+msgid "vo.x,"
 msgstr ""
 
-#. frmKRMTest..Caption
-#: components/Kagi/Samples/Delphi/krmForm.dfm:6 
-msgid "KRM Test"
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:224
+msgid "Sebastian Baciu,"
 msgstr ""
 
-#. frmKRMTest..lblMessages..Caption
-#: components/Kagi/Samples/Delphi/krmForm.dfm:27 
-msgid "Messages:"
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:225
+msgid "ExpertOne,"
 msgstr ""
 
-#. frmKRMTest..btnStartWizard..Caption
-#: components/Kagi/Samples/Delphi/krmForm.dfm:42 
-msgid "&Start Wizard"
+#. frmAbout..Panel1..ContributorsPanel..CreditsText....Lines.Strings
+#: uAbout.dfm:226
+msgid "Dako"
 msgstr ""
 
-#. frmKRMTest..btnExit..Caption
-#: components/Kagi/Samples/Delphi/krmForm.dfm:52 
-msgid "&Exit"
+#. frmCalling..FormPlacement1..IniSection
+#: uCalling.dfm:139
+msgid "NewCallWindow"
 msgstr ""
 
-#. frmKRMTest..btnCloseWizard..Caption
-#: components/Kagi/Samples/Delphi/krmForm.dfm:61 
-msgid "&Close Wizard"
+#. frmNewAlarm..FormPlacement1..IniSection
+#: uNewAlarm.dfm:5134
+msgid "NewAlarmWindow"
 msgstr ""
 
-#. frmKRMTest..oKagiRegModule..DLL
-#: components/Kagi/Samples/Delphi/krmForm.dfm:67 
-msgid "krm.dll"
-msgstr ""
-
-#. frmKRMTest..oKagiRegModule..Country
-#: components/Kagi/Samples/Delphi/krmForm.dfm:69 
-msgid "Germany"
-msgstr ""
-
-#. frmKRMTest..oKagiRegModule..Currency
-#: components/Kagi/Samples/Delphi/krmForm.dfm:71 
-msgid "EUR"
-msgstr ""
-
-#. frmKRMTest..oKagiRegModule..SupplierName
-#: components/Kagi/Samples/Delphi/krmForm.dfm:75 
-msgid "fkWare"
-msgstr ""
-
-#. frmKRMTest..oKagiRegModule..SupplierURL
-#: components/Kagi/Samples/Delphi/krmForm.dfm:76 
-msgid "http://www.fkware.com"
-msgstr ""
-
-#. frmKRMTest..oKagiRegModule..SupplierEmail
-#: components/Kagi/Samples/Delphi/krmForm.dfm:77 
-msgid "krm@fkware.com"
-msgstr ""
-
-#. frmKRMTest..oKagiRegModule..TransactionFailureURL
-#: components/Kagi/Samples/Delphi/krmForm.dfm:78 
-msgid "http://www.mywebsite.com/transactionFailure.htm"
-msgstr ""
-
-#. frmKRMTest..oKagiRegModule..ConnectFailureURL
-#: components/Kagi/Samples/Delphi/krmForm.dfm:79 
-msgid "http://www.mywebsite.com/connectionFailure.htm"
-msgstr ""
-
-#. frmKRMTest..oKagiRegModule..ProductSupplierSKU
-#: components/Kagi/Samples/Delphi/krmForm.dfm:80 
-msgid "n/a"
-msgstr ""
-
-#. frmKRMTest..oKagiRegModule....ProductName.Strings
-#: components/Kagi/Samples/Delphi/krmForm.dfm:84 
-msgid "en=Digital Metronome"
-msgstr ""
-
-#. frmKRMTest..oKagiRegModule..LangCode
-#: components/Kagi/Samples/Delphi/krmForm.dfm:85 
-msgid "en"
-msgstr ""
-
-#. Form1..Caption
-#: express/Fma2Wab/Unit1.dfm:6 
-msgid "FMA - Outlook Express - Demo"
-msgstr ""
-
-#. Form1..Panel1..PageControl1..TabSheet1..Panel2..Edit1..Text
-#: express/Fma2Wab/Unit1.dfm:84 
-msgid "Contacts.SYNC.dat"
-msgstr ""
-
-#. Form1..Panel1..PageControl1..TabSheet2..Caption
-#: express/Fma2Wab/Unit1.dfm:89 
-msgid "Outlook Express"
-msgstr ""
-
-#. Form1..Panel1..PageControl1..TabSheet2..Panel3..Edit2..Text
-#: express/Fma2Wab/Unit1.dfm:119 
-msgid "username.wab"
-msgstr ""
-
-#. Form1..Panel1..PageControl1..TabSheet3..Panel4..Button3..Caption
-#: express/Fma2Wab/Unit1.dfm:166 
-msgid "FMA -> WAB"
-msgstr ""
-
-#. AboutBox..Caption
-#: express/WAB/Demos/About.dfm:5 
-msgid "About ..."
-msgstr ""
-
-#. AboutBox..JediLinkLabel..Caption
-#: express/WAB/Demos/About.dfm:25 
-msgid "http://delphi-jedi.org/"
-msgstr ""
-
-#. AboutBox..Label1..Caption
-#: express/WAB/Demos/About.dfm:54 
-msgid "Window address book API demo"
-msgstr ""
-
-#. AboutBox..Label2..Caption
-#: express/WAB/Demos/About.dfm:61 
-msgid "Version 1.0"
-msgstr ""
-
-#. AboutBox..Label3..Caption
-#: express/WAB/Demos/About.dfm:68 
-msgid "Author: Petr Vones"
-msgstr ""
-
-#. MainForm..Caption
-#: express/WAB/Demos/WabDemoMain.dfm:6 
-msgid "WAB viewer"
-msgstr ""
-
-#. MainForm..ToolBar1..ToolButton10..Hint
-#: express/WAB/Demos/WabDemoMain.dfm:101 
-msgid "Test 1"
-msgstr ""
-
-#. MainForm..ToolBar1..ToolButton11..Hint
-#: express/WAB/Demos/WabDemoMain.dfm:109 
-msgid "Insert GUID"
-msgstr ""
-
-#. MainForm..AdrBookListView......Caption
-#: express/WAB/Demos/WabDemoMain.dfm:127 
-msgid "Email address"
-msgstr ""
-
-#. MainForm..AdrBookListView......Caption
-#: express/WAB/Demos/WabDemoMain.dfm:131 
-msgid "Home page"
-msgstr ""
-
-#. MainForm..DetailListView......Caption
-#: express/WAB/Demos/WabDemoMain.dfm:168 
-msgid "Index"
-msgstr ""
-
-#. MainForm..DetailListView......Caption
-#: express/WAB/Demos/WabDemoMain.dfm:172 
-msgid "Prop ID"
-msgstr ""
-
-#. MainForm..DetailListView......Caption
-#: express/WAB/Demos/WabDemoMain.dfm:176 
-msgid "Prop value"
-msgstr ""
-
-#. MainForm..ActionList1..Open1..Caption
-#: express/WAB/Demos/WabDemoMain.dfm:242 
-msgid "Open ..."
-msgstr ""
-
-#. MainForm..ActionList1..Open1..Hint
-#: express/WAB/Demos/WabDemoMain.dfm:243 
-msgid "Open a WAB file"
-msgstr ""
-
-#. MainForm..ActionList1..Exit1..Caption
-#: express/WAB/Demos/WabDemoMain.dfm:249 
-msgid "Exit"
-msgstr ""
-
-#. MainForm..ActionList1..Properties1..Hint
-#: express/WAB/Demos/WabDemoMain.dfm:255 
-msgid "Item properties"
-msgstr ""
-
-#. MainForm..ActionList1..Delete1..Hint
-#: express/WAB/Demos/WabDemoMain.dfm:271 
-msgid "Delete item"
-msgstr ""
-
-#. MainForm..ActionList1..About1..Caption
-#: express/WAB/Demos/WabDemoMain.dfm:278 
-msgid "About..."
-msgstr ""
-
-#. MainForm..ActionList1..NewUser1..Caption
-#: express/WAB/Demos/WabDemoMain.dfm:283 
-msgid "New user"
-msgstr ""
-
-#. MainForm..ActionList1..NewUser1..Hint
-#: express/WAB/Demos/WabDemoMain.dfm:284 
-msgid "Create new user"
-msgstr ""
-
-#. MainForm..ActionList1..EditValue1..Caption
-#: express/WAB/Demos/WabDemoMain.dfm:291 
-msgid "Edit value"
-msgstr ""
-
-#. MainForm..ActionList1..EditValue1..Hint
-#: express/WAB/Demos/WabDemoMain.dfm:292 
-msgid "Edit prop value"
-msgstr ""
-
-#. MainForm..OpenDialog..DefaultExt
-#: express/WAB/Demos/WabDemoMain.dfm:301 
-msgid "wab"
-msgstr ""
-
-#. MainForm..OpenDialog..Filter
-#: express/WAB/Demos/WabDemoMain.dfm:302 
-msgid "WAB file (*.wab)|*.wab"
-msgstr ""
-
-#. MainForm..OpenDialog..Title
-#: express/WAB/Demos/WabDemoMain.dfm:304 
-msgid "Open a copy of the selected file"
+#. frmOptions..OptionPages..tabSMSDelivery..TntGroupBox14..lblDeliveryStatus..Caption
+#: uOptions.dfm:2673
+msgid "<status>"
 msgstr ""
 
