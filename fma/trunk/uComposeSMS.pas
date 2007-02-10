@@ -65,6 +65,8 @@ type
     Edit1: TTntEdit;
     EncodingPopupMenu1: TTntPopupMenu;
     ForceUCS2Encoding1: TTntMenuItem;
+    Timer1: TTimer;
+    SMSCountPanel: TTntPanel;
     procedure SendClick(Sender: TObject);
     procedure MemoChange(Sender: TObject);
     procedure Edit1DragOver(Sender, Source: TObject; X, Y: Integer;
@@ -95,8 +97,11 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure TntFormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure Timer1Timer(Sender: TObject);
+    procedure TntFormResize(Sender: TObject);
   private
     { Private declarations }
+    FPrevPacketCount: Integer;
     FMaxLength: Integer;
     FDCS: TGSMCodingScheme;
     procedure DoSend(AsDraft: boolean = False);
@@ -123,6 +128,7 @@ uses
 procedure TfrmMessageContact.MemoChange(Sender: TObject);
 var
   len, packetCount, packetL: Integer;
+  isLong: boolean;
 begin
   if Form1.FForceUCSusage then
     FDCS := gcs16bitUcs2
@@ -148,12 +154,10 @@ begin
     FMaxLength := 0;
   end;
 
-  if not btnLongSMS.Down then begin
-     if Length(Memo.Text) > FMaxLength then begin
-       { Auto-switch to long-sms mode ON }
-       btnLongSMS.Down := True;
-     end
-  end;
+  len := Length(Memo.Text);
+  isLong := len > FMaxLength;
+  btnLongSMS.Down := isLong;
+
   if btnLongSMS.Down then begin
      packetL := 0;
      case FDCS of
@@ -164,25 +168,28 @@ begin
        gcs16bitUcs2:
          packetL := (FMaxLength - 3); { 140 octets (70widechars) - UDH (6 octets) }
      end;
-     len := length(Memo.Text);
-     packetCount := (len div packetL) + 1;
-     if len <= FMaxLength then packetCount := 1;
-     if packetCount > 1 then begin
-       StatusBar.Panels[0].Text := _('SMS: ') + IntToStr(packetCount);
-       StatusBar.Panels[0].Text := StatusBar.Panels[0].Text + _(' - chars ') + IntToStr(length(Memo.Text));
-     end
-     else begin
-       { Auto-switch to long-sms mode OFF }
-       btnLongSMS.Down := False;
-     end;
-  end;
-  if not btnLongSMS.Down then begin
-     len := length(Memo.Text);
+     packetCount := len div packetL;
+     if len mod packetL > 0 then Inc(packetCount);
+
+     StatusBar.Panels[0].Text := _('SMS: ') + IntToStr(packetCount);
+     StatusBar.Panels[0].Text := StatusBar.Panels[0].Text + _(' - chars ') + IntToStr(length(Memo.Text));
+  end
+  else begin
      StatusBar.Panels[0].Text := Format(ngettext('%s char left','%s chars left',FMaxLength - len),
        [IntToStr(FMaxLength - len)]);
+     packetCount := 1;
   end;
 
   btnSave.Enabled := memo.Text <> '';
+  if FPrevPacketCount <> packetCount then begin
+    FPrevPacketCount := packetCount;
+    Timer1.Enabled := False;
+    // oportunity to show small warning or something
+    Beep;
+    SMSCountPanel.Caption := _('SMS: ') + IntToStr(packetCount);
+    SMSCountPanel.Visible := True;
+    Timer1.Enabled := True;
+  end;
 end;
 
 procedure TfrmMessageContact.Edit1DragOver(Sender, Source: TObject; X, Y: Integer;
@@ -268,7 +275,9 @@ begin
       Memo.SetFocus;
     CoolBar1.Bands[0].MinHeight := 36;
     CoolBar1.Bands[1].MinHeight := 22;
+    FPrevPacketCount := 1;
     Memo.Clear();
+    TntFormResize(nil);
   except
   end;
 end;
@@ -305,7 +314,7 @@ begin
     r := AnsiStrRScan(p,';');
     if r <> nil then begin
       i := r-p+2;
-      while (i < length(a)) and (a[i] = ' ') do inc(i); 
+      while (i < length(a)) and (a[i] = ' ') do inc(i);
     end;
   end;
   j := Length(b);
@@ -322,13 +331,10 @@ end;
 
 procedure TfrmMessageContact.DoSend(AsDraft: boolean);
 var
-  smsRef: String;
   it,sl: TTntStringList;
-  k, i, j, m, startpos, stoppos: Integer;
+  k, i, j, startpos, stoppos: Integer;
   group,complex: Boolean;
-  str, grp, smsText, smsTemp: WideString;
-  smstot,udhi:string;
-  packetL: Integer;
+  str, grp, smsText: WideString;
   procedure CheckValidNumber(number: string);
   var
     j: Integer;
@@ -437,36 +443,17 @@ begin
 
     if btnLongSMS.Down and (Length(smsText) > FMaxLength) then begin
        //sending Long SMS...
-       packetL := 0;
-       case FDCS of
-         gcsDefault7Bit:
-           packetL := (FMaxLength - 7); { 160 septets - UDH (6 octets+padding) }
-         gcs8BitOctets:
-           packetL := (FMaxLength - 6); { 140 octets - UDH (6 octets) }
-         gcs16bitUcs2:
-           packetL := (FMaxLength - 3); { 140 octets (70widechars) - UDH (6 octets) }
-         else Abort;
-       end;
-       smstot := IntToHex((Length(smsText) div packetL) + 1, 2);
        //for all recepients...
        for i := 0 to sl.Count - 1 do begin
           StatusBar.Panels[2].Text := Format(_('Sending long message to %s...'), [sl.Strings[i]]);
-          //...create the sms ref...
-          smsRef := Form1.GetNextLongSMSRefference;
-          udhi := '050003' + smsRef + smsTot; // see docs for 050003 magic // do not localize
-          //...and send sms segments
-          for m := 1 to (length(smsText) div packetL) + 1 do begin
-            smsTemp := Copy(smsText, (m-1)*packetL + 1, packetL);
-            Form1.SendTextMessage(udhi + IntToHex(m,2), smsTemp, sl.Strings[i], btnRequestReply.Down, btnFlashSMS.Down,
-              btnStatusReport.Down, FDCS, AsDraft);
-          end;
+          Form1.SendTextMsg(smsText, sl.Strings[i], btnRequestReply.Down, btnFlashSMS.Down, btnStatusReport.Down, FDCS, AsDraft);
        end;
     end
     else begin
        //normal SMS...
        for i := 0 to sl.Count - 1 do begin
           StatusBar.Panels[2].Text := Format(_('Sending message to %s...'), [sl.Strings[i]]);
-          Form1.SendTextMessage('', smsText, sl.Strings[i], btnRequestReply.Down, btnFlashSMS.Down, btnStatusReport.Down,
+          Form1.SendTextMsg(smsText, sl.Strings[i], btnRequestReply.Down, btnFlashSMS.Down, btnStatusReport.Down,
             FDCS, AsDraft);
        end;
     end;
@@ -640,6 +627,18 @@ begin
   except
     CanClose := False;
   end;
+end;
+
+procedure TfrmMessageContact.Timer1Timer(Sender: TObject);
+begin
+  SMSCountPanel.Visible := False;
+  Timer1.Enabled := False;
+end;
+
+procedure TfrmMessageContact.TntFormResize(Sender: TObject);
+begin
+  SMSCountPanel.Top := Memo.Top + Memo.Height div 2 - SMSCountPanel.Height div 2;
+  SMSCountPanel.Left := Memo.Left + Memo.Width div 2 - SMSCountPanel.Width div 2;
 end;
 
 end.

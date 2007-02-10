@@ -1079,7 +1079,9 @@ type
     function DeleteSMS(index: Integer; memType: String; CheckPDU: String = ''): Boolean;
 
     function GetNextLongSMSRefference: string;
-    procedure SendTextMessage(const UDHI: String; const msg: WideString; const destNo: WideString; reqReply: Boolean = False;
+    procedure SendSMS(const UDHI: String; const msg: WideString; const destNo: WideString; reqReply: Boolean = False;
+      Flash: Boolean = False; StatusReq: Boolean = False; dcs: TGSMCodingScheme = gcsUnknown; SaveDraft: Boolean = False);
+    procedure SendTextMsg(const AText: WideString; const DestNo: WideString; reqReply: Boolean = False;
       Flash: Boolean = False; StatusReq: Boolean = False; dcs: TGSMCodingScheme = gcsUnknown; SaveDraft: Boolean = False);
 
     function GetStatus: WideString;
@@ -3653,7 +3655,7 @@ begin
     ShowBaloonInfo(_('You can enable auto-move in Options | Behaviour | Message Arrived | Move message to FMA.'));
 end;
 
-procedure TForm1.SendTextMessage(const UDHI: String; const msg, destNo: WideString; reqReply,
+procedure TForm1.SendSMS(const UDHI: String; const msg, destNo: WideString; reqReply,
   Flash: Boolean; StatusReq: Boolean; dcs: TGSMCodingScheme; SaveDraft: Boolean);
 var
   sms: TSMS;
@@ -3684,6 +3686,54 @@ begin
     end;
   finally
     sms.Free;
+  end;
+end;
+
+procedure TForm1.SendTextMsg(const AText: WideString; const DestNo: WideString; reqReply: Boolean = False;
+  Flash: Boolean = False; StatusReq: Boolean = False; dcs: TGSMCodingScheme = gcsUnknown; SaveDraft: Boolean = False);
+var
+  isLong: boolean;
+  i, textLen, charsPerMsg, packets: integer;
+  UDHI: string;
+  msgPart: WideString;
+begin
+  if dcs = gcsUnknown then begin
+    // auto-detect DCS
+    if Form1.FForceUCSusage then
+      dcs := gcs16bitUcs2
+    else
+      dcs := GSMCodingScheme(AText);
+  end;
+
+  charsPerMsg := 160;
+  case dcs of
+    gcsDefault7Bit: charsPerMsg := 160;
+    gcs8BitOctets:  charsPerMsg := 140;
+    gcs16bitUcs2:   charsPerMsg := 70;
+    gcsUnknown:     Abort;
+  end;
+
+  textLen := Length(AText);
+  isLong := textLen > charsPerMsg;
+  if isLong then begin
+    // we need 6 octets for UDHI
+    case dcs of
+      gcsDefault7Bit: Dec(charsPerMsg, 7); { 160 septets - UDH (6 octets+padding) }
+      gcs8BitOctets:  Dec(charsPerMsg, 6); { 140 octets - UDH (6 octets) }
+      gcs16bitUcs2:   Dec(charsPerMsg, 3); { 140 octets (70widechars) - UDH (6 octets) }
+    end;
+    packets := textLen div charsPerMsg;
+    if textLen mod charsPerMsg > 0 then Inc(packets);
+    // create UDHI
+    UDHI := '050003' + GetNextLongSMSRefference + IntToHex(packets, 2);
+    // send message parts
+    for i:=1 to packets do begin
+      msgPart := Copy(AText, (i-1)*charsPerMsg+1, charsPerMsg);
+      SendSMS(UDHI + IntToHex(i,2), msgPart, DestNo, reqReply, Flash, StatusReq, dcs, SaveDraft);
+    end;
+  end
+  else begin
+    SendSMS('', AText, DestNo, reqReply, Flash, StatusReq, dcs, SaveDraft);
   end;
 end;
 
@@ -4184,6 +4234,7 @@ var
   w: WideString;
 begin
   DateTimeToString(timestamp, 'yyyy"/"mm"/"dd,hh":"nn', now); //TODO -cl10n: localize?
+  ccstatus := 0;
 
   { TODO: Handle Second incoming call }
   { TODO: Handle frmCalling <> nil }
@@ -4328,7 +4379,7 @@ begin
 
   { Notify script }
   if FCallM then
-    ScriptEvent('OnCall', [frmCalling.Caption, frmCalling.lbAlpha.Caption, frmCalling.lbNumber.Caption]); // do not localize
+    ScriptEvent('OnCall', [ccstatus, frmCalling.lbAlpha.Caption, frmCalling.lbNumber.Caption]); // do not localize
 end;
 
 procedure TForm1.HandleRinging;
@@ -9955,11 +10006,11 @@ var
 begin
   Result := 0;
   data := ExplorerNew.GetNodeData(rootNode);
-  if not Assigned(rootNode) or (data.StateIndex and FmaMessagesRootMask <> FmaMessagesRootFlag) then
+  if not Assigned(data) or not Assigned(data.Data) or (data.StateIndex and FmaMessagesRootMask <> FmaMessagesRootFlag) then
     exit; // this works only for Text Message folders
 
   cnt := 0;
-  sl := THashedStringList(data.data);
+  sl := THashedStringList(data.Data);
   for i := 0 to sl.Count-1 do begin
     if Assigned(sl.Objects[i]) then
     try

@@ -1012,7 +1012,10 @@ var
   data: PFmaExplorerNode;
   item: PListData;
   sl: TStringList;
+  delList: TList;
   wl : TTntStringList;
+  md: TFmaMessageData;
+  rerender: boolean;
   procedure DelNodeFromView;
   begin
     { If deleteing current node, clear personalization and msg preview too }
@@ -1029,100 +1032,130 @@ begin
     exit;
   Form1.Status(s+'..');
   Update;
+  rerender := False;
   frmConnect := GetProgressDialog;
   try
     if Ask and Form1.CanShowProgress and (ListMsg.SelectedCount > 1) then
       frmConnect.ShowProgress(Form1.FProgressLongOnly);
     frmConnect.Initialize(ListMsg.SelectedCount,s);
-    Form1.Enabled := False; // prevent keyboard move up/down in list while deleteing
-    ListMsg.BeginUpdate;
+    delList := TList.Create;
     try
       data := Form1.ExplorerNew.GetNodeData(Form1.ExplorerNew.FocusedNode);
       sl := TStringList(data.Data);
-      node := ListMsg.GetLast;
-      while node <> nil do begin
-        prev := nil;
-        if ListMsg.Selected[node] then begin
-          { Skip Long SMS entries except for the first one }
+      // use two passes to check if sms need to be deleted from phone
+      ListMsg.BeginUpdate;
+      Form1.Enabled := False; // prevent keyboard move up/down in list while deleteing
+      try
+        node := ListMsg.GetFirstSelected;
+        while node <> nil do begin
           item := ListMsg.GetNodeData(node);
-          if (not item.smsData.IsLong) or (item.smsData.IsLongFirst) then begin
-            wl := TTntStringList.Create;
-            try
-              { Break long SMS into several parts in order to keep original PDU-s.
-                If it's regular SMS, then emulate a Long one with one member (PDU) }
-              if not item.smsData.IsLong then
-                wl.AddObject(item.smsData.Text,Pointer(node))
-              else
-                GetNodeLongList(node,wl);
+          if Assigned(item.smsData) then begin
+            if (not item.smsData.IsLong) or (item.smsData.IsLongFirst) then begin
+              wl := TTntStringList.Create;
+              try
+                { Update progress }
+                if item.smsData.Location = mlPC then
+                  frmConnect.IncProgress(1);
+                { Break long SMS into several parts in order to keep original PDU-s.
+                  If it's regular SMS, then emulate a Long one with one member (PDU) }
+                if not item.smsData.IsLong then
+                  wl.AddObject(item.smsData.Text,Pointer(node))
+                else
+                  GetNodeLongList(node,wl);
 
-              { Delete all parts of the message }
-              for j := 0 to wl.Count-1 do begin
-                prev := PVirtualNode(wl.Objects[j]);
-                if Assigned(prev) then begin
-                  item := ListMsg.GetNodeData(prev);
-                  index := item.StateIndex;
+                { Delete all parts of the message }
+                for j := 0 to wl.Count-1 do begin
+                  prev := PVirtualNode(wl.Objects[j]);
+                  if Assigned(prev) then begin
+                    item := ListMsg.GetNodeData(prev);
 
-                  if item.smsData.Location = mlME then // ME
-                    memType := 'ME' // do not localize
-                  else
-                  if item.smsData.Location = mlSM then // SM
-                    memType := 'SM' // do not localize
-                  else
-                  {if item.smsData.Location = mlPC then} // PC
-                    memType := '';
+                    if item.smsData.Location <> mlPC then
+                      { Store for later deletion }
+                      delList.Add(TFmaMessageData.Create(item.smsData.AsString))
+                    else begin
+                      { If deleteing from Outbox, notify and enable Chat window }
+                      if Form1.ExplorerNew.FocusedNode = Form1.FNodeMsgOutbox then
+                        Form1.ChatNotifyDel(item.smsData.PDU);
 
-                  { If deleteing from Outbox, notify and enable Chat window }
-                  if Form1.ExplorerNew.FocusedNode = Form1.FNodeMsgOutbox then
-                    Form1.ChatNotifyDel(item.smsData.PDU);
-
-                  { Remove message from database }
-                  i := sl.IndexOfObject(item.smsData);
-                  if i <> -1 then begin
-                    if memType <> '' then begin { in phone? }
-                      Form1.AskRequestConnection;
-                      try
-                        Form1.DeleteSMS(index, memType, item.smsData.PDU);
-                      except
-                        { silently ignore delete failure - it means message is not in phone anyway }
+                      { Remove message from database }
+                      i := sl.IndexOfObject(item.smsData);
+                      if i <> -1 then begin
+                        (item.smsData).Free;
+                        item.smsData := nil;
+                        sl.Delete(i);
+                        { Delete message part from database if its not the first one.
+                          The first part will be deleted below in DelNodeFromView call. }
+                        if prev = node then node := nil;
+                        DelNodeFromView;
                       end;
                     end;
-                    (item.smsData).Free;
-                    item.smsData := nil;
-                    sl.Delete(i);
-                    { Delete message part from database if its not the first one.
-                      The first part will be deleted below in DelNodeFromView call. }
-                    if prev <> node then DelNodeFromView;
-                  end
-                  else begin // this should never happen
-                    RenderListView(sl);
-                    Exit;
                   end;
                 end;
+              finally
+                wl.Free;
               end;
-            finally
-              wl.Free;
             end;
-            { Update progress }
-            frmConnect.IncProgress(1);
-            prev := node; // prev is used in DelNode
           end;
+          if Assigned(node) then node := ListMsg.GetNextSelected(node)
+          else node := ListMsg.GetFirstSelected;
+        end; { while end }
+        { all PC only messages are now deleted, rest in delList}
+      finally
+        ListMsg.EndUpdate;
+        NoItemsPanel.Visible := ListMsg.ChildCount[nil] = 0;
+        Form1.Enabled := True;
+        Form1.UpdateNewMessagesCounter(Form1.ExplorerNew.FocusedNode);
+      end;
+
+      if delList.Count > 0 then begin
+        Form1.SavePhoneDataFiles;
+        Form1.AskRequestConnection;
+        { We won't know ListMsg nodes now, so we will re-render when finished }
+        rerender := True;
+      end;
+      { ListMsg was re-rendered on connect, accessing all previous items would cause AV }
+      for j:=0 to delList.Count-1 do begin
+        md := TFmaMessageData(delList[j]);
+        { Update progress }
+        if (not md.IsLong) or md.IsLongFirst then
+          frmConnect.IncProgress(1);
+        index := md.MsgIndex;
+        if md.Location = mlME then // ME
+          memType := 'ME' // do not localize
+        else
+        if md.Location = mlSM then // SM
+          memType := 'SM' // do not localize
+        else
+          continue;
+
+        { If deleteing from Outbox, notify and enable Chat window }
+        if Form1.ExplorerNew.FocusedNode = Form1.FNodeMsgOutbox then
+          Form1.ChatNotifyDel(md.PDU);
+
+        try
+          Form1.DeleteSMS(index, memType, md.PDU);
+        except
+          { silently ignore delete failure - it means message is not in phone anyway }
         end;
-        node := ListMsg.GetPrevious(node);
-        if Assigned(prev) then begin
-          DelNodeFromView;
-          if Ask then ListMsg.Repaint;
+
+        { Remove message from database }
+        i := sl.IndexOf(md.PDU);
+        if i <> -1 then begin
+          TFmaMessageData(sl.Objects[i]).Free;
+          sl.Delete(i);
         end;
       end;
     finally
-      ListMsg.EndUpdate;
-      NoItemsPanel.Visible := ListMsg.ChildCount[nil] = 0;
-      Form1.Enabled := True;
-      Form1.UpdateNewMessagesCounter(Form1.ExplorerNew.FocusedNode);
+      { Free all created objects }
+      for i:=0 to delList.Count-1 do
+        TFmaMessageData(delList[i]).Free;
+      delList.Free;
     end;
   finally
     FreeProgressDialog;
+    Form1.Status('');
   end;
-  Form1.Status('');
+  if rerender then RenderListView(sl);
 end;
 
 procedure TfrmMsgView.sbCloseSearchClick(Sender: TObject);

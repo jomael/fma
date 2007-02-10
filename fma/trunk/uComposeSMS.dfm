@@ -21,6 +21,7 @@ object frmMessageContact: TfrmMessageContact
   OnCloseQuery = TntFormCloseQuery
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
+  OnResize = TntFormResize
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -45,9 +46,9 @@ object frmMessageContact: TfrmMessageContact
         Width = 350
       end>
     object ToolBar1: TToolBar
-      Left = 9
+      Left = 12
       Top = 0
-      Width = 339
+      Width = 336
       Height = 36
       AutoSize = True
       ButtonHeight = 36
@@ -156,9 +157,9 @@ object frmMessageContact: TfrmMessageContact
       end
     end
     object ToolBar2: TToolBar
-      Left = 9
+      Left = 12
       Top = 38
-      Width = 339
+      Width = 336
       Height = 22
       AutoSize = True
       ButtonWidth = 70
@@ -173,7 +174,7 @@ object frmMessageContact: TfrmMessageContact
       Wrapable = False
       OnResize = ToolBar2Resize
       DesignSize = (
-        339
+        336
         22)
       object btnTo: TToolButton
         Left = 0
@@ -211,7 +212,7 @@ object frmMessageContact: TfrmMessageContact
   end
   object StatusBar: TTntStatusBar
     Left = 0
-    Top = 225
+    Top = 222
     Width = 356
     Height = 18
     Panels = <
@@ -235,7 +236,7 @@ object frmMessageContact: TfrmMessageContact
     Left = 0
     Top = 85
     Width = 356
-    Height = 140
+    Height = 137
     Align = alClient
     ScrollBars = ssVertical
     TabOrder = 2
@@ -307,19 +308,33 @@ object frmMessageContact: TfrmMessageContact
       end
     end
   end
+  object SMSCountPanel: TTntPanel
+    Left = 120
+    Top = 136
+    Width = 105
+    Height = 25
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 4
+    Visible = False
+  end
   object FormPlacement1: TFormPlacement
     IniFileName = 'Software\floAt\MobileAgent'
     IniSection = 'MessageWindow'
     UseRegistry = True
     Left = 204
-    Top = 128
+    Top = 176
   end
   object FavoritesPopupMenu: TTntPopupMenu
     AutoHotkeys = maManual
     Images = Form1.ImageList1
     OnPopup = FavoritesPopupMenuPopup
     Left = 172
-    Top = 128
+    Top = 176
     object AddToFavorites1: TTntMenuItem
       Caption = 'Add to Favorites'
       ImageIndex = 20
@@ -337,7 +352,7 @@ object frmMessageContact: TfrmMessageContact
   object PopupMenu2: TTntPopupMenu
     OnPopup = PopupMenu2Popup
     Left = 140
-    Top = 128
+    Top = 176
     object ClearMessageCounter1: TTntMenuItem
       Caption = 'Clear Message Counter'
       OnClick = ClearMessageCounter1Click
@@ -347,7 +362,7 @@ object frmMessageContact: TfrmMessageContact
     Images = Form1.ImageList2
     OnPopup = ToPopupMenuPopup
     Left = 108
-    Top = 128
+    Top = 176
     object Add1: TTntMenuItem
       Caption = 'Select Recepients...'
       ImageIndex = 51
@@ -373,10 +388,17 @@ object frmMessageContact: TfrmMessageContact
   object EncodingPopupMenu1: TTntPopupMenu
     OnPopup = EncodingPopupMenu1Popup
     Left = 236
-    Top = 128
+    Top = 176
     object ForceUCS2Encoding1: TTntMenuItem
       Caption = 'Force UCS-2'
       OnClick = UCS2Click
     end
+  end
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 3000
+    OnTimer = Timer1Timer
+    Left = 272
+    Top = 176
   end
 end
