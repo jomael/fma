@@ -1353,13 +1353,6 @@ begin
   // Check if PDU contain SMSC information
   try
     FSMSCLen := StrToInt('$' + copy(FPDU, 1, 2)) * 2; // length in octets * 2 = number of chars
-    { !- hack -!
-      -mhr: seems SE is sometimes using Address-Length == 1 when SMSC is ommited
-      anyway this would mean that only Type-of-Address is present without the actual
-      address which would be weird, so it shouldn't do any problems
-    }
-    if FSMSCLen = 2 then
-      FSMSCLen := 0;
   except
     FSMSCLen := 0;
     Log.AddMessage('PDU ERROR (SMSCLen): '+Value, lsError); // do not localize debug
