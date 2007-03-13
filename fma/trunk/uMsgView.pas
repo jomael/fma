@@ -217,7 +217,7 @@ type
     procedure SetSearchName(const Value: WideString);
   public
     constructor Create(AOwner: TComponent); override;
-    
+
     procedure ClearView;
     procedure RenderListView(sl: TStringList);
 
@@ -1160,7 +1160,9 @@ end;
 
 procedure TfrmMsgView.sbCloseSearchClick(Sender: TObject);
 begin
-  edSearchFor.Text := '';
+  SearchWhat := '';
+  SearchName := '';
+  SearchForMessages(''); // speed-up searching
   ListMsg.SetFocus;
   SearchPanel.Visible := False;
 end;
@@ -1626,7 +1628,7 @@ end;
 function TfrmMsgView.IsRendered(const sl: TStrings): boolean;
 begin
   { Do we have rendered data from currently selected Eplorer node? }
-  Result := (ListMsg.ChildCount[nil] <> 0) and (FRendered = sl) and Assigned(sl) and (edSearchFor.Text = '');
+  Result := (ListMsg.ChildCount[nil] <> 0) and Assigned(FRendered) and Assigned(sl) and (FRendered.Equals(sl));
 end;
 
 procedure TfrmMsgView.DoMarkMessages(AsRead, SelectedOnly: Boolean);
@@ -2171,7 +2173,7 @@ begin
   SearchMode := smAll;
   edSearchFor.Text := '';
   edSearchForExit(nil);
-  FIsRendered := False;
+  FIsRendered := True;
   FRendered := nil;
   lblFiltered.Visible := False;
   ListMsg.BeginUpdate;
@@ -2192,7 +2194,8 @@ end;
 procedure TfrmMsgView.Image2Click(Sender: TObject);
 begin
   edSearchFor.SetFocus;
-  edSearchFor.Text := '';
+  SearchWhat := '';
+  SearchName := '';
   SearchForMessages(''); // speed-up searching
 end;
 
@@ -2316,7 +2319,9 @@ begin
 {$ENDIF}
   TntLabel1.Left := LookupPanel.Left + LookupPanel.Width + 8;
   TntLabel2.Left := TntLabel1.Left + TntLabel1.Width + 4;
-  TntLabel2.Font.Style := TntLabel2.Font.Style + [fsBold]; 
+  TntLabel2.Font.Style := TntLabel2.Font.Style + [fsBold];
+
+  FIsRendered := True;
 end;
 
 procedure TfrmMsgView.SetSearchName(const Value: WideString);

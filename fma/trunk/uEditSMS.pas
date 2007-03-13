@@ -112,7 +112,8 @@ resourcestring
 
 procedure TfrmDetail.SetSMS(const Value: TFmaMessageData);
 var
-  sms: Tsms;
+  sms: TSMS;
+  sr: TSMSStatusReport;
   ARef, ATot, An: Integer;
 begin
   FModified := False;
@@ -178,18 +179,24 @@ begin
       mmoDRPDU.Lines.Add(WideFormat(_('Message Type: %s'),['SMS STATUS REPORT'])); // do not localize
       mmoDRPDU.Lines.Add(sLineBreak + FSMS.ReportPDU);
       edDRStatus.Text := _('Response received');
-      edDRRepDate.Text := DateTimeToStr(FSMS.TimeStamp);
-      if FSMS.StatusCode = $FF then
-        edDRInfo.Text := sNoInfo // unknown
-      else
-        if FSMS.StatusCode = 0 then
-          edDRInfo.Text := _('Delivery was successful')
-        else begin
-          if FSMS.StatusCode and $60 = $20 then
-            edDRInfo.Text := WideFormat(_('Delivery failed, still trying to deliver (code: $%.2x)'),[FSMS.StatusCode])
-          else
-            edDRInfo.Text := WideFormat(_('Delivery failed with status code: $%.2x'),[FSMS.StatusCode]);
-        end;
+      sr := TSMSStatusReport.Create;
+      try
+        sr.PDU := FSMS.ReportPDU;
+        edDRRepDate.Text := DateTimeToStr(sr.DischargeTime);
+        if FSMS.StatusCode = $FF then
+          edDRInfo.Text := sNoInfo // unknown
+        else
+          if FSMS.StatusCode = 0 then
+            edDRInfo.Text := _('Delivery was successful')
+          else begin
+            if FSMS.StatusCode and $60 = $20 then
+              edDRInfo.Text := WideFormat(_('Delivery failed, still trying to deliver (code: $%.2x)'),[FSMS.StatusCode])
+            else
+              edDRInfo.Text := WideFormat(_('Delivery failed with status code: $%.2x'),[FSMS.StatusCode]);
+          end;
+      finally
+        sr.Free;
+      end;
     end
     else begin
       if FSMS.StatusCode = $FF then begin
@@ -249,6 +256,8 @@ begin
     ChangeButton.Tag := 1;
     ChangeButton.Caption := sReset;
     FCanEditTime := True;
+    TimeStampDate.Color := clWindow;
+    TimeStampTime.Color := clWindow;
     TimeStampDate.SetFocus;
   end
   else begin
@@ -256,8 +265,10 @@ begin
     ChangeButton.Tag := 0;
     ChangeButton.Caption := sChange;
     ApplyButton.Enabled := False;
-    FModified := True;
+    FModified := False;
     FCanEditTime := False;
+    TimeStampDate.Color := clBtnFace;
+    TimeStampTime.Color := clBtnFace;
     DoShowTimestamp;
   end;
 end;
@@ -305,7 +316,7 @@ end;
 
 procedure TfrmDetail.CancelButtonClick(Sender: TObject);
 begin
-  if not FModified or (MessageDlgW(_('Discard current changes?'),
+  if not ApplyButton.Enabled or (MessageDlgW(_('Discard current changes?'),
     mtConfirmation, MB_YESNO or MB_DEFBUTTON2) = ID_YES) then
     Close;
 end;

@@ -3290,11 +3290,14 @@ end;
 
 procedure TForm1.ExplorerNewChange(Sender: TBaseVirtualTree;
   Node: PVirtualNode);
+const
+  LastRenderedNode: PVirtualNode = nil;
 var
   EData: PFmaExplorerNode;
   s,sname: WideString;
   snode: PVirtualNode;
 begin
+  if Node = nil then Exit;
   if ExplorerNew.GetFirstSelected <> Node then begin
     SetExplorerNode(Node);
     Exit; // SetExplorerNode() generates OnChange event.
@@ -3338,7 +3341,15 @@ begin
         ActionConnectionDownload.Hint := _('Download Messages');
         SetFrameVisible('MSG'); // do not localize
         if not frmMsgView.IsRendered(TStringList(EData.Data)) then
-          frmMsgView.RenderListView(TStringList(EData.Data));
+          if not frmMsgView.IsRenderingComplete then begin
+            ExplorerNew.OnChange := nil;
+            SetExplorerNode(LastRenderedNode);
+            ExplorerNew.OnChange := ExplorerNewChange;
+          end
+          else begin
+            LastRenderedNode := Node;
+            frmMsgView.RenderListView(TStringList(EData.Data));
+          end;
       end
       else if (EData.StateIndex and $F00000) = $100000 then begin // Contacts
         // should be AFTER ..StateIndex and FmaMessagesRootMask) = FmaMessagesRootFlag.. check !
@@ -3352,6 +3363,35 @@ begin
       else if (EData.StateIndex and $F00000) = $800000 then begin // Groups
         SetFrameVisible('EXPLORE'); // do not localize
       end
+      else if Node.Parent = FNodeSavedSearches then begin // Saved Search
+        // Format: name=target-node-path, search-mode, search-text
+        sname := FSavedSearches.Names[EData.StateIndex];
+        s := FSavedSearches.Values[sname];
+        snode := ExplorerFindNode(GetFirstToken(s),ExplorerNew.GetFirst);
+        LastRenderedNode := snode;
+        if Assigned(snode) then begin
+          { Switch node }
+          EData := Sender.GetNodeData(snode);
+          ExplorerNew.OnChange := nil;
+          SetExplorerNode(snode);
+          ExplorerNew.OnChange := ExplorerNewChange;
+          { Update view }
+          ActionConnectionDownload.Hint := _('Download Messages');
+          SetFrameVisible('MSG'); // do not localize
+          if not frmMsgView.IsRendered(TStringList(EData.Data)) then
+            frmMsgView.RenderListView(TStringList(EData.Data));
+          // careful RenderListView calls ProcessMessages
+          { Apply search settings }
+          if not ActionViewMsgSearch.Checked then
+            ActionViewMsgSearch.Execute;
+          frmMsgView.SearchName := sname;
+          frmMsgView.SearchMode := TSearchMode(StrToInt(GetFirstToken(s)));
+          frmMsgView.SearchWhat := s;
+          frmMsgView.SearchForMessages(s); // speed-up searching
+        end
+        else
+          Status(_('Search target node is not found'),False);
+      end
       else if Node <> ExplorerNew.GetFirst then begin // Common Explore
         SetFrameVisible('EXPLORE'); // do not localize
       end
@@ -3361,7 +3401,7 @@ begin
         else
           SetFrameVisible('INFO'); // Fma Today // do not localize
       end;
-      
+
       if Node = FNodeContactsSM then begin // SIM book
         SetFrameVisible('SM'); // do not localize
         if not frmSMEdit.IsRendered then frmSMEdit.RenderData;
@@ -3407,31 +3447,6 @@ begin
       end;
       if Node = FNodeAlarms then begin // Alarms
         SetFrameVisible('EXPLORE'); // do not localize
-      end;
-      if Node.Parent = FNodeSavedSearches then begin // Saved Search
-        // Format: name=target-node-path, search-mode, search-text
-        sname := FSavedSearches.Names[EData.StateIndex];
-        s := FSavedSearches.Values[sname];
-        snode := ExplorerFindNode(GetFirstToken(s),ExplorerNew.GetFirst);
-        if Assigned(snode) then begin
-          { Switch node }
-          EData := Sender.GetNodeData(snode);
-          SetExplorerNode(snode);
-          { Update view }
-          ActionConnectionDownload.Hint := _('Download Messages');
-          SetFrameVisible('MSG'); // do not localize
-          if not frmMsgView.IsRendered(TStringList(EData.Data)) then
-            frmMsgView.RenderListView(TStringList(EData.Data));
-          { Apply search settings }
-          if not ActionViewMsgSearch.Checked then
-            ActionViewMsgSearch.Execute;
-          frmMsgView.SearchName := sname;
-          frmMsgView.SearchMode := TSearchMode(StrToInt(GetFirstToken(s)));
-          frmMsgView.SearchWhat := s;
-          frmMsgView.SearchForMessages(s); // speed-up searching
-        end
-        else
-          Status(_('Search target node is not found'),False);
       end;
     end
     else
@@ -4454,6 +4469,9 @@ begin
   try
     if GetToken(str, 1) = '1' then begin
       curKey := GetToken(str, 0);
+      // TODO: uppercase all pressed keys and modify constants in sframework/core/KeyManagerClass.vbs in next release with setup
+      // curKey := UpperCase(curKey);
+      if curKey = 'V' then curKey := 'v'; // W850 fix
       FKeyActivity := FKeyActivity + curKey;
       Log.AddMessage('Key Buffer: ' + FKeyActivity, lsDebug); // do not localize debug
       ScriptEvent('OnKeyPress', [curKey, 1]); // do not localize
@@ -10385,12 +10403,21 @@ begin
   sl := THashedStringList(EData.Data);
   Idx := sl.IndexOf(msgData.PDU);
   EntryExist := Idx <> -1;
+  // same message exists in target folder
   if EntryExist and OverwriteOld then begin
     md := TFmaMessageData(sl.Objects[Idx]);
-    md.AsString := msgData.AsString; // that should do it
+    md.AsString := msgData.AsString; // this will copy everything
     md.IsNew := AsNew;
     md.MsgIndex := ForceIndex;
+  end else
+  if not OverwriteOld then begin
+    // check if there's report
+    md := TFmaMessageData(sl.Objects[Idx]);
+    // TODO: what if there are two reports - one delivered and one pending?
+    if (md.ReportPDU = '') and (msgData.ReportPDU <> '') then
+      md.ReportPDU := msgData.ReportPDU;
   end;
+  // message doesn't exist in target folder
   if not EntryExist then begin
     md := TFmaMessageData.Create(msgData.AsString);
     md.MsgIndex := ForceIndex;
@@ -15218,15 +15245,19 @@ end;
 procedure TForm1.SetExplorerNode(Node: PVirtualNode);
 var
   SelNode: PVirtualNode;
+  changeEvent: TVTChangeEvent;
 begin
   { Set ExplorerNew.Enabled to False to prevent explorer selection changes }
   if ExplorerNew.Enabled then begin
     SelNode := ExplorerNew.GetFirstSelected;
+    if SelNode <> Node then ExplorerNew.Selected[SelNode] := False;
     ExplorerNew.FocusedNode := Node;
     ExplorerNew.Selected[Node] := True;
+    ExplorerNew.RepaintNode(SelNode);
     ExplorerNew.RepaintNode(Node);
-    if SelNode = Node then
-      ExplorerNewChange(ExplorerNew,ExplorerNew.FocusedNode);
+    changeEvent := ExplorerNew.OnChange;
+    if (SelNode = Node) and Assigned(changeEvent) then
+      changeEvent(ExplorerNew,Node);
   end;
 end;
 
@@ -15833,7 +15864,11 @@ begin
           if frmMsgView.SendfromPhone1.Enabled then
             Effect := DROPEFFECT_MOVE;
         end;
-        // TODO: allow Uploading to Phone folders
+        // allow uploading to Phone folders
+        if (TargetNode = FNodeMsgPhoneRoot) then begin
+          if frmMsgView.SendToPhone1.Enabled then
+            Effect := DROPEFFECT_MOVE;
+        end;
       end;
     end;
   end;
@@ -15852,13 +15887,17 @@ begin
     DropNode := hit.HitNode;
     if DropNode = nil then Exit;
     // basically same as ActionSMSToFolderExecute
-    if (ActionSMSToFolder.Enabled) and (DropNode <> FNodeMsgSent) then begin
+    if (ActionSMSToFolder.Enabled) and (DropNode <> FNodeMsgSent) and (DropNode <> FNodeMsgPhoneRoot) then begin
       SMSToFolder(DropNode);
       frmMsgView.DeleteSelected(False);
     end;
     if (DropNode = FNodeMsgSent) then begin
       if frmMsgView.SendfromPhone1.Enabled then
         frmMsgView.SendfromPhone1Click(nil);
+    end;
+    if (DropNode = FNodeMsgPhoneRoot) then begin
+      if frmMsgView.SendToPhone1.Enabled then
+        frmMsgView.SendToPhone1Click(nil);
     end;
   end;
 end;

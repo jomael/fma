@@ -269,6 +269,7 @@ object frmDetail: TfrmDetail
         Height = 21
         Date = 39077.016685648130000000
         Time = 39077.016685648130000000
+        Color = clBtnFace
         DateMode = dmUpDown
         TabOrder = 2
         OnChange = TimeStampChange
@@ -281,6 +282,7 @@ object frmDetail: TfrmDetail
         Height = 21
         Date = 39077.016910983800000000
         Time = 39077.016910983800000000
+        Color = clBtnFace
         DateMode = dmUpDown
         Kind = dtkTime
         TabOrder = 3

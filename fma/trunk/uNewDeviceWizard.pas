@@ -466,7 +466,11 @@ begin
       try
         BtDevices := LocalWBtSocket.GetConnectedDevices;
       except
-        AddDevice(_('Native Bluetooth is not supported!'));
+        AddDevice(_('Native Bluetooth is not supported!'),
+          _('Trying Virtual COM ports...'));
+        { many users don't understand the concept of native/non-native BT,
+          let's make their lives easier }
+        cbSearchCOM.Checked := True;
       end;
       lblSearchInfo.Caption := _('Searching Bluetooth...') + Reason;
       Application.ProcessMessages;

@@ -179,6 +179,8 @@ const
 {6}  191,  97,  98,  99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
 {7}  112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 228, 246, 241, 252, 224);
 
+var
+  TIMEZONEINFO: _TIME_ZONE_INFORMATION;
 
 { 7BIT helper functions }
 
@@ -560,7 +562,7 @@ Const
     'Cameroon (Republic of) 237
     'Canada 1
     'Cape Verde (Republic of) 238
-    'Cayman Islands 1 
+    'Cayman Islands 1
     'Central African Republic 236
     'Chad (Republic of) 235
     'Chile 56
@@ -576,7 +578,7 @@ Const
     'Cyprus (Republic of) 357
     'Czech Republic 420
     'Democratic People's Republic of Korea 850
-    'Democratic Republic of the Congo 243 
+    'Democratic Republic of the Congo 243
     'Denmark 45
     'Diego Garcia 246
     'Djibouti (Republic of) 253
@@ -592,7 +594,7 @@ Const
     'Ethiopia 251
     'Falkland Islands (Malvinas) 500
     'Faroe Islands 298
-    'Fiji (Republic of) 679 
+    'Fiji (Republic of) 679
     'Finland 358
     'France 33
     'French Guiana 594
@@ -608,7 +610,7 @@ Const
     'Grenada 1
     'Group of countries, shared code 388
     'Guadeloupe (French Department of) 590
-    'Guam 1 
+    'Guam 1
     'Guatemala (Republic of) 502
     'Guinea (Republic of) 224
     'Guinea-Bissau (Republic of) 245
@@ -624,7 +626,7 @@ Const
     'Iran 98
     'Iraq (Republic of) 964
     'Ireland 353
-    'Israel (State of) 972 
+    'Israel (State of) 972
     'Italy 39
     'Jamaica 1
     'Japan 81
@@ -656,7 +658,7 @@ Const
     'Martinique (French Department of) 596
     'Mauritania (Islamic Republic of) 222
     'Mauritius (Republic of) 230
-    'Mayotte 269 
+    'Mayotte 269
     'Mexico 52
     'Micronesia (Federated States of) 691
     'Moldova (Republic of) 373
@@ -672,7 +674,7 @@ Const
     'Netherlands (Kingdom of the) 31
     'Netherlands Antilles 599
     'New Caledonia 687
-    'New Zealand 64 
+    'New Zealand 64
     'Nicaragua 505
     'Niger (Republic of the) 227
     'Nigeria (Federal Republic of) 234
@@ -704,7 +706,7 @@ Const
     'Samoa (Independent State of) 685
     'San Marino (Republic of) 378
     'Sao Tome and Principe 239
-    'Saudi Arabia (Kingdom of) 966 
+    'Saudi Arabia (Kingdom of) 966
     'Senegal (Republic of) 221
     'Seychelles (Republic of) 248
     'Sierra Leone 232
@@ -720,7 +722,7 @@ Const
     'Sri Lanka 94
     'Sudan (Republic of the) 249
     'Suriname (Republic of) 597
-    'Swaziland (Kingdom of) 268 
+    'Swaziland (Kingdom of) 268
     'Sweden 46
     'Switzerland (Confederation of) 41
     'Syrian Arab Republic 963
@@ -736,7 +738,7 @@ Const
     'Turkmenistan 993
     'Turks and Caicos Islands 1
     'Tuvalu 688
-    'Uganda (Republic of) 256 
+    'Uganda (Republic of) 256
     'Ukraine 380
     'United Arab Emirates 971
     'United Kingdom 44
@@ -752,7 +754,7 @@ Const
     'Wallis and Futuna 681
     'Yemen (Republic of) 967
     'Yugoslavia (Federal Republic of) 381
-    'Zambia (Republic of) 260 
+    'Zambia (Republic of) 260
     'Zimbabwe (Republic of) 263
   end;
 }
@@ -897,10 +899,11 @@ end;
 
 function TSMSDecoder.DecodeTimeStamp(raw: String): TDateTime;
 var
-  Year, Month, Day, Hour, Minute, Second: Integer;
+  Year, Month, Day, Hour, Minute, Second, TZoffset: Integer;
   offset: integer;
+  tz: string;
 begin
-  // raw must have 7 octets
+  if Length(raw) < 14 then raise Exception.Create('SMS PDU: Timestamp must have 7 octets!');
   raw := ReverseOctets(raw);
 
   Year :=   StrToInt(copy(raw,  1, 2));
@@ -909,11 +912,33 @@ begin
   Hour :=   StrToInt(copy(raw,  7, 2));
   Minute := StrToInt(copy(raw,  9, 2));
   Second := StrToInt(copy(raw, 11, 2));
-  // TODO: 7th octet is TimeZone, decode it
+  {  7th octet is TimeZone
+    The Time Zone indicates the difference, expressed in quarters of an hour,
+    between the local time and GMT. In the first of the two semi-octets, the
+    first bit (bit 3 of the seventh octet of the TP-Service-Centre-Time-Stamp
+    field) represents the algebraic sign of this difference (0 : positive,
+    1 : negative).
+  }
+  tz := copy(raw, 13, 2);
+  TZoffset := StrToInt('$'+tz);
+  if TZoffset and $80 > 0 then begin // octet is reversed -> now 7th bit (not 3rd)
+    TZoffset := TZoffset and $7F;
+    TZoffset := -1 * StrToInt(IntToHex(TZoffset,2));
+  end else
+    TZoffset := StrToInt(tz); // offset in quater hours
+  TZoffset := TZoffset * 15; // offset in minutes
+  TZoffset := TIMEZONEINFO.Bias + TZoffset; // difference to local time
 
   if year >= 90 then offset := 1900
   else offset := 2000;
-  Result := EncodeDateTime(offset+Year, Month, Day, Hour, Minute, Second, 0);
+  {
+    If the MS has knowledge of the local time zone, then any time received
+    (e.g. Service-Centre-Time-Stamp) at the MS may be displayed in the local
+    time rather than the time local to the sending entity. Messages shall be
+    stored as received without change to any time contained therein.
+  }
+  Result := EncodeDateTime(offset+Year, Month, Day, Hour, Minute, Second, 0)
+            - TimeOf(1/24*TZoffset/60);
 end;
 
 function TSMSDecoder.DecodeNumber(raw: String): String;
@@ -1284,7 +1309,7 @@ begin
       // we will use negative values to identify offset value
       val := StrToInt('$'+TPVP);
       case val of
-        0..143: Result := (-1/24/12)*(val+1); // 5mins*(val-1)
+        0..143: Result := (-1/24/12)*(val+1); // 5mins*(val+1)
         144..167: Result := (-1/2)+(-1/24/2)*(val-143); // 12h + 30mins*(val-143)
         168..196: Result := (-1)*(val-166); // (val-166)*1day
         197..255: Result := (-7)*(val-192); // (val-192)*1week
@@ -1678,5 +1703,8 @@ begin
   // if FStatus >= 128 then Result := unknown;
   Result := FStatus = 0;
 end;
+
+initialization
+  GetTimeZoneInformation(TIMEZONEINFO);
 
 end.
