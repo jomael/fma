@@ -358,15 +358,22 @@ begin
       if (Kind = ikNormal) or (Kind = ikSelected) then begin
         item := Sender.GetNodeData(Node);
         try
-          if item.smsData.ReportRequested then
-            ImageIndex := 0 // report sent
-          else
-            ImageIndex := -1; // reporting off
-          if item.smsData.ReportPDU <> '' then
-            if item.smsData.IsDelivered then
-              ImageIndex := 25 // delivered
+          if item.smsData.IsOutgoing then begin
+            if item.smsData.ReportRequested then
+              ImageIndex := 0 // report sent
             else
-              ImageIndex := 24; // not delivered (yet)
+              ImageIndex := -1; // reporting off
+            if item.smsData.ReportPDU <> '' then
+              if item.smsData.IsDelivered then
+                ImageIndex := 25 // delivered
+              else
+                ImageIndex := 24; // not delivered (yet)
+          end
+          else
+            if item.smsData.IsReplyed then
+              ImageIndex := 3
+            else
+              ImageIndex := -1;
         except
         end;
       end
@@ -2200,6 +2207,7 @@ begin
   ListMsg.BeginUpdate;
   ListMsg.Clear;
   ListMsg.EndUpdate;
+  if Assigned(frmMessageContact) then frmMessageContact.ReplyMessageData := nil;
 end;
 
 procedure TfrmMsgView.FixSMSDatabase1Click(Sender: TObject);

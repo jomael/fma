@@ -3808,6 +3808,7 @@ begin
     ActionSMSNewMsg.Execute;
     frmMessageContact.AddRecipient(item.from);
     frmMessageContact.Memo.SetFocus;
+    frmMessageContact.ReplyMessageData := item.smsData;
   end;
 end;
 

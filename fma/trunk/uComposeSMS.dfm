@@ -212,7 +212,7 @@ object frmMessageContact: TfrmMessageContact
   end
   object StatusBar: TTntStatusBar
     Left = 0
-    Top = 222
+    Top = 226
     Width = 356
     Height = 18
     Panels = <
@@ -236,7 +236,7 @@ object frmMessageContact: TfrmMessageContact
     Left = 0
     Top = 85
     Width = 356
-    Height = 137
+    Height = 141
     Align = alClient
     ScrollBars = ssVertical
     TabOrder = 2

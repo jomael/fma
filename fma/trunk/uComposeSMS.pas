@@ -20,7 +20,7 @@ uses
   Windows, TntWindows, Messages, SysUtils, TntSysUtils, Variants, Classes, TntClasses, Graphics, TntGraphics,
   Controls, TntControls, Forms, TntForms, Dialogs, TntDialogs, StdCtrls, TntStdCtrls, ComCtrls, TntComCtrls,
   UniTntCtrls, ToolWin, ImgList, Placemnt, Buttons, TntButtons, ExtCtrls, TntExtCtrls, Menus, TntMenus, Registry,
-  uSMS;
+  uSMS, uMessageData;
 
 const
   MaxFavorites = 20;
@@ -104,6 +104,7 @@ type
     FPrevPacketCount: Integer;
     FMaxLength: Integer;
     FDCS: TGSMCodingScheme;
+    FReplyData: TFmaMessageData;
     procedure DoSend(AsDraft: boolean = False);
   protected
     FChatMode: boolean;
@@ -112,6 +113,7 @@ type
     procedure AddRecipient(node: TTreeNode); overload;
     procedure AddRecipient(str: WideString); overload;
     procedure Clear;
+    property ReplyMessageData: TFmaMessageData read FReplyData write FReplyData;
   end;
 
 var
@@ -249,6 +251,7 @@ begin
   StatusBar.Panels[0].Text := '';
   StatusBar.Panels[1].Text := '';
   btnSave.Enabled := False;
+  FReplyData := nil;
 end;
 
 
@@ -466,7 +469,23 @@ begin
   finally
     sl.Free;
   end;
-  { Close window is sending as normal SMS } 
+
+  { Update replay date time }
+  if Assigned(FReplyData) then
+    try
+      if FReplyData.IsReplyed then
+        FReplyData.ReplyTime := Now
+      else begin
+        FReplyData.ReplyTime := Now;
+        if Form1.frmMsgView.Visible and Assigned(Form1.frmMsgView.ListMsg.FocusedNode) then
+          Form1.frmMsgView.ListMsg.RepaintNode(Form1.frmMsgView.ListMsg.FocusedNode)
+        else
+          Form1.frmMsgView.ListMsg.Repaint;
+      end;
+    except
+    end;
+
+  { Close window if sending as normal SMS }
   if not AsDraft and not FChatMode then begin
     btnSave.Enabled := False;
     Close;

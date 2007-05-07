@@ -27,12 +27,16 @@ type
     FData, FPDU, FReportPDU: string;
     FIndex, FStat, FPDULength: Integer;
     FStatusCode: byte;
-    FTimeStamp: TDateTime;
+    FTimeStamp, FReplyTime: TDateTime;
     FLocation: TMessageLocation;
   protected
     function GetString: string;
     function GetOutgoing: boolean; virtual;
     function GetTimeStamp: TDateTime; virtual;
+    function GetReplyTime: TDateTime;
+    function GetReplyed: boolean;
+    procedure SetReplyed(const Value: boolean);
+    procedure SetReplyTime(const Value: TDateTime);
     procedure SetString(const AData: string); virtual;
     procedure SetLocation(const NewLocation: TMessageLocation);
     procedure SetIndex(const NewIndex: Integer);
@@ -50,7 +54,9 @@ type
     property PDU: string read FPDU write SetPDU;
     property IsOutgoing: boolean read GetOutgoing write SetOutgoing;
     property TimeStamp: TDateTime read GetTimeStamp write SetTimeStamp;
+    property ReplyTime: TDateTime read GetReplyTime write SetReplyTime;
     property IsNew: boolean read FUnread write SetUnread;
+    property IsReplyed: boolean read GetReplyed write SetReplyed;
     { properties for Status reports }
     property ReportPDU: string read FReportPDU write SetReportPDU;
     property StatusCode: byte read FStatusCode;
@@ -128,16 +134,17 @@ begin
     if wl.Count < 6 then
       raise EConvertError.Create('Invalid message data!');
     {
-      wl[0] = location (FMA data)
-      wl[1] = index (+CMGL data)
-      wl[2] = stat '0,1'/'2,3' > in/out (+CMGL data)
-      wl[3] = [alpha] - unused (+CGML data)
-      wl[4] = PDU length, in octets (+CGML data)
-      wl[5] = PDU (+CMGL data)
-      wl[6] = timestamp (FMA data)
-      wl[7] = new flag (FMA data)
-      wl[8] = status report PDU (+CDS data)
-      wl[9] = status code (FMA data)
+      wl[0]  = location (FMA data)
+      wl[1]  = index (+CMGL data)
+      wl[2]  = stat '0,1'/'2,3' > in/out (+CMGL data)
+      wl[3]  = [alpha] - unused (+CGML data)
+      wl[4]  = PDU length, in octets (+CGML data)
+      wl[5]  = PDU (+CMGL data)
+      wl[6]  = timestamp (FMA data)
+      wl[7]  = new flag (FMA data)
+      wl[8]  = status report PDU (+CDS data)
+      wl[9]  = status code (FMA data)
+      wl[10] = last reply timestamp
     }
     FLocation := TMessageLocation(StrToInt(wl[0]));
     FIndex := StrToInt(wl[1]);
@@ -179,7 +186,11 @@ begin
     if wl.Count > 8 then
       FReportPDU := wl[8];
     if wl.Count > 9 then
-      FStatusCode := Byte(StrToIntDef(wl[9], $FF));
+      FStatusCode := Byte(StrToIntDef(wl[9], $FF)); // $FF = unknown status
+    if (wl.Count > 10) and (wl[10] <> '') and (wl[10][1] = '$') then
+      FReplyTime := HexStringToDateTime(wl[10])
+    else
+      FReplyTime := 0;
   finally
     wl.Free;
   end;
@@ -197,8 +208,9 @@ begin
       FData := FData + ',';
     FData := FData + IntToStr(Byte(FUnread)) + ',';
     FData := FData + FReportPDU + ',';
-    if FReportPDU <> '' then
-      FData := FData + IntToStr(FStatusCode);
+    if FReportPDU = '' then FStatusCode := $FF; // $FF = unknown status
+    FData := FData + IntToStr(FStatusCode) + ',';
+    FData := FData + DateTimeToHexString(FReplyTime);
     FChanged := False;
   end;
   Result := FData;
@@ -481,6 +493,30 @@ end;
 function TFmaMessageData.GetIsDelivered: boolean;
 begin
   Result := IsOutgoing and (StatusCode = 0);
+end;
+
+function TFmaMessage.GetReplyTime: TDateTime;
+begin
+  Result := FReplyTime;
+end;
+
+procedure TFmaMessage.SetReplyTime(const Value: TDateTime);
+begin
+  // TimeStamp can be changed only for Incomming messages
+  if not FOutgoing then begin
+    FChanged := True;
+    FReplyTime := Value;
+  end;
+end;
+
+function TFmaMessage.GetReplyed: boolean;
+begin
+  Result := FReplyTime <> 0;
+end;
+
+procedure TFmaMessage.SetReplyed(const Value: boolean);
+begin
+  if Value then FReplyTime := Now else FReplyTime := 0;
 end;
 
 end.
