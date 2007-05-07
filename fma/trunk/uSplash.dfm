@@ -1047,7 +1047,7 @@ object frmSplash: TfrmSplash
     Top = 201
     Width = 259
     Height = 13
-    Anchors = [akLeft, akTop, akRight]
+    Anchors = [akRight, akBottom]
     AutoSize = False
     Caption = ' Starting...'
     Transparent = True
