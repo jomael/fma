@@ -348,7 +348,8 @@ var
   s: WideString;
 begin
   if ListNumbers.SelectedCount = 0 then exit;
-  s := WideFormat(_('Deleting %d %s.'), [ListNumbers.SelectedCount,ngettext('contact','contacts',ListNumbers.SelectedCount)]);
+  s := WideFormat(_('Deleting %d %s.'), [ListNumbers.SelectedCount,
+    ngettext('contact','contacts',ListNumbers.SelectedCount)]);
   if MessageDlgW(s+_(' Do you wish to continue?'), mtConfirmation, MB_YESNO	or MB_DEFBUTTON2) <> ID_YES then
     exit;
   Form1.Status(s+'..');

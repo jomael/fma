@@ -227,7 +227,7 @@ type
     procedure ExportList(FileType:Integer; Filename: WideString);
 
     procedure DeleteSelected(Ask: boolean = True);
-    procedure CleanupDatabase(Ask: boolean = True; removeDuplicates: boolean = True);
+    procedure CleanupDatabase(Ask: boolean = True; removeDuplicates: boolean = True; reRender: boolean = False);
 
     procedure GetLongMsgData(Node: PVirtualNode; var ARef, ATot, An: Integer);
 
@@ -695,7 +695,7 @@ begin
           { Write export header }
           ss := '"Subject","Body","From: (Name)","From: (Address)","From: (Type)",'+ // do not localize
                 '"To: (Name)","To: (Address)","To: (Type)",'+ // do not localize
-                '"Fma Date","Fma State","Fma PDU","Fma IsNew"'; // do not localize
+                '"Fma Date","Fma State","Fma PDU","Fma IsNew","Fma ReportPDU"'; // do not localize
           sl.add(ss);
           with ListMsg do begin
             node := GetFirst;
@@ -737,6 +737,7 @@ begin
                        if item.smsData.TimeStamp > 0 then ss := ss + '"' + DateTimeToStr(item.smsData.TimeStamp) + '",'
                          else ss := ss + '"",';
                        ss := ss + '"' + IntToStr(item.stateindex) + '","' + item.smsData.PDU + '","' + IntToStr(byte(item.smsData.IsNew)) + '"';
+                       ss := ss + ',"' + item.smsData.ReportPDU + '"';
                        sl.add(ss);
                      end;
                    finally
@@ -1251,7 +1252,7 @@ var
   data: PFmaExplorerNode;
   md: TFmaMessageData;
   t,p,str: String;
-  i,j,Added,iBody,iDate,iState,iPDU,iNew: integer;
+  i,j,Added,iBody,iDate,iState,iPDU,iNew,iReport: integer;
   function IsMultilineBody(s: String): boolean;
   var
     i,j,l: integer;
@@ -1301,7 +1302,7 @@ begin
 
     Form1.Status(_('Importing messages...'));
 
-    iBody := 0; iDate := 0; iState := 0; iPDU := 0; iNew := 0;
+    iBody := 0; iDate := 0; iState := 0; iPDU := 0; iNew := 0; iReport := 0;
     i := 0; str := '';
     while i < ImpList.Count do begin
       if Trim(ImpList[i]) <> '' then begin
@@ -1318,6 +1319,7 @@ begin
               if AnsiCompareText(t,'Fma State') = 0 then iState := j; // do not localize
               if AnsiCompareText(t,'Fma PDU') = 0 then iPDU := j; // do not localize
               if AnsiCompareText(t,'Fma IsNew') = 0 then iNew := j; // do not localize
+              if AnsiCompareText(t,'Fma ReportPDU') = 0 then iReport := j; // do not localize
             end;
             if (iBody = 0) or (iDate = 0) or (iState = 0) or (iPDU = 0) or (iNew = 0) then begin
               MessageDlgW(_('Incorrect import file header!'),mtError,MB_OK);
@@ -1332,6 +1334,7 @@ begin
               t := t + ',1,,,';
             p := GetToken(str,iPDU);
             t := t + p + ',"' + GetToken(str,iDate) + '",' + GetToken(str,iNew);
+            if iReport <> 0 then t := t + ',' + GetToken(str, iReport);
             if Form1.FArchiveDublicates or not PDUExists(p) then begin
               dl.Add(t);
               inc(Added);
@@ -2020,7 +2023,7 @@ begin
   { ... HACK! }
 end;
 
-procedure TfrmMsgView.CleanupDatabase(Ask,removeDuplicates: boolean);
+procedure TfrmMsgView.CleanupDatabase(Ask,removeDuplicates,reRender: boolean);
 var
   sl,cl,ml,nl: TStringList;
   i,j,DelCount: Integer;
@@ -2048,6 +2051,17 @@ begin
     Form1.Status(w);
     Update;
     Form1.Enabled := False; // prevent keyboard move up/down in list while fixing
+
+    // remove messages without PDU
+    i := sl.IndexOf('');
+    while i >= 0 do begin
+      TFmaMessageData(sl.Objects[i]).Free;
+      sl.Delete(i);
+      Log.AddMessageFmt(_('Database: Removed invalid message (DB Index: %d)'), [i], lsInformation);
+      i := sl.IndexOf('');
+    end;
+
+    // remove duplicated messages
     if removeDuplicates then begin
       Log.AddMessage('Fix DB: Starting duplicates removal...', lsDebug); // do not localize debug
       i := 0;
@@ -2077,6 +2091,8 @@ begin
       Log.AddMessageFmt('Fix DB: Removed %d entries from DB', [DelCount], lsDebug); // do not localize debug
       if Self.Visible then RenderListView(sl);
     end;
+
+    // clear unread flags in non-first partial messages
     if not ThreadSafe.AbortDetected then begin
       Log.AddMessage('Fix DB: Clearing redundant unread flags...', lsDebug); // do not localize debug
       DelCount := 0;
@@ -2101,6 +2117,7 @@ begin
       end;
       Log.AddMessageFmt('Fix DB: Removed %d new flags from DB', [DelCount], lsDebug); // do not localize debug
     end;
+
     { Compact database for faster message parts finding }
     if not ThreadSafe.AbortDetected then begin
       w := _('Compacting message database...');
@@ -2161,7 +2178,11 @@ begin
     FreeProgressDialog;
     Form1.Enabled := WasEnabled;
   end;
-  RenderListView(FRendered);
+  ListMsg.Clear;
+  if (reRender) then
+    RenderListView(FRendered)
+  else
+    FRendered := nil;
   Form1.UpdateNewMessagesCounter(Form1.ExplorerNew.FocusedNode);
   Form1.Status(_('Database cleanup completed'));
 end;
@@ -2183,7 +2204,7 @@ end;
 
 procedure TfrmMsgView.FixSMSDatabase1Click(Sender: TObject);
 begin
-  CleanupDatabase(True,not Form1.FArchiveDublicates);
+  CleanupDatabase(True,not Form1.FArchiveDublicates, True);
 end;
 
 procedure TfrmMsgView.SpeedButton1Click(Sender: TObject);
@@ -2374,12 +2395,13 @@ end;
 procedure TfrmMsgView.DoFindDeliveryReport(var sd: TFmaMessageData);
 var
   i,num: integer;
-  b: byte;
+  b: integer;
   sr: TSMSStatusReport;
 begin
-  b := StrToIntDef('$'+sd.MessageRef,0);
+  b := StrToIntDef('$'+sd.MessageRef,-1);
+  if b < 0 then Exit;
   num := Form1.FReportLookupList[b];
-  if (num > 0) and (b > 0) then begin // skip messages with reference 0
+  if num > 0 then begin
     for i := 0 to Form1.FStatusReportList.Count-1 do begin
       sr := TSMSStatusReport(Form1.FStatusReportList.Objects[i]);
       if Assigned(sr) then begin

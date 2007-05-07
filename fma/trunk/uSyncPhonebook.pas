@@ -335,7 +335,9 @@ begin
     2: s := _('Deleted');
     3: s := _('Unmodified');
   end;
-  Notes.Add(_('State:')+' '+s+' '+_('contact'));
+  // there cannot be more localized strings on one line
+  Notes.Add(_('State:') + ' ' + s + ' ' +
+    _('contact'));
   Notes.Add(_('Full name:')+' '+getcontactfullname(contact));
   Notes.Add(_('Display name:')+' '+contact^.displayname);
   Notes.Add(_('Title:')+' '+contact^.title);
@@ -1323,7 +1325,8 @@ var
   s: WideString;
 begin
   if ListContacts.SelectedCount = 0 then exit;
-  s := WideFormat(_('Deleting %d %s.'), [ListContacts.SelectedCount,ngettext('contact','contacts',ListContacts.SelectedCount)]);
+  s := WideFormat(_('Deleting %d %s.'), [ListContacts.SelectedCount,
+    ngettext('contact','contacts',ListContacts.SelectedCount)]);
   if MessageDlgW(s+_(' Do you wish to continue?'),mtConfirmation, MB_YESNO or MB_DEFBUTTON2) <> ID_YES then
     exit;
   Form1.Status(s+'..');
@@ -1547,8 +1550,8 @@ begin
             contact := ListContacts.GetNodeData(node);
             if contact.StateIndex <> 3 then begin // skip unmodified contacts
               Contact2vCard(contact,VCard);
-              if VCard.FullName = '' then VCard.Name := VCard.DisplayName; // use FileAs if no Name
-              if VCard.FullName = '' then VCard.Name := VCard.Org; // use Company's name if no Name
+              if VCard.FullName = '' then VCard.FullName := VCard.DisplayName; // use FileAs if no Name
+              if VCard.FullName = '' then VCard.FullName := VCard.Org; // use Company's name if no Name
               // TODO: add picture and sound support here....
               stream := TMemoryStream.Create;
               try

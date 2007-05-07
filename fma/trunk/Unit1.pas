@@ -2154,7 +2154,14 @@ begin
         Log.AddCommunicationMessage('Retrieving bookmarks info',lsDebug); // do not localize debug
         try
           frmSyncBookmarks.OnConnected;
+          ExplorerNew.IsVisible[FNodeBookmarks] := True;
+          frmInfoView.linkShowBookmarks.Enabled := True;
+          frmInfoView.linkSyncBookmarks.Enabled := True;
         except;
+          Log.AddMessage(_('Bookmark listing not supported'), lsWarning);
+          ExplorerNew.IsVisible[FNodeBookmarks] := False;
+          frmInfoView.linkShowBookmarks.Enabled := False;
+          frmInfoView.linkSyncBookmarks.Enabled := False;
         end;
         if ThreadSafe.AbortDetected or ThreadSafe.Timedout then Abort;
         //end;
@@ -8789,6 +8796,8 @@ begin
           end;
           md := TFmaMessageData.Create;
           md.AsString := IntToStr(memType) + ',' + header + ',' + pdu + ',,' + IntToStr(byte(AsNew));
+          // we will use current time for Sent messages
+          if md.IsOutgoing then md.TimeStamp := Now;
           sl.AddObject(md.PDU, md);
         end;
       end;
@@ -10410,7 +10419,7 @@ begin
     md.IsNew := AsNew;
     md.MsgIndex := ForceIndex;
   end else
-  if not OverwriteOld then begin
+  if EntryExist then begin // OverwriteOld = False
     // check if there's report
     md := TFmaMessageData(sl.Objects[Idx]);
     // TODO: what if there are two reports - one delivered and one pending?
@@ -11862,7 +11871,11 @@ begin
             { Don't check if entire message is here, it must be here,
               otherwise Cleanup will delete it anyway }
             // must move entire message object to retain status reports etc.
-            ApplyDeliveryRulesAndCopyMessage(movedMsgsList[i]); // message object
+            try
+              ApplyDeliveryRulesAndCopyMessage(movedMsgsList[i]); // message object
+            except
+              // empty PDU! continue with delete, no copying was done
+            end;
             // delete PDU
             k := sl.IndexOfObject(movedMsgsList[i]);
             if k <> -1 then begin

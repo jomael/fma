@@ -181,6 +181,7 @@ const
 
 var
   TIMEZONEINFO: _TIME_ZONE_INFORMATION;
+  TIMEZONERESULT: Cardinal;
 
 { 7BIT helper functions }
 
@@ -927,7 +928,15 @@ begin
   end else
     TZoffset := StrToInt(tz); // offset in quater hours
   TZoffset := TZoffset * 15; // offset in minutes
-  TZoffset := TIMEZONEINFO.Bias + TZoffset; // difference to local time
+  // difference to local time
+  case TIMEZONERESULT of
+    TIME_ZONE_ID_DAYLIGHT:
+      TZoffset := TIMEZONEINFO.Bias + TIMEZONEINFO.DaylightBias + TZoffset;
+    TIME_ZONE_ID_STANDARD, TIME_ZONE_ID_UNKNOWN:
+      TZoffset := TIMEZONEINFO.Bias + TZoffset;
+    else
+      TZoffset := 0;
+  end;
 
   if year >= 90 then offset := 1900
   else offset := 2000;
@@ -1705,6 +1714,6 @@ begin
 end;
 
 initialization
-  GetTimeZoneInformation(TIMEZONEINFO);
+  TIMEZONERESULT := GetTimeZoneInformation(TIMEZONEINFO);
 
 end.

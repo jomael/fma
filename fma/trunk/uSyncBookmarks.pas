@@ -1161,7 +1161,7 @@ begin
       s := GetToken(s,0); // trim and remove quotes
       if WideCompareStr(s,d) = 0 then
         MessageDlgW('Nothing to change.',mtInformation,MB_OK)
-      else  
+      else
       if MessageDlgW(WideFormat(_('Change WAP Hope Page from "%s" to "%s"?'),[s,d]),
         mtConfirmation, MB_OKCANCEL) = ID_OK then begin
         try
@@ -1181,17 +1181,14 @@ var
   i: integer;
 begin
   Result := 0;
-  try
-    Form1.TxAndWait('AT*EWHP=?'); // do not localize
-    for i := 0 to ThreadSafe.RxBuffer.Count-1 do
-      if Pos('*EWHP',ThreadSafe.RxBuffer[i]) = 1 then begin
-        s := ThreadSafe.RxBuffer[i];
-        Delete(s,1,7);
-        Result := StrToInt(s);
-        break;
-      end;
-  except
-  end;
+  Form1.TxAndWait('AT*EWHP=?'); // do not localize
+  for i := 0 to ThreadSafe.RxBuffer.Count-1 do
+    if Pos('*EWHP',ThreadSafe.RxBuffer[i]) = 1 then begin
+      s := ThreadSafe.RxBuffer[i];
+      Delete(s,1,7);
+      Result := StrToInt(s);
+      break;
+    end;
 end;
 
 procedure TfrmSyncBookmarks.SynchrinizePhone1Click(Sender: TObject);
