@@ -68,6 +68,8 @@ type
     edDRRepDate: TTntEdit;
     TntLabel6: TTntLabel;
     edDRInfo: TTntEdit;
+    TntLabel2: TTntLabel;
+    edReplyDate: TTntEdit;
     procedure OkButtonClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -200,28 +202,36 @@ begin
     end
     else begin
       if FSMS.StatusCode = $FF then begin
-        edDRStatus.Text := _('Awaiting response...');
+        if Form1.ExplorerNew.FocusedNode = Form1.FNodeMsgOutbox then
+          edDRStatus.Text := _('Awaiting delivery...') // msg is still in Outbox
+        else
+          edDRStatus.Text := _('Awaiting response...');
         edDRRepDate.Text := sNoInfo;
         edDRInfo.Text := sNoInfo;
-        mmoDRPDU.Lines.Text := sNoInfo;
+        mmoDRPDU.Lines.Text := _('NONE'); //sNoInfo;
       end
       else begin
         edDRStatus.Text := _('Not received');
         edDRRepDate.Text := sNoInfo;
         edDRInfo.Text := _('Validity period expired');
-        mmoDRPDU.Lines.Text := sNoInfo;
+        mmoDRPDU.Lines.Text := _('NONE'); //sNoInfo;
       end;
     end;
   end
   else begin
     edDRRepDate.Text := sNoInfo;
     edDRInfo.Text := sNoInfo;
-    mmoDRPDU.Lines.Text := sNoInfo;
     if FSMS.IsOutgoing then
       edDRStatus.Text := _('Not requested')
     else
       edDRStatus.Text := _('Not applicable');
+    mmoDRPDU.Lines.Text := _('NONE'); //sNoInfo;
   end;
+
+  if FSMS.IsReplyed then
+    edReplyDate.Text := DateTimeToStr(FSMS.ReplyTime)
+  else
+    edReplyDate.Text := sNoInfo;
 end;
 
 procedure TfrmDetail.OkButtonClick(Sender: TObject);

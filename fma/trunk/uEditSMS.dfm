@@ -220,10 +220,18 @@ object frmDetail: TfrmDetail
       end
       object TntLabel1: TTntLabel
         Left = 8
-        Top = 356
+        Top = 352
         Width = 44
         Height = 13
         Caption = 'Location:'
+        Transparent = True
+      end
+      object TntLabel2: TTntLabel
+        Left = 8
+        Top = 320
+        Width = 55
+        Height = 13
+        Caption = 'Replyed At:'
         Transparent = True
       end
       object edFrom: TTntEdit
@@ -248,19 +256,19 @@ object frmDetail: TfrmDetail
         Left = 92
         Top = 168
         Width = 257
-        Height = 173
+        Height = 137
         ReadOnly = True
         ScrollBars = ssVertical
         TabOrder = 5
       end
       object edLocation: TTntEdit
         Left = 92
-        Top = 352
+        Top = 348
         Width = 257
         Height = 21
         Color = clBtnFace
         ReadOnly = True
-        TabOrder = 6
+        TabOrder = 7
       end
       object TimeStampDate: TTntDateTimePicker
         Left = 92
@@ -297,6 +305,15 @@ object frmDetail: TfrmDetail
         Caption = 'C&hange'
         TabOrder = 4
         OnClick = ChangeButtonClick
+      end
+      object edReplyDate: TTntEdit
+        Left = 92
+        Top = 316
+        Width = 257
+        Height = 21
+        Color = clBtnFace
+        ReadOnly = True
+        TabOrder = 6
       end
     end
     object TabSheet2: TTabSheet
@@ -391,7 +408,7 @@ object frmDetail: TfrmDetail
         Left = 92
         Top = 168
         Width = 257
-        Height = 203
+        Height = 201
         Color = clBtnFace
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -468,7 +485,7 @@ object frmDetail: TfrmDetail
         Left = 92
         Top = 168
         Width = 257
-        Height = 203
+        Height = 201
         Color = clBtnFace
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
