@@ -1057,7 +1057,7 @@ begin
         node := ListMsg.GetFirstSelected;
         while node <> nil do begin
           item := ListMsg.GetNodeData(node);
-          if Assigned(item.smsData) then begin
+          if Assigned(item) and Assigned(item.smsData) then begin
             if (not item.smsData.IsLong) or (item.smsData.IsLongFirst) then begin
               wl := TTntStringList.Create;
               try
@@ -1071,15 +1071,20 @@ begin
                 else
                   GetNodeLongList(node,wl);
 
+                node := ListMsg.GetNextSelected(node);
+
                 { Delete all parts of the message }
                 for j := 0 to wl.Count-1 do begin
                   prev := PVirtualNode(wl.Objects[j]);
                   if Assigned(prev) then begin
                     item := ListMsg.GetNodeData(prev);
 
-                    if item.smsData.Location <> mlPC then
+                    if item.smsData.Location <> mlPC then begin
                       { Store for later deletion }
-                      delList.Add(TFmaMessageData.Create(item.smsData.AsString))
+                      delList.Add(TFmaMessageData.Create(item.smsData.AsString));
+                      ListMsg.Selected[prev] := False;
+                      if prev = node then node := ListMsg.GetFirstSelected;
+                    end
                     else begin
                       { If deleteing from Outbox, notify and enable Chat window }
                       if Form1.ExplorerNew.FocusedNode = Form1.FNodeMsgOutbox then
@@ -1093,7 +1098,6 @@ begin
                         sl.Delete(i);
                         { Delete message part from database if its not the first one.
                           The first part will be deleted below in DelNodeFromView call. }
-                        if prev = node then node := nil;
                         DelNodeFromView;
                       end;
                     end;
@@ -1102,10 +1106,8 @@ begin
               finally
                 wl.Free;
               end;
-            end;
-          end;
-          if Assigned(node) then node := ListMsg.GetNextSelected(node)
-          else node := ListMsg.GetFirstSelected;
+            end else node := ListMsg.GetNextSelected(node);
+          end else node := ListMsg.GetNextSelected(node);
         end; { while end }
         { all PC only messages are now deleted, rest in delList}
       finally
@@ -1163,7 +1165,10 @@ begin
     FreeProgressDialog;
     Form1.Status('');
   end;
-  if rerender then RenderListView(sl);
+  if rerender then begin
+    RenderListView(sl);
+    Form1.UpdateNewMessagesCounter(Form1.ExplorerNew.FocusedNode);
+  end;
 end;
 
 procedure TfrmMsgView.sbCloseSearchClick(Sender: TObject);
@@ -1416,7 +1421,7 @@ var
   Ref, ARef, Tot, ATot, An, FoundCount: Integer;
   Node: PVirtualNode;
   Up, Down: Integer;
-  GoDown, NoGoDown, NoGoUp: Boolean;
+  GoDown, NoGoDown, NoGoUp, Outgoing: Boolean;
 begin
   Result := False;
   { This function will return a list of SMS parts where Objects property contains corresponding
@@ -1429,13 +1434,14 @@ begin
       NoGoDown := False;
       NoGoUp := False;
       Node := ANode;
+      Outgoing := PListData(GetNodeData(Node))^.smsData.IsOutgoing;
       Up := 0;
       Down := 1;
       while AList.Count < Tot do
         AList.AddObject('',nil);
       while Node <> nil do begin
         GetLongMsgData(Node, ARef, ATot, An);
-        if (ARef = Ref) and (ATot = Tot) then begin
+        if (ARef = Ref) and (ATot = Tot) and (Outgoing = PListData(GetNodeData(Node))^.smsData.IsOutgoing) then begin
           if (An > 0) and (An <= AList.Count) then begin
             if not Assigned(AList.Objects[An-1]) then
               Inc(FoundCount);

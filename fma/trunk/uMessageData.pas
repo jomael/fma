@@ -439,6 +439,8 @@ begin
         end;
       end;
     end;
+    // set FDecoded to true only when no errors happened
+    FDecoded := True;
     if FReportReq and (FReportPDU <> '') then
       SetReportPDU(FReportPDU); // refresh data from report
     // check report timeout
@@ -451,7 +453,6 @@ begin
       end;
   finally
     sms.Free;
-    FDecoded := True;
   end;
   // never set non-first long messages as unread
   if (ATot > 1) and (An > 1) and (FUnread) then begin

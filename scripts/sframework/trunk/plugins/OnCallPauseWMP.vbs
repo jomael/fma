@@ -34,6 +34,7 @@ Class OnCallPauseWMP
 	Public Property Let Self (s)
 		m_Self = s
 		EventManager.RegisterEvent "MusicMute", s & ".MuteWMP", Me
+		EventManager.RegisterEvent "Call", s & ".MuteWMP2", Me
 	End Property
 	
 	Public Property Get Self
@@ -49,6 +50,22 @@ Class OnCallPauseWMP
 				If (m_WMPcore.playstate=3) Then m_WMPcore.controls.pause
 			Else
 				If (m_WMPcore.playstate=2) Then m_WMPcore.controls.play
+			End If
+		End If
+		On Error GoTo 0
+	End Sub
+
+	Sub MuteWMP2(State, Name, Number)
+		On Error Resume Next
+		If fma.isK750orBetter = True Then
+			m_WMPruns = ActiveXManager("WMPuICE.WMPApp").Running
+			If m_WMPruns Then
+			Set m_WMPcore = ActiveXManager("WMPuICE.WMPApp").Core
+				If State = 1 Then
+					If (m_WMPcore.playstate=3) Then m_WMPcore.controls.pause
+				ElseIf State = 0 Then
+					If (m_WMPcore.playstate=2) Then m_WMPcore.controls.play
+				End If
 			End If
 		End If
 		On Error GoTo 0
