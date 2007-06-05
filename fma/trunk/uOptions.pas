@@ -329,7 +329,7 @@ type
     TntLabel26: TTntLabel;
     btnRunRules: TTntButton;
     btnDefaultNewContactDir: TTntButton;
-    cbArchiveDublicates: TTntCheckBox;
+    cbSMSUseTimezone: TTntCheckBox;
     cbKeylockMonitor: TTntCheckBox;
     TntLabel27: TTntLabel;
     TntLabel28: TTntLabel;

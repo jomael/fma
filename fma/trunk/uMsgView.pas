@@ -322,7 +322,12 @@ begin
 
   if Column = 0 then Result := CompareStr(item1.from, item2.from)
   else if Column = 1 then Result := WideCompareStr(item1.smsData.Text, item2.smsData.Text)
-  else if Column = 4 then Result := CompareDateTime(item1.smsData.TimeStamp, item2.smsData.TimeStamp);
+  else if Column = 4 then begin
+    if Form1.FSMSUseTimezone then
+      Result := CompareDateTime(item1.smsData.TimeStampToLocal, item2.smsData.TimeStampToLocal)
+    else
+      Result := CompareDateTime(item1.smsData.TimeStamp, item2.smsData.TimeStamp);
+  end;
 end;
 
 procedure TfrmMsgView.ListMsgGetImageIndex(Sender: TBaseVirtualTree;
@@ -388,6 +393,7 @@ procedure TfrmMsgView.ListMsgGetText(Sender: TBaseVirtualTree;
   var CellText: WideString);
 var
   item: PListData;
+  t: TDateTime;
 begin
   item := Sender.GetNodeData(Node);
 
@@ -419,8 +425,12 @@ begin
   if Column = 4 then begin
     try
       if (Assigned(item.smsData) and (item.smsData.TimeStamp > 0)) then begin
-        if isToday(item.smsData.TimeStamp) then CellText := TimeToStr(item.smsData.TimeStamp)
-        else CellText := DateTimeToStr(item.smsData.TimeStamp)
+        if Form1.FSMSUseTimezone then
+          t := item.smsData.TimeStampToLocal
+        else
+          t := item.smsData.TimeStamp;
+        if isToday(t) then CellText := TimeToStr(t)
+        else CellText := DateTimeToStr(t)
       end
       else CellText := _('(not available)');
     except
@@ -1347,7 +1357,7 @@ begin
             p := GetToken(str,iPDU);
             t := t + p + ',"' + GetToken(str,iDate) + '",' + GetToken(str,iNew);
             if iReport <> 0 then t := t + ',' + GetToken(str, iReport);
-            if Form1.FArchiveDublicates or not PDUExists(p) then begin
+            if not PDUExists(p) then begin
               dl.Add(t);
               inc(Added);
             end;
@@ -1724,7 +1734,8 @@ begin
       { Get message info }
       if item.smsData.IsLong then mt := GetNodeLongText(Node) else mt := item.smsData.Text;
       mt := WideUpperCase(mt); // message text (for both short or long SMS message)
-      md := UpperCase(DateTimeToStr(item.smsData.TimeStamp)); // sent or received date
+      if Form1.FSMSUseTimezone then md := UpperCase(DateTimeToStr(item.smsData.TimeStampToLocal)) // sent or received date
+      else md := UpperCase(DateTimeToStr(item.smsData.TimeStamp)); // sent or received date
       ms := WideUpperCase(item.sender); // message sender's name (no number!)
       mn := UpperCase(item.smsData.From); // sender's number only (no name!)
 
@@ -2218,7 +2229,7 @@ end;
 
 procedure TfrmMsgView.FixSMSDatabase1Click(Sender: TObject);
 begin
-  CleanupDatabase(True,not Form1.FArchiveDublicates, True);
+  CleanupDatabase(True, True, True);
 end;
 
 procedure TfrmMsgView.SpeedButton1Click(Sender: TObject);

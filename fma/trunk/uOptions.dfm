@@ -398,10 +398,10 @@ object frmOptions: TfrmOptions
               Height = 21
               ComPort = LocalComPort
               ComProperty = cpPort
-              Text = 'COM4'
+              Text = 'COM1'
               Style = csDropDownList
               ItemHeight = 13
-              ItemIndex = 3
+              ItemIndex = 0
               TabOrder = 0
             end
             object cbBaudrate: TComComboBox
@@ -1421,12 +1421,13 @@ object frmOptions: TfrmOptions
           Caption = 'Force UCS-2 encoding'
           TabOrder = 0
         end
-        object cbArchiveDublicates: TTntCheckBox
+        object cbSMSUseTimezone: TTntCheckBox
           Left = 10
           Top = 160
-          Width = 233
+          Width = 383
           Height = 17
-          Caption = 'Allow duplicates in FMA Archive folders.'
+          Hint = 'This option is not supported by all SMS centers'
+          Caption = 'Adjust messages'#39' timestamp to match local timezone'
           Checked = True
           State = cbChecked
           TabOrder = 1

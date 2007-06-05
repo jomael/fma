@@ -22,14 +22,14 @@ object Form1: TForm1
   object Splitter1: TTntSplitter
     Left = 197
     Top = 54
-    Height = 574
+    Height = 567
     Visible = False
   end
   object FramePanel: TTntPanel
     Left = 200
     Top = 54
     Width = 690
-    Height = 574
+    Height = 567
     Align = alClient
     BevelOuter = bvNone
     Color = clWindow
@@ -38,7 +38,7 @@ object Form1: TForm1
       Left = 0
       Top = 24
       Width = 690
-      Height = 550
+      Height = 543
       Align = alClient
       BevelOuter = bvNone
       BorderStyle = bsSingle
@@ -47,7 +47,7 @@ object Form1: TForm1
       Visible = False
       DesignSize = (
         686
-        546)
+        539)
       object TntPageControl1: TTntPageControl
         Left = 4
         Top = 4
@@ -535,7 +535,7 @@ object Form1: TForm1
   end
   object StatusBar: TTntStatusBar
     Left = 0
-    Top = 628
+    Top = 621
     Width = 890
     Height = 19
     Panels = <
@@ -601,7 +601,7 @@ object Form1: TForm1
         ImageIndex = -1
         MinHeight = 24
         Visible = False
-        Width = 490
+        Width = 484
       end
       item
         Control = tbStandard
@@ -629,12 +629,12 @@ object Form1: TForm1
         Control = tbCalls
         ImageIndex = -1
         MinHeight = 24
-        Width = 139
+        Width = 131
       end>
     EdgeBorders = [ebTop, ebBottom]
     OnChange = CoolBarChange
     object tbStandard: TToolBar
-      Left = 9
+      Left = 12
       Top = 26
       Width = 222
       Height = 24
@@ -729,7 +729,7 @@ object Form1: TForm1
       end
     end
     object tbProfile: TToolBar
-      Left = 284
+      Left = 289
       Top = 1
       Width = 110
       Height = 22
@@ -764,7 +764,7 @@ object Form1: TForm1
       end
     end
     object tbMessages: TToolBar
-      Left = 467
+      Left = 474
       Top = 26
       Width = 278
       Height = 24
@@ -854,9 +854,9 @@ object Form1: TForm1
       end
     end
     object tbCalls: TToolBar
-      Left = 760
+      Left = 769
       Top = 26
-      Width = 126
+      Width = 117
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -893,7 +893,7 @@ object Form1: TForm1
       end
     end
     object tbMainMenu: TToolBar
-      Left = 9
+      Left = 12
       Top = 1
       Width = 260
       Height = 21
@@ -913,9 +913,9 @@ object Form1: TForm1
       OnCustomDrawButton = tbMainMenuCustomDrawButton
     end
     object tbPhone: TToolBar
-      Left = 409
+      Left = 416
       Top = 0
-      Width = 477
+      Width = 470
       Height = 24
       AutoSize = True
       ButtonHeight = 24
@@ -950,7 +950,7 @@ object Form1: TForm1
       end
     end
     object tbExplorer: TToolBar
-      Left = 246
+      Left = 251
       Top = 26
       Width = 206
       Height = 24
@@ -1030,7 +1030,7 @@ object Form1: TForm1
     Left = 0
     Top = 54
     Width = 197
-    Height = 574
+    Height = 567
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 0
@@ -1078,7 +1078,7 @@ object Form1: TForm1
       Left = 0
       Top = 22
       Width = 197
-      Height = 552
+      Height = 545
       HelpContext = 1
       Align = alClient
       BevelInner = bvLowered
@@ -7352,6 +7352,10 @@ object Form1: TForm1
         Value = False
       end
       item
+        Name = 'SMSUseTimezone'
+        Value = False
+      end
+      item
         Name = 'Outlook Sync Conflict'
         Value = 2
       end
@@ -7490,10 +7494,6 @@ object Form1: TForm1
       item
         Name = 'Sync Bookmarks'
         Value = 2
-      end
-      item
-        Name = 'ArchiveDubs'
-        Value = True
       end
       item
         Name = 'First Run'

@@ -919,7 +919,7 @@ type
     ThemeManager1: TTntThemeManager;
 {$ENDIF}
 
-    FForceUCSusage,FArchiveDublicates: boolean;
+    FForceUCSusage,FSMSUseTimezone: boolean;
     FStartupOptions: TStartupOptions;
     FProximityOptions: TProximityOptions;
     FTextMessageOptions: TTextMessageOptions;
@@ -5026,7 +5026,7 @@ begin
 //  FConnectOnLaunch := FormStorage1.StoredValue['ConnectOnLaunch']; // do not localize
 //  FAutoReconnect := FormStorage1.StoredValue['AutoReconnect']; // do not localize
     FForceUCSusage := FormStorage1.StoredValue['ForceUCS2']; // do not localize
-    FArchiveDublicates := FormStorage1.StoredValue['ArchiveDubs']; // do not localize
+    FSMSUseTimezone := FormStorage1.StoredValue['SMSUseTimezone']; // do not localize
     with FStartupOptions do begin
       NoObex := FormStorage1.StoredValue['NoObex']; // do not localize
       NoIRMC := FormStorage1.StoredValue['NoIRMC']; // do not localize
@@ -5246,7 +5246,7 @@ begin
 
     // Delivery rules
     DeliveryRules := FDeliveryRules.Text;
-    cbArchiveDublicates.Checked := FArchiveDublicates;
+    cbSMSUseTimezone.Checked := FSMSUseTimezone;
 
     (*******************************************************************************
      *                                                                             *
@@ -5546,9 +5546,9 @@ begin
       FDisplayNameFormat := cbDisplayNameFormat.ItemIndex;
       FormStorage1.StoredValue['DisplayNameFormat'] := FDisplayNameFormat; // do not localize
 
-      //Delivery rules
-      FArchiveDublicates := cbArchiveDublicates.Checked;
-      FormStorage1.StoredValue['ArchiveDubs'] := FArchiveDublicates; // do not localize
+      //SMS Timezone settings
+      FSMSUseTimezone := cbSMSUseTimezone.Checked;
+      FormStorage1.StoredValue['SMSUseTimezone'] := FSMSUseTimezone; // do not localize
 
       //Script - keep this the last in this begin..end statement
       FScriptEditor := edScriptEditor.Text;
@@ -8840,7 +8840,7 @@ var
     try
       LoadSMSMessages(ml, FullPath + Filename);
       frmMsgView.RenderListView(ml);
-      frmMsgView.CleanupDatabase(False,not FArchiveDublicates);
+      frmMsgView.CleanupDatabase(False);
       SaveSMSMessages(ml, FullPath + Filename);
     finally
       ClearSMSMessages(ml);
@@ -8860,7 +8860,7 @@ var
         Log.AddMessage('Fix DB: Checking user folder '+Data.Text, lsDebug); // do not localize debug
         sl.Assign(TStringList(Data.Data));
         frmMsgView.RenderListView(sl);
-        frmMsgView.CleanupDatabase(False,not FArchiveDublicates);
+        frmMsgView.CleanupDatabase(False);
         TStringList(Data.Data).Assign(sl);
       end;
       { Process node's children }

@@ -16,7 +16,7 @@ unit uMessageData;
 
 interface
 
-uses uSMS, uGlobal, Classes, TntClasses, SysUtils, uVCard;
+uses uSMS, uGlobal, Classes, TntClasses, SysUtils, uVCard, DateUtils;
 
 type
   TMessageLocation = (mlME = 1, mlSM = 2, mlPC = 3);
@@ -30,9 +30,11 @@ type
     FTimeStamp, FReplyTime: TDateTime;
     FLocation: TMessageLocation;
   protected
+    FTimeZoneDifference: Integer;
     function GetString: string;
     function GetOutgoing: boolean; virtual;
     function GetTimeStamp: TDateTime; virtual;
+    function GetLocalTimeStamp: TDateTime; virtual;
     function GetReplyTime: TDateTime;
     function GetReplyed: boolean;
     procedure SetReplyed(const Value: boolean);
@@ -54,6 +56,7 @@ type
     property PDU: string read FPDU write SetPDU;
     property IsOutgoing: boolean read GetOutgoing write SetOutgoing;
     property TimeStamp: TDateTime read GetTimeStamp write SetTimeStamp;
+    property TimeStampToLocal: TDateTime read GetLocalTimeStamp;
     property ReplyTime: TDateTime read GetReplyTime write SetReplyTime;
     property IsNew: boolean read FUnread write SetUnread;
     property IsReplyed: boolean read GetReplyed write SetReplyed;
@@ -81,6 +84,7 @@ type
     function GetSMSFrom: string;
     function GetOutgoing: boolean; override;
     function GetTimeStamp: TDateTime; override;
+    function GetLocalTimeStamp: TDateTime; override;
     function GetIsLongSMS: boolean;
     function GetIsLongFirst: boolean;
     function GetMsgRef: string;
@@ -226,6 +230,11 @@ begin
   Result := FTimeStamp;
 end;
 
+function TFmaMessage.GetLocalTimeStamp: TDateTime;
+begin
+  Result := FTimeStamp + TimeOf(1/24*FTimeZoneDifference/60);
+end;
+
 procedure TFmaMessage.SetLocation(const NewLocation: TMessageLocation);
 begin
   FChanged := True;
@@ -340,6 +349,13 @@ begin
   Result := FTimeStamp;
 end;
 
+function TFmaMessageData.GetLocalTimeStamp: TDateTime;
+begin
+  if (not FDecoded) then
+    DecodeSMS;
+  Result := inherited GetLocalTimeStamp;
+end;
+
 function TFmaMessageData.GetMsgRef: string;
 begin
   if (not FDecoded) then
@@ -405,6 +421,7 @@ begin
     SetText(sms.Text);
     FFrom := sms.Number;
     dateTime := sms.TimeStamp;
+    FTimeZoneDifference := sms.TimezoneDifference;
     FMsgRef := sms.MessageReference;
     if dateTime <> 0 then
       FTimeStamp := dateTime;

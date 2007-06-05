@@ -41,8 +41,10 @@ type
   protected
     FPDU: String;
     FDataCoding: Integer;
+    FTimeZoneDifference: Integer; // in minutes
   public
     property PDU: String read FPDU write FPDU;
+    property TimezoneDifference: Integer read FTimeZoneDifference write FTimeZoneDifference;
   end;
 
   TSMS = class(TSMSDecoder)
@@ -569,7 +571,7 @@ Const
     'Chile 56
     'China (People's Republic of) 86
     'Colombia (Republic of) 57 
-    'Comoros 269 
+    'Comoros 269
     'Congo (Republic of the) 242 
     'Cook Islands 682
     'Costa Rica 506
@@ -585,7 +587,7 @@ Const
     'Djibouti (Republic of) 253
     'Dominica (Commonwealth of) 1
     'Dominican Republic 1 
-    'East Timor 670 
+    'East Timor 670
     'Ecuador 593
     'Egypt (Arab Republic of) 20
     'El Salvador (Republic of) 503 
@@ -617,7 +619,7 @@ Const
     'Guinea-Bissau (Republic of) 245
     'Guyana 592
     'Haiti (Republic of) 509 
-    'Honduras (Republic of) 504 
+    'Honduras (Republic of) 504
     'Hongkong 852 
     'Hungary (Republic of) 36
     'Iceland 354
@@ -633,7 +635,7 @@ Const
     'Japan 81
     'Jordan (Hashemite Kingdom of) 962
     'Kazakstan (Republic of) 7 
-    'Kenya (Republic of) 254 
+    'Kenya (Republic of) 254
     'Kiribati (Republic of) 686 
     'Korea (Republic of) 82
     'Kuwait (State of) 965 
@@ -665,7 +667,7 @@ Const
     'Moldova (Republic of) 373
     'Monaco (Principality of) 377
     'Mongolia 976
-    'Montserrat 1 
+    'Montserrat 1
     'Morocco (Kingdom of) 212
     'Mozambique (Republic of) 258
     'Myanmar (Union of) 95 
@@ -681,7 +683,7 @@ Const
     'Nigeria (Federal Republic of) 234
     'Niue 683
     'Northern Mariana Islands 1 
-    'Norway 47 
+    'Norway 47
     'Oman (Sultanate of) 968 
     'Pakistan (Islamic Republic of) 92
     'Palau (Republic of) 680 
@@ -697,7 +699,7 @@ Const
     'Reserved 0
     'Reunion (French Department of) 262
     'Romania 40 
-    'Russian Federation 7 
+    'Russian Federation 7
     'Rwandese Republic 250 
     'Saint Helena 290
     'Saint Kitts and Nevis 1 
@@ -745,7 +747,7 @@ Const
     'United Kingdom 44
     'United States 1
     'United States Virgin Islands 1 
-    'Uruguay (Eastern Republic of) 598 
+    'Uruguay (Eastern Republic of) 598
     'Uzbekistan (Republic of) 998
     'Vanuatu (Republic of) 678
     'Vatican City State 39
@@ -946,8 +948,8 @@ begin
     time rather than the time local to the sending entity. Messages shall be
     stored as received without change to any time contained therein.
   }
-  Result := EncodeDateTime(offset+Year, Month, Day, Hour, Minute, Second, 0)
-            - TimeOf(1/24*TZoffset/60);
+  FTimeZoneDifference := - TZoffset;
+  Result := EncodeDateTime(offset+Year, Month, Day, Hour, Minute, Second, 0);
 end;
 
 function TSMSDecoder.DecodeNumber(raw: String): String;
@@ -992,7 +994,7 @@ end;
 function TSMS.Get_Message: WideString;
 var
   startpos: Integer;
-  str, UDHnull: String;
+  str, UDHnull, nullUDH_PDU: String;
   UDHIlength, i :Integer;
   function RemoveTail00(s: string): string;
   var
@@ -1013,6 +1015,10 @@ begin
     startpos := FSMSDeliverStartPos + FSenderLen + FValidityLen + 12;
     if not FIsSMSSumit then startpos := startpos + 12;
 
+    { we can't just change original PDU
+      - see Delete and Insert in 'if FIsUDH' block }
+    nullUDH_PDU := FPDU;
+
     { Sample PDU which is from Long SMS and doesn't contains UDHI!
 
       005143048101010000FFA00000000000005A20631A5F2683825650592E7F
@@ -1032,17 +1038,16 @@ begin
       for i:=0 to UDHILength do
         UDHnull := UDHnull + '00';
 
-      Delete(FPDU,startpos + 2,UDHILength * 2 + 2);
-      Insert(UDHNull,FPDU,startpos + 2);
-      //FPDU := AnsiReplaceStr(FPDU, FUDHI, UDHNull);
+      Delete(nullUDH_PDU,startpos + 2,UDHILength * 2 + 2);
+      Insert(UDHNull,nullUDH_PDU,startpos + 2);
     end;
 
     // TP-User-Data-Length. Length of message. The TP-DCS field indicated 7-bit data, so the length here is the number
     // of septets. If the TP-DCS field were set to 8-bit data or Unicode, the length would be the number of octets.
-    FMessageLength := StrToInt('$' + copy(FPDU, startpos, 2));
+    FMessageLength := StrToInt('$' + copy(nullUDH_PDU, startpos, 2));
 
     if FDataCoding = 0 then begin
-       str := copy(FPDU, startpos + 2, length(FPDU)); // process the rest of PDU data, will cut the message length later
+       str := copy(nullUDH_PDU, startpos + 2, length(nullUDH_PDU)); // process the rest of PDU data, will cut the message length later
 
        //Result := Get7bit(str);
        Result := GSMDecode7Bit(str);
@@ -1057,9 +1062,9 @@ begin
     if FDataCoding = 1 then begin
        // here FMessageLength contains numbers of octets (encoded bytes)
        if FIsUDH then
-         str := copy(FPDU, startpos + (UDHIlength+1)*2 + 2, (FMessageLength)*2)
+         str := copy(nullUDH_PDU, startpos + (UDHIlength+1)*2 + 2, (FMessageLength)*2)
        else
-         str := copy(FPDU, startpos + 2, (FMessageLength)*2);
+         str := copy(nullUDH_PDU, startpos + 2, (FMessageLength)*2);
 
        //Result := Get8bit(str);
        Result := GSMDecode8Bit(str);
@@ -1071,9 +1076,9 @@ begin
     if FDataCoding = 2 then begin
        // here FMessageLength contains numbers of octets (encoded bytes)
        if FIsUDH then
-         str := copy(FPDU, startpos + (UDHIlength+1)*2 + 2, (FMessageLength)*2)
+         str := copy(nullUDH_PDU, startpos + (UDHIlength+1)*2 + 2, (FMessageLength)*2)
        else
-         str := copy(FPDU, startpos + 2, (FMessageLength)*2);
+         str := copy(nullUDH_PDU, startpos + 2, (FMessageLength)*2);
 
        //Result := GetUCS2(str);
        Result := GSMDecodeUcs2(str);
