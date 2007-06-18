@@ -797,7 +797,7 @@ type
 
     FNotFirstInstance,FAppInitialized,FIgnoreLowBattery,FStateMonitor,
     FDoSyncClock,FKeyState,FKeyMonitoring,FKeybLocked,FSilentMode,FEBCAKeyMonStopped: Boolean;
-    FMinuteMinder : Boolean;
+    FMinuteMinder, FSupportsSEcommands, FSEcommandsQueried : Boolean;
 
     FScriptFile,FScriptEditor: WideString;
 
@@ -1230,6 +1230,8 @@ type
     function IsK750orBetter(BrandName: WideString = ''): Boolean; // for K750 and later/better phones
     function IsK610orBetter(BrandName: WideString = ''): Boolean; // for K610 and later/better phones
     function IsWalkmanClone(BrandName: WideString = ''): Boolean; // only detects if phone has MediaPlayer
+
+    function SupportsSEcommands: Boolean;
   published
     procedure ActionToolsEditProfileExecute(Sender: TObject);
     procedure Explore(Node: PVirtualNode);
@@ -2342,6 +2344,7 @@ begin
       ActionConnectionMonitor.Tag := 0;
     if FObex.Connected then FObex.ForceAbort;
     DoDisconnect;
+    FSEcommandsQueried := False;
     ExplorerNew.Repaint;
     Status('');
   except
@@ -5819,7 +5822,7 @@ begin
 
     { Cancel call silently, i.e. Remove ringing }
     try
-      if IsK610orBetter then
+      if IsK750orBetter then
         TxAndWait('AT+CKPD="#"') // do not localize
       else
         TxAndWait('AT+CKPD="c"'); // do not localize
@@ -5833,7 +5836,7 @@ begin
     if FHaveVoiceDialCommand_Hangup then
       TxAndWait('AT*EVH') // do not localize
     else
-    if IsK610orBetter then
+    if IsK700orBetter then
       { TODO: check if command is supported
       AT+BRSF=7
       +BRSF: bit 5 = Ability to reject call (AT+CHUP supported).
@@ -12173,10 +12176,9 @@ begin
   // do not localize - begin
   Result := (Pos('K610',model) <> 0) or // and K610 clones
             (Pos('K618',model) <> 0) or
-            (Pos('K600',model) <> 0) or
-            (Pos('K608',model) <> 0) or
             (Pos('K800',model) <> 0) or
-            (Pos('V600',model) <> 0) or
+            (Pos('K810',model) <> 0) or
+            (Pos('K850',model) <> 0) or
             (Pos('V630',model) <> 0) or
             (Pos('Z610',model) <> 0);
   // do not localize - end
@@ -12187,14 +12189,16 @@ var
   model: WideString;
 begin
   if BrandName = '' then model := FPhoneModel else model := BrandName;
+  // phone brands as found in SE's DG_AT_2004_R6B
   // do not localize - begin
   Result := (Pos('K700',model) <> 0) or // and K700 clones
-            (Pos('K300',model) <> 0) or //?
-            (Pos('K310',model) <> 0) or //?
+            (Pos('K300',model) <> 0) or
             (Pos('K500',model) <> 0) or
-            (Pos('K510',model) <> 0) or
+            (Pos('K600',model) <> 0) or
+            (Pos('K608',model) <> 0) or
             (Pos('J300',model) <> 0) or
             (Pos('S700',model) <> 0) or
+            (Pos('V600',model) <> 0) or
             (Pos('V800',model) <> 0) or
             (Pos('Z500',model) <> 0) or
             (Pos('Z800',model) <> 0) or
@@ -12207,11 +12211,17 @@ var
   model: WideString;
 begin
   if BrandName = '' then model := FPhoneModel else model := BrandName;
+  // phone brands as found in SE's DG_AT_2005_R6A
   // do not localize - begin
   Result := (Pos('K750',model) <> 0) or // and K750 clones
             (Pos('K790',model) <> 0) or
             (Pos('D750',model) <> 0) or
-            (Pos('Z520',model) <> 0);
+            (Pos('K310',model) <> 0) or
+            (Pos('K510',model) <> 0) or
+            (Pos('Z520',model) <> 0) or
+            (Pos('Z525',model) <> 0) or
+            (Pos('Z530',model) <> 0) or
+            (Pos('Z550',model) <> 0);
   // do not localize - end
 end;
 
@@ -12231,9 +12241,23 @@ begin
             (Pos('W710',model) <> 0) or
             (Pos('W900',model) <> 0) or
             (Pos('W950',model) <> 0) or
-            IsK610Clone(BrandName) or     // Ê600+ series also have Walkmen's MediaPlayer
-            IsK750Clone(BrandName);       // and K750+ too
+            IsK610Clone(model) or     // K600+ series also have Walkmen's MediaPlayer
+            IsK750Clone(model);       // and K750+ too
   // do not localize - end
+end;
+
+function TForm1.SupportsSEcommands: Boolean;
+begin
+  if not FSEcommandsQueried then begin
+    FSEcommandsQueried := True;
+    try
+      TxAndWait('AT*SEAM=?');
+      FSupportsSEcommands := True;
+    except
+      FSupportsSEcommands := False;
+    end;
+  end;
+  Result := FSupportsSEcommands;
 end;
 
 function TForm1.ApplyEditorChanges(SaveOnly: Boolean): boolean;
@@ -16083,10 +16107,39 @@ end;
 procedure TForm1.HandleCDS(AMsg: String);
 var
   sr: TSMSStatusReport;
+
+  function SmartReportCheck(PDU: String): boolean;
+  var
+    len: integer;
+  begin
+    { checks report if SCA field if present (K750 doesn't specify SCA)
+      will not work on 100%, but it should detect about 90% }
+    Result := True;
+    try
+      len := StrToInt('$'+Copy(PDU, 1, 2)); // SCA length
+      if len and 3 <> 2 then Exit; // it's surely not PDU type field
+      Delete(PDU, 1, 2 + len *2); // delete SCA
+      len := StrToInt('$'+Copy(PDU, 1, 2)); // PDU type
+      if len and 3 <> 2 then Abort; // invalid MTI
+      if len and 24 <> 0 then Abort; // these bits must be null
+      Delete(PDU, 1, 4); // delete PDU type and MR
+      len := StrToInt('$'+Copy(PDU, 1, 2)); // destination address length
+      if len > 20 then Abort; // dest address cannot have more than 20 chars
+      Delete(PDU, 1, 4 + len); // delete dest address
+      Delete(PDU, 1, 28); // 2 x 7octet timestamps
+      // now there has to be at least one more octet - status
+      if Length(PDU) < 2 then Result := False;
+    except
+      Result := False;
+    end;
+  end;
 begin
   sr := TSMSStatusReport.Create;
   try
-    sr.PDU := AMsg;
+    if SmartReportCheck(AMsg) then
+      sr.PDU := AMsg
+    else
+      sr.PDU := '00' + AMsg;
     AddStatusReportToList(sr);
     // TODO: show balloon, but what if message was long? Use sr.IsUserNotified somehow...
     Log.AddMessage(_('Received status report message.'));

@@ -600,7 +600,7 @@ end;
 
 function TAccessoriesMenu.UseSEcommands: Boolean;
 begin
-  Result := Form1.IsK750orBetter; // K750 or better
+  Result := Form1.SupportsSEcommands; // K750 or better
 end;
 
 initialization

@@ -105,7 +105,7 @@ type
 
   TSMSStatusReport = class(TSMSDecoder)
   private
-    FSCAPresent, FIsUDH: boolean;
+    FIsUDH: boolean;
     FSCA, FUDHI: string;
     FStatus: byte;
     FSCATS, FDTS: TDateTime;
@@ -117,7 +117,7 @@ type
     procedure Set_PDU(const Value: String);
     function Get_IsDelivered: boolean;
   public
-    constructor Create(ExpectSCA: boolean = False);
+    constructor Create;
 
     property PDU: string read FPDU write Set_PDU;
     property MessageReference: string read FMessageRef;
@@ -572,11 +572,11 @@ Const
     'China (People's Republic of) 86
     'Colombia (Republic of) 57 
     'Comoros 269
-    'Congo (Republic of the) 242 
+    'Congo (Republic of the) 242
     'Cook Islands 682
     'Costa Rica 506
     'Côte d'Ivoire (Republic of) 225
-    'Croatia (Republic of) 385 
+    'Croatia (Republic of) 385
     'Cuba 53
     'Cyprus (Republic of) 357
     'Czech Republic 420
@@ -618,7 +618,7 @@ Const
     'Guinea (Republic of) 224
     'Guinea-Bissau (Republic of) 245
     'Guyana 592
-    'Haiti (Republic of) 509 
+    'Haiti (Republic of) 509
     'Honduras (Republic of) 504
     'Hongkong 852 
     'Hungary (Republic of) 36
@@ -656,7 +656,7 @@ Const
     'Malaysia 60
     'Maldives (Republic of) 960 
     'Mali (Republic of) 223
-    'Malta 356 
+    'Malta 356
     'Marshall Islands (Republic of the) 692
     'Martinique (French Department of) 596
     'Mauritania (Islamic Republic of) 222
@@ -698,11 +698,11 @@ Const
     'Qatar (State of) 974
     'Reserved 0
     'Reunion (French Department of) 262
-    'Romania 40 
+    'Romania 40
     'Russian Federation 7
     'Rwandese Republic 250 
     'Saint Helena 290
-    'Saint Kitts and Nevis 1 
+    'Saint Kitts and Nevis 1
     'Saint Lucia 1
     'Saint Pierre and Miquelon 508 
     'Saint Vincent and the Grenadines 1
@@ -1560,10 +1560,9 @@ end;
 
 { TSMSStatusReport }
 
-constructor TSMSStatusReport.Create(ExpectSCA: boolean);
+constructor TSMSStatusReport.Create;
 begin
   inherited Create;
-  FSCAPresent := ExpectSCA;
 end;
 
 procedure TSMSStatusReport.Set_PDU(const Value: String);
@@ -1575,28 +1574,16 @@ var
 begin
   FPDU := Value;
 
-  { read SCA if present, acording to documentation it should be there,
-    but real life tests show that it's not (at least not on K750) }
-  PDUTypeStartPos := 1;
-  if FSCAPresent then begin 
-    SMSCLen := StrToInt('$'+Copy(Value, 1, 2));
-    FSCA := DecodeNumber(Copy(Value, 3, 2*SMSCLen));
-    PDUTypeStartPos := SMSCLen * 2 + 3;
-  end;
+  SMSCLen := StrToInt('$'+Copy(Value, 1, 2));
+  if SMSCLen > 0 then FSCA := DecodeNumber(Copy(Value, 3, 2*SMSCLen));
+  PDUTypeStartPos := SMSCLen * 2 + 3;
 
   { check if this is really STATUS-REPORT by TP-MTI field }
   PDUType := StrToInt('$'+Copy(Value, PDUTypeStartPos, 2));
   { there's also MMS bit, we're not using it atm }
   MTI := PDUType and 3;
   if MTI <> 2 then begin
-    // maybe there is SCA, try that
-    if not FSCAPresent then begin
-      FSCAPresent := True;
-      Set_PDU(Value);
-    end
-    else
-      raise EConvertError.Create('Invalid SMS-STATUS-REPORT!');
-    Exit;
+    raise EConvertError.Create('Invalid SMS-STATUS-REPORT!');
   end;
   if (PDUType and 32) = 1 then Log.AddMessage('PDU Warning (TP-SRQ): Report of SMS-COMMAND', lsWarning);
   FIsUDH := PDUType and 64 <> 0;

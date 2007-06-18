@@ -264,6 +264,7 @@ end;
 procedure TFmaMessage.SetReportPDU(const NewPDU: string);
 var
   sr: TSMSStatusReport;
+  tryAgain: boolean;
 begin
   if FOutgoing then begin
     FChanged := True;
@@ -271,9 +272,21 @@ begin
     // DONE: decode and change timestamp, status code
     sr := TSMSStatusReport.Create;
     try
-      sr.PDU := FReportPDU;
-      FTimeStamp := sr.OriginalSentTime;
-      FStatusCode := sr.StatusCode;
+      tryAgain := False;
+      try
+        sr.PDU := FReportPDU;
+        FTimeStamp := sr.OriginalSentTime;
+        FStatusCode := sr.StatusCode;
+      except
+        tryAgain := True;
+      end;
+      // TODO: remove in stable version, check in HandleCDS is good enough
+      if tryAgain then begin
+        sr.PDU := '00' + FReportPDU;
+        FTimeStamp := sr.OriginalSentTime;
+        FStatusCode := sr.StatusCode;
+        FReportPDU := '00' + NewPDU;
+      end;
     finally
       sr.Free;
     end;
