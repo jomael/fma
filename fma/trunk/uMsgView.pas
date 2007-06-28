@@ -1273,9 +1273,10 @@ var
   sl,dl: TStringList;
   data: PFmaExplorerNode;
   md: TFmaMessageData;
-  t,p,str: String;
+  t,p: String;
+  wstr: WideString;
   i,j,Added,iBody,iDate,iState,iPDU,iNew,iReport: integer;
-  function IsMultilineBody(s: String): boolean;
+  function IsMultilineBody(s: WideString): boolean;
   var
     i,j,l: integer;
   begin
@@ -1325,17 +1326,17 @@ begin
     Form1.Status(_('Importing messages...'));
 
     iBody := 0; iDate := 0; iState := 0; iPDU := 0; iNew := 0; iReport := 0;
-    i := 0; str := '';
+    i := 0; wstr := '';
     while i < ImpList.Count do begin
       if Trim(ImpList[i]) <> '' then begin
-        str := str + ImpList[i];
-        if not IsMultilineBody(str) then begin
+        wstr := wstr + UTF8StringToWideString(ImpList[i]);
+        if not IsMultilineBody(wstr) then begin
           if iBody = 0 then begin // find fields mapping
-            for j := 0 to GetTokenCount(str)-1 do begin
+            for j := 0 to GetTokenCount(wstr)-1 do begin
               { Check ExportList() for details about header info:
                 "Subject","Body","From: (Name)","From: (Address)","From: (Type)","To: (Name)","To: (Address)","To: (Type)",
                 "Fma Date","Fma State","Fma PDU","Fma New" }
-              t := GetToken(str,j);
+              t := GetToken(wstr,j);
               if AnsiCompareText(t,'Body') = 0 then iBody := j; // do not localize
               if AnsiCompareText(t,'Fma Date') = 0 then iDate := j; // do not localize
               if AnsiCompareText(t,'Fma State') = 0 then iState := j; // do not localize
@@ -1350,19 +1351,19 @@ begin
           end
           else begin
             t := '3,' + IntToStr(sl.Count + dl.Count + 1);
-            if StrToInt(GetToken(str,iState)) and $2000 <> 0 then // outgoing message
+            if StrToInt(GetToken(wstr,iState)) and $2000 <> 0 then // outgoing message
               t := t + ',3,,,'
             else
               t := t + ',1,,,';
-            p := GetToken(str,iPDU);
-            t := t + p + ',"' + GetToken(str,iDate) + '",' + GetToken(str,iNew);
-            if iReport <> 0 then t := t + ',' + GetToken(str, iReport);
+            p := GetToken(wstr,iPDU);
+            t := t + p + ',"' + GetToken(wstr,iDate) + '",' + GetToken(wstr,iNew);
+            if iReport <> 0 then t := t + ',' + GetToken(wstr, iReport);
             if not PDUExists(p) then begin
               dl.Add(t);
               inc(Added);
             end;
           end;
-          str := '';
+          wstr := '';
         end;
       end;
       inc(i);
