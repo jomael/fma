@@ -306,7 +306,7 @@ begin
     else
       d := '';
     if s <> '' then begin
-      if d <> '' then s := WideFormat('%s and %d',[s,d]);
+      if d <> '' then s := WideFormat('%s and %s',[s,d]);
     end
     else
       s := d;
