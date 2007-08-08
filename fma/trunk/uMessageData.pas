@@ -77,6 +77,9 @@ type
     FBusinessCard: TVCard;
     FIntStatus: TInternalStatus;
     function GetIsDelivered: boolean;
+    function GetReportReq: boolean;
+    function GetReportExp: boolean;
+    function GetReportRcvd: boolean;
   protected
     procedure SetPDU(const NewPDU: string); override;
     procedure SetString(const AData: string); override;
@@ -91,7 +94,6 @@ type
     function GetARef: integer;
     function GetATot: integer;
     function GetAN: integer;
-    function GetReportReq: boolean;
     procedure DecodeSMS;
     procedure SetText(AText: WideString);
   public
@@ -108,6 +110,8 @@ type
     property MsgNum: integer read GetAN;
     // next are FMA specific
     property ReportRequested: boolean read GetReportReq;
+    property ReportExpired: boolean read GetReportExp;
+    property ReportReceived: boolean read GetReportRcvd;
     property IsDelivered: boolean read GetIsDelivered;
     property BusinessCard: TVCard read FBusinessCard write FBusinessCard;
     property InternalStatus: TInternalStatus read FIntStatus write FIntStatus;
@@ -121,7 +125,7 @@ begin
   FLocation := mlPC;
   FTimeStamp := 0;
   FUnread := False;
-  FStatusCode := $FF; // unknown
+  FStatusCode := scUnknown; // unknown
   if AData <> '' then
     AsString := AData;
 end;
@@ -190,7 +194,7 @@ begin
     if wl.Count > 8 then
       FReportPDU := wl[8];
     if wl.Count > 9 then
-      FStatusCode := Byte(StrToIntDef(wl[9], $FF)); // $FF = unknown status
+      FStatusCode := Byte(StrToIntDef(wl[9], scUnknown)); // Unknown status code is FMA specific
     if (wl.Count > 10) and (wl[10] <> '') and (wl[10][1] = '$') then
       FReplyTime := HexStringToDateTime(wl[10])
     else
@@ -212,7 +216,7 @@ begin
       FData := FData + ',';
     FData := FData + IntToStr(Byte(FUnread)) + ',';
     FData := FData + FReportPDU + ',';
-    if FReportPDU = '' then FStatusCode := $FF; // $FF = unknown status
+    if FReportPDU = '' then FStatusCode := scUnknown; // Unknown status code is FMA specific
     FData := FData + IntToStr(FStatusCode) + ',';
     FData := FData + DateTimeToHexString(FReplyTime);
     FChanged := False;
@@ -474,13 +478,17 @@ begin
     if FReportReq and (FReportPDU <> '') then
       SetReportPDU(FReportPDU); // refresh data from report
     // check report timeout
-    if FReportReq and (FReportPDU = '') and (FTimeStamp <> 0) then
+    if FReportReq and (FReportPDU = '') and (FTimeStamp <> 0) then begin
       if sms.Validity < 0 then begin // offset value
-        if Now > FTimeStamp - sms.Validity then FStatusCode := $46;
+        if Now > FTimeStamp - sms.Validity then FStatusCode := scValidityExpired;
       end
       else if sms.Validity > 0 then begin // absolute value
-        if Now > sms.Validity then FStatusCode := $46;
+        if Now > sms.Validity then FStatusCode := scValidityExpired;
       end;
+      { check maximum vaidity period to 15 days in all cases }
+      if Now - GetLocalTimeStamp > 15 then
+        FStatusCode := scValidityExpired;
+    end;
   finally
     sms.Free;
   end;
@@ -523,6 +531,8 @@ end;
 
 function TFmaMessageData.GetIsDelivered: boolean;
 begin
+  if (not FDecoded) then
+    DecodeSMS;
   Result := IsOutgoing and (StatusCode = 0);
 end;
 
@@ -548,6 +558,20 @@ end;
 procedure TFmaMessage.SetReplyed(const Value: boolean);
 begin
   if Value then FReplyTime := Now else FReplyTime := 0;
+end;
+
+function TFmaMessageData.GetReportExp: boolean;
+begin
+  if (not FDecoded) then
+    DecodeSMS;
+  Result := FStatusCode = scValidityExpired;
+end;
+
+function TFmaMessageData.GetReportRcvd: boolean;
+begin
+  if (not FDecoded) then
+    DecodeSMS;
+  Result := ReportPDU <> '';
 end;
 
 end.

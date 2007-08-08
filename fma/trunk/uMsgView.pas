@@ -360,30 +360,29 @@ begin
         ImageIndex := -1;
     end;
     3: begin
+      ImageIndex := -1; // reporting off
       if (Kind = ikNormal) or (Kind = ikSelected) then begin
         item := Sender.GetNodeData(Node);
         try
           if item.smsData.IsOutgoing then begin
-            if item.smsData.ReportRequested then
-              ImageIndex := 0 // report sent
-            else
-              ImageIndex := -1; // reporting off
-            if item.smsData.ReportPDU <> '' then
+            if item.smsData.ReportRequested then begin
+              if item.smsData.ReportExpired then
+                ImageIndex := 1   // report timed out
+              else
+                ImageIndex := 0;  // report sent
+            end;
+            if item.smsData.ReportReceived then begin
               if item.smsData.IsDelivered then
-                ImageIndex := 25 // delivered
+                ImageIndex := 25  // delivered
               else
                 ImageIndex := 24; // not delivered (yet)
+            end;
           end
           else
-            if item.smsData.IsReplyed then
-              ImageIndex := 3
-            else
-              ImageIndex := -1;
+            if item.smsData.IsReplyed then ImageIndex := 3; // reply sent
         except
         end;
-      end
-      else
-        ImageIndex := -1;
+      end;
     end;
   end;
 end;

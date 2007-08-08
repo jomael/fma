@@ -177,7 +177,7 @@ begin
 
   if FSMS.ReportRequested then begin
     mmoDRPDU.Lines.Clear;
-    if FSMS.ReportPDU <> '' then begin
+    if FSMS.ReportReceived then begin
       mmoDRPDU.Lines.Add(WideFormat(_('Message Type: %s'),['SMS STATUS REPORT'])); // do not localize
       mmoDRPDU.Lines.Add(sLineBreak + FSMS.ReportPDU);
       edDRStatus.Text := _('Response received');
@@ -185,7 +185,7 @@ begin
       try
         sr.PDU := FSMS.ReportPDU;
         edDRRepDate.Text := DateTimeToStr(sr.DischargeTime);
-        if FSMS.StatusCode = $FF then
+        if FSMS.StatusCode = scUnknown then
           edDRInfo.Text := sNoInfo // unknown
         else
           if FSMS.StatusCode = 0 then
@@ -201,21 +201,22 @@ begin
       end;
     end
     else begin
-      if FSMS.StatusCode = $FF then begin
-        if Form1.ExplorerNew.FocusedNode = Form1.FNodeMsgOutbox then
-          edDRStatus.Text := _('Awaiting delivery...') // msg is still in Outbox
-        else
+      if Form1.ExplorerNew.FocusedNode <> Form1.FNodeMsgOutbox then begin
+        if FSMS.ReportExpired then begin
+          edDRStatus.Text := _('Not received');
+          edDRRepDate.Text := sNoInfo;
+          edDRInfo.Text := _('Validity period expired');
+          mmoDRPDU.Lines.Text := _('NONE'); //sNoInfo;
+        end
+        else begin
           edDRStatus.Text := _('Awaiting response...');
-        edDRRepDate.Text := sNoInfo;
-        edDRInfo.Text := sNoInfo;
-        mmoDRPDU.Lines.Text := _('NONE'); //sNoInfo;
+          edDRRepDate.Text := sNoInfo;
+          edDRInfo.Text := sNoInfo;
+          mmoDRPDU.Lines.Text := _('NONE'); //sNoInfo;
+        end
       end
-      else begin
-        edDRStatus.Text := _('Not received');
-        edDRRepDate.Text := sNoInfo;
-        edDRInfo.Text := _('Validity period expired');
-        mmoDRPDU.Lines.Text := _('NONE'); //sNoInfo;
-      end;
+      else
+        edDRStatus.Text := _('Awaiting delivery...'); // msg is still in Outbox
     end;
   end
   else begin

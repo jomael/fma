@@ -28,6 +28,11 @@ uses
 
   http://www.gsmfavorites.com/sms/packet-format/ }
 
+const
+  { See TSMSStatusReport.Get_IsDelivered }
+  scValidityExpired = $46; // 0x1000110 SM Validity Period Expired  ($46)
+  scUnknown         = $FF; // FMA specific code  
+
 type
   TGSMCodingScheme = (gcsDefault7Bit, gcs8BitOctets, gcs16bitUcs2, gcsUnknown);
 

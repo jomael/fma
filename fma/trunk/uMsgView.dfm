@@ -1547,7 +1547,6 @@ object frmMsgView: TfrmMsgView
         Caption = 'Message Preview...'
         GroupIndex = 2
         ImageIndex = 33
-        ShortCut = 119
         OnClick = TogglePreviewPane1Click
       end
     end
