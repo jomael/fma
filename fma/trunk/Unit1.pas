@@ -12237,12 +12237,14 @@ begin
             (Pos('W300',model) <> 0) or
             (Pos('W550',model) <> 0) or
             (Pos('W600',model) <> 0) or
+            (Pos('W610',model) <> 0) or
             (Pos('W700',model) <> 0) or
             (Pos('W710',model) <> 0) or
             (Pos('W900',model) <> 0) or
             (Pos('W950',model) <> 0) or
             IsK610Clone(model) or     // K600+ series also have Walkmen's MediaPlayer
-            IsK750Clone(model);       // and K750+ too
+            IsK750Clone(model) or     // and K750+ too
+            ((Length(model) = 4) and (model[1] = 'W')); // and any future W models
   // do not localize - end
 end;
 

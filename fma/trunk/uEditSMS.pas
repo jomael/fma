@@ -70,6 +70,16 @@ type
     edDRInfo: TTntEdit;
     TntLabel2: TTntLabel;
     edReplyDate: TTntEdit;
+    SaveDialog1: TSaveDialog;
+    TntTabSheet2: TTntTabSheet;
+    Image4: TTntImage;
+    lblName4: TTntLabel;
+    TntBevel2: TTntBevel;
+    TntLabel8: TTntLabel;
+    ImportCardButton: TTntButton;
+    SaveCardButton: TTntButton;
+    TntLabel7: TTntLabel;
+    lblContact: TTntLabel;
     procedure OkButtonClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -79,6 +89,8 @@ type
     procedure TimeStampDateKeyPress(Sender: TObject; var Key: Char);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure CancelButtonClick(Sender: TObject);
+    procedure SaveVCardButtonClick(Sender: TObject);
+    procedure ImportCardButtonClick(Sender: TObject);
   private
     { Private declarations }
     FTimestamp: TDateTime;
@@ -101,7 +113,8 @@ implementation
 
 uses
   gnugettext, gnugettexthelpers,
-  uSMS, Unit1, uMissedCalls, DateUtils, VirtualTrees;
+  uSMS, Unit1, uMissedCalls, uSyncPhonebook, DateUtils, VirtualTrees,
+  uVCard;
 
 {$R *.dfm}
 
@@ -166,6 +179,8 @@ begin
     lblName.Caption := Form1.LookupContact(sms.Number,sUnknownContact);
     lblName2.Caption := lblName.Caption;
     lblName3.Caption := lblName.Caption;
+    lblName4.Caption := lblName.Caption;
+
     if ATot > 1 then
       Caption := _('Long Message')
     else
@@ -233,6 +248,14 @@ begin
     edReplyDate.Text := DateTimeToStr(FSMS.ReplyTime)
   else
     edReplyDate.Text := sNoInfo;
+
+  { Do we have an embedded Business Card? }
+  TntTabSheet2.TabVisible := Assigned(FSMS.BusinessCard);
+  if TntTabSheet2.TabVisible then begin
+    lblContact.Caption := GetvCardFullName(FSMS.BusinessCard);
+    SaveDialog1.FileName := lblContact.Caption;
+  end;
+  ImportCardButton.Enabled := Form1.IsIrmcSyncEnabled;
 end;
 
 procedure TfrmDetail.OkButtonClick(Sender: TObject);
@@ -245,9 +268,12 @@ procedure TfrmDetail.FormCreate(Sender: TObject);
 begin
   gghTranslateComponent(self);
 
+  lblContact.Font.Style := lblContact.Font.Style + [fsBold];
+
   Image2.Picture.Assign(Image1.Picture);
   Image3.Picture.Assign(Image1.Picture);
-
+  Image4.Picture.Assign(Image1.Picture);
+  
 {$IFNDEF VER150}
   Form1.ThemeManager1.CollectForms(Self);
 {$ENDIF}
@@ -347,6 +373,21 @@ begin
           EndUpdate;
         end;
     end;
+end;
+
+procedure TfrmDetail.SaveVCardButtonClick(Sender: TObject);
+begin
+  if SaveDialog1.Execute then
+    FSMS.BusinessCard.Raw.SaveToFile(SaveDialog1.FileName);
+end;
+
+procedure TfrmDetail.ImportCardButtonClick(Sender: TObject);
+begin
+  with Form1.frmSyncPhonebook do begin
+    ImportCard(FSMS.BusinessCard);
+    FinalizeImport;
+    MessageDlgW(_('The Business Card was imported successfuly.'),mtInformation,MB_OK);
+  end;
 end;
 
 end.

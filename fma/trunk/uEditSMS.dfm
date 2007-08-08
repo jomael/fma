@@ -317,7 +317,7 @@ object frmDetail: TfrmDetail
       end
     end
     object TabSheet2: TTabSheet
-      Caption = 'Advanced'
+      Caption = 'Technical Data'
       ImageIndex = 1
       object lblName2: TTntLabel
         Left = 64
@@ -525,6 +525,83 @@ object frmDetail: TfrmDetail
         TabOrder = 3
       end
     end
+    object TntTabSheet2: TTntTabSheet
+      Caption = 'Business Card'
+      object Image4: TTntImage
+        Left = 12
+        Top = 16
+        Width = 32
+        Height = 32
+        Transparent = True
+      end
+      object lblName4: TTntLabel
+        Left = 64
+        Top = 20
+        Width = 15
+        Height = 13
+        Caption = '     '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object TntBevel2: TTntBevel
+        Left = 8
+        Top = 56
+        Width = 341
+        Height = 9
+        Shape = bsTopLine
+      end
+      object TntLabel8: TTntLabel
+        Left = 8
+        Top = 108
+        Width = 341
+        Height = 45
+        AutoSize = False
+        Caption = 
+          'This text message contains embedded Business Card which could be' +
+          ' imported or saved as a vCard file on your computer.'
+        Transparent = True
+        WordWrap = True
+      end
+      object TntLabel7: TTntLabel
+        Left = 8
+        Top = 76
+        Width = 71
+        Height = 13
+        Caption = 'Contact Name:'
+        Transparent = True
+      end
+      object lblContact: TTntLabel
+        Left = 94
+        Top = 76
+        Width = 255
+        Height = 13
+        AutoSize = False
+        Caption = '     '
+        Transparent = True
+      end
+      object ImportCardButton: TTntButton
+        Left = 132
+        Top = 160
+        Width = 105
+        Height = 25
+        Caption = '&Import Contact...'
+        TabOrder = 0
+        OnClick = ImportCardButtonClick
+      end
+      object SaveCardButton: TTntButton
+        Left = 244
+        Top = 160
+        Width = 105
+        Height = 25
+        Caption = '&Save as vCard...'
+        TabOrder = 1
+        OnClick = SaveVCardButtonClick
+      end
+    end
   end
   object OkButton: TTntButton
     Left = 156
@@ -554,5 +631,13 @@ object frmDetail: TfrmDetail
     Enabled = False
     TabOrder = 3
     OnClick = ApplyButtonClick
+  end
+  object SaveDialog1: TSaveDialog
+    DefaultExt = 'vcf'
+    Filter = 'vCard files (*.vcf)'
+    Options = [ofOverwritePrompt, ofHideReadOnly, ofPathMustExist, ofEnableSizing]
+    Title = 'Save vCard As...'
+    Left = 8
+    Top = 420
   end
 end

@@ -39,6 +39,7 @@ type
   end;
   PContactData = ^TContactData;
 
+  TImportResult = (irAdded, irReplaced);
   TfrmSyncPhonebook = class(TTntFrame)
     ListContacts: TVirtualStringTree;
     PopupMenu1: TTntPopupMenu;
@@ -156,6 +157,8 @@ type
     destructor Destroy; override;
     procedure LoadContacts(FileName:WideString);
     procedure SaveContacts(FileName:WideString);
+    function ImportCard(ACard: TVCard): TImportResult; { Note: Call FinalizeImport when all vCards are imported! }
+    procedure FinalizeImport;
     procedure ExportList(FileType:Integer; Filename: WideString);
     procedure OnConnected;
     procedure OnConflictChanges(Sender: TObject; const TargetName, Option1Name, Option2Name: WideString);
@@ -2349,52 +2352,16 @@ end;
 procedure TfrmSyncPhonebook.ImportContacts1Click(Sender: TObject);
 var
   i,j,adds,mods: integer;
-  Node,ANode: PVirtualNode;
-  contact: PContactData;
   sl: TStringList;
   slPart: TStrings;
-  F: WideString;
-  Modified: boolean;
   dlg: TfrmConnect;
-
   procedure ProcessContact;
   begin
-    F := GetvCardFullName(VCard);
-    Modified := False;
-    //erase the old entry if present
-    if FindContact(F,ANode) then begin
-      contact := ListContacts.GetNodeData(ANode);
-      case MessageDlgW(WideFormat(_('%0:s [%1:s] already exists. Do you want to replace it with newly imported one?'+
-        sLinebreak+sLinebreak+
-        'Click Yes to replace it, or click No to add it as a New contact'),[F,GetContactDefPhone(contact)]),
-        mtConfirmation, MB_YESNOCANCEL or MB_DEFBUTTON2) Of
-        ID_YES: begin
-          ListContacts.DeleteNode(ANode);
-          Log.AddSynchronizationMessage(F + _(' modified in FMA by Import.'), lsInformation);
-          Modified := True;
-        end;
-        ID_NO: Log.AddSynchronizationMessage(F + _(' added to FMA by Import (as dublicate).'), lsInformation);
-        ID_CANCEL: Abort;
-      end;
-    end
-    else Log.AddSynchronizationMessage(F + _(' added to FMA by Import.'), lsInformation);
-    Node := ListContacts.AddChild(nil);
-    contact := ListContacts.GetNodeData(Node);
-    vCard2Contact(VCard,contact);
-    if Modified then begin
-      contact.stateindex := 1;
-      inc(mods);
-    end
-    else begin
-      contact.stateindex := 0;
-      inc(adds);
-      // Set DisplayName according to FMA default settings
-      SetDisplayName(contact,Form1.FDisplayNameFormat,LastFirst1.Checked);
+    case ImportCard(VCard) of
+      irAdded: inc(adds);
+      irReplaced: inc(mods);
     end;
-    // TODO: add picture and sound support here....
-    ListContacts.Update;
   end;
-
 begin
   if not OpenDialog1.Execute then exit;
   Update;
@@ -2415,14 +2382,12 @@ begin
         sl.LoadFromFile(OpenDialog1.Files[i]);
         dlg.IncProgress(1);
         VCard.Clear;
-        if (LowerCase(ExtractFileExt(OpenDialog1.Files[i])) <> '.ldif')
-           and (LowerCase(ExtractFileExt(OpenDialog1.Files[i])) <> '.ldi') then
-        begin
+        if (LowerCase(ExtractFileExt(OpenDialog1.Files[i])) <> '.ldif') and
+          (LowerCase(ExtractFileExt(OpenDialog1.Files[i])) <> '.ldi') then begin
           VCard.Raw := sl;
           ProcessContact;
         end
-        else
-        begin
+        else begin
           slPart := TStringList.Create;
           try
             for j := 0 to sl.Count-1 do begin
@@ -2446,11 +2411,8 @@ begin
     finally
       sl.free;
       if (adds <> 0) or (mods <> 0) then begin
-        RenderGUIDs;
         //ListContacts.EndUpdate;
-        ListContacts.Sort(nil, ListContacts.Header.SortColumn, ListContacts.Header.SortDirection);
-        ListContacts.Update;
-        Form1.UpdateMEPhonebook;
+        FinalizeImport;
         Log.AddSynchronizationMessage(WideFormat(_('Imported %d %s'),[adds+mods,ngettext('item','items',adds+mods)]),lsInformation);
       end;
     end;
@@ -2737,8 +2699,7 @@ begin
     from its SIM card into Phone's memory (phonebook). }
   if not HasCells and HasHomes then
     { Yes, offer exchange }
-    if MessageDlgW(_('It seams that all your phone numbers are stored into Home positions. '+
-      'Do you wish to exchange them with Cell ones?'),
+    if MessageDlgW(_('All your phone numbers are stored as "Home" type. Do you wish to change them as "Cell" type?'),
       mtConfirmation, MB_YESNO) = ID_YES then begin
       with ListContacts do begin
         Node := GetFirst;
@@ -2748,7 +2709,7 @@ begin
             s := contact.cell;
             contact.cell := contact.home;
             contact.home := s;
-            contact.StateIndex := 1; // modified
+            if contact.StateIndex <> 0 then contact.StateIndex := 1; // modified
           end;
           Node := GetNext(Node);
         end;
@@ -3261,6 +3222,57 @@ begin
     Form1.Status(WideFormat(_('Copy to SIM card: %d new, %d modified and %d items skipped'),
       [NewCnt, UpdCnt, SkpCnt]));
   end;
+end;
+
+function TfrmSyncPhonebook.ImportCard(ACard: TVCard): TImportResult;
+var
+  F: WideString;
+  Node,ANode: PVirtualNode;
+  contact: PContactData;
+  IsModified: boolean;
+begin
+  IsModified := False;
+  F := GetvCardFullName(ACard);
+  //erase the old entry if present
+  if FindContact(F,ANode) then begin
+    contact := ListContacts.GetNodeData(ANode);
+    case MessageDlgW(WideFormat(_('%0:s [%1:s] already exists. Do you want to replace it with newly imported one?'+sLinebreak+
+      sLinebreak+'Click Yes to replace it, click No to add it as a New contact or click Cancel to abort the operation.'),
+      [F,GetContactDefPhone(contact)]), mtConfirmation, MB_YESNOCANCEL or MB_DEFBUTTON2) of
+      ID_YES: begin
+        ListContacts.DeleteNode(ANode);
+        Log.AddSynchronizationMessage(F + _(' modified in FMA by Import.'), lsInformation);
+        IsModified := True;
+      end;
+      ID_NO: Log.AddSynchronizationMessage(F + _(' added to FMA by Import (as dublicate).'), lsInformation);
+      ID_CANCEL: Abort;
+    end;
+  end
+  else
+    Log.AddSynchronizationMessage(F + _(' added to FMA by Import.'), lsInformation);
+  Node := ListContacts.AddChild(nil);
+  contact := ListContacts.GetNodeData(Node);
+  vCard2Contact(ACard,contact);
+  if IsModified then begin
+    if contact.stateindex <> 0 then contact.stateindex := 1; // modified
+    Result := irReplaced;
+  end
+  else begin
+    contact.stateindex := 0; // new
+    Result := irAdded;
+    // Set DisplayName according to FMA default settings
+    SetDisplayName(contact,Form1.FDisplayNameFormat,LastFirst1.Checked);
+  end;
+  // TODO: add picture and sound support here....
+  ListContacts.Update;
+end;
+
+procedure TfrmSyncPhonebook.FinalizeImport;
+begin
+  RenderGUIDs;
+  ListContacts.Sort(nil, ListContacts.Header.SortColumn, ListContacts.Header.SortDirection);
+  ListContacts.Update;
+  Form1.UpdateMEPhonebook;
 end;
 
 end.

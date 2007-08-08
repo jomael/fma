@@ -22,14 +22,14 @@ object Form1: TForm1
   object Splitter1: TTntSplitter
     Left = 197
     Top = 54
-    Height = 567
+    Height = 571
     Visible = False
   end
   object FramePanel: TTntPanel
     Left = 200
     Top = 54
     Width = 690
-    Height = 567
+    Height = 571
     Align = alClient
     BevelOuter = bvNone
     Color = clWindow
@@ -38,7 +38,7 @@ object Form1: TForm1
       Left = 0
       Top = 24
       Width = 690
-      Height = 543
+      Height = 547
       Align = alClient
       BevelOuter = bvNone
       BorderStyle = bsSingle
@@ -47,7 +47,7 @@ object Form1: TForm1
       Visible = False
       DesignSize = (
         686
-        539)
+        543)
       object TntPageControl1: TTntPageControl
         Left = 4
         Top = 4
@@ -535,7 +535,7 @@ object Form1: TForm1
   end
   object StatusBar: TTntStatusBar
     Left = 0
-    Top = 621
+    Top = 625
     Width = 890
     Height = 19
     Panels = <
@@ -1030,7 +1030,7 @@ object Form1: TForm1
     Left = 0
     Top = 54
     Width = 197
-    Height = 567
+    Height = 571
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 0
@@ -1078,7 +1078,7 @@ object Form1: TForm1
       Left = 0
       Top = 22
       Width = 197
-      Height = 545
+      Height = 549
       HelpContext = 1
       Align = alClient
       BevelInner = bvLowered
