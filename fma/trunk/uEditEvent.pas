@@ -127,6 +127,7 @@ type
     procedure UpdateAlarm;
     procedure UpdateAlarmAdv;
     procedure UpdateDudation;
+    procedure UpdateReccurence;
     procedure UpdateWeekDays;
     property WeekDays: WideString read GetWeekDays write SetWeekDays;
     property AdvMins: Integer read FAlarmAdv write FAlarmAdv;
@@ -165,14 +166,17 @@ begin
   lblSndName.Caption := '';
   lblSndSize.Caption := _('0,0 KB (0 bytes)');
 
-  // gghTranslateComponent changing combo item index :/ set it manually.
+  // HACK! The gghTranslateComponent() changes combobox's itemindex :/ set it manually.
   TntComboBoxDuration.ItemIndex := 4;
   TntComboBoxRangeEnd.ItemIndex := 0;
+
+  { Update view }
+  UpdateDudation;
+  TntRadioGroupReccurenceClick(nil);
 
   Image2.Picture.Assign(Image1.Picture);
   Image3.Picture.Assign(Image1.Picture);
   Image4.Picture.Assign(Image1.Picture);
-
 {$IFNDEF VER150}
   Form1.ThemeManager1.CollectForms(Self);
 {$ENDIF}
@@ -561,6 +565,11 @@ begin
     else
       Color := clBtnFace;
   end;
+end;
+
+procedure TfrmEditEvent.UpdateReccurence;
+begin
+  TntRadioGroupReccurenceClick(nil);
 end;
 
 end.

@@ -180,6 +180,13 @@ begin
   AllowIt := False;
   with TfrmEditEvent.Create(nil) do
   try
+    { Editing new empty event? }
+    if Event.UserField9 = '' then begin
+      { Yes, so reset some fields }
+      Event.UserField9 := '0';
+      if Event.RepeatRangeEnd = 0 then Event.RepeatRangeEnd := EmptyDate;
+    end;
+
     TntDatePickerStart.DateTime := Event.StartTime;
     TntTimePickerStart.DateTime := Event.StartTime;
 
@@ -222,10 +229,10 @@ begin
     else
       TntComboBoxRangeEnd.ItemIndex := 0;
 
-    // Use UserField2 for Weekly reccurence  
+    // Use UserField2 for Weekly reccurence
     WeekDays := Event.UserField2;
 
-    if Event.UserField9 = '' then Event.UserField9 := '0';
+    UpdateReccurence;
 
     // edit event
     if ShowModal = mrOk then begin
