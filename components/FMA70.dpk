@@ -59,7 +59,6 @@ contains
   WebUpdate in 'WebUpdate.pas',
   WebUpdateWizard in 'WebUpdateWizard.pas' {frmWebUpdate},
   OKTThemeEngine in 'OKTThemeEngine.pas',
-  GIFImage in 'gifimage.pas',
   SEProgress in 'SEProgress.pas',
   PBFolderDialog in 'PBFolderDialog.pas',
   LibTar in 'LibTar.pas',

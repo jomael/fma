@@ -140,6 +140,7 @@ c:\program files\borland\delphi7\Projects\Bpl\FMA.bpl=FMA
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 [HistoryLists\hlSearchPath]
-Count=2
-Item0=C:\Projects\cvsroot\fma
-Item1=..\
+Count=3
+Item0=$(DELPHI)\Lib\Debug;C:\PROJECTS\COMPON~1\JCL\lib\d7\debug
+Item1=C:\Projects\cvsroot\fma
+Item2=..\
