@@ -5,7 +5,6 @@ package FMA70;
 {$R 'WebUpdate.dcr'}
 {$R 'OKTThemeEngine.dcr'}
 {$R 'SEProgress.dcr'}
-{$R 'PBFolderDialog.dcr'}
 {$R 'ImageListXP.dcr'}
 {$R 'WBluetoothSocket.dcr'}
 {$R 'WIrCOMMSocket.dcr'}
@@ -61,13 +60,12 @@ contains
   WebUpdateWizard in 'WebUpdateWizard.pas' {frmWebUpdate},
   OKTThemeEngine in 'OKTThemeEngine.pas',
   SEProgress in 'SEProgress.pas',
-  PBFolderDialog in 'PBFolderDialog.pas',
   LibTar in 'LibTar.pas',
   ImageListXP in 'ImageListXP.pas',
   WBluetoothSocket in 'WBluetoothSocket.pas',
   WIrCOMMSocket in 'WIrCOMMSocket.pas',
   USBMonitor in 'USBMonitor.pas',
-  uDialogs in 'C:\Projects\FMA\fma\trunk\uDialogs.pas',
+  uDialogs in '..\fma\trunk\uDialogs.pas',
   SECalendar in 'SECalendar.pas';
 
 end.
